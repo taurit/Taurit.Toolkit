@@ -18,6 +18,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.Commons", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.FixDateFormatInFilenames", "Taurit.Toolkit.FixDateFormatInFilenames\Taurit.Toolkit.FixDateFormatInFilenames.csproj", "{56BCC883-348D-4D69-8D75-061BA2C3AE93}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2ED56955-F3FC-49D7-8CA2-8B6D61C5A751}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.FixDateFormatInFilenames.Tests", "Taurit.Toolkit.FixDateFormatInFilenames.Tests\Taurit.Toolkit.FixDateFormatInFilenames.Tests.csproj", "{E6E0C9B7-ACC0-4963-A74D-C67C3E5E18AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,9 +48,16 @@ Global
 		{56BCC883-348D-4D69-8D75-061BA2C3AE93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56BCC883-348D-4D69-8D75-061BA2C3AE93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56BCC883-348D-4D69-8D75-061BA2C3AE93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6E0C9B7-ACC0-4963-A74D-C67C3E5E18AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6E0C9B7-ACC0-4963-A74D-C67C3E5E18AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6E0C9B7-ACC0-4963-A74D-C67C3E5E18AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6E0C9B7-ACC0-4963-A74D-C67C3E5E18AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E6E0C9B7-ACC0-4963-A74D-C67C3E5E18AF} = {2ED56955-F3FC-49D7-8CA2-8B6D61C5A751}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1422CC07-49FB-48AA-9AFB-25077121E1E1}

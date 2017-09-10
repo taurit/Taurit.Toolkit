@@ -34,24 +34,25 @@ Arguments:
             var directory = args[0];
             var filesInDirectory = GetFilesInDirectory(directory);
 
-            RenameFiles(filesInDirectory, directory);
+            RenameFiles(new FileNameFixer(), filesInDirectory, directory);
         }
 
-        private static void RenameFiles(List<string> filesInDirectory, string path)
+        private static void RenameFiles(FileNameFixer fileNameFixer, List<string> filesInDirectory, string path)
         {
-            var fileWithInvalidDateFormat = new Regex(@"(\d\d)\.(\d\d)\.(\d\d\d\d) \d\d \d\d (.*)");
+            var fileWithInvalidDateFormat = new Regex(@"(?<day>\d\d)\.(?<month>\d\d)\.(?<year>\d\d\d\d) \d\d \d\d (.*)");
+
 
             foreach (var file in filesInDirectory)
             {
                 var m = fileWithInvalidDateFormat.Match(file);
                 if (m.Success)
                 {
-                    var day = m.Groups[1].Value;
-                    var month = m.Groups[2].Value;
-                    var year = m.Groups[3].Value;
+                    var day = m.Groups["day"].Value;
+                    var month = m.Groups["month"].Value;
+                    var year = m.Groups["year"].Value;
                     var description = m.Groups[4].Value;
 
-                    var newFileName = string.Format("{0:4}-{1:2}-{2:2} {3}", year, month, day, description);
+                    string newFileName = fileNameFixer.GetProperFileName(year, month, day, description);
                     var newFilePath = Path.Combine(path, newFileName);
                     while (File.Exists(newFilePath))
                         newFilePath = Path.Combine(path,

@@ -1,19 +1,17 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Taurit.Toolkit.FixDateFormatInFilenames")]
+[assembly: AssemblyTitle("Taurit.Toolkit.FixDateFormatInFilenames.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Taurit.Toolkit.FixDateFormatInFilenames")]
+[assembly: AssemblyProduct("Taurit.Toolkit.FixDateFormatInFilenames.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: InternalsVisibleTo("Taurit.Toolkit.FixDateFormatInFilenames.Tests")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
@@ -21,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("56bcc883-348d-4d69-8d75-061ba2c3ae93")]
+[assembly: Guid("e6e0c9b7-acc0-4963-a74d-c67c3e5e18af")]
 
 // Version information for an assembly consists of the following four values:
 //
