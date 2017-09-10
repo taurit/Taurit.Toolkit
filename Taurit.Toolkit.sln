@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E168A963-3FF6-4FE9-82B4-7647D4AD8D97}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		Taurit.Toolkit.sln.vsspell = Taurit.Toolkit.sln.vsspell
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ConvertToWebP", "Taurit.Toolkit.ConvertToWebP\Taurit.Toolkit.ConvertToWebP.csproj", "{9867B45D-E2E0-4445-8CC1-C945B3C3CE5F}"
