@@ -19,6 +19,10 @@ namespace Taurit.Toolkit.DietOptimization.Services
             double score = 0;
             score += Math.Abs(diet1.TotalKcalIntake - diet2.TotalKcalIntake);
 
+            score += Math.Abs(diet1.TotalProtein - diet2.TotalProtein);
+            score += Math.Abs(diet1.TotalCarbs - diet2.TotalCarbs);
+            score += Math.Abs(diet1.TotalFat - diet2.TotalFat);
+
             return score;
         }
     }

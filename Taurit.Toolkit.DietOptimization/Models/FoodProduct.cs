@@ -1,5 +1,8 @@
+using System.Diagnostics;
+
 namespace Taurit.Toolkit.DietOptimization.Models
 {
+    [DebuggerDisplay("{Name}")]
     public class FoodProduct
     {
         public FoodProduct(string name, double energyKcal, double percentProtein, double percentFat, double percentCarb)

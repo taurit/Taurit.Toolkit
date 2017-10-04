@@ -24,7 +24,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
             products.Add(new FoodProduct("Meat", 400, 100, 0, 0));
             products.Add(new FoodProduct("Potatoes", 400, 0, 0, 100));
 
-            var targetDietCharacteristics = new DietCharacteristics(2000, 203, 50, 200);
+            var targetDietCharacteristics = new DietCharacteristics(3000, 203, 100, 323);
             var target = new DietConstraints(targetDietCharacteristics);
 
 
