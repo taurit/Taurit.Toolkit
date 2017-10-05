@@ -1,0 +1,14 @@
+﻿# only the products with following names will be imported from usda product database
+Potatoes, boiled, cooked without skin, flesh, with salt
+Chicken, broilers or fryers, breast, meat only, cooked, fried
+Tomatoes, red, ripe, raw, year round average
+#Peppers, sweet, green, raw
+Peppers, sweet, red, raw
+#Peppers, sweet, yellow, raw
+Rice, white, medium-grain, cooked
+Fish oil, cod liver
+Oil, olive, salad or cooking
+Butter, without salt
+Milk, buttermilk, fluid, cultured, lowfat
+Milk, lowfat, fluid, 1% milkfat, with added vitamin A and vitamin D
+Egg, whole, cooked, hard-boiled
