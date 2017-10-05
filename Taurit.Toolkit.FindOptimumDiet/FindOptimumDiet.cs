@@ -61,7 +61,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 200, // 90 is recommended for men in multiple sources, eg. https://legionathletics.com/products/supplements/triumph/#vitamin-c . 120-200 perceived as optimum by some reasonable researchers, it doesn't do any harm
                 45, // "children and adults should consume 14 grams of fiber for every 1,000 calories of food eaten."
                 0 // currently not used as optimization variable, but interesting to observe
-                );
+            );
             var target = new DietConstraints(targetDietCharacteristics);
 
             // find suboptimal diet (as close to a target as feasible)

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -9,27 +11,30 @@ namespace Taurit.Toolkit.CompressVideo
     // draft of video converter wrapper for easy use in totalcmd
     internal class CompressVideo
     {
-        private static void Main(string[] args)
+        private static void Main(String[] args)
         {
-            var inputFileOrDirectory = args[0];
+            String inputFileOrDirectory = args[0];
 
             new CompressVideo().CompressVideos(inputFileOrDirectory);
         }
 
-        private void CompressVideos(string inputFileOrDirectory)
+        private void CompressVideos(String inputFileOrDirectory)
         {
-            var filesToConvert = GetFilesInDirectory(inputFileOrDirectory).AsReadOnly();
-            foreach (var file in filesToConvert)
+            ReadOnlyCollection<String> filesToConvert = GetFilesInDirectory(inputFileOrDirectory).AsReadOnly();
+            foreach (String file in filesToConvert)
             {
-                var outputFileName = file + ".mp4";
+                String outputFileName = file + ".mp4";
                 ConvertSingleFile(file, outputFileName);
             }
         }
 
         [JetBrains.Annotations.Pure]
-        private static List<string> GetFilesInDirectory(string directoryOrFilePath)
+        private static List<String> GetFilesInDirectory(String directoryOrFilePath)
         {
-            if (File.Exists(directoryOrFilePath)) return new List<string> {directoryOrFilePath};
+            if (File.Exists(directoryOrFilePath))
+            {
+                return new List<String> {directoryOrFilePath};
+            }
 
             return Directory.GetFiles(directoryOrFilePath).ToList();
         }
@@ -46,8 +51,8 @@ namespace Taurit.Toolkit.CompressVideo
         ///     lossless or nearly so: it should look the same or nearly the same as the input but it isn't technically lossless. "
         ///     https://trac.ffmpeg.org/wiki/Encode/H.264#crf
         /// </param>
-        private void ConvertSingleFile(string inputFile, string outputFile, string vcodec = "libx264",
-            string acodec = "aac", int crf = 23)
+        private void ConvertSingleFile(String inputFile, String outputFile, String vcodec = "libx264",
+            String acodec = "aac", Int32 crf = 23)
         {
             Contract.Assert(inputFile != null);
             Contract.Assert(outputFile != null);

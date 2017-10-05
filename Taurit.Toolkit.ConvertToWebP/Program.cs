@@ -8,12 +8,12 @@ using JetBrains.Annotations;
 
 namespace Taurit.Toolkit.ConvertToWebP
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(String[] args)
         {
             Console.WriteLine(
-@"TauritToolkit.ConvertToWebP
+                @"TauritToolkit.ConvertToWebP
 ---------------------------
 Converts images (jpg, jpeg, png) into WebP with a specified quality.
 
@@ -32,18 +32,20 @@ Arguments:
                 return;
             }
 
-            var quality = Convert.ToInt32(args[0]); // 32 seems minimum, for documents that only need to retain readability, but not print quality
-            bool removeOriginals = args[1] == "true";
-            var directoryOrFilePath = args[2];
-            bool isDirectory = Directory.Exists(directoryOrFilePath);
-            bool isFile = File.Exists(directoryOrFilePath);
+            Int32 quality =
+                Convert.ToInt32(
+                    args[0]); // 32 seems minimum, for documents that only need to retain readability, but not print quality
+            Boolean removeOriginals = args[1] == "true";
+            String directoryOrFilePath = args[2];
+            Boolean isDirectory = Directory.Exists(directoryOrFilePath);
+            Boolean isFile = File.Exists(directoryOrFilePath);
             Contract.Assert(!(isDirectory && isFile));
             if (!isDirectory && !isFile)
             {
                 Console.WriteLine("Specified path doesn't exist in a filesystem. Exiting.");
                 return;
             }
-            string pathType = isDirectory ? "directoryOrFilePath" : "file";
+            String pathType = isDirectory ? "directoryOrFilePath" : "file";
 
             Console.WriteLine("The following arguments were found:");
             Console.WriteLine($"[0] quality: {quality}");
@@ -58,33 +60,34 @@ Arguments:
             //    Console.ReadKey();
             //    return;
             //}
-            
-            var filesInDirectory = GetFilesInDirectory(directoryOrFilePath);
+
+            List<String> filesInDirectory = GetFilesInDirectory(directoryOrFilePath);
             ConvertFiles(filesInDirectory, removeOriginals, quality);
         }
 
-        private static void ConvertFiles([NotNull]List<string> filesInDirectory, bool removeOriginals, int quality)
+        private static void ConvertFiles([NotNull] List<String> filesInDirectory, Boolean removeOriginals,
+            Int32 quality)
         {
             Contract.Assert(filesInDirectory != null);
 
-            foreach (string filePath in filesInDirectory)
+            foreach (String filePath in filesInDirectory)
             {
                 var fileInfo = new FileInfo(filePath);
-                string extension = fileInfo.Extension.ToLowerInvariant();
-                var isConvertibleImageFormat = (extension == ".jpg" || extension == ".jpeg" || extension == ".png");
+                String extension = fileInfo.Extension.ToLowerInvariant();
+                Boolean isConvertibleImageFormat = extension == ".jpg" || extension == ".jpeg" || extension == ".png";
                 if (isConvertibleImageFormat)
                 {
-                    var webPPath = filePath.Substring(0, filePath.Length - extension.Length) + ".webp";
+                    String webPPath = filePath.Substring(0, filePath.Length - extension.Length) + ".webp";
                     if (!File.Exists(webPPath)) // do not replace existing jp2 files
                     {
                         RunConvert(filePath, webPPath, quality);
-                        bool conversionsResultSeemsReasonable = (new FileInfo(webPPath).Length > 20000);
+                        Boolean conversionsResultSeemsReasonable = new FileInfo(webPPath).Length > 20000;
                         if (!conversionsResultSeemsReasonable)
                         {
                             RunConvert(filePath, webPPath, quality + 5);
-                            var convertedFileSize = new FileInfo(webPPath).Length;
-                            var originalFileSize = new FileInfo(filePath).Length;
-                            conversionsResultSeemsReasonable = (new FileInfo(webPPath).Length > 20000)
+                            Int64 convertedFileSize = new FileInfo(webPPath).Length;
+                            Int64 originalFileSize = new FileInfo(filePath).Length;
+                            conversionsResultSeemsReasonable = new FileInfo(webPPath).Length > 20000
                                                                && convertedFileSize < originalFileSize;
                         }
 
@@ -99,26 +102,31 @@ Arguments:
                 }
             }
         }
-        
+
         [JetBrains.Annotations.Pure]
-        private static List<string> GetFilesInDirectory(string directoryOrFilePath)
+        private static List<String> GetFilesInDirectory(String directoryOrFilePath)
         {
-            if (File.Exists(directoryOrFilePath)) return new List<string>() {directoryOrFilePath};
-            
+            if (File.Exists(directoryOrFilePath))
+            {
+                return new List<String> {directoryOrFilePath};
+            }
+
             return Directory.GetFiles(directoryOrFilePath).ToList();
         }
 
-        private static void RunConvert([NotNull] string inputFile, [NotNull] string outputFile, [AssertionCondition(AssertionConditionType.IS_TRUE)] int quality)
+        private static void RunConvert([NotNull] String inputFile, [NotNull] String outputFile,
+            [AssertionCondition(AssertionConditionType.IS_TRUE)] Int32 quality)
         {
             Contract.Assert(inputFile != null);
             Contract.Assert(outputFile != null);
             Contract.Assert(quality > 0);
 
             // this requires imagemagick to be installed and added to windows path
-            Process magickProcess = new Process();
+            var magickProcess = new Process();
             magickProcess.StartInfo.FileName = "magick";
             //magickProcess.StartInfo.Arguments = $"convert \"{inputFile}\" -define jp2:quality={quality} \"{outputFile}\"";
-            magickProcess.StartInfo.Arguments = $"convert \"{inputFile}\" -quality {quality} -define webp:lossless=false \"{outputFile}\"";
+            magickProcess.StartInfo.Arguments =
+                $"convert \"{inputFile}\" -quality {quality} -define webp:lossless=false \"{outputFile}\"";
             // webpack at quality=1 proves better than jpeg at qualuty 32. Better readability with similar or better size.
 
             magickProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;

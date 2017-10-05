@@ -23,7 +23,6 @@ namespace Taurit.Toolkit.DietOptimization.Models
             FiberTotalDietaryGrams = fiberTotalDietaryGrams;
             VitaminAIu = vitaminAIu;
             VitaminCMg = vitaminCMg;
-
         }
 
         /// <summary>

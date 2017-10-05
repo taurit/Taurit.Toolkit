@@ -1,11 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace Taurit.Toolkit.DietOptimization.Models
 {
     [DebuggerDisplay("{FoodProduct.Name}, {AmountGrams}g")]
     public class DietPlanItem
     {
-        public DietPlanItem(FoodProduct foodProduct, int amountGrams)
+        public DietPlanItem(FoodProduct foodProduct, Int32 amountGrams)
         {
             Debug.Assert(amountGrams >= 0);
 
@@ -14,6 +15,6 @@ namespace Taurit.Toolkit.DietOptimization.Models
         }
 
         public FoodProduct FoodProduct { get; }
-        public int AmountGrams { get; }
+        public Int32 AmountGrams { get; }
     }
 }

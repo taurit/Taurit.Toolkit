@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -14,25 +13,28 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
         /// <summary>
         ///     How many diet plans a single generation of genetic algorithm contains?
         /// </summary>
-        private const int NumPlansInGeneration = 200;
+        private const Int32 NumPlansInGeneration = 200;
 
-        private const int NumPlansSurivingGeneration = 100;
-        private const int ChanceOfAmountMutationPercent = 1;
-        /// <summary>
-        /// This parameters seems to be the key to control how quickly algorithm converges. Bigger values (50-80) work best at the beginning, but lower (10-20) might be better for fine-tuning
-        /// </summary>
-        private int MaxGramsToAddDuringMutation = 180;
+        private const Int32 NumPlansSurivingGeneration = 100;
+        private const Int32 ChanceOfAmountMutationPercent = 1;
 
         /// <summary>
         ///     How many generations are created/analyzed by single run of <see cref="Optimize" />?
         /// </summary>
-        private const int MaxNumGenerations = 30_000;
-        private const int AcceptableScore = 5;
+        private const Int32 MaxNumGenerations = 30_000;
+
+        private const Int32 AcceptableScore = 5;
 
         private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
         private readonly Random _randomNumberGenerator = new Random();
         private readonly ScoreCalculator _scoreCalculator;
         private readonly DietConstraints _targets;
+
+        /// <summary>
+        ///     This parameters seems to be the key to control how quickly algorithm converges. Bigger values (50-80) work best at
+        ///     the beginning, but lower (10-20) might be better for fine-tuning
+        /// </summary>
+        private Int32 _maxGramsToAddDuringMutation = 180;
 
 
         public GeneticAlgorithmDietOptimizer(DietCharacteristicsCalculator dietCharacteristicsCalculator,
@@ -45,7 +47,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
 
         public DietPlan Optimize(IReadOnlyCollection<FoodProduct> availableProducts)
         {
-            var currentGeneration = CreateFirstGeneration(availableProducts);
+            ImmutableList<DietPlan> currentGeneration = CreateFirstGeneration(availableProducts);
             LogGenerationsBestScore(0, currentGeneration.First().ScoreToTarget);
 
             for (var i = 0; i < MaxNumGenerations; i++)
@@ -59,9 +61,9 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
                 }
 
                 // experimental: due to observation that fine-tuning requires smaller steps
-                if (MaxGramsToAddDuringMutation > 10 && i % 1000 == 0)
+                if (_maxGramsToAddDuringMutation > 10 && i % 1000 == 0)
                 {
-                    MaxGramsToAddDuringMutation -= 10;
+                    _maxGramsToAddDuringMutation -= 10;
                 }
             }
 
@@ -71,18 +73,18 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
         private ImmutableList<DietPlan> CreateNextGeneration(ImmutableList<DietPlan> currentGeneration)
         {
             Debug.Assert(NumPlansSurivingGeneration < NumPlansInGeneration);
-            var numNewPlansToGenerate = NumPlansInGeneration - NumPlansSurivingGeneration;
+            Int32 numNewPlansToGenerate = NumPlansInGeneration - NumPlansSurivingGeneration;
 
             var newGeneration = new List<DietPlan>(NumPlansInGeneration);
 
             // mutated plans will fill the shoes of the ones that didn't survive
-            var plansToMutate = currentGeneration.Take(numNewPlansToGenerate).ToList();
+            List<DietPlan> plansToMutate = currentGeneration.Take(numNewPlansToGenerate).ToList();
             //var plansToMutate = Enumerable.Range(0, numNewPlansToGenerate).Select(x => currentGeneration.First()).ToList();
 
             newGeneration.AddRange(currentGeneration.Take(NumPlansSurivingGeneration));
-            foreach (var planToMutate in plansToMutate)
+            foreach (DietPlan planToMutate in plansToMutate)
             {
-                var mutatedDietPlan = GetMutationOf(planToMutate);
+                DietPlan mutatedDietPlan = GetMutationOf(planToMutate);
                 newGeneration.Add(mutatedDietPlan);
             }
 
@@ -93,16 +95,19 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
         private DietPlan GetMutationOf(DietPlan basePlan)
         {
             var newDietPlanItems = new List<DietPlanItem>(basePlan.DietPlanItems.Count);
-            foreach (var dietPlanItem in basePlan.DietPlanItems)
+            foreach (DietPlanItem dietPlanItem in basePlan.DietPlanItems)
             {
-                var amount = dietPlanItem.AmountGrams;
-                var amountShouldBeModified = ReturnTrueWithChanceOf(ChanceOfAmountMutationPercent);
+                Int32 amount = dietPlanItem.AmountGrams;
+                Boolean amountShouldBeModified = ReturnTrueWithChanceOf(ChanceOfAmountMutationPercent);
                 if (amountShouldBeModified)
                 {
-                    var gramsToAdd = _randomNumberGenerator.Next(2 * MaxGramsToAddDuringMutation) -
-                                     MaxGramsToAddDuringMutation / 2;
+                    Int32 gramsToAdd = _randomNumberGenerator.Next(2 * _maxGramsToAddDuringMutation) -
+                                       _maxGramsToAddDuringMutation / 2;
                     amount += gramsToAdd;
-                    if (amount < 0) amount = 0;
+                    if (amount < 0)
+                    {
+                        amount = 0;
+                    }
                 }
 
                 var newDietPlanItem = new DietPlanItem(dietPlanItem.FoodProduct, amount);
@@ -111,21 +116,23 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
 
             Debug.Assert(newDietPlanItems.Count == basePlan.DietPlanItems.Count);
 
-            var characteristics = _dietCharacteristicsCalculator.GetCharacteristics(newDietPlanItems);
-            var score = _scoreCalculator.CalculateScore(characteristics, _targets.DietCharacteristics);
+            DietCharacteristics characteristics = _dietCharacteristicsCalculator.GetCharacteristics(newDietPlanItems);
+            Double score = _scoreCalculator.CalculateScore(characteristics, _targets.DietCharacteristics);
 
             return new DietPlan(newDietPlanItems, characteristics, score);
         }
 
-        private bool ReturnTrueWithChanceOf(int chance)
+        private Boolean ReturnTrueWithChanceOf(Int32 chance)
         {
             return _randomNumberGenerator.Next(100) == chance;
         }
 
-        private void LogGenerationsBestScore(int generationNumber, double score)
+        private void LogGenerationsBestScore(Int32 generationNumber, Double score)
         {
             if (generationNumber % 1000 == 0)
+            {
                 Console.WriteLine($"Generation #{generationNumber}: best score is {score:0.00}");
+            }
         }
 
         /// <summary>
@@ -138,7 +145,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
             var randomDietPlans = new List<DietPlan>(NumPlansInGeneration);
             for (var i = 0; i < NumPlansInGeneration; i++)
             {
-                var randomDietPlan = GetRandomDietPlan(availableProducts);
+                DietPlan randomDietPlan = GetRandomDietPlan(availableProducts);
                 randomDietPlans.Add(randomDietPlan);
             }
 
@@ -155,9 +162,9 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
         {
             var dietPlanItems = new List<DietPlanItem>(availableProducts.Count);
 
-            foreach (var product in availableProducts)
+            foreach (FoodProduct product in availableProducts)
             {
-                var randomAmount =
+                Int32 randomAmount =
                     _randomNumberGenerator
                         .Next(100); // experimental
                 dietPlanItems.Add(new DietPlanItem(product, randomAmount));
@@ -166,8 +173,8 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
             }
 
             // calculate score
-            var characteristics = _dietCharacteristicsCalculator.GetCharacteristics(dietPlanItems);
-            var score = _scoreCalculator.CalculateScore(characteristics, _targets.DietCharacteristics);
+            DietCharacteristics characteristics = _dietCharacteristicsCalculator.GetCharacteristics(dietPlanItems);
+            Double score = _scoreCalculator.CalculateScore(characteristics, _targets.DietCharacteristics);
 
             return new DietPlan(dietPlanItems, characteristics, score);
         }

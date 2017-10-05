@@ -8,7 +8,7 @@ namespace Taurit.Toolkit.FindOptimumDiet.Mappings
         public override void Load()
         {
             Bind<DietCharacteristicsCalculator>().To<DietCharacteristicsCalculator>();
-            Bind<DietCharacteristicsDistanceCalculator>().To<DietCharacteristicsDistanceCalculator>();
+            Bind<ScoreCalculator>().To<ScoreCalculator>();
             Bind<DietPlanPresenter>().To<DietPlanPresenter>();
             Bind<ProductLoader>().To<ProductLoader>();
             Bind<FindOptimumDiet>().To<FindOptimumDiet>();

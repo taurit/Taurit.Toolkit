@@ -8,7 +8,7 @@ namespace Taurit.Toolkit.FixDateFormatInFilenames
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main(String[] args)
         {
             Console.WriteLine(
                 @"TauritToolkit.FixDateFormatInFilenames
@@ -31,29 +31,30 @@ Arguments:
             }
 
 
-            var directory = args[0];
-            var filesInDirectory = GetFilesInDirectory(directory);
+            String directory = args[0];
+            List<String> filesInDirectory = GetFilesInDirectory(directory);
 
             RenameFiles(new FileNameFixer(), filesInDirectory, directory);
         }
 
-        private static void RenameFiles(FileNameFixer fileNameFixer, List<string> filesInDirectory, string path)
+        private static void RenameFiles(FileNameFixer fileNameFixer, List<String> filesInDirectory, String path)
         {
-            var fileWithInvalidDateFormat = new Regex(@"(?<day>\d\d)\.(?<month>\d\d)\.(?<year>\d\d\d\d) \d\d \d\d (.*)");
+            var fileWithInvalidDateFormat =
+                new Regex(@"(?<day>\d\d)\.(?<month>\d\d)\.(?<year>\d\d\d\d) \d\d \d\d (.*)");
 
 
-            foreach (var file in filesInDirectory)
+            foreach (String file in filesInDirectory)
             {
-                var m = fileWithInvalidDateFormat.Match(file);
+                Match m = fileWithInvalidDateFormat.Match(file);
                 if (m.Success)
                 {
-                    var day = m.Groups["day"].Value;
-                    var month = m.Groups["month"].Value;
-                    var year = m.Groups["year"].Value;
-                    var description = m.Groups[4].Value;
+                    String day = m.Groups["day"].Value;
+                    String month = m.Groups["month"].Value;
+                    String year = m.Groups["year"].Value;
+                    String description = m.Groups[4].Value;
 
-                    string newFileName = fileNameFixer.GetProperFileName(year, month, day, description);
-                    var newFilePath = Path.Combine(path, newFileName);
+                    String newFileName = fileNameFixer.GetProperFileName(year, month, day, description);
+                    String newFilePath = Path.Combine(path, newFileName);
                     while (File.Exists(newFilePath))
                         newFilePath = Path.Combine(path,
                             Path.GetFileNameWithoutExtension(newFileName) + "(2)" + Path.GetExtension(newFileName));
@@ -62,7 +63,7 @@ Arguments:
             }
         }
 
-        private static List<string> GetFilesInDirectory(string directory)
+        private static List<String> GetFilesInDirectory(String directory)
         {
             return Directory.GetFiles(directory).ToList();
         }

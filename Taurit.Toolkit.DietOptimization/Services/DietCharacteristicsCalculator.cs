@@ -34,7 +34,8 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 totalGrams += dietPlanItem.AmountGrams;
             }
 
-            return new DietCharacteristics(totalKcal, totalProtein, totalFat, totalCarbs, totalVitaminC, totalVitaminA, totalDietaryFiber, totalGrams);
+            return new DietCharacteristics(totalKcal, totalProtein, totalFat, totalCarbs, totalVitaminA, totalVitaminC,
+                totalDietaryFiber, totalGrams);
         }
     }
 }

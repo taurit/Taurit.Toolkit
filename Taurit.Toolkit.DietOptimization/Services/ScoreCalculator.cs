@@ -12,26 +12,25 @@ namespace Taurit.Toolkit.DietOptimization.Services
     ///     * the score is weighted, so that diet characteristic's compounds represented with different units doen't have too
     ///     much or too little impact on overall score.
     /// </summary>
-    public class DietCharacteristicsDistanceCalculator
+    public class ScoreCalculator
     {
-        public double CalculateScore(DietCharacteristics diet1, DietCharacteristics diet2)
+        public Double CalculateScore(DietCharacteristics diet1, DietCharacteristics target)
         {
-            double score = 0;
-            score += Math.Abs(diet1.TotalKcalIntake - diet2.TotalKcalIntake);
+            Double score = 0;
+            score += Math.Abs(diet1.TotalKcalIntake - target.TotalKcalIntake);
 
-            score += Math.Abs(diet1.TotalProtein - diet2.TotalProtein);
-            score += Math.Abs(diet1.TotalCarbs - diet2.TotalCarbs);
-            score += Math.Abs(diet1.TotalFat - diet2.TotalFat);
+            score += Math.Abs(diet1.TotalProtein - target.TotalProtein);
+            score += Math.Abs(diet1.TotalCarbs - target.TotalCarbs);
+            score += Math.Abs(diet1.TotalFat - target.TotalFat);
 
             // multiplers: assuming that:
             // * 1000 means "1 component was completely ignored, unacceptable"
             // * 500 means "1 component was underdosed/overdosed by about 50%, unacceptable"
-            score += 1*Math.Abs(diet1.TotalVitaminAiu - diet2.TotalVitaminAiu);
-            score += 20*Math.Abs(diet1.TotalFiberGrams - diet2.TotalFiberGrams);
-            score += 2*Math.Abs(diet1.TotalVitaminCMg - diet2.TotalVitaminCMg);
+            score += Math.Abs(diet1.TotalVitaminAiu - target.TotalVitaminAiu);
+            score += 20 * Math.Abs(diet1.TotalFiberGrams - target.TotalFiberGrams);
+            score += 2 * Math.Abs(diet1.TotalVitaminCMg - target.TotalVitaminCMg);
 
             return score;
         }
-
     }
 }

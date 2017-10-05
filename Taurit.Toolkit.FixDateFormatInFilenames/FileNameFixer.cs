@@ -4,13 +4,13 @@ namespace Taurit.Toolkit.FixDateFormatInFilenames
 {
     internal class FileNameFixer
     {
-        public string GetProperFileName(string year, string month, string day, string description)
+        public String GetProperFileName(String year, String month, String day, String description)
         {
-            var yearParsed = Convert.ToInt32(year);
-            var monthParsed = Convert.ToInt32(month);
-            var dayParsed = Convert.ToInt32(day);
+            Int32 yearParsed = Convert.ToInt32(year);
+            Int32 monthParsed = Convert.ToInt32(month);
+            Int32 dayParsed = Convert.ToInt32(day);
 
-            var newFileName = $"{yearParsed}-{monthParsed:00}-{dayParsed:00} {description}";
+            String newFileName = $"{yearParsed}-{monthParsed:00}-{dayParsed:00} {description}";
             return newFileName;
         }
     }

@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 
 namespace Taurit.Toolkit.FixDateFormatInFilenames.Tests
 {
@@ -11,8 +12,8 @@ namespace Taurit.Toolkit.FixDateFormatInFilenames.Tests
             var sut = new FileNameFixer();
 
             // Act
-            var isoName1 = sut.GetProperFileName("2000", "12", "01", "Test");
-            var isoName2 = sut.GetProperFileName("2000", "12", "1", "Test");
+            String isoName1 = sut.GetProperFileName("2000", "12", "01", "Test");
+            String isoName2 = sut.GetProperFileName("2000", "12", "1", "Test");
 
             // Assert
             Assert.Equal("2000-12-01 Test", isoName1);
@@ -26,8 +27,8 @@ namespace Taurit.Toolkit.FixDateFormatInFilenames.Tests
             var sut = new FileNameFixer();
 
             // Act
-            var isoName1 = sut.GetProperFileName("2000", "01", "11", "Test");
-            var isoName2 = sut.GetProperFileName("2000", "2", "11", "Test");
+            String isoName1 = sut.GetProperFileName("2000", "01", "11", "Test");
+            String isoName2 = sut.GetProperFileName("2000", "2", "11", "Test");
 
             // Assert
             Assert.Equal("2000-01-11 Test", isoName1);

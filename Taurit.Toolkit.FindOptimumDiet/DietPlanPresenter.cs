@@ -29,17 +29,25 @@ namespace Taurit.Toolkit.FindOptimumDiet
 
             DisplayInColor("Score (lower is better)", $"{diet.ScoreToTarget:0}", "", "0", ConsoleColor.Red);
             DisplayInColor("Num skipped products", $"{numSkippedProducts:0}", "", "-", ConsoleColor.White);
-            DisplayInColor("Energy", $"{diet.Characteristics.TotalKcalIntake:0}", "kcal", $"{referenceValue.TotalKcalIntake}", ConsoleColor.Gray);
+            DisplayInColor("Energy", $"{diet.Characteristics.TotalKcalIntake:0}", "kcal",
+                $"{referenceValue.TotalKcalIntake}", ConsoleColor.Gray);
 
-            DisplayInColor("Total protein", $"{diet.Characteristics.TotalProtein:0}", "g", $"{referenceValue.TotalProtein}", proteinColor);
-            DisplayInColor("Total carbohydrates", $"{diet.Characteristics.TotalCarbs:0}", "g", $"{referenceValue.TotalCarbs}", carbsColor);
-            DisplayInColor("Total fat", $"{diet.Characteristics.TotalFat:0}", "g", $"{referenceValue.TotalFat}", fatColor);
+            DisplayInColor("Total protein", $"{diet.Characteristics.TotalProtein:0}", "g",
+                $"{referenceValue.TotalProtein}", proteinColor);
+            DisplayInColor("Total carbohydrates", $"{diet.Characteristics.TotalCarbs:0}", "g",
+                $"{referenceValue.TotalCarbs}", carbsColor);
+            DisplayInColor("Total fat", $"{diet.Characteristics.TotalFat:0}", "g", $"{referenceValue.TotalFat}",
+                fatColor);
 
-            DisplayInColor("Total Vitamin A", $"{diet.Characteristics.TotalVitaminAiu:0}", "IU", $"{referenceValue.TotalVitaminAiu}", ConsoleColor.White);
-            DisplayInColor("Total Vitamin C", $"{diet.Characteristics.TotalVitaminCMg:0}", "Mg", $"{referenceValue.TotalVitaminCMg}", ConsoleColor.White);
-            DisplayInColor("Total Fiber", $"{diet.Characteristics.TotalFiberGrams:0}", "g", $"{referenceValue.TotalFiberGrams}", ConsoleColor.White);
+            DisplayInColor("Total Vitamin A", $"{diet.Characteristics.TotalVitaminAiu:0}", "IU",
+                $"{referenceValue.TotalVitaminAiu}", ConsoleColor.White);
+            DisplayInColor("Total Vitamin C", $"{diet.Characteristics.TotalVitaminCMg:0}", "Mg",
+                $"{referenceValue.TotalVitaminCMg}", ConsoleColor.White);
+            DisplayInColor("Total Fiber", $"{diet.Characteristics.TotalFiberGrams:0}", "g",
+                $"{referenceValue.TotalFiberGrams}", ConsoleColor.White);
 
-            DisplayInColor("Total grams eaten*", $"{diet.Characteristics.TotalGramsEaten:0}", "g", $"{referenceValue.TotalGramsEaten}",  fatColor);
+            DisplayInColor("Total grams eaten*", $"{diet.Characteristics.TotalGramsEaten:0}", "g",
+                $"{referenceValue.TotalGramsEaten}", fatColor);
             Console.WriteLine(
                 "* Average is about 1.8 kg across the globe, in the US it's about 2.7 kg, where as Somalia it's about 1 kg.");
         }
