@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using JetBrains.Annotations;
 using Taurit.Toolkit.DietOptimization.Models;
 
 namespace Taurit.Toolkit.FindOptimumDiet
@@ -13,7 +14,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
         private readonly ConsoleColor fatColor = ConsoleColor.Yellow;
         private readonly ConsoleColor proteinColor = ConsoleColor.Cyan; // color convention same as in FitAtu app
 
-        internal void Display(DietPlan diet, DietCharacteristics referenceValue)
+        internal void Display(DietPlan diet, DietTarget referenceValue)
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"Diet plan");
@@ -40,19 +41,20 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 fatColor);
 
             DisplayInColor("Total Vitamin A", $"{diet.Characteristics.TotalVitaminAiu:0}", "IU",
-                $"{referenceValue.TotalVitaminAiu}", ConsoleColor.White);
+                $"3 000 - 10 000", ConsoleColor.White);
             DisplayInColor("Total Vitamin C", $"{diet.Characteristics.TotalVitaminCMg:0}", "Mg",
-                $"{referenceValue.TotalVitaminCMg}", ConsoleColor.White);
+                $"120 - 2000", ConsoleColor.White);
             DisplayInColor("Total Fiber", $"{diet.Characteristics.TotalFiberGrams:0}", "g",
-                $"{referenceValue.TotalFiberGrams}", ConsoleColor.White);
+                $"14g for each 1000 kcal", ConsoleColor.White);
 
             DisplayInColor("Total grams eaten*", $"{diet.Characteristics.TotalGramsEaten:0}", "g",
-                $"{referenceValue.TotalGramsEaten}", fatColor);
+                null, fatColor);
             Console.WriteLine(
                 "* Average is about 1.8 kg across the globe, in the US it's about 2.7 kg, where as Somalia it's about 1 kg.");
         }
 
-        private void DisplayInColor(String label, String value, String unit, String referenceValue,
+        private void DisplayInColor([NotNull] String label, [NotNull] String value, [NotNull] String unit,
+            [CanBeNull] String referenceValue,
             ConsoleColor valueColor)
         {
             ConsoleColor previousColor = Console.ForegroundColor;
@@ -60,8 +62,15 @@ namespace Taurit.Toolkit.FindOptimumDiet
             Console.Write($"{label}: ".PadRight(25));
 
             Console.ForegroundColor = valueColor;
-            Console.Write((value + " " + unit).PadRight(20));
-            Console.WriteLine("/ " + referenceValue + " " + unit);
+            Console.Write((value + " " + unit).PadRight(10));
+            if (referenceValue != null)
+            {
+                Console.WriteLine("/ " + referenceValue + " " + unit);
+            }
+            else
+            {
+                Console.WriteLine("");
+            }
 
             Console.ForegroundColor = previousColor;
         }

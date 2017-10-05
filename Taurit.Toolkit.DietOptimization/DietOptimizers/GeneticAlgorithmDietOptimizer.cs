@@ -28,7 +28,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
         private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
         private readonly Random _randomNumberGenerator = new Random();
         private readonly ScoreCalculator _scoreCalculator;
-        private readonly DietConstraints _targets;
+        private readonly DietTarget _targets;
 
         /// <summary>
         ///     This parameters seems to be the key to control how quickly algorithm converges. Bigger values (50-80) work best at
@@ -38,7 +38,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
 
 
         public GeneticAlgorithmDietOptimizer(DietCharacteristicsCalculator dietCharacteristicsCalculator,
-            ScoreCalculator scoreCalculator, DietConstraints targets)
+            ScoreCalculator scoreCalculator, DietTarget targets)
         {
             _dietCharacteristicsCalculator = dietCharacteristicsCalculator;
             _scoreCalculator = scoreCalculator;
@@ -117,7 +117,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
             Debug.Assert(newDietPlanItems.Count == basePlan.DietPlanItems.Count);
 
             DietCharacteristics characteristics = _dietCharacteristicsCalculator.GetCharacteristics(newDietPlanItems);
-            Double score = _scoreCalculator.CalculateScore(characteristics, _targets.DietCharacteristics);
+            Double score = _scoreCalculator.CalculateScore(characteristics, _targets);
 
             return new DietPlan(newDietPlanItems, characteristics, score);
         }
@@ -174,7 +174,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
 
             // calculate score
             DietCharacteristics characteristics = _dietCharacteristicsCalculator.GetCharacteristics(dietPlanItems);
-            Double score = _scoreCalculator.CalculateScore(characteristics, _targets.DietCharacteristics);
+            Double score = _scoreCalculator.CalculateScore(characteristics, _targets);
 
             return new DietPlan(dietPlanItems, characteristics, score);
         }

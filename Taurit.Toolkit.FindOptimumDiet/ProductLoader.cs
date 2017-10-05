@@ -23,12 +23,11 @@ namespace Taurit.Toolkit.FindOptimumDiet
             _mapper = mapper;
         }
 
-        public IReadOnlyCollection<FoodProduct> GetProductsFromUsdaDatabase(IImmutableSet<String> productNames)
+        private IReadOnlyCollection<FoodProduct> GetProductsFromUsdaDatabase(IImmutableSet<String> productNames)
         {
             var csv = new CsvReader(File.OpenText("usda-product-database.csv"));
             List<UsdaProduct> usdaProducts = csv.GetRecords<UsdaProduct>().ToList();
-
-
+            
             List<UsdaProduct> filteredProducts = usdaProducts.Where(p => productNames.Contains(p.Name)).ToList();
             var products = new List<FoodProduct>(filteredProducts.Count);
             foreach (UsdaProduct usdaProduct in filteredProducts)
@@ -46,6 +45,13 @@ namespace Taurit.Toolkit.FindOptimumDiet
                     Console.WriteLine($"Product {usdaProduct.Name} had to be skipped due to invalid data.");
                 }
             return products;
+        }
+
+        public IReadOnlyCollection<FoodProduct> GetProducts()
+        {
+            ImmutableHashSet<String> productNames = File.ReadAllLines("usda-product-database-filter.txt")
+                .Where(line => !line.StartsWith("#") && !String.IsNullOrWhiteSpace(line)).ToImmutableHashSet();
+            return GetProductsFromUsdaDatabase(productNames);
         }
     }
 }

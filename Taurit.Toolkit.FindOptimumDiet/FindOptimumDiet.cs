@@ -14,7 +14,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
 {
     internal sealed class FindOptimumDiet
     {
-        private const Int32 NumOptimizationThreads = 1;
+        private const Int32 NumOptimizationThreads = 2;
         private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
         private readonly ScoreCalculator _dietCharacteristicsDistanceCalculator;
         private readonly DietPlanPresenter _dietPlanPresenter;
@@ -46,29 +46,22 @@ namespace Taurit.Toolkit.FindOptimumDiet
         private void Run()
         {
             // get complete list of products that should be considered in a diet
-            ImmutableHashSet<String> productNames = File.ReadAllLines("usda-product-database-filter.txt")
-                .Where(line => !line.StartsWith("#") && !String.IsNullOrWhiteSpace(line)).ToImmutableHashSet();
-            IReadOnlyCollection<FoodProduct> products = _productLoader.GetProductsFromUsdaDatabase(productNames);
+            IReadOnlyCollection<FoodProduct> products = _productLoader.GetProducts();
 
 
             // specify target for the optimum diet
-            var targetDietCharacteristics = new DietCharacteristics(
+            var dietTargets = new DietTarget(
                 3000, // 3000 kcal
                 203, // protein - target for building muscle
-                100, // fat - a bit higher than recommended for diet maintainability
-                323, // carbs for the rest of calories
-                3000, // U.S. recommended dietary allowance (RDA) for adults is as follows: 900 micrograms daily (3,000 IU) for men
-                200, // 90 is recommended for men in multiple sources, eg. https://legionathletics.com/products/supplements/triumph/#vitamin-c . 120-200 perceived as optimum by some reasonable researchers, it doesn't do any harm
-                45, // "children and adults should consume 14 grams of fiber for every 1,000 calories of food eaten."
-                0 // currently not used as optimization variable, but interesting to observe
-            );
-            var target = new DietConstraints(targetDietCharacteristics);
-
+                100 , // fat - a bit higher than recommended for diet maintainability
+                323 //, // carbs for the rest of calories
+               );
+         
             // find suboptimal diet (as close to a target as feasible)
             var optimizationTasks = new List<Task<DietPlan>>(NumOptimizationThreads);
             for (var i = 0; i < NumOptimizationThreads; i++)
             {
-                Task<DietPlan> optimumDiet = Task.Run(() => OptimizeDiet(products, target));
+                Task<DietPlan> optimumDiet = Task.Run(() => OptimizeDiet(products, dietTargets));
                 optimizationTasks.Add(optimumDiet);
             }
 
@@ -91,11 +84,11 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 }
             }
 
-            _dietPlanPresenter.Display(bestDietPlan, target.DietCharacteristics);
+            _dietPlanPresenter.Display(bestDietPlan, dietTargets);
             Console.ReadLine();
         }
 
-        private DietPlan OptimizeDiet(IReadOnlyCollection<FoodProduct> products, DietConstraints target)
+        private DietPlan OptimizeDiet(IReadOnlyCollection<FoodProduct> products, DietTarget target)
         {
             IDietOptimizer dietOptimizer = new GeneticAlgorithmDietOptimizer(_dietCharacteristicsCalculator,
                 _dietCharacteristicsDistanceCalculator, target);
