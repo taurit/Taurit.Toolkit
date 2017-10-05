@@ -70,5 +70,7 @@
   </Rules>
   <Rules AnalyzerId="Wintellect.Analyzers" RuleNamespace="Wintellect.Analyzers">
     <Rule Id="Wintellect013" Action="Info" />
+    <Rule Id="Wintellect007" Action="None" />
+    <Rule Id="Wintellect014" Action="Hidden" />
   </Rules>
 </RuleSet>

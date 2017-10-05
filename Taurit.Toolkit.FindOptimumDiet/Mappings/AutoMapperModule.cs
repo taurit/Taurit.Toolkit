@@ -12,7 +12,7 @@ namespace Taurit.Toolkit.FindOptimumDiet.Mappings
         {
             //Bind<IValueResolver<UsdaProduct, FoodProduct, bool>>().To<MyResolver>();
 
-            var mapperConfiguration = CreateConfiguration();
+            MapperConfiguration mapperConfiguration = CreateConfiguration();
             Bind<MapperConfiguration>().ToConstant(mapperConfiguration).InSingletonScope();
 
             // This teaches Ninject how to create automapper instances say if for instance
@@ -31,7 +31,6 @@ namespace Taurit.Toolkit.FindOptimumDiet.Mappings
                     .ForCtorParam("percentProtein", opt => opt.MapFrom(src => src.Protein_Grams))
                     .ForCtorParam("percentFat", opt => opt.MapFrom(src => src.Fat_Grams))
                     .ForCtorParam("percentCarb", opt => opt.MapFrom(src => src.Carbohydrate_Grams))
-                    
                     ;
 
 

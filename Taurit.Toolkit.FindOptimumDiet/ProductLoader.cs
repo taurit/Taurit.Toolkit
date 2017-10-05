@@ -33,16 +33,15 @@ namespace Taurit.Toolkit.FindOptimumDiet
             return products;
         }
 
-        public IReadOnlyCollection<FoodProduct> GetProductsFromUsdaDatabase(IImmutableSet<string> productNames)
+        public IReadOnlyCollection<FoodProduct> GetProductsFromUsdaDatabase(IImmutableSet<String> productNames)
         {
             var csv = new CsvReader(File.OpenText("usda-product-database.csv"));
-            var usdaProducts = csv.GetRecords<UsdaProduct>().ToList();
+            List<UsdaProduct> usdaProducts = csv.GetRecords<UsdaProduct>().ToList();
 
-            
-            var filteredProducts = usdaProducts.Where(p => productNames.Contains(p.Name)).ToList();
+
+            List<UsdaProduct> filteredProducts = usdaProducts.Where(p => productNames.Contains(p.Name)).ToList();
             var products = new List<FoodProduct>(filteredProducts.Count);
-            foreach (var usdaProduct in filteredProducts)
-            {
+            foreach (UsdaProduct usdaProduct in filteredProducts)
                 try
                 {
                     var foodProduct = _mapper.Map<FoodProduct>(usdaProduct);
@@ -55,7 +54,6 @@ namespace Taurit.Toolkit.FindOptimumDiet
                     // most likely some numeric data in null/empty in source data.
                     // currently I want to just skip such records, as optimization doesn't make sense when the value of any required parameters in unknown
                 }
-            }
             return products;
         }
     }
