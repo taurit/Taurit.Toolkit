@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Taurit.Toolkit.DietOptimization.Models
 {
     public class DietTarget
     {
-        public Double TotalKcalIntake { get; }
-        public Double TotalProtein { get; }
-        public Double TotalFat { get; }
-        public Double TotalCarbs { get; }
-
         public DietTarget(Double totalKcalIntake,
             Double totalProtein,
             Double totalFat,
@@ -21,5 +14,10 @@ namespace Taurit.Toolkit.DietOptimization.Models
             TotalFat = totalFat;
             TotalCarbs = totalCarbs;
         }
+
+        public Double TotalKcalIntake { get; }
+        public Double TotalProtein { get; }
+        public Double TotalFat { get; }
+        public Double TotalCarbs { get; }
     }
 }

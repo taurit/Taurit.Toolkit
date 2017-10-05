@@ -36,8 +36,8 @@ namespace Taurit.Toolkit.DietOptimization.Services
             score += GetScoreForFiber(diet, target.TotalKcalIntake);
 
             // experimental: make sure there's not too many kilograms to eat ;)
-            score += this.PunishForDifferenceAbove(2500, diet.TotalGramsEaten, 0.5);
-            score += this.PunishForDifferenceAbove(3000, diet.TotalGramsEaten, 0.5);
+            score += PunishForDifferenceAbove(2500, diet.TotalGramsEaten, 0.5);
+            score += PunishForDifferenceAbove(3000, diet.TotalGramsEaten, 0.5);
 
             return score;
         }
