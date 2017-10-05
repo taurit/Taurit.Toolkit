@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using Ninject;
 using Taurit.Toolkit.DietOptimization.DietOptimizers;
 using Taurit.Toolkit.DietOptimization.Models;
 using Taurit.Toolkit.DietOptimization.Services;
@@ -8,34 +8,49 @@ namespace Taurit.Toolkit.FindOptimumDiet
 {
     internal class FindOptimumDiet
     {
-        private static void Main(string[] args)
+        private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
+        private readonly DietCharacteristicsDistanceCalculator _dietCharacteristicsDistanceCalculator;
+        private readonly DietPlanPresenter _dietPlanPresenter;
+        private readonly ProductLoader _productLoader;
+
+        public FindOptimumDiet(DietCharacteristicsCalculator dietCharacteristicsCalculator,
+            DietCharacteristicsDistanceCalculator dietCharacteristicsDistanceCalculator,
+            DietPlanPresenter dietPlanPresenter, ProductLoader productLoader)
         {
-            var program = new FindOptimumDiet();
-            program.Run(new DietCharacteristicsCalculator(), new DietCharacteristicsDistanceCalculator(), new DietPlanPresenter());
+            _dietCharacteristicsCalculator = dietCharacteristicsCalculator;
+            _dietCharacteristicsDistanceCalculator = dietCharacteristicsDistanceCalculator;
+            _dietPlanPresenter = dietPlanPresenter;
+            _productLoader = productLoader;
+        }
+
+        private static void Main()
+        {
+            var kernel = new StandardKernel();
+            kernel.Load();
+            var program = kernel.Get<FindOptimumDiet>();
+
+            program.Run();
         }
 
         /// <summary>
         ///     Finds optimum diet for a given constraints
         /// </summary>
-        private void Run(DietCharacteristicsCalculator dietCharacteristicsCalculator, DietCharacteristicsDistanceCalculator dietCharacteristicsDistanceCalculator, DietPlanPresenter dietPlanPresenter)
+        private void Run()
         {
-            var products = new List<FoodProduct>();
-            products.Add(new FoodProduct("Fish oil", 900, 0, 100, 0));
-            products.Add(new FoodProduct("Meat", 400, 100, 0, 0));
-            products.Add(new FoodProduct("Potatoes", 400, 0, 0, 100));
+            // get complete list of products that should be considered in a diet
+            var products = _productLoader.GetSampleProductList();
 
+            // specify target for the optimum diet
             var targetDietCharacteristics = new DietCharacteristics(3000, 203, 100, 323);
             var target = new DietConstraints(targetDietCharacteristics);
 
-
-            IDietOptimizer dietOptimizer = new GeneticAlgorithmDietOptimizer(dietCharacteristicsCalculator,
-                dietCharacteristicsDistanceCalculator, target);
-
+            // find suboptimal diet (as close to a target as feasible)
+            IDietOptimizer dietOptimizer = new GeneticAlgorithmDietOptimizer(_dietCharacteristicsCalculator,
+                _dietCharacteristicsDistanceCalculator, target);
             var optimumDiet = dietOptimizer.Optimize(products);
 
             // display result
-            dietPlanPresenter.Display(optimumDiet);
-
+            _dietPlanPresenter.Display(optimumDiet);
             Console.ReadLine();
         }
     }
