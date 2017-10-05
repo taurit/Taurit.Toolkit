@@ -14,14 +14,14 @@ namespace Taurit.Toolkit.FindOptimumDiet
 {
     internal sealed class FindOptimumDiet
     {
-        private const Int32 NumOptimizationThreads = 2;
+        private const Int32 NumOptimizationThreads = 1;
         private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
-        private readonly DietCharacteristicsDistanceCalculator _dietCharacteristicsDistanceCalculator;
+        private readonly ScoreCalculator _dietCharacteristicsDistanceCalculator;
         private readonly DietPlanPresenter _dietPlanPresenter;
         private readonly ProductLoader _productLoader;
 
         public FindOptimumDiet(DietCharacteristicsCalculator dietCharacteristicsCalculator,
-            DietCharacteristicsDistanceCalculator dietCharacteristicsDistanceCalculator,
+            ScoreCalculator dietCharacteristicsDistanceCalculator,
             DietPlanPresenter dietPlanPresenter, ProductLoader productLoader)
         {
             _dietCharacteristicsCalculator = dietCharacteristicsCalculator;
@@ -57,7 +57,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 203, // protein - target for building muscle
                 100, // fat - a bit higher than recommended for diet maintainability
                 323, // carbs for the rest of calories
-                1500, // 1500 iu recommended in https://legionathletics.com/products/supplements/triumph/#vitamin-a
+                3000, // U.S. recommended dietary allowance (RDA) for adults is as follows: 900 micrograms daily (3,000 IU) for men
                 200, // 90 is recommended for men in multiple sources, eg. https://legionathletics.com/products/supplements/triumph/#vitamin-c . 120-200 perceived as optimum by some reasonable researchers, it doesn't do any harm
                 45, // "children and adults should consume 14 grams of fiber for every 1,000 calories of food eaten."
                 0 // currently not used as optimization variable, but interesting to observe
@@ -91,7 +91,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 }
             }
 
-            _dietPlanPresenter.Display(bestDietPlan);
+            _dietPlanPresenter.Display(bestDietPlan, target.DietCharacteristics);
             Console.ReadLine();
         }
 

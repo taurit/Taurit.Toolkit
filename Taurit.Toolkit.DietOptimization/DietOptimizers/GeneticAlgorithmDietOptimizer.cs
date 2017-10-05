@@ -14,9 +14,9 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
         /// <summary>
         ///     How many diet plans a single generation of genetic algorithm contains?
         /// </summary>
-        private const int NumPlansInGeneration = 400;
+        private const int NumPlansInGeneration = 200;
 
-        private const int NumPlansSurivingGeneration = 200;
+        private const int NumPlansSurivingGeneration = 100;
         private const int ChanceOfAmountMutationPercent = 1;
         /// <summary>
         /// This parameters seems to be the key to control how quickly algorithm converges. Bigger values (50-80) work best at the beginning, but lower (10-20) might be better for fine-tuning
@@ -26,17 +26,17 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
         /// <summary>
         ///     How many generations are created/analyzed by single run of <see cref="Optimize" />?
         /// </summary>
-        private const int MaxNumGenerations = 10_000;
+        private const int MaxNumGenerations = 30_000;
         private const int AcceptableScore = 5;
 
         private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
         private readonly Random _randomNumberGenerator = new Random();
-        private readonly DietCharacteristicsDistanceCalculator _scoreCalculator;
+        private readonly ScoreCalculator _scoreCalculator;
         private readonly DietConstraints _targets;
 
 
         public GeneticAlgorithmDietOptimizer(DietCharacteristicsCalculator dietCharacteristicsCalculator,
-            DietCharacteristicsDistanceCalculator scoreCalculator, DietConstraints targets)
+            ScoreCalculator scoreCalculator, DietConstraints targets)
         {
             _dietCharacteristicsCalculator = dietCharacteristicsCalculator;
             _scoreCalculator = scoreCalculator;
@@ -59,10 +59,10 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
                 }
 
                 // experimental: due to observation that fine-tuning requires smaller steps
-                //if (MaxGramsToAddDuringMutation > 10 && i % 1000 == 0)
-                //{
-                //    MaxGramsToAddDuringMutation -= 10;
-                //}
+                if (MaxGramsToAddDuringMutation > 10 && i % 1000 == 0)
+                {
+                    MaxGramsToAddDuringMutation -= 10;
+                }
             }
 
             return currentGeneration.First(); // this is the best one we have found so far
