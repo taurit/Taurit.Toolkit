@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Ninject;
@@ -12,12 +14,11 @@ namespace Taurit.Toolkit.FindOptimumDiet
 {
     internal sealed class FindOptimumDiet
     {
+        private const int NumOptimizationThreads = 2;
         private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
         private readonly DietCharacteristicsDistanceCalculator _dietCharacteristicsDistanceCalculator;
         private readonly DietPlanPresenter _dietPlanPresenter;
         private readonly ProductLoader _productLoader;
-
-        private const int NumOptimizationThreads = 2;
 
         public FindOptimumDiet(DietCharacteristicsCalculator dietCharacteristicsCalculator,
             DietCharacteristicsDistanceCalculator dietCharacteristicsDistanceCalculator,
@@ -45,15 +46,18 @@ namespace Taurit.Toolkit.FindOptimumDiet
         private void Run()
         {
             // get complete list of products that should be considered in a diet
-            IReadOnlyCollection<FoodProduct> products = _productLoader.GetProductsFromUsdaDatabase();
+            var productNames = File.ReadAllLines("usda-product-database-filter.txt")
+                .Where(line => !line.StartsWith("#") && !string.IsNullOrWhiteSpace(line)).ToImmutableHashSet();
+            var products = _productLoader.GetProductsFromUsdaDatabase(productNames);
+
 
             // specify target for the optimum diet
-            var targetDietCharacteristics = new DietCharacteristics(3000, 203, 100, 323);
+            var targetDietCharacteristics = new DietCharacteristics(3000, 203, 100, 323, 0);
             var target = new DietConstraints(targetDietCharacteristics);
 
             // find suboptimal diet (as close to a target as feasible)
             var optimizationTasks = new List<Task<DietPlan>>(NumOptimizationThreads);
-            for (int i = 0; i < NumOptimizationThreads; i++)
+            for (var i = 0; i < NumOptimizationThreads; i++)
             {
                 var optimumDiet = Task.Run(() => OptimizeDiet(products, target));
                 optimizationTasks.Add(optimumDiet);
@@ -67,20 +71,17 @@ namespace Taurit.Toolkit.FindOptimumDiet
             {
                 var task = optimizationTasks[index];
                 if (bestDietPlan == null)
-                {
                     bestDietPlan = task.Result;
-                }
 
                 Console.WriteLine($"Final score for thread #{index}: {task.Result.ScoreToTarget}");
                 if (task.Result.ScoreToTarget < bestDietPlan.ScoreToTarget)
-                {
                     bestDietPlan = task.Result;
-                }
             }
 
             _dietPlanPresenter.Display(bestDietPlan);
             Console.ReadLine();
         }
+
         private DietPlan OptimizeDiet(IReadOnlyCollection<FoodProduct> products, DietConstraints target)
         {
             IDietOptimizer dietOptimizer = new GeneticAlgorithmDietOptimizer(_dietCharacteristicsCalculator,

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -13,16 +14,17 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
         /// <summary>
         ///     How many diet plans a single generation of genetic algorithm contains?
         /// </summary>
-        private const int NumPlansInGeneration = 100;
+        private const int NumPlansInGeneration = 200;
 
-        private const int NumPlansSurivingGeneration = 50;
-        private const int ChanceOfAmountMutationPercent = 10;
+        private const int NumPlansSurivingGeneration = 100;
+        private const int ChanceOfAmountMutationPercent = 1;
         private const int MaxGramsToAddDuringMutation = 10;
 
         /// <summary>
         ///     How many generations are created/analyzed by single run of <see cref="Optimize" />?
         /// </summary>
-        private const int NumGenerations = 20_000;
+        private const int MaxNumGenerations = 100_000;
+        private const int AcceptableScore = 5;
 
         private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
         private readonly Random _randomNumberGenerator = new Random();
@@ -43,10 +45,15 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
             var currentGeneration = CreateFirstGeneration(availableProducts);
             LogGenerationsBestScore(0, currentGeneration.First().ScoreToTarget);
 
-            for (var i = 0; i < NumGenerations; i++)
+            for (var i = 0; i < MaxNumGenerations; i++)
             {
                 currentGeneration = CreateNextGeneration(currentGeneration);
                 LogGenerationsBestScore(i + 1, currentGeneration.First().ScoreToTarget);
+                if (currentGeneration.First().ScoreToTarget < AcceptableScore)
+                {
+                    // result is good enough, we don't need to search further
+                    break;
+                }
             }
 
             return currentGeneration.First(); // this is the best one we have found so far
@@ -61,6 +68,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
 
             // mutated plans will fill the shoes of the ones that didn't survive
             var plansToMutate = currentGeneration.Take(numNewPlansToGenerate).ToList();
+            //var plansToMutate = Enumerable.Range(0, numNewPlansToGenerate).Select(x => currentGeneration.First()).ToList();
 
             newGeneration.AddRange(currentGeneration.Take(NumPlansSurivingGeneration));
             foreach (var planToMutate in plansToMutate)
@@ -85,6 +93,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
                     var gramsToAdd = _randomNumberGenerator.Next(2 * MaxGramsToAddDuringMutation) -
                                      MaxGramsToAddDuringMutation / 2;
                     amount += gramsToAdd;
+                    if (amount < 0) amount = 0;
                 }
 
                 var newDietPlanItem = new DietPlanItem(dietPlanItem.FoodProduct, amount);
@@ -141,8 +150,10 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
             {
                 var randomAmount =
                     _randomNumberGenerator
-                        .Next(200); // avg of 100g of some product daily might be reasonable starting point
+                        .Next(100); // experimental
                 dietPlanItems.Add(new DietPlanItem(product, randomAmount));
+                //dietPlanItems.Add(new DietPlanItem(product, 0)); // what if I start with 0
+                // ^ better start point when there's a lot of product to choose from (start point closer to minimum), but approaching optimum seems slow and almost no product has 0 grams
             }
 
             // calculate score

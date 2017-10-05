@@ -11,6 +11,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
             double totalProtein = 0;
             double totalFat = 0;
             double totalCarbs = 0;
+            int totalGrams = 0;
             foreach (var dietPlanItem in dietPlanItems)
             {
                 double amountMultiplier = (dietPlanItem.AmountGrams / 100.0);
@@ -18,10 +19,11 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 totalProtein += dietPlanItem.FoodProduct.PercentProtein * amountMultiplier;
                 totalCarbs += dietPlanItem.FoodProduct.PercentCarb * amountMultiplier;
                 totalFat += dietPlanItem.FoodProduct.PercentFat * amountMultiplier;
+                totalGrams += dietPlanItem.AmountGrams;
                 
             }
 
-            return new DietCharacteristics(totalKcal, totalProtein, totalFat, totalCarbs);
+            return new DietCharacteristics(totalKcal, totalProtein, totalFat, totalCarbs, totalGrams);
         }
     }
 }

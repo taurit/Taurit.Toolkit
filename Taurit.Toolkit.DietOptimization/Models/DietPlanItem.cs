@@ -7,6 +7,8 @@ namespace Taurit.Toolkit.DietOptimization.Models
     {
         public DietPlanItem(FoodProduct foodProduct, int amountGrams)
         {
+            Debug.Assert(amountGrams >= 0);
+
             FoodProduct = foodProduct;
             AmountGrams = amountGrams;
         }

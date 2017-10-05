@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -32,13 +33,15 @@ namespace Taurit.Toolkit.FindOptimumDiet
             return products;
         }
 
-        public IReadOnlyCollection<FoodProduct> GetProductsFromUsdaDatabase()
+        public IReadOnlyCollection<FoodProduct> GetProductsFromUsdaDatabase(IImmutableSet<string> productNames)
         {
             var csv = new CsvReader(File.OpenText("usda-product-database.csv"));
             var usdaProducts = csv.GetRecords<UsdaProduct>().ToList();
 
-            var products = new List<FoodProduct>(usdaProducts.Count);
-            foreach (var usdaProduct in usdaProducts.Take(100))
+            
+            var filteredProducts = usdaProducts.Where(p => productNames.Contains(p.Name)).ToList();
+            var products = new List<FoodProduct>(filteredProducts.Count);
+            foreach (var usdaProduct in filteredProducts)
             {
                 try
                 {
