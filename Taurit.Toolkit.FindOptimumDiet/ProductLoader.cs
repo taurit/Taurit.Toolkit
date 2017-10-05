@@ -23,16 +23,6 @@ namespace Taurit.Toolkit.FindOptimumDiet
             _mapper = mapper;
         }
 
-        // mock, for debugging/testing purposes only
-        internal IReadOnlyList<FoodProduct> GetSampleProductList()
-        {
-            var products = new List<FoodProduct>();
-            products.Add(new FoodProduct("Fish oil", 900, 0, 100, 0));
-            products.Add(new FoodProduct("Meat", 400, 100, 0, 0));
-            products.Add(new FoodProduct("Potatoes", 400, 0, 0, 100));
-            return products;
-        }
-
         public IReadOnlyCollection<FoodProduct> GetProductsFromUsdaDatabase(IImmutableSet<String> productNames)
         {
             var csv = new CsvReader(File.OpenText("usda-product-database.csv"));
@@ -53,6 +43,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 {
                     // most likely some numeric data in null/empty in source data.
                     // currently I want to just skip such records, as optimization doesn't make sense when the value of any required parameters in unknown
+                    Console.WriteLine($"Product {usdaProduct.Name} had to be skipped due to invalid data.");
                 }
             return products;
         }

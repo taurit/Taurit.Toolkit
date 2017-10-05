@@ -31,6 +31,9 @@ namespace Taurit.Toolkit.FindOptimumDiet.Mappings
                     .ForCtorParam("percentProtein", opt => opt.MapFrom(src => src.Protein_Grams))
                     .ForCtorParam("percentFat", opt => opt.MapFrom(src => src.Fat_Grams))
                     .ForCtorParam("percentCarb", opt => opt.MapFrom(src => src.Carbohydrate_Grams))
+                    .ForCtorParam("fiberTotalDietaryGrams", opt => opt.MapFrom(src => src.FiberTotalDietary_Grams))
+                    .ForCtorParam("vitaminAIu", opt => opt.MapFrom(src => src.VitaminA_IU))
+                    .ForCtorParam("vitaminCMg", opt => opt.MapFrom(src => src.VitaminC_Mg))
                     ;
 
 

@@ -19,5 +19,22 @@ namespace Taurit.Toolkit.FindOptimumDiet.Models
         public String Protein_Grams { get; set; }
         public String Fat_Grams { get; set; }
         public String Carbohydrate_Grams { get; set; }
+        public String Sugar_Grams { get; set; }
+        public String FiberTotalDietary_Grams { get; set; }
+        public String Calcium_Mg { get; set; }
+        public String Iron_Mg { get; set; }
+        public String Magnesium_Mg { get; set; }
+        public String Phosphorus_Mg { get; set; }
+        public String Potassium_Mg { get; set; }
+        public String Sodium_Mg { get; set; }
+        public String Zinc_Mg { get; set; }
+        public String Copper_Mg { get; set; }
+        public String Manganese_Mg { get; set; }
+        public String Selenium_Ug { get; set; }
+        public String VitaminA_IU { get; set; }
+        public String CaroteneBeta_Ug { get; set; }
+        public String VitaminE_Mg { get; set; }
+        public String VitaminD_IU { get; set; }
+        public String VitaminC_Mg { get; set; }
     }
 }

@@ -52,7 +52,16 @@ namespace Taurit.Toolkit.FindOptimumDiet
 
 
             // specify target for the optimum diet
-            var targetDietCharacteristics = new DietCharacteristics(3000, 203, 100, 323, 0);
+            var targetDietCharacteristics = new DietCharacteristics(
+                3000, // 3000 kcal
+                203, // protein - target for building muscle
+                100, // fat - a bit higher than recommended for diet maintainability
+                323, // carbs for the rest of calories
+                1500, // 1500 iu recommended in https://legionathletics.com/products/supplements/triumph/#vitamin-a
+                200, // 90 is recommended for men in multiple sources, eg. https://legionathletics.com/products/supplements/triumph/#vitamin-c . 120-200 perceived as optimum by some reasonable researchers, it doesn't do any harm
+                45, // "children and adults should consume 14 grams of fiber for every 1,000 calories of food eaten."
+                0 // currently not used as optimization variable, but interesting to observe
+                );
             var target = new DietConstraints(targetDietCharacteristics);
 
             // find suboptimal diet (as close to a target as feasible)

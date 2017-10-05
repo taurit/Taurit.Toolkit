@@ -23,7 +23,15 @@ namespace Taurit.Toolkit.DietOptimization.Services
             score += Math.Abs(diet1.TotalCarbs - diet2.TotalCarbs);
             score += Math.Abs(diet1.TotalFat - diet2.TotalFat);
 
+            // multiplers: assuming that:
+            // * 1000 means "1 component was completely ignored, unacceptable"
+            // * 500 means "1 component was underdosed/overdosed by about 50%, unacceptable"
+            score += 1*Math.Abs(diet1.TotalVitaminAiu - diet2.TotalVitaminAiu);
+            score += 20*Math.Abs(diet1.TotalFiberGrams - diet2.TotalFiberGrams);
+            score += 2*Math.Abs(diet1.TotalVitaminCMg - diet2.TotalVitaminCMg);
+
             return score;
         }
+
     }
 }
