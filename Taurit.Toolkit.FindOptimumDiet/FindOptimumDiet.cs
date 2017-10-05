@@ -3,10 +3,11 @@ using Ninject;
 using Taurit.Toolkit.DietOptimization.DietOptimizers;
 using Taurit.Toolkit.DietOptimization.Models;
 using Taurit.Toolkit.DietOptimization.Services;
+using Taurit.Toolkit.FindOptimumDiet.Mappings;
 
 namespace Taurit.Toolkit.FindOptimumDiet
 {
-    internal class FindOptimumDiet
+    internal sealed class FindOptimumDiet
     {
         private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
         private readonly DietCharacteristicsDistanceCalculator _dietCharacteristicsDistanceCalculator;
@@ -26,7 +27,8 @@ namespace Taurit.Toolkit.FindOptimumDiet
         private static void Main()
         {
             var kernel = new StandardKernel();
-            kernel.Load();
+            kernel.Load<AutoMapperModule>();
+            kernel.Load<Bindings>();
             var program = kernel.Get<FindOptimumDiet>();
 
             program.Run();
@@ -38,7 +40,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
         private void Run()
         {
             // get complete list of products that should be considered in a diet
-            var products = _productLoader.GetSampleProductList();
+            var products = _productLoader.GetProductsFromUsdaDatabase();
 
             // specify target for the optimum diet
             var targetDietCharacteristics = new DietCharacteristics(3000, 203, 100, 323);

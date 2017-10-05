@@ -22,7 +22,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
         /// <summary>
         ///     How many generations are created/analyzed by single run of <see cref="Optimize" />?
         /// </summary>
-        private const int NumGenerations = 100_000;
+        private const int NumGenerations = 20_000;
 
         private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
         private readonly Random _randomNumberGenerator = new Random();

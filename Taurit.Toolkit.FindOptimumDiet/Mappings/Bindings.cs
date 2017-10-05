@@ -1,7 +1,7 @@
 ﻿using Ninject.Modules;
 using Taurit.Toolkit.DietOptimization.Services;
 
-namespace Taurit.Toolkit.FindOptimumDiet
+namespace Taurit.Toolkit.FindOptimumDiet.Mappings
 {
     public class Bindings : NinjectModule
     {

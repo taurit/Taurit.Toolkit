@@ -5,13 +5,29 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet>Taurit.Toolkit.FindOptimumDiet.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CodeAnalysisRuleSet>Taurit.Toolkit.FindOptimumDiet.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.1.1" />
     <PackageReference Include="CsvHelper" Version="2.16.3" />
     <PackageReference Include="Ninject" Version="3.3.1" />
+    <PackageReference Include="Wintellect.Analyzers" Version="1.0.6" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Taurit.Toolkit.DietOptimization\Taurit.Toolkit.DietOptimization.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="usda-product-database.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
