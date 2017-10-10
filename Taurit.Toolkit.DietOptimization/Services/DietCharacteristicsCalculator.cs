@@ -9,6 +9,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
         public DietCharacteristics GetCharacteristics(IReadOnlyList<DietPlanItem> dietPlanItems)
         {
             Double totalKcal = 0;
+            Double totalPrice = 0;
             Double totalProtein = 0;
             Double totalFat = 0;
             Double totalCarbs = 0;
@@ -22,6 +23,8 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 Double amountMultiplier = dietPlanItem.AmountGrams / 100.0;
 
                 totalKcal += dietPlanItem.FoodProduct.EnergyKcal * amountMultiplier;
+                totalPrice += dietPlanItem.FoodProduct.Metadata.PricePerKg * amountMultiplier / 10.0;
+
                 totalProtein += dietPlanItem.FoodProduct.PercentProtein * amountMultiplier;
                 totalCarbs += dietPlanItem.FoodProduct.PercentCarb * amountMultiplier;
                 totalFat += dietPlanItem.FoodProduct.PercentFat * amountMultiplier;
@@ -34,7 +37,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 totalGrams += dietPlanItem.AmountGrams;
             }
 
-            return new DietCharacteristics(totalKcal, totalProtein, totalFat, totalCarbs, totalVitaminA, totalVitaminC,
+            return new DietCharacteristics(totalKcal, totalPrice, totalProtein, totalFat, totalCarbs, totalVitaminA, totalVitaminC,
                 totalDietaryFiber, totalGrams);
         }
     }

@@ -1,0 +1,47 @@
+﻿{
+  "$schema": "usda-product-database-metadata-schema.json",
+  "Products": [
+    {
+      "Name": "Potatoes, boiled, cooked without skin, flesh, with salt",
+      "PricePerKg": 2.00
+    },
+    {
+      "Name": "Chicken, broilers or fryers, breast, meat only, cooked, fried",
+      "PricePerKg": 16.00
+    },
+    {
+      "Name": "Tomatoes, red, ripe, raw, year round average",
+      "PricePerKg": 4.00
+    },
+    {
+      "Name": "Peppers, sweet, red, raw",
+      "PricePerKg": 7.00
+    },
+    {
+      "Name": "Rice, white, medium-grain, cooked",
+      "PricePerKg": 2.79
+    },
+    {
+      "Name": "Fish oil, cod liver",
+      "PricePerKg": 113.00
+    },
+    {
+      "Name": "Oil, olive, salad or cooking",
+      "PricePerKg": 33.0
+
+    },
+    {
+      "Name": "Butter, without salt",
+      "PricePerKg": 23
+    },
+    {
+      "Name": "Milk, buttermilk, fluid, cultured, lowfat",
+      "PricePerKg": 2.15
+    },
+    {
+      "Name": "Milk, lowfat, fluid, 1% milkfat, with added vitamin A and vitamin D",
+      "PricePerKg": 2
+    },
+    { "Name": "Egg, whole, cooked, hard-boiled" }
+  ]
+}

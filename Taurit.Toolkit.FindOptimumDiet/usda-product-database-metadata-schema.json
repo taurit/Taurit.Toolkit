@@ -1,0 +1,25 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "title": "JSON Schema for Food Product metadata",
+
+  "type": "object",
+  "properties": {
+    "Products": {
+      "type": "array",
+      "items": {
+        "type": "object",
+
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "Name of the product that exactly matches one in the USDA database."
+          },
+          "PricePerKg": {
+            "type": "number",
+            "description": "Price of 1 kg of product."
+          }
+        }
+      }
+    }
+  }
+}

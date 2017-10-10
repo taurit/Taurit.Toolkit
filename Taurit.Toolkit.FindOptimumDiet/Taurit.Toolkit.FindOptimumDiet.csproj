@@ -18,7 +18,9 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.1.1" />
-    <PackageReference Include="CsvHelper" Version="2.16.3" />
+    <PackageReference Include="CsvHelper" Version="3.1.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="Ninject" Version="3.3.1" />
     <PackageReference Include="Wintellect.Analyzers" Version="1.0.6" />
   </ItemGroup>
@@ -28,12 +30,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="usda-product-database-filter.txt">
+    <None Update="usda-product-database-metadata.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="usda-product-database.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>

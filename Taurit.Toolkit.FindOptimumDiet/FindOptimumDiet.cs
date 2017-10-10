@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Ninject;
@@ -52,11 +50,12 @@ namespace Taurit.Toolkit.FindOptimumDiet
             // specify target for the optimum diet
             var dietTargets = new DietTarget(
                 3000, // 3000 kcal
+                30, // 30 PLN a day = 900 PLN/month average
                 203, // protein - target for building muscle
-                100 , // fat - a bit higher than recommended for diet maintainability
+                100, // fat - a bit higher than recommended for diet maintainability
                 323 //, // carbs for the rest of calories
-               );
-         
+            );
+
             // find suboptimal diet (as close to a target as feasible)
             var optimizationTasks = new List<Task<DietPlan>>(NumOptimizationThreads);
             for (var i = 0; i < NumOptimizationThreads; i++)

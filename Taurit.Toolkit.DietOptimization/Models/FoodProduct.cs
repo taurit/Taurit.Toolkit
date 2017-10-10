@@ -4,6 +4,7 @@ using System.Diagnostics;
 namespace Taurit.Toolkit.DietOptimization.Models
 {
     [DebuggerDisplay("{Name}")]
+    // ReSharper disable once ClassNeverInstantiated.Global - it IS instantiated by AutoMapper
     public class FoodProduct
     {
         public FoodProduct(String name,
@@ -24,6 +25,8 @@ namespace Taurit.Toolkit.DietOptimization.Models
             VitaminAIu = vitaminAIu;
             VitaminCMg = vitaminCMg;
         }
+
+        public OptimizationMetadata Metadata { get; set; }
 
         /// <summary>
         ///     Comes from LongDescription in FoodDescription

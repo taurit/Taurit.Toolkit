@@ -6,6 +6,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
     public class DietCharacteristics
     {
         public DietCharacteristics(Double totalKcalIntake,
+            Double totalPrice,
             Double totalProtein,
             Double totalFat,
             Double totalCarbs,
@@ -15,6 +16,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Int32 totalGramsEaten)
         {
             Debug.Assert(totalKcalIntake >= 0);
+            Debug.Assert(totalPrice >= 0);
             Debug.Assert(totalProtein >= 0);
             Debug.Assert(totalFat >= 0);
             Debug.Assert(totalCarbs >= 0);
@@ -24,6 +26,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Debug.Assert(totalGramsEaten >= 0);
 
             TotalKcalIntake = totalKcalIntake;
+            TotalPrice = totalPrice;
             TotalProtein = totalProtein;
             TotalFat = totalFat;
             TotalCarbs = totalCarbs;
@@ -34,14 +37,15 @@ namespace Taurit.Toolkit.DietOptimization.Models
         }
 
         public Double TotalKcalIntake { get; }
+        public Double TotalPrice { get; }
+
         public Double TotalProtein { get; }
         public Double TotalFat { get; }
         public Double TotalCarbs { get; }
         public Double TotalVitaminAiu { get; }
         public Double TotalVitaminCMg { get; }
         public Double TotalFiberGrams { get; }
-
-
+        
         public Int32 TotalGramsEaten { get; }
     }
 }

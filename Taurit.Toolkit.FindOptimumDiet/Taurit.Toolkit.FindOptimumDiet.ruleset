@@ -72,5 +72,6 @@
     <Rule Id="Wintellect013" Action="Info" />
     <Rule Id="Wintellect007" Action="None" />
     <Rule Id="Wintellect014" Action="Hidden" />
+    <Rule Id="Wintellect002" Action="Error" />
   </Rules>
 </RuleSet>

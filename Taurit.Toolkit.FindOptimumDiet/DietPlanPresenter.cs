@@ -32,6 +32,9 @@ namespace Taurit.Toolkit.FindOptimumDiet
             DisplayInColor("Num skipped products", $"{numSkippedProducts:0}", "", "-", ConsoleColor.White);
             DisplayInColor("Energy", $"{diet.Characteristics.TotalKcalIntake:0}", "kcal",
                 $"{referenceValue.TotalKcalIntake}", ConsoleColor.Gray);
+            DisplayInColor("Price", $"{diet.Characteristics.TotalPrice:0.00}", "PLN",
+                $"{referenceValue.MaxPrice}", ConsoleColor.Gray);
+
 
             DisplayInColor("Total protein", $"{diet.Characteristics.TotalProtein:0}", "g",
                 $"{referenceValue.TotalProtein}", proteinColor);

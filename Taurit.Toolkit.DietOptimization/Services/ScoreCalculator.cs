@@ -35,6 +35,10 @@ namespace Taurit.Toolkit.DietOptimization.Services
             score += GetScoreForVitaminA(diet);
             score += GetScoreForFiber(diet, target.TotalKcalIntake);
 
+            // price constraint (multiplier will largely depend on the currency and time period!)
+            // eg. multiplier=100 => every dollar beyond a threshold is treated as bad as 100 kcal miss
+            score += PunishForDifferenceAbove(target.MaxPrice, diet.TotalPrice, 100.0); 
+
             // experimental: make sure there's not too many kilograms to eat ;)
             score += PunishForDifferenceAbove(2500, diet.TotalGramsEaten, 0.5);
             score += PunishForDifferenceAbove(3000, diet.TotalGramsEaten, 0.5);
