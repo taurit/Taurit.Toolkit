@@ -23,7 +23,8 @@
     },
     {
       "Name": "Fish oil, cod liver",
-      "PricePerKg": 113.00
+      "PricePerKg": 113.00,
+      "FixedAmountG":  5 
     },
     {
       "Name": "Oil, olive, salad or cooking",

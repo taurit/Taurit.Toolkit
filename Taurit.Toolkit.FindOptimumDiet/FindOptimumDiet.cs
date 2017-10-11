@@ -10,9 +10,10 @@ using Taurit.Toolkit.FindOptimumDiet.Mappings;
 
 namespace Taurit.Toolkit.FindOptimumDiet
 {
+    // ReSharper disable once ClassNeverInstantiated.Global - it is by Ninject
     internal sealed class FindOptimumDiet
     {
-        private const Int32 NumOptimizationThreads = 2;
+        private const Int32 NumOptimizationThreads = 1;
         private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
         private readonly ScoreCalculator _dietCharacteristicsDistanceCalculator;
         private readonly DietPlanPresenter _dietPlanPresenter;

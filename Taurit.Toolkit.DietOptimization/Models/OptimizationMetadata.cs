@@ -31,6 +31,6 @@ namespace Taurit.Toolkit.DietOptimization.Models
         /// </summary>
         [CanBeNull]
         [JsonProperty]
-        public Double? FixedNonNegotiableAmount { get; set; }
+        public Int32? FixedAmountG { get; set; }
     }
 }

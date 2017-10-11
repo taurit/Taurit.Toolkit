@@ -17,6 +17,10 @@
           "PricePerKg": {
             "type": "number",
             "description": "Price of 1 kg of product."
+          },
+          "FixedAmountG": {
+            "type": "integer",
+            "description": "Non-negotiable, fixed amount of the product."
           }
         }
       }

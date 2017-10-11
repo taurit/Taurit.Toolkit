@@ -26,7 +26,11 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
         private const Int32 AcceptableScore = 5;
 
         private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
+#if DEBUG
+        private readonly Random _randomNumberGenerator = new Random(12345678); // for results to be repeatable while developing/debugging
+#else
         private readonly Random _randomNumberGenerator = new Random();
+#endif
         private readonly ScoreCalculator _scoreCalculator;
         private readonly DietTarget _targets;
 
@@ -98,7 +102,8 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
             foreach (DietPlanItem dietPlanItem in basePlan.DietPlanItems)
             {
                 Int32 amount = dietPlanItem.AmountGrams;
-                Boolean amountShouldBeModified = ReturnTrueWithChanceOf(ChanceOfAmountMutationPercent);
+                Boolean amountShouldBeModified = dietPlanItem.FoodProduct.Metadata.FixedAmountG == null &&
+                                                 ReturnTrueWithChanceOf(ChanceOfAmountMutationPercent);
                 if (amountShouldBeModified)
                 {
                     Int32 gramsToAdd = _randomNumberGenerator.Next(2 * _maxGramsToAddDuringMutation) -
@@ -167,7 +172,8 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
                 Int32 randomAmount =
                     _randomNumberGenerator
                         .Next(100); // experimental
-                dietPlanItems.Add(new DietPlanItem(product, randomAmount));
+                Int32 amount = product.Metadata.FixedAmountG ?? randomAmount;
+                dietPlanItems.Add(new DietPlanItem(product, amount));
                 //dietPlanItems.Add(new DietPlanItem(product, 0)); // what if I start with 0
                 // ^ better start point when there's a lot of product to choose from (start point closer to minimum), but approaching optimum seems slow and almost no product has 0 grams
             }
