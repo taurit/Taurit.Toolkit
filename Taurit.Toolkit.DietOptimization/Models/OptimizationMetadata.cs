@@ -1,24 +1,27 @@
 ﻿using System;
 using System.Diagnostics;
 using JetBrains.Annotations;
-// ReSharper disable MemberCanBePrivate.Global - deserializer uses setters.
+using Newtonsoft.Json;
+
 // ReSharper disable NotNullMemberIsNotInitialized
 
 namespace Taurit.Toolkit.DietOptimization.Models
 {
     [DebuggerDisplay("{" + nameof(Name) + "}")]
-    // ReSharper disable once ClassNeverInstantiated.Global
+    [JsonObject]
     public class OptimizationMetadata
     {
         /// <summary>
         ///     Product name. It must match name of a product in USDA database, otherwise it will be ignored.
         /// </summary>
         [NotNull]
+        [JsonProperty]
         public String Name { get; set; }
 
         /// <summary>
         ///     Price per kg in whatever currency user prefers to work with.
         /// </summary>
+        [JsonProperty]
         public Double PricePerKg { get; set; }
 
         /// <summary>
@@ -27,6 +30,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
         ///     of chocolate) while it would not be necessary from purely optimizational standpoint.
         /// </summary>
         [CanBeNull]
+        [JsonProperty]
         public Double? FixedNonNegotiableAmount { get; set; }
     }
 }

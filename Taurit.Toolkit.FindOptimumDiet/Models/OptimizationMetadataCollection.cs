@@ -1,7 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using Newtonsoft.Json;
 using Taurit.Toolkit.DietOptimization.Models;
-// ReSharper disable MemberCanBePrivate.Global - deserializer uses setters
 
 namespace Taurit.Toolkit.FindOptimumDiet.Models
 {
@@ -9,10 +8,11 @@ namespace Taurit.Toolkit.FindOptimumDiet.Models
     ///     Wrapper, so JSON contains object and not array, which allows to specify "$schema" on it and get some IntelliSense
     ///     in JSON file.
     /// </summary>
-    [Serializable]
+    [JsonObject]
     [DebuggerDisplay("{" + nameof(Products) + ".Count}")]
     public sealed class OptimizationMetadataCollection
     {
+        [JsonProperty]
         public OptimizationMetadata[] Products { get; set; }
     }
 }
