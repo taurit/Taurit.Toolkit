@@ -36,34 +36,34 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 $"{referenceValue.MaxPrice}", ConsoleColor.Gray);
 
 
-            DisplayInColor("Total protein", $"{diet.Characteristics.TotalProtein:0}", "g",
-                $"{referenceValue.TotalProtein}", proteinColor);
-            DisplayInColor("Total carbohydrates", $"{diet.Characteristics.TotalCarbs:0}", "g",
-                $"{referenceValue.TotalCarbs}", carbsColor);
-            DisplayInColor("Total fat", $"{diet.Characteristics.TotalFat:0}", "g", $"{referenceValue.TotalFat}",
-                fatColor);
+            Display("Total protein", diet.Characteristics.TotalProtein, "g", referenceValue.TotalProtein - 5,
+                referenceValue.TotalProtein + 5);
+            Display("Total carbohydrates", diet.Characteristics.TotalCarbs, "g", referenceValue.TotalCarbs - 5,
+                referenceValue.TotalCarbs + 5);
+            Display("Total fat", diet.Characteristics.TotalFat, "g", referenceValue.TotalFat - 5,
+                referenceValue.TotalFat + 5);
 
-            DisplayInColor("Total Vitamin A", $"{diet.Characteristics.TotalVitaminAiu:0}", "IU",
-                DietTarget.MinDailyVitaminAiu, ConsoleColor.White);
-            DisplayInColor("Total Vitamin C", $"{diet.Characteristics.TotalVitaminCMg:0}", "Mg",
-                DietTarget.MinDailyVitaminCMg, DietTarget.MaxDailyVitaminCMg, ConsoleColor.White);
+            Display("Total Vitamin A", diet.Characteristics.TotalVitaminAiu, "IU",
+                DietTarget.MinDailyVitaminAiu);
+            Display("Total Vitamin C", diet.Characteristics.TotalVitaminCMg, "Mg",
+                DietTarget.MinDailyVitaminCMg, DietTarget.MaxDailyVitaminCMg);
             DisplayInColor("Total Fiber", $"{diet.Characteristics.TotalFiberGrams:0}", "g",
                 $"14g for each 1000 kcal", ConsoleColor.White);
 
-            DisplayInColor("Total Iron", $"{diet.Characteristics.TotalIronMg:0}", "Mg",
-                DietTarget.MinDailyIronMg, DietTarget.MaxDailyIronMg, ConsoleColor.White);
-            DisplayInColor("Total Calcium", $"{diet.Characteristics.TotalCalciumMg:0}", "Mg",
-                DietTarget.MinDailyCalciumMg, DietTarget.MaxDailyCalciumMg, ConsoleColor.White);
-            DisplayInColor("Total Magnesium", $"{diet.Characteristics.TotalMagnesiumMg:0}", "Mg",
-                DietTarget.MinDailyMagnesiumMg, ConsoleColor.White);
-            DisplayInColor("Total Phosphorus", $"{diet.Characteristics.TotalPhosphorusMg:0}", "Mg",
-                DietTarget.MinDailyPhosphorusMg, DietTarget.MaxDailyPhosphorusMg, ConsoleColor.White);
-            DisplayInColor("Total Potassium", $"{diet.Characteristics.TotalPotassiumMg:0}", "Mg",
-                DietTarget.MinDailyPotassiumMg, DietTarget.MaxDailyPotassiumMg, ConsoleColor.White);
-            DisplayInColor("Total Sodium", $"{diet.Characteristics.TotalSodiumMg:0}", "Mg",
-                DietTarget.MinDailySodiumMg, DietTarget.MaxDailySodiumMg, ConsoleColor.White);
-            DisplayInColor("Total Zinc", $"{diet.Characteristics.TotalZincMg:0}", "Mg",
-                DietTarget.MinDailyZincMg, DietTarget.MaxDailyZincMg, ConsoleColor.White);
+            Display("Total Iron", diet.Characteristics.TotalIronMg, "Mg",
+                DietTarget.MinDailyIronMg, DietTarget.MaxDailyIronMg);
+            Display("Total Calcium", diet.Characteristics.TotalCalciumMg, "Mg",
+                DietTarget.MinDailyCalciumMg, DietTarget.MaxDailyCalciumMg);
+            Display("Total Magnesium", diet.Characteristics.TotalMagnesiumMg, "Mg",
+                DietTarget.MinDailyMagnesiumMg);
+            Display("Total Phosphorus", diet.Characteristics.TotalPhosphorusMg, "Mg",
+                DietTarget.MinDailyPhosphorusMg, DietTarget.MaxDailyPhosphorusMg);
+            Display("Total Potassium", diet.Characteristics.TotalPotassiumMg, "Mg",
+                DietTarget.MinDailyPotassiumMg, DietTarget.MaxDailyPotassiumMg);
+            Display("Total Sodium", diet.Characteristics.TotalSodiumMg, "Mg",
+                DietTarget.MinDailySodiumMg, DietTarget.MaxDailySodiumMg);
+            Display("Total Zinc", diet.Characteristics.TotalZincMg, "Mg",
+                DietTarget.MinDailyZincMg, DietTarget.MaxDailyZincMg);
 
             DisplayInColor("Total grams eaten*", $"{diet.Characteristics.TotalGramsEaten:0}", "g",
                 null, fatColor);
@@ -71,23 +71,25 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 "* Average is about 1.8 kg across the globe, in the US it's about 2.7 kg, where as Somalia it's about 1 kg.");
         }
 
-        private void DisplayInColor([NotNull] String label,
-            [NotNull] String value,
+        private void Display([NotNull] String label,
+            Double value,
             [NotNull] String unit,
-            Double minReferenceValue,
-            ConsoleColor valueColor)
+            Double minReferenceValue)
         {
-            DisplayInColor(label, value, unit, $"more than {minReferenceValue:0}", valueColor);
+            ConsoleColor valueColor = value >= minReferenceValue ? ConsoleColor.White : ConsoleColor.Red;
+            DisplayInColor(label, $"{value:0}", unit, $"more than {minReferenceValue:0}", valueColor);
         }
 
-        private void DisplayInColor([NotNull] String label,
-            [NotNull] String value,
+        private void Display([NotNull] String label,
+            Double value,
             [NotNull] String unit,
             Double minReferenceValue,
-            Double maxReferenceValue,
-            ConsoleColor valueColor)
+            Double maxReferenceValue)
         {
-            DisplayInColor(label, value, unit, $"{minReferenceValue:0} - {maxReferenceValue:0}", valueColor);
+            ConsoleColor valueColor = value >= minReferenceValue && value <= maxReferenceValue
+                ? ConsoleColor.White
+                : ConsoleColor.Red;
+            DisplayInColor(label, $"{value:0}", unit, $"{minReferenceValue:0} - {maxReferenceValue:0}", valueColor);
         }
 
         private void DisplayInColor([NotNull] String label, [NotNull] String value, [NotNull] String unit,
