@@ -16,6 +16,13 @@ namespace Taurit.Toolkit.DietOptimization.Services
             Double totalVitaminA = 0;
             Double totalVitaminC = 0;
             Double totalDietaryFiber = 0;
+            Double totalIronMg = 0;
+            Double totalCalciumMg = 0;
+            Double totalMagnesiumMg = 0;
+            Double totalPhosphorusMg = 0;
+            Double totalPotassiumMg = 0;
+            Double totalSodiumMg = 0;
+            Double totalZincMg = 0;
 
             var totalGrams = 0;
             foreach (DietPlanItem dietPlanItem in dietPlanItems)
@@ -31,14 +38,36 @@ namespace Taurit.Toolkit.DietOptimization.Services
 
                 totalVitaminA += dietPlanItem.FoodProduct.VitaminAIu * amountMultiplier;
                 totalVitaminC += dietPlanItem.FoodProduct.VitaminCMg * amountMultiplier;
+
                 totalDietaryFiber += dietPlanItem.FoodProduct.FiberTotalDietaryGrams * amountMultiplier;
 
+                totalIronMg += dietPlanItem.FoodProduct.IronMg * amountMultiplier;
+                totalCalciumMg += dietPlanItem.FoodProduct.CalciumMg * amountMultiplier;
+                totalMagnesiumMg += dietPlanItem.FoodProduct.MagnesiumMg * amountMultiplier;
+                totalPhosphorusMg += dietPlanItem.FoodProduct.PhosphorusMg * amountMultiplier;
+                totalPotassiumMg += dietPlanItem.FoodProduct.PotassiumMg * amountMultiplier;
+                totalSodiumMg += dietPlanItem.FoodProduct.SodiumMg * amountMultiplier;
+                totalZincMg += dietPlanItem.FoodProduct.ZincMg * amountMultiplier;
 
                 totalGrams += dietPlanItem.AmountGrams;
             }
 
-            return new DietCharacteristics(totalKcal, totalPrice, totalProtein, totalFat, totalCarbs, totalVitaminA, totalVitaminC,
-                totalDietaryFiber, totalGrams);
+            return new DietCharacteristics(totalKcal,
+                totalPrice,
+                totalProtein,
+                totalFat,
+                totalCarbs,
+                totalVitaminA,
+                totalVitaminC,
+                totalDietaryFiber,
+                totalIronMg,
+                totalCalciumMg,
+                totalMagnesiumMg,
+                totalPhosphorusMg,
+                totalPotassiumMg,
+                totalSodiumMg,
+                totalZincMg,
+                totalGrams);
         }
     }
 }

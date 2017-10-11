@@ -14,7 +14,15 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Double percentCarb,
             Double fiberTotalDietaryGrams,
             Double vitaminAIu,
-            Double vitaminCMg)
+            Double vitaminCMg,
+            Double ironMg,
+            Double calciumMg,
+            Double magnesiumMg,
+            Double phosphorusMg,
+            Double potassiumMg,
+            Double sodiumMg,
+            Double zincMg
+        )
         {
             Name = name;
             EnergyKcal = energyKcal;
@@ -24,6 +32,13 @@ namespace Taurit.Toolkit.DietOptimization.Models
             FiberTotalDietaryGrams = fiberTotalDietaryGrams;
             VitaminAIu = vitaminAIu;
             VitaminCMg = vitaminCMg;
+            IronMg = ironMg;
+            CalciumMg = calciumMg;
+            MagnesiumMg = magnesiumMg;
+            PhosphorusMg = phosphorusMg;
+            PotassiumMg = potassiumMg;
+            SodiumMg = sodiumMg;
+            ZincMg = zincMg;
         }
 
         public OptimizationMetadata Metadata { get; set; }

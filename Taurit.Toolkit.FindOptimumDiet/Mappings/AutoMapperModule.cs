@@ -34,6 +34,13 @@ namespace Taurit.Toolkit.FindOptimumDiet.Mappings
                     .ForCtorParam("fiberTotalDietaryGrams", opt => opt.MapFrom(src => src.FiberTotalDietary_Grams))
                     .ForCtorParam("vitaminAIu", opt => opt.MapFrom(src => src.VitaminA_IU))
                     .ForCtorParam("vitaminCMg", opt => opt.MapFrom(src => src.VitaminC_Mg))
+                    .ForCtorParam("ironMg", opt => opt.MapFrom(src => src.Iron_Mg))
+                    .ForCtorParam("calciumMg", opt => opt.MapFrom(src => src.Calcium_Mg))
+                    .ForCtorParam("magnesiumMg", opt => opt.MapFrom(src => src.Magnesium_Mg))
+                    .ForCtorParam("phosphorusMg", opt => opt.MapFrom(src => src.Phosphorus_Mg))
+                    .ForCtorParam("potassiumMg", opt => opt.MapFrom(src => src.Potassium_Mg))
+                    .ForCtorParam("sodiumMg", opt => opt.MapFrom(src => src.Sodium_Mg))
+                    .ForCtorParam("zincMg", opt => opt.MapFrom(src => src.Zinc_Mg))
                     ;
 
 

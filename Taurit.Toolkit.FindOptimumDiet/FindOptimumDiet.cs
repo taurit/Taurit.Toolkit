@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Ninject;
@@ -10,7 +11,8 @@ using Taurit.Toolkit.FindOptimumDiet.Mappings;
 
 namespace Taurit.Toolkit.FindOptimumDiet
 {
-    // ReSharper disable once ClassNeverInstantiated.Global - it is by Ninject
+    
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "It is instantiated by Ninject")]
     internal sealed class FindOptimumDiet
     {
         private const Int32 NumOptimizationThreads = 1;

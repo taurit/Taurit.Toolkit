@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Taurit.Toolkit.DietOptimization.Models;
 
@@ -14,6 +15,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
     ///     much or too little impact on overall score.
     ///     * recommendations used are for adult males (18+ years old)
     /// </summary>
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "It is instantiated by Ninject")]
     public class ScoreCalculator
     {
         /// <remarks>
@@ -59,29 +61,18 @@ namespace Taurit.Toolkit.DietOptimization.Services
         [Pure]
         private Double GetScoreForVitaminC(DietCharacteristics diet)
         {
-            // Recommendations:
-            // * 90 is recommended for men in multiple sources, https://legionathletics.com/products/supplements/triumph/#vitamin-c
-            // * If you smoke, add 35 mg
-            // * 120-200 perceived as optimum by some other reasonable researchers.
-            // * it doesn't seem to do any harm up to 2000mg/day, https://ods.od.nih.gov/factsheets/VitaminC-Consumer/#h2
-
             Double score = 0;
-            score += PunishForDifferenceBelow(120, diet.TotalVitaminCMg, 5);
-            score += PunishForDifferenceAbove(2000, diet.TotalVitaminCMg, 5);
+            score += PunishForDifferenceBelow(DietTarget.MinDailyVitaminCMg, diet.TotalVitaminCMg, 5);
+            score += PunishForDifferenceAbove(DietTarget.MaxDailyVitaminCMg, diet.TotalVitaminCMg, 5);
             return score;
         }
 
         [Pure]
         private Double GetScoreForVitaminA(DietCharacteristics diet)
         {
-            // Recommendations:
-            // * U.S. recommended dietary allowance (RDA) for adults is as follows: 900 micrograms daily (3,000 IU) for men
-            // * Upper tolerance 10 000 IU, https://ods.od.nih.gov/factsheets/VitaminA-HealthProfessional/
-
-
             Double score = 0;
-            score += PunishForDifferenceBelow(3000, diet.TotalVitaminAiu, 1);
-            score += PunishForDifferenceAbove(10000, diet.TotalVitaminAiu, 1);
+            score += PunishForDifferenceBelow(DietTarget.MinDailyVitaminAiu, diet.TotalVitaminAiu, 1);
+            score += PunishForDifferenceAbove(DietTarget.MaxDailyVitaminAiu, diet.TotalVitaminAiu, 1);
             return score;
         }
 

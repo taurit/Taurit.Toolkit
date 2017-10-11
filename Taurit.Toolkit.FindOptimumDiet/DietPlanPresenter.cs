@@ -44,16 +44,50 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 fatColor);
 
             DisplayInColor("Total Vitamin A", $"{diet.Characteristics.TotalVitaminAiu:0}", "IU",
-                $"3 000 - 10 000", ConsoleColor.White);
+                DietTarget.MinDailyVitaminAiu, DietTarget.MaxDailyVitaminAiu, ConsoleColor.White);
             DisplayInColor("Total Vitamin C", $"{diet.Characteristics.TotalVitaminCMg:0}", "Mg",
-                $"120 - 2000", ConsoleColor.White);
+                DietTarget.MinDailyVitaminCMg, DietTarget.MaxDailyVitaminCMg, ConsoleColor.White);
             DisplayInColor("Total Fiber", $"{diet.Characteristics.TotalFiberGrams:0}", "g",
                 $"14g for each 1000 kcal", ConsoleColor.White);
+
+            DisplayInColor("Total Iron", $"{diet.Characteristics.TotalIronMg:0}", "Mg",
+                DietTarget.MinDailyIronMg, DietTarget.MaxDailyIronMg, ConsoleColor.White);
+            DisplayInColor("Total Calcium", $"{diet.Characteristics.TotalCalciumMg:0}", "Mg",
+                DietTarget.MinDailyCalciumMg, DietTarget.MaxDailyCalciumMg, ConsoleColor.White);
+            DisplayInColor("Total Magnesium", $"{diet.Characteristics.TotalMagnesiumMg:0}", "Mg",
+                DietTarget.MinDailyMagnesiumMg, ConsoleColor.White);
+            DisplayInColor("Total Phosphorus", $"{diet.Characteristics.TotalPhosphorusMg:0}", "Mg",
+                DietTarget.MinDailyPhosphorusMg, DietTarget.MaxDailyPhosphorusMg, ConsoleColor.White);
+            DisplayInColor("Total Potassium", $"{diet.Characteristics.TotalPotassiumMg:0}", "Mg",
+                DietTarget.MinDailyPotassiumMg, DietTarget.MaxDailyPotassiumMg, ConsoleColor.White);
+            DisplayInColor("Total Sodium", $"{diet.Characteristics.TotalSodiumMg:0}", "Mg",
+                DietTarget.MinDailySodiumMg, DietTarget.MaxDailySodiumMg, ConsoleColor.White);
+            DisplayInColor("Total Zinc", $"{diet.Characteristics.TotalZincMg:0}", "Mg",
+                DietTarget.MinDailyZincMg, DietTarget.MaxDailyZincMg, ConsoleColor.White);
 
             DisplayInColor("Total grams eaten*", $"{diet.Characteristics.TotalGramsEaten:0}", "g",
                 null, fatColor);
             Console.WriteLine(
                 "* Average is about 1.8 kg across the globe, in the US it's about 2.7 kg, where as Somalia it's about 1 kg.");
+        }
+
+        private void DisplayInColor([NotNull] String label,
+            [NotNull] String value,
+            [NotNull] String unit,
+            Double minReferenceValue,
+            ConsoleColor valueColor)
+        {
+            DisplayInColor(label, value, unit, $"more than {minReferenceValue:0}", valueColor);
+        }
+
+        private void DisplayInColor([NotNull] String label,
+            [NotNull] String value,
+            [NotNull] String unit,
+            Double minReferenceValue,
+            Double maxReferenceValue,
+            ConsoleColor valueColor)
+        {
+            DisplayInColor(label, value, unit, $"{minReferenceValue:0} - {maxReferenceValue:0}", valueColor);
         }
 
         private void DisplayInColor([NotNull] String label, [NotNull] String value, [NotNull] String unit,

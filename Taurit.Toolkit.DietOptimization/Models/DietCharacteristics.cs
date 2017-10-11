@@ -13,6 +13,13 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Double totalVitaminAiu,
             Double totalVitaminCMg,
             Double totalFiberGrams,
+            Double totalIronMg,
+            Double totalCalciumMg,
+            Double totalMagnesiumMg,
+            Double totalPhosphorusMg,
+            Double totalPotassiumMg,
+            Double totalSodiumMg,
+            Double totalZincMg,
             Int32 totalGramsEaten)
         {
             Debug.Assert(totalKcalIntake >= 0);
@@ -23,6 +30,13 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Debug.Assert(totalVitaminAiu >= 0);
             Debug.Assert(totalVitaminCMg >= 0);
             Debug.Assert(totalFiberGrams >= 0);
+            Debug.Assert(totalIronMg >= 0);
+            Debug.Assert(totalCalciumMg >= 0);
+            Debug.Assert(totalMagnesiumMg >= 0);
+            Debug.Assert(totalPhosphorusMg >= 0);
+            Debug.Assert(totalPotassiumMg >= 0);
+            Debug.Assert(totalSodiumMg >= 0);
+            Debug.Assert(totalZincMg >= 0);
             Debug.Assert(totalGramsEaten >= 0);
 
             TotalKcalIntake = totalKcalIntake;
@@ -33,6 +47,13 @@ namespace Taurit.Toolkit.DietOptimization.Models
             TotalVitaminAiu = totalVitaminAiu;
             TotalVitaminCMg = totalVitaminCMg;
             TotalFiberGrams = totalFiberGrams;
+            TotalIronMg = totalIronMg;
+            TotalCalciumMg = totalCalciumMg;
+            TotalMagnesiumMg = totalMagnesiumMg;
+            TotalPhosphorusMg = totalPhosphorusMg;
+            TotalPotassiumMg = totalPotassiumMg;
+            TotalSodiumMg = totalSodiumMg;
+            TotalZincMg = totalZincMg;
             TotalGramsEaten = totalGramsEaten;
         }
 
@@ -45,7 +66,14 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public Double TotalVitaminAiu { get; }
         public Double TotalVitaminCMg { get; }
         public Double TotalFiberGrams { get; }
-        
+        public Double TotalIronMg { get; }
+        public Double TotalCalciumMg { get; }
+        public Double TotalMagnesiumMg { get; }
+        public Double TotalPhosphorusMg { get; }
+        public Double TotalPotassiumMg { get; }
+        public Double TotalSodiumMg { get; }
+        public Double TotalZincMg { get; }
+
         public Int32 TotalGramsEaten { get; }
     }
 }

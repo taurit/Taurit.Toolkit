@@ -2,7 +2,7 @@
   "$schema": "usda-product-database-metadata-schema.json",
   "Products": [
     {
-      "Name": "Potatoes, boiled, cooked without skin, flesh, with salt",
+      "Name": "Potatoes, boiled, cooked in skin, flesh, without salt",
       "PricePerKg": 2.00
     },
     {
