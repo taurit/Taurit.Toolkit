@@ -27,7 +27,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
 
         private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
 #if DEBUG
-        private readonly Random _randomNumberGenerator = new Random(12345678); // for results to be repeatable while developing/debugging
+        private readonly Random _randomNumberGenerator = new Random(); // constant seed might be used for results to be repeatable while developing/debugging
 #else
         private readonly Random _randomNumberGenerator = new Random();
 #endif

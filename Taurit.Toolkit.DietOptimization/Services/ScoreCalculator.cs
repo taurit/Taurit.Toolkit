@@ -47,17 +47,32 @@ namespace Taurit.Toolkit.DietOptimization.Services
 
             // price constraint (multiplier will largely depend on the currency and time period!)
             // eg. multiplier=100 => every dollar beyond a threshold is treated as bad as 100 kcal miss
-            score += PunishForDifferenceAbove(target.MaxPrice, diet.TotalPrice, 100.0); 
+            score += PunishForDifferenceAbove(target.MaxPrice, diet.TotalPrice, 100.0);
 
             // experimental: make sure there's not too many kilograms to eat ;)
             score += PunishForDifferenceAbove(2500, diet.TotalGramsEaten, 0.5);
             score += PunishForDifferenceAbove(3000, diet.TotalGramsEaten, 0.5);
 
+            // experimental: having diets with the same characteristics, prefer ones that have less ingredients (easier shopping)
+            score += PunishForLargenumberOfIngredients(diet);
+
+            return score;
+        }
+
+        private static Double PunishForLargenumberOfIngredients(DietCharacteristics diet)
+        {
+            const Int32 preferredMaxIngredientCount = 15;
+            Int32 numExcessiveIngredients = diet.NumIngredients - preferredMaxIngredientCount;
+            if (numExcessiveIngredients < 0)
+            {
+                numExcessiveIngredients = 0;
+            }
+            Double score = numExcessiveIngredients * (100 / 10); // 10 extra ingredients is the same as 100 kcal miss
             return score;
         }
 
         [Pure]
-        private Double GetScoreForIron([NotNull]DietCharacteristics diet)
+        private Double GetScoreForIron([NotNull] DietCharacteristics diet)
         {
             Double score = 0;
             score += PunishForDifferenceBelow(DietTarget.MinDailyIronMg, diet.TotalIronMg, 100);
@@ -66,7 +81,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
         }
 
         [Pure]
-        private Double GetScoreForCalcium([NotNull]DietCharacteristics diet)
+        private Double GetScoreForCalcium([NotNull] DietCharacteristics diet)
         {
             Double score = 0;
             score += PunishForDifferenceBelow(DietTarget.MinDailyCalciumMg, diet.TotalCalciumMg, 1);
@@ -75,7 +90,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
         }
 
         [Pure]
-        private Double GetScoreForMagnesium([NotNull]DietCharacteristics diet)
+        private Double GetScoreForMagnesium([NotNull] DietCharacteristics diet)
         {
             Double score = 0;
             score += PunishForDifferenceBelow(DietTarget.MinDailyMagnesiumMg, diet.TotalMagnesiumMg, 3);
@@ -83,7 +98,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
         }
 
         [Pure]
-        private Double GetScoreForPhosphorus([NotNull]DietCharacteristics diet)
+        private Double GetScoreForPhosphorus([NotNull] DietCharacteristics diet)
         {
             Double score = 0;
             score += PunishForDifferenceBelow(DietTarget.MinDailyPhosphorusMg, diet.TotalPhosphorusMg, 2);
@@ -92,16 +107,16 @@ namespace Taurit.Toolkit.DietOptimization.Services
         }
 
         [Pure]
-        private Double GetScoreForPotassium([NotNull]DietCharacteristics diet)
+        private Double GetScoreForPotassium([NotNull] DietCharacteristics diet)
         {
             Double score = 0;
             score += PunishForDifferenceBelow(DietTarget.MinDailyPotassiumMg, diet.TotalPotassiumMg, 0.5);
             score += PunishForDifferenceAbove(DietTarget.MaxDailyPotassiumMg, diet.TotalPotassiumMg, 0.5);
             return score;
         }
-        
+
         [Pure]
-        private Double GetScoreForSodium([NotNull]DietCharacteristics diet)
+        private Double GetScoreForSodium([NotNull] DietCharacteristics diet)
         {
             Double score = 0;
             score += PunishForDifferenceBelow(DietTarget.MinDailySodiumMg, diet.TotalSodiumMg, 1);
@@ -111,7 +126,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
 
 
         [Pure]
-        private Double GetScoreForZinc([NotNull]DietCharacteristics diet)
+        private Double GetScoreForZinc([NotNull] DietCharacteristics diet)
         {
             Double score = 0;
             score += PunishForDifferenceBelow(DietTarget.MinDailyZincMg, diet.TotalZincMg, 100);
@@ -121,7 +136,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
 
 
         [Pure]
-        private Double GetScoreForFiber([NotNull]DietCharacteristics diet, Double targetTotalKcalIntake)
+        private Double GetScoreForFiber([NotNull] DietCharacteristics diet, Double targetTotalKcalIntake)
         {
             // Recommendations:
             // * children and adults should consume 14 grams of fiber for every 1,000 calories of food eaten.
@@ -131,7 +146,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
         }
 
         [Pure]
-        private Double GetScoreForVitaminC([NotNull]DietCharacteristics diet)
+        private Double GetScoreForVitaminC([NotNull] DietCharacteristics diet)
         {
             Double score = 0;
             score += PunishForDifferenceBelow(DietTarget.MinDailyVitaminCMg, diet.TotalVitaminCMg, 5);
@@ -140,7 +155,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
         }
 
         [Pure]
-        private Double GetScoreForVitaminA([NotNull]DietCharacteristics diet)
+        private Double GetScoreForVitaminA([NotNull] DietCharacteristics diet)
         {
             Double score = 0;
             score += PunishForDifferenceBelow(DietTarget.MinDailyVitaminAiu, diet.TotalVitaminAiu, 1);

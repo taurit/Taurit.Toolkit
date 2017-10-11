@@ -23,6 +23,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
             Double totalPotassiumMg = 0;
             Double totalSodiumMg = 0;
             Double totalZincMg = 0;
+            var numIngredients = 0;
 
             var totalGrams = 0;
             foreach (DietPlanItem dietPlanItem in dietPlanItems)
@@ -50,10 +51,12 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 totalZincMg += dietPlanItem.FoodProduct.ZincMg * amountMultiplier;
 
                 totalGrams += dietPlanItem.AmountGrams;
+                numIngredients += dietPlanItem.AmountGrams > 0 ? 1 : 0;
             }
 
             return new DietCharacteristics(totalKcal,
                 totalPrice,
+                numIngredients,
                 totalProtein,
                 totalFat,
                 totalCarbs,
