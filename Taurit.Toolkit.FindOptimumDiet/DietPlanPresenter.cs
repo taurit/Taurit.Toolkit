@@ -44,7 +44,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 fatColor);
 
             DisplayInColor("Total Vitamin A", $"{diet.Characteristics.TotalVitaminAiu:0}", "IU",
-                DietTarget.MinDailyVitaminAiu, DietTarget.MaxDailyVitaminAiu, ConsoleColor.White);
+                DietTarget.MinDailyVitaminAiu, ConsoleColor.White);
             DisplayInColor("Total Vitamin C", $"{diet.Characteristics.TotalVitaminCMg:0}", "Mg",
                 DietTarget.MinDailyVitaminCMg, DietTarget.MaxDailyVitaminCMg, ConsoleColor.White);
             DisplayInColor("Total Fiber", $"{diet.Characteristics.TotalFiberGrams:0}", "g",

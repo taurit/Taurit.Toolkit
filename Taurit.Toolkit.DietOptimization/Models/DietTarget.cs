@@ -27,8 +27,9 @@ namespace Taurit.Toolkit.DietOptimization.Models
 
         /// <summary>
         ///     Upper tolerance 10 000 IU, https://ods.od.nih.gov/factsheets/VitaminA-HealthProfessional/
+        ///     This limit refers to pre-formed Vitamin A, which can be found in foods and dietary supplements as palmitate, acetate or fish liver oil, all of which are derived from animal sources.
         /// </summary>
-        public const Double MaxDailyVitaminAiu = 10_000;
+        //public const Double MaxDailyVitaminAiu = 10_000;
 
         /// <summary>
         ///     https://ods.od.nih.gov/factsheets/Iron-Consumer/

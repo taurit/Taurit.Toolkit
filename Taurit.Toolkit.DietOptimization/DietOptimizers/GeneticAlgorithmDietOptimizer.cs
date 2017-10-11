@@ -21,7 +21,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
         /// <summary>
         ///     How many generations are created/analyzed by single run of <see cref="Optimize" />?
         /// </summary>
-        private const Int32 MaxNumGenerations = 100_000;
+        private const Int32 MaxNumGenerations = 30_000;
 
         private const Int32 AcceptableScore = 5;
 
@@ -65,7 +65,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
                 }
 
                 // experimental: due to observation that fine-tuning requires smaller steps
-                if (_maxGramsToAddDuringMutation > 10 && i % 1000 == 0)
+                if (_maxGramsToAddDuringMutation > 10 && i % 5000 == 0)
                 {
                     _maxGramsToAddDuringMutation -= 10;
                 }

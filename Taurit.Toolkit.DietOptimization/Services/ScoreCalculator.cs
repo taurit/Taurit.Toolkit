@@ -144,7 +144,6 @@ namespace Taurit.Toolkit.DietOptimization.Services
         {
             Double score = 0;
             score += PunishForDifferenceBelow(DietTarget.MinDailyVitaminAiu, diet.TotalVitaminAiu, 1);
-            score += PunishForDifferenceAbove(DietTarget.MaxDailyVitaminAiu, diet.TotalVitaminAiu, 1);
             return score;
         }
 

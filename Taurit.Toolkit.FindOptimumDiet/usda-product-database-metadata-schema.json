@@ -21,6 +21,10 @@
           "FixedAmountG": {
             "type": "integer",
             "description": "Non-negotiable, fixed amount of the product."
+          },
+          "Comment": {
+            "type": "string",
+            "description": "Comment for myself, not used in optimization."
           }
         }
       }

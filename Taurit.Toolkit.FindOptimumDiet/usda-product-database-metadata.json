@@ -24,12 +24,11 @@
     {
       "Name": "Fish oil, cod liver",
       "PricePerKg": 113.00,
-      "FixedAmountG":  5 
+      "FixedAmountG": 5
     },
     {
       "Name": "Oil, olive, salad or cooking",
       "PricePerKg": 33.0
-
     },
     {
       "Name": "Butter, without salt",
@@ -43,6 +42,122 @@
       "Name": "Milk, lowfat, fluid, 1% milkfat, with added vitamin A and vitamin D",
       "PricePerKg": 2
     },
-    { "Name": "Egg, whole, cooked, hard-boiled" }
+    {
+      "Name": "Egg, whole, cooked, hard-boiled",
+      "PricePerKg": 13.70,
+      "Comment": "Ściółkowe, rozmiar L, Auchan Direct"
+    },
+    {
+      "Name": "Egg, whole, cooked, scrambled",
+      "PricePerKg": 13.70,
+      "Comment": "Ściółkowe, rozmiar L, Auchan Direct"
+    },
+    {
+      "Name": "Turkey, all classes, light meat, cooked, roasted",
+      "PricePerKg": 22.50,
+      "Comment": "Biedronka, cena dla filetów z indyka 400g"
+    },
+    {
+      "Name": "Fish, salmon, king, chinook, smoked and canned (Alaska Native)",
+      "PricePerKg": 115,
+      "Comment": "Closest match to what I can find in Auchan Direct"
+    },
+    {
+      "Name": "Bananas, raw",
+      "PricePerKg": 4
+    },
+    {
+      "Name": "Cheese, gouda",
+      "PricePerKg": 17,
+        "Comment": "Price for 400g block, Biedronka market" 
+    },
+    {
+      "Name": "Cheese, edam",
+      "PricePerKg": 17,
+      "Comment": "Assuming same price as Gouda"
+    },
+    {
+      "Name": "Cheese, mozzarella, part skim milk",
+      "PricePerKg": 20,
+      "Comment": "Price for 125g package in Biedronka market"
+    },
+    {
+      "Name": "Bacon, meatless",
+      "PricePerKg": 18
+    },
+    {
+      "Name": "Oat bran, raw",
+      "PricePerKg": 5
+    },
+    {
+      "Name": "Bread, wheat",
+      "PricePerKg": 7
+    },
+    {
+      "Name": "Jams and preserves",
+      "PricePerKg": 7,
+      "Comment": "Intencja: dżem truskawkowy auchan direct"
+    },
+    {
+      "Name": "Onions, cooked, boiled, drained, without salt",
+      "PricePerKg": 2
+    },
+    {
+      "Name": "Cucumber, with peel, raw",
+      "PricePerKg": 3
+    },
+    {
+      "Name": "Pickles, cucumber, sour",
+      "PricePerKg": 3
+    },
+    {
+      "Name": "Spinach, cooked, boiled, drained, without salt",
+      "PricePerKg": 13
+    },
+    {
+      "Name": "Spices, curry powder",
+      "PricePerKg": 60,
+      "Comment": "Price in range 40-114 PLN"
+    },
+    {
+      "Name": "Spices, cinnamon, ground",
+      "PricePerKg": 90,
+      "Comment": "Price in range 80-105 PLN"
+    },
+    {
+      "Name": "Spices, basil, dried",
+      "PricePerKg": 120,
+      "Comment": "Price in range 50-120 PLN, most on the high end"
+    },
+    {
+      "Name": "Seeds, chia seeds, dried",
+      "PricePerKg": 30,
+      "Comment": "Included for fiber"
+    },
+    {
+      "Name": "Lentils, mature seeds, cooked, boiled, without salt",
+      "PricePerKg": 14,
+      "Comment": "Included for fiber"
+    },
+    {
+      "Name": "Spices, thyme, dried",
+      "PricePerKg": 130,
+      "Comment": "Included for iron"
+    },
+    {
+      "Name": "Spices, cumin seed",
+      "PricePerKg": 60,
+      "Comment": "Included for iron"
+    },
+    {
+      "Name": "Pork, fresh, variety meats and by-products, liver, raw",
+      "PricePerKg": 15,
+      "Comment": "I have no idea what's the price, guess"
+    },
+    {
+      "Name": "Mollusks, oyster, eastern, canned",
+      "PricePerKg": 60,
+      "Comment": "Included for zinc, the best source"
+    }
   ]
 }
