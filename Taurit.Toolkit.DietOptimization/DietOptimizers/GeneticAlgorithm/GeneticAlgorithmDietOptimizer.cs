@@ -17,18 +17,11 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         private const Int32 NumPlansInGeneration = 600;
 
         /// <summary>
-        ///     Elitist selection
-        ///     This number must be low to avoid generation degeneration, but might be useful to prevent discarding best solutions
-        ///     found so far.
-        /// </summary>
-        private const Int32 NumPlansSurivingGeneration = 50;
-
-        /// <summary>
         ///     How many generations are created/analyzed by single run of <see cref="Optimize" />?
         /// </summary>
         private const Int32 MaxNumGenerations = 1_000;
 
-        private const Int32 AcceptableScore = 20;
+        private const Int32 AcceptableScore = 5;
         [NotNull] private readonly CrossoverHelper _crossoverHelper;
 
         [NotNull] private readonly MutationHelper _mutationHelper;
@@ -36,11 +29,12 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         private readonly Random _randomNumberGenerator;
 
         [NotNull] private readonly StartPointProvider _startPointProvider;
+        private readonly Int32 _threadNumber;
 
         [CanBeNull] private DietPlan _bestPlanSoFar;
-        private readonly int _threadNumber;
 
-        public GeneticAlgorithmDietOptimizer([NotNull] DietCharacteristicsCalculator dietCharacteristicsCalculator, [NotNull] ScoreCalculator scoreCalculator, [NotNull] DietTarget dietTarget, Int32 threadNumber)
+        public GeneticAlgorithmDietOptimizer([NotNull] DietCharacteristicsCalculator dietCharacteristicsCalculator,
+            [NotNull] ScoreCalculator scoreCalculator, [NotNull] DietTarget dietTarget, Int32 threadNumber)
         {
             _crossoverHelper = new CrossoverHelper(dietCharacteristicsCalculator, scoreCalculator, dietTarget);
             _startPointProvider = new StartPointProvider(dietCharacteristicsCalculator, scoreCalculator, dietTarget);
@@ -54,7 +48,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
             ImmutableList<DietPlan> currentGeneration = CreateFirstGeneration(availableProducts);
             LogGenerationsBestScore(0, currentGeneration.First().ScoreToTarget);
             _bestPlanSoFar = currentGeneration.First();
-            
+
             for (var i = 0; i < MaxNumGenerations; i++)
             {
                 currentGeneration = CreateNextGeneration(currentGeneration);
@@ -92,36 +86,6 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
             }
 
             return randomDietPlans.OrderBy(x => x.ScoreToTarget).ToImmutableList();
-        }
-
-        /// <remarks>
-        ///     "Elitism guarantees that the solution quality obtained by the GA will not decrease from one generation to the
-        ///     next."
-        ///     "The problem with elitism is that it causes the GA to converge on local maxima instead of the global maximum, so
-        ///     pure elitism is just a race to the nearest local maximum and you'll get little improvement from there. "
-        ///     This method quite quickly makes population degenerated (all diet plans are almost the same) and does not want to
-        ///     go any further leaving us with some local minimum.
-        /// </remarks>
-        private ImmutableList<DietPlan> CreateNextGeneration_Elitist(ImmutableList<DietPlan> currentGeneration)
-        {
-            Debug.Assert(NumPlansSurivingGeneration < NumPlansInGeneration);
-            Int32 numNewPlansToGenerate = NumPlansInGeneration - NumPlansSurivingGeneration;
-
-            var newGeneration = new List<DietPlan>(NumPlansInGeneration);
-
-            // mutated plans will fill the shoes of the ones that didn't survive
-            List<DietPlan> plansToMutate = currentGeneration.Take(numNewPlansToGenerate).ToList();
-            //var plansToMutate = Enumerable.Range(0, numNewPlansToGenerate).Select(x => currentGeneration.First()).ToList();
-
-            newGeneration.AddRange(currentGeneration.Take(NumPlansSurivingGeneration));
-            foreach (DietPlan planToMutate in plansToMutate)
-            {
-                DietPlan mutatedDietPlan = _mutationHelper.GetMutationOf(planToMutate);
-                newGeneration.Add(mutatedDietPlan);
-            }
-
-            Debug.Assert(newGeneration.Count == NumPlansInGeneration);
-            return newGeneration.OrderBy(x => x.ScoreToTarget).ToImmutableList();
         }
 
         /// <summary>
@@ -183,9 +147,10 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
 
         private void LogGenerationsBestScore(Int32 generationNumber, Double score)
         {
-            if (generationNumber % 100 == 0)
+            if (generationNumber % 50 == 0)
             {
-                Console.WriteLine($"Thread {_threadNumber}, generation #{generationNumber}: best score is {score:0.00}");
+                Console.WriteLine(
+                    $"Thread {_threadNumber}, generation #{generationNumber}: best score is {score:0.00}");
             }
         }
     }

@@ -34,27 +34,12 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
             List<DietPlanItem> childItems = parent1.DietPlanItems.Take(crossoverIndex)
                 .Union(parent2.DietPlanItems.Skip(crossoverIndex).Take(numItems - crossoverIndex)).ToList();
 
-            // each value radomized individually
-            //var childItems = new List<DietPlanItem>(numItems);
-            //for (var i = 0; i < numItems; i++)
-            //{
-            //    DietPlanItem itemToAdd =
-            //        SelectRandomlyOneOfTwoPlanItems(parent1.DietPlanItems[i], parent2.DietPlanItems[i]);
-            //    childItems.Add(itemToAdd);
-            //}
 
             Debug.Assert(childItems.Count == parent1.DietPlanItems.Count);
 
             DietCharacteristics dietCharacteristics = _dietCharacteristicsCalculator.GetCharacteristics(childItems);
             Double scoreToTarget = _scoreCalculator.CalculateScore(dietCharacteristics, _dietTarget);
             return new DietPlan(childItems, dietCharacteristics, scoreToTarget);
-        }
-
-        private DietPlanItem SelectRandomlyOneOfTwoPlanItems(DietPlanItem item1, DietPlanItem item2)
-        {
-            return _randomNumberGenerator.NextDouble() < 0.4
-                ? item1
-                : item2;
         }
     }
 }

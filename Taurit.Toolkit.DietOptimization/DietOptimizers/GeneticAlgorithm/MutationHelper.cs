@@ -10,9 +10,10 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
     public sealed class MutationHelper
     {
         /// <summary>
-        ///     Value smaller than 1 percent is recommended in most sources (eg. 0.001)
+        ///     Value smaller than 1 percent is recommended in most sources (eg. 0.001).
+        ///     0.05 works best here so far
         /// </summary>
-        private const Double ChanceOfAmountMutation = 0.001;
+        private const Double ChanceOfAmountMutation = 0.04;
 
         [NotNull] private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
         [NotNull] private readonly DietTarget _dietTarget;
@@ -21,7 +22,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         ///     This parameters seems to be the key to control how quickly algorithm converges. Bigger values (50-80) work best at
         ///     the beginning, but lower (10-20) might be better for fine-tuning
         /// </summary>
-        private readonly Int32 _maxGramsToAddDuringMutation = 180;
+        private readonly Int32 _maxGramsToAddDuringMutation = 140;
 
         private readonly Random _randomNumberGenerator = new Random(123);
         [NotNull] private readonly ScoreCalculator _scoreCalculator;

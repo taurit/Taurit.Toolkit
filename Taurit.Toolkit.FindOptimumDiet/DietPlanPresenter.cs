@@ -79,16 +79,16 @@ namespace Taurit.Toolkit.FindOptimumDiet
 
         private void DisplayMainMetadata(DietPlan diet, DietTarget referenceValue)
         {
-            DisplayInColor("Score (lower is better)", $"{diet.ScoreToTarget:0}", "", "0", ConsoleColor.Red);
+            DisplayInColor("Score (lower is better)", $"{diet.ScoreToTarget:0}", "", "0", ConsoleColor.Cyan);
             Int32 numSkippedProducts = diet.DietPlanItems.Count(x => x.AmountGrams == 0);
-            DisplayInColor("Num skipped products", $"{numSkippedProducts:0}", "", "-", ConsoleColor.White);
+            DisplayInColor("Num skipped products", $"{numSkippedProducts:0}", "", "-", ConsoleColor.Gray);
             Display("Energy", diet.Characteristics.TotalKcalIntake, "kcal",
                 referenceValue.TotalKcalIntake - DietTarget.EnergyToleranceMarginKcal,
                 referenceValue.TotalKcalIntake + DietTarget.EnergyToleranceMarginKcal);
             DisplayInColor("Price", $"{diet.Characteristics.TotalPrice:0.00}", "PLN",
-                $"{referenceValue.MaxPrice}", ConsoleColor.Gray);
+                $"{referenceValue.MaxPrice}", ConsoleColor.Green);
             DisplayInColor("Avg monthly price", $"{diet.Characteristics.TotalPrice * (365d / 12d):0.00}", "PLN",
-                $"{referenceValue.MaxPrice * (365d / 12d):0.00}", ConsoleColor.Gray);
+                $"{referenceValue.MaxPrice * (365d / 12d):0.00}", ConsoleColor.Green);
         }
 
         private static void DisplayHeader()
