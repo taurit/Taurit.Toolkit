@@ -14,7 +14,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         /// <summary>
         ///     How many diet plans a single generation of genetic algorithm contains?
         /// </summary>
-        private const Int32 NumPlansInGeneration = 200;
+        private const Int32 NumPlansInGeneration = 600;
 
         /// <summary>
         ///     Elitist selection
@@ -26,18 +26,23 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         /// <summary>
         ///     How many generations are created/analyzed by single run of <see cref="Optimize" />?
         /// </summary>
-        private const Int32 MaxNumGenerations = 50_000;
+        private const Int32 MaxNumGenerations = 1_000;
 
-        private const Int32 AcceptableScore = 5;
+        private const Int32 AcceptableScore = 50;
+
 
         [NotNull] private readonly MutationHelper _mutationHelper;
 
+        private readonly Random _randomNumberGenerator = new Random(123);
+
         [NotNull] private readonly StartPointProvider _startPointProvider;
+        [NotNull] private readonly CrossoverHelper _crossoverHelper;
 
         public GeneticAlgorithmDietOptimizer([NotNull] DietCharacteristicsCalculator dietCharacteristicsCalculator,
             [NotNull] ScoreCalculator scoreCalculator,
             [NotNull] DietTarget dietTarget)
         {
+            _crossoverHelper = new CrossoverHelper(dietCharacteristicsCalculator, scoreCalculator, dietTarget);
             _startPointProvider = new StartPointProvider(dietCharacteristicsCalculator, scoreCalculator, dietTarget);
             _mutationHelper = new MutationHelper(dietCharacteristicsCalculator, scoreCalculator, dietTarget);
         }
@@ -109,27 +114,56 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         }
 
         /// <summary>
-        /// Experimental selection method
+        ///     Experimental selection method
+        ///     Source: http://aragorn.pb.bialystok.pl/~wkwedlo/EA2.pdf
+        ///     also: http://www.k0pper.republika.pl/geny.htm
         /// </summary>
-        /// <param name="currentGeneration"></param>
-        /// <returns></returns>
         private ImmutableList<DietPlan> CreateNextGeneration(ImmutableList<DietPlan> currentGeneration)
         {
-            Debug.Assert(NumPlansSurivingGeneration < NumPlansInGeneration);
-            Int32 numNewPlansToGenerate = NumPlansInGeneration - NumPlansSurivingGeneration;
-
             var newGeneration = new List<DietPlan>(NumPlansInGeneration);
 
-            // mutated plans will fill the shoes of the ones that didn't survive
-            List<DietPlan> plansToMutate = currentGeneration.Take(numNewPlansToGenerate).ToList();
-            //var plansToMutate = Enumerable.Range(0, numNewPlansToGenerate).Select(x => currentGeneration.First()).ToList();
+            Double sumOfInvertedScores = currentGeneration.Sum(x => 1 / x.ScoreToTarget);
 
-            newGeneration.AddRange(currentGeneration.Take(NumPlansSurivingGeneration));
-            foreach (DietPlan planToMutate in plansToMutate)
+            // select parents
+            var planWithProbabilities = new List<DietPlanWithProbability>(currentGeneration.Count);
+            var accumulatedProbability = 0d;
+            foreach (DietPlan plan in currentGeneration)
             {
-                DietPlan mutatedDietPlan = _mutationHelper.GetMutationOf(planToMutate);
-                newGeneration.Add(mutatedDietPlan);
+                // w maksymalizacji: Przystosowanie / Suma przystosowania wszystkich osobników
+
+                Double probability = 1 / plan.ScoreToTarget / sumOfInvertedScores; // for minimization
+                Debug.Assert(probability >= 0);
+                Debug.Assert(probability <= 1);
+                accumulatedProbability += probability;
+                planWithProbabilities.Add(new DietPlanWithProbability(plan, accumulatedProbability));
             }
+
+            // parents matching (crossover)
+            for (var j = 0; j < NumPlansInGeneration; j++)
+            {
+                
+                // probability might end at 99.99999... due to rounding errors, therefore fallback is provided
+                DietPlan parent1 = null, parent2 = null;
+                // avoid using parent, as it leads to elitist selection and domination of population by this parent
+                while (parent1 == parent2) 
+                {
+                    Double indexForParent1 = _randomNumberGenerator.NextDouble();
+                    Double indexForParent2 = _randomNumberGenerator.NextDouble();
+
+                    parent1 =
+                        planWithProbabilities.FirstOrDefault(x => x.AccumulatedProbability > indexForParent1)
+                            ?.DietPlan ?? planWithProbabilities.Last().DietPlan;
+                    parent2 =
+                        planWithProbabilities.FirstOrDefault(x => x.AccumulatedProbability > indexForParent2)
+                            ?.DietPlan ?? planWithProbabilities.First().DietPlan; // first in fallback to avoid choosing parent1 again
+                }
+
+                DietPlan child = _crossoverHelper.GetChild(parent1, parent2);
+                newGeneration.Add(child);
+            }
+
+            // mutation
+            newGeneration = newGeneration.Select(x => _mutationHelper.GetMutationOf(x)).ToList();
 
             Debug.Assert(newGeneration.Count == NumPlansInGeneration);
             return newGeneration.OrderBy(x => x.ScoreToTarget).ToImmutableList();
@@ -138,7 +172,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
 
         private void LogGenerationsBestScore(Int32 generationNumber, Double score)
         {
-            if (generationNumber % 1000 == 0)
+            if (generationNumber % 100 == 0)
             {
                 Console.WriteLine($"Generation #{generationNumber}: best score is {score:0.00}");
             }

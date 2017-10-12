@@ -9,23 +9,22 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
 {
     public sealed class MutationHelper
     {
+        /// <summary>
+        ///     Value smaller than 1 percent is recommended in most sources (eg. 0.001)
+        /// </summary>
+        private const Double ChanceOfAmountMutation = 0.03;
+
         [NotNull] private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
-        [NotNull] private readonly ScoreCalculator _scoreCalculator;
         [NotNull] private readonly DietTarget _dietTarget;
-#if DEBUG
-        // constant seed might be used for results to be repeatable while developing/debugging
-        private readonly Random _randomNumberGenerator = new Random(123);
-#else
-        private readonly Random _randomNumberGenerator = new Random();
-#endif
+
         /// <summary>
         ///     This parameters seems to be the key to control how quickly algorithm converges. Bigger values (50-80) work best at
         ///     the beginning, but lower (10-20) might be better for fine-tuning
         /// </summary>
         private readonly Int32 _maxGramsToAddDuringMutation = 180;
 
-
-        private const Int32 ChanceOfAmountMutationPercent = 1;
+        private readonly Random _randomNumberGenerator = new Random(123);
+        [NotNull] private readonly ScoreCalculator _scoreCalculator;
 
         public MutationHelper([NotNull] DietCharacteristicsCalculator dietCharacteristicsCalculator,
             [NotNull] ScoreCalculator scoreCalculator,
@@ -45,7 +44,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
             {
                 Int32 amount = dietPlanItem.AmountGrams;
                 Boolean amountShouldBeModified = dietPlanItem.FoodProduct.Metadata.FixedAmountG == null &&
-                                                 ReturnTrueWithChanceOf(ChanceOfAmountMutationPercent);
+                                                 ReturnTrueWithChanceOf(ChanceOfAmountMutation);
                 if (amountShouldBeModified)
                 {
                     Int32 gramsToAdd = _randomNumberGenerator.Next(2 * _maxGramsToAddDuringMutation) -
@@ -69,9 +68,16 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
             return new DietPlan(newDietPlanItems, characteristics, score);
         }
 
-        private Boolean ReturnTrueWithChanceOf(Int32 chance)
+        /// <summary>
+        ///     Returns true with probability of <paramref name="chance" />
+        /// </summary>
+        /// <param name="chance">value from range 0-1</param>
+        /// <returns></returns>
+        private Boolean ReturnTrueWithChanceOf(Double chance)
         {
-            return _randomNumberGenerator.Next(100) == chance;
+            Debug.Assert(chance >= 0);
+            Debug.Assert(chance <= 1);
+            return _randomNumberGenerator.NextDouble() < chance;
         }
     }
 }

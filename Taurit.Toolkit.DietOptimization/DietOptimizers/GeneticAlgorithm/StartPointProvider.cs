@@ -12,12 +12,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         [NotNull] private readonly ScoreCalculator _scoreCalculator;
         [NotNull] private readonly DietTarget _dietTarget;
 
-#if DEBUG
-        // constant seed might be used for results to be repeatable while developing/debugging
         private readonly Random _randomNumberGenerator = new Random(123);
-#else
-        private readonly Random _randomNumberGenerator = new Random();
-#endif
 
         public StartPointProvider([NotNull] DietCharacteristicsCalculator dietCharacteristicsCalculator,
             [NotNull] ScoreCalculator scoreCalculator,
