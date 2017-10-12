@@ -10,52 +10,34 @@ namespace Taurit.Toolkit.FindOptimumDiet
     /// </summary>
     internal sealed class DietPlanPresenter
     {
-        private readonly ConsoleColor carbsColor = ConsoleColor.Green;
-        private readonly ConsoleColor fatColor = ConsoleColor.Yellow;
-        private readonly ConsoleColor proteinColor = ConsoleColor.Cyan; // color convention same as in FitAtu app
 
         internal void Display(DietPlan diet, DietTarget referenceValue)
         {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"Diet plan");
-            Console.WriteLine("------------------------------------------------");
+            DisplayHeader();
+            DisplaySkippedProducts(diet);
+            DisplaySeparator();
+            DisplayChosenProducts(diet);
+            DisplaySeparator();
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Int32 numSkippedProducts = diet.DietPlanItems.Count(x => x.AmountGrams == 0);
-            foreach (DietPlanItem item in diet.DietPlanItems.Where(x => x.AmountGrams > 0)) // skip 0g entries
-                Console.WriteLine($"{(item.AmountGrams + "g").PadLeft(6)}: {item.FoodProduct.Name}");
+            DisplayMainMetadata(diet, referenceValue);
 
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("------------------------------------------------");
+            DisplayMacronutrientsMetadata(diet, referenceValue);
+            DisplayVitaminAmounts(diet);
+            DisplayMineralAmounts(diet);
 
-            DisplayInColor("Score (lower is better)", $"{diet.ScoreToTarget:0}", "", "0", ConsoleColor.Red);
-            DisplayInColor("Num skipped products", $"{numSkippedProducts:0}", "", "-", ConsoleColor.White);
-            Display("Energy", diet.Characteristics.TotalKcalIntake, "kcal",
-                referenceValue.TotalKcalIntake - DietTarget.EnergyToleranceMarginKcal,
-                referenceValue.TotalKcalIntake + DietTarget.EnergyToleranceMarginKcal);
-            DisplayInColor("Price", $"{diet.Characteristics.TotalPrice:0.00}", "PLN",
-                $"{referenceValue.MaxPrice}", ConsoleColor.Gray);
-            DisplayInColor("Avg monthly price", $"{diet.Characteristics.TotalPrice * (365d / 12d):0.00}", "PLN",
-                $"{referenceValue.MaxPrice * (365d / 12d):0.00}", ConsoleColor.Gray);
+            DisplayTotalGramsEaten(diet);
+        }
 
+        private void DisplayTotalGramsEaten(DietPlan diet)
+        {
+            DisplayInColor("Total grams eaten*", $"{diet.Characteristics.TotalGramsEaten:0}", "g",
+                null, ConsoleColor.White);
+            Console.WriteLine(
+                "* Average is about 1.8 kg across the globe, in the US it's about 2.7 kg, where as Somalia it's about 1 kg.");
+        }
 
-            Display("Total protein", diet.Characteristics.TotalProtein, "g",
-                referenceValue.TotalProtein - DietTarget.MacronutrientToleranceMarginG,
-                referenceValue.TotalProtein + DietTarget.MacronutrientToleranceMarginG);
-            Display("Total carbohydrates", diet.Characteristics.TotalCarbs, "g",
-                referenceValue.TotalCarbs - DietTarget.MacronutrientToleranceMarginG,
-                referenceValue.TotalCarbs + DietTarget.MacronutrientToleranceMarginG);
-            Display("Total fat", diet.Characteristics.TotalFat, "g",
-                referenceValue.TotalFat - DietTarget.MacronutrientToleranceMarginG,
-                referenceValue.TotalFat + DietTarget.MacronutrientToleranceMarginG);
-
-            Display("Total Vitamin A", diet.Characteristics.TotalVitaminAiu, "IU",
-                DietTarget.MinDailyVitaminAiu);
-            Display("Total Vitamin C", diet.Characteristics.TotalVitaminCMg, "Mg",
-                DietTarget.MinDailyVitaminCMg, DietTarget.MaxDailyVitaminCMg);
-            DisplayInColor("Total Fiber", $"{diet.Characteristics.TotalFiberGrams:0}", "g",
-                $"14g for each 1000 kcal", ConsoleColor.White);
-
+        private void DisplayMineralAmounts(DietPlan diet)
+        {
             Display("Total Iron", diet.Characteristics.TotalIronMg, "Mg",
                 DietTarget.MinDailyIronMg, DietTarget.MaxDailyIronMg);
             Display("Total Calcium", diet.Characteristics.TotalCalciumMg, "Mg",
@@ -70,11 +52,71 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 DietTarget.MinDailySodiumMg, DietTarget.MaxDailySodiumMg);
             Display("Total Zinc", diet.Characteristics.TotalZincMg, "Mg",
                 DietTarget.MinDailyZincMg, DietTarget.MaxDailyZincMg);
+        }
 
-            DisplayInColor("Total grams eaten*", $"{diet.Characteristics.TotalGramsEaten:0}", "g",
-                null, fatColor);
-            Console.WriteLine(
-                "* Average is about 1.8 kg across the globe, in the US it's about 2.7 kg, where as Somalia it's about 1 kg.");
+        private void DisplayVitaminAmounts(DietPlan diet)
+        {
+            Display("Total Vitamin A", diet.Characteristics.TotalVitaminAiu, "IU",
+                DietTarget.MinDailyVitaminAiu);
+            Display("Total Vitamin C", diet.Characteristics.TotalVitaminCMg, "Mg",
+                DietTarget.MinDailyVitaminCMg, DietTarget.MaxDailyVitaminCMg);
+        }
+
+        private void DisplayMacronutrientsMetadata(DietPlan diet, DietTarget referenceValue)
+        {
+            Display("Total protein", diet.Characteristics.TotalProtein, "g",
+                referenceValue.TotalProtein - DietTarget.MacronutrientToleranceMarginG,
+                referenceValue.TotalProtein + DietTarget.MacronutrientToleranceMarginG);
+            Display("Total carbohydrates", diet.Characteristics.TotalCarbs, "g",
+                referenceValue.TotalCarbs - DietTarget.MacronutrientToleranceMarginG,
+                referenceValue.TotalCarbs + DietTarget.MacronutrientToleranceMarginG);
+            Display("Total fat", diet.Characteristics.TotalFat, "g",
+                referenceValue.TotalFat - DietTarget.MacronutrientToleranceMarginG,
+                referenceValue.TotalFat + DietTarget.MacronutrientToleranceMarginG);
+            DisplayInColor("Total Fiber", $"{diet.Characteristics.TotalFiberGrams:0}", "g",
+                $"14g for each 1000 kcal", ConsoleColor.White);
+        }
+
+        private void DisplayMainMetadata(DietPlan diet, DietTarget referenceValue)
+        {
+            DisplayInColor("Score (lower is better)", $"{diet.ScoreToTarget:0}", "", "0", ConsoleColor.Red);
+            Int32 numSkippedProducts = diet.DietPlanItems.Count(x => x.AmountGrams == 0);
+            DisplayInColor("Num skipped products", $"{numSkippedProducts:0}", "", "-", ConsoleColor.White);
+            Display("Energy", diet.Characteristics.TotalKcalIntake, "kcal",
+                referenceValue.TotalKcalIntake - DietTarget.EnergyToleranceMarginKcal,
+                referenceValue.TotalKcalIntake + DietTarget.EnergyToleranceMarginKcal);
+            DisplayInColor("Price", $"{diet.Characteristics.TotalPrice:0.00}", "PLN",
+                $"{referenceValue.MaxPrice}", ConsoleColor.Gray);
+            DisplayInColor("Avg monthly price", $"{diet.Characteristics.TotalPrice * (365d / 12d):0.00}", "PLN",
+                $"{referenceValue.MaxPrice * (365d / 12d):0.00}", ConsoleColor.Gray);
+        }
+
+        private static void DisplayHeader()
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"Diet plan");
+            DisplaySeparator();
+        }
+
+        private static void DisplaySeparator()
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("------------------------------------------------");
+        }
+
+        private static void DisplayChosenProducts(DietPlan diet)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            foreach (DietPlanItem item in diet.DietPlanItems.Where(x => x.AmountGrams > 0)) // skip 0g entries
+                Console.WriteLine($"{(item.AmountGrams + "g").PadLeft(6)}: {item.FoodProduct.Name}");
+        }
+
+        private static void DisplaySkippedProducts(DietPlan diet)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            foreach (DietPlanItem item in diet.DietPlanItems.Where(x => x.AmountGrams == 0))
+                Console.WriteLine($"{(item.AmountGrams + "g").PadLeft(6)}: {item.FoodProduct.Name}");
+            
         }
 
         private void Display([NotNull] String label,
