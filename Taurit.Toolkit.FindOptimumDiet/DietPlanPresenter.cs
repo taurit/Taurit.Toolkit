@@ -93,7 +93,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
             ConsoleColor valueColor = value >= minReferenceValue && value <= maxReferenceValue
                 ? ConsoleColor.White
                 : ConsoleColor.Red;
-            DisplayInColor(label, $"{value:0}", unit, $"{minReferenceValue:0} - {maxReferenceValue:0}", valueColor);
+            DisplayInColor(label, $"{value:0.0}", unit, $"{minReferenceValue:0.0} - {maxReferenceValue:0.0}", valueColor);
         }
 
         private void DisplayInColor([NotNull] String label, [NotNull] String value, [NotNull] String unit,

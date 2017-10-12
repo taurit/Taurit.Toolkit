@@ -12,7 +12,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         /// <summary>
         ///     Value smaller than 1 percent is recommended in most sources (eg. 0.001)
         /// </summary>
-        private const Double ChanceOfAmountMutation = 0.03;
+        private const Double ChanceOfAmountMutation = 0.001;
 
         [NotNull] private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
         [NotNull] private readonly DietTarget _dietTarget;

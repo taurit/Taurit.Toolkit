@@ -28,7 +28,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         /// </summary>
         private const Int32 MaxNumGenerations = 1_000;
 
-        private const Int32 AcceptableScore = 50;
+        private const Int32 AcceptableScore = 10;
 
 
         [NotNull] private readonly MutationHelper _mutationHelper;
