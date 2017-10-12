@@ -55,7 +55,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
             // specify target for the optimum diet
             var dietTargets = new DietTarget(
                 3000, // 3000 kcal
-                30, // 30 PLN a day = 900 PLN/month average
+                25, // 30 PLN a day = 900 PLN/month average
                 203, // protein - target for building muscle
                 100, // fat - a bit higher than recommended for diet maintainability
                 323 //, // carbs for the rest of calories
