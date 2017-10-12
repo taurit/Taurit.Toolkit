@@ -104,6 +104,15 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public const Double EnergyToleranceMarginKcal = 100;
         public const Double FiberToleranceMarginG = 5;
 
+        /// <summary>
+        ///     "No matter how many calories you eat per day, the amount of trans fat you should eat remains constant: as little as
+        ///     possible"
+        ///     "Since avoiding trans fats altogether is difficult, the American Heart Association recommends that no more than 1
+        ///     percent of your daily calories come from trans fats (..)
+        ///     this equals 2 grams of trans fat per day."
+        /// </summary>
+        public const Double MaxTransFatsG = 1;
+
         public DietTarget(Double totalKcalIntake,
             Double maxPrice,
             Double totalProtein,
@@ -116,6 +125,8 @@ namespace Taurit.Toolkit.DietOptimization.Models
             TotalFat = totalFat;
             TotalCarbs = totalCarbs;
         }
+
+        public Double MaxGramsOfSaturatedFat => DietPlan.MaxAmountEnergyFromSaturatedFats * TotalKcalIntake / 9.0d;
 
         public Double TotalKcalIntake { get; }
         public Double MaxPrice { get; }

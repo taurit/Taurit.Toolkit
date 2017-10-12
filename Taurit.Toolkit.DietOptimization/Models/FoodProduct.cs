@@ -26,7 +26,9 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Double fattyAcidsTotalMonounsaturatedG,
             Double fattyAcidsTotalPolyunsaturatedG,
             Double fattyAcidsTotalTransG,
-            Double cholesterolMg
+            Double cholesterolMg,
+            Double omega3,
+            Double omega6
         )
         {
             Name = name;
@@ -49,6 +51,8 @@ namespace Taurit.Toolkit.DietOptimization.Models
             FattyAcidsTotalPolyunsaturatedG = fattyAcidsTotalPolyunsaturatedG;
             FattyAcidsTotalTransG = fattyAcidsTotalTransG;
             CholesterolMg = cholesterolMg;
+            Omega3 = omega3;
+            Omega6 = omega6;
         }
 
         public OptimizationMetadata Metadata { get; set; }
@@ -81,6 +85,8 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public Double FattyAcidsTotalPolyunsaturatedG { get; }
         public Double FattyAcidsTotalTransG { get; }
         public Double CholesterolMg { get; }
+        public Double Omega3 { get; }
+        public Double Omega6 { get; }
         public Double CopperMg { get; set; }
         public Double ManganeseMg { get; set; }
         public Double SeleniumUg { get; set; }

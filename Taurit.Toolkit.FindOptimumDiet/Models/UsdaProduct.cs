@@ -4,6 +4,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Taurit.Toolkit.FindOptimumDiet.Models
 {
@@ -42,5 +43,74 @@ namespace Taurit.Toolkit.FindOptimumDiet.Models
         public String Cholesterol_Mg { get; set; }
         public String FattyAcidsTotalTrans_Grams { get; set; }
 
+        public Double Omega3Total => GetValue(F18D3_Grams) + GetValue(F20D5_Grams) + GetValue(F22D6_Grams) +
+                                     GetValue(F22D5_Grams);
+
+        public Double Omega6Total => GetValue(F18D2CN6_Grams) + GetValue(F18D3CN6_Grams) + GetValue(F20D4N6_Grams) +
+                                     GetValue(F20D2CN6_Grams) + GetValue(F20D3N6_Grams);
+
+        private Double GetValue(String s)
+        {
+            if (String.IsNullOrWhiteSpace(s))
+            {
+                return 0;
+            }
+
+            if (Double.TryParse(s, out var res))
+            {
+                return res;
+            }
+            return 0;
+        }
+
+        #region omega-3 acids       
+
+        /// <summary>
+        ///     ALA
+        /// </summary>
+        public String F18D3_Grams { get; set; }
+
+        /// <summary>
+        ///     EPA
+        /// </summary>
+        public String F20D5_Grams { get; set; }
+
+        /// <summary>
+        ///     DHA
+        /// </summary>
+        public String F22D6_Grams { get; set; }
+
+        /// <summary>
+        ///     DPA
+        /// </summary>
+        public String F22D5_Grams { get; set; }
+
+        #endregion
+
+        #region omega-6 acids
+
+        /// <summary>
+        ///     LA
+        /// </summary>
+        public String F18D2CN6_Grams { get; set; }
+
+        /// <summary>
+        ///     GLA
+        /// </summary>
+        public String F18D3CN6_Grams { get; set; }
+
+        /// <summary>
+        ///     AA
+        /// </summary>
+        public String F20D4N6_Grams { get; set; }
+
+        /// <summary>
+        ///     AA
+        /// </summary>
+        public String F20D2CN6_Grams { get; set; }
+
+        public String F20D3N6_Grams { get; set; }
+
+        #endregion
     }
 }

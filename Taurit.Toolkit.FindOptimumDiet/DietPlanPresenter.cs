@@ -23,7 +23,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
             DisplayMacronutrientsMetadata(diet, referenceValue);
             DisplayVitaminAmounts(diet);
             DisplayMineralAmounts(diet);
-            DisplayFatsAmounts(diet);
+            DisplayFatsAmounts(diet, referenceValue);
 
             DisplayTotalGramsEaten(diet);
         }
@@ -54,18 +54,21 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 DietTarget.MinDailyZincMg, DietTarget.MaxDailyZincMg);
         }
 
-        private void DisplayFatsAmounts(DietPlan diet)
+        private void DisplayFatsAmounts(DietPlan diet, DietTarget referenceValue)
         {
             Display("FA Saturated", diet.Characteristics.TotalFattyAcidsSaturatedG, "g",
-                0, 0); // todo range
-            Display("FA Monoun.", diet.Characteristics.TotalFattyAcidsMonounsaturatedG, "g",
-                0, 0);
-            Display("FA Polyun.", diet.Characteristics.TotalFattyAcidsPolyunsaturatedG, "g",
-                0, 0);
+                0, referenceValue.MaxGramsOfSaturatedFat);
+            Display("FA Monoun.", diet.Characteristics.TotalFattyAcidsMonounsaturatedG, "g");
+            Display("FA Polyun.", diet.Characteristics.TotalFattyAcidsPolyunsaturatedG, "g");
             Display("FA Trans", diet.Characteristics.TotalFattyAcidsTransG, "g",
-                0, 0);
-            Display("FA Cholesterol Mg", diet.Characteristics.TotalCholesterolMg, "g",
-                0, 0);
+                0, DietTarget.MaxTransFatsG);
+            Display("FA Cholesterol Mg", diet.Characteristics.TotalCholesterolMg, "Mg");
+            DisplayInColor("Omega3:Omega6 ratio", diet.Characteristics.Omega3To6Ratio, "Mg", "1:1 is best", ConsoleColor.Gray);
+        }
+
+        private void Display(String label, Double value, String unit)
+        {
+            DisplayInColor(label, $"{value:0.00}", unit, "not limited", ConsoleColor.White);
         }
 
         private void DisplayVitaminAmounts(DietPlan diet)

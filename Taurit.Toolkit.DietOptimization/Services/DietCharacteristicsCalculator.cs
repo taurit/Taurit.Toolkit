@@ -28,6 +28,8 @@ namespace Taurit.Toolkit.DietOptimization.Services
             Double totalFattyAcidsPolyunsaturatedG = 0;
             Double totalFattyAcidsTransG = 0;
             Double totalCholesterolMg = 0;
+            Double totalOmega3 = 0;
+            Double totalOmega6 = 0;
 
             var numIngredients = 0;
 
@@ -57,10 +59,14 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 totalZincMg += dietPlanItem.FoodProduct.ZincMg * amountMultiplier;
 
                 totalFattyAcidsSaturatedG += dietPlanItem.FoodProduct.FattyAcidsTotalSaturatedG * amountMultiplier;
-                totalFattyAcidsMonounsaturatedG += dietPlanItem.FoodProduct.FattyAcidsTotalMonounsaturatedG * amountMultiplier;
-                totalFattyAcidsPolyunsaturatedG += dietPlanItem.FoodProduct.FattyAcidsTotalPolyunsaturatedG * amountMultiplier;
+                totalFattyAcidsMonounsaturatedG += dietPlanItem.FoodProduct.FattyAcidsTotalMonounsaturatedG *
+                                                   amountMultiplier;
+                totalFattyAcidsPolyunsaturatedG += dietPlanItem.FoodProduct.FattyAcidsTotalPolyunsaturatedG *
+                                                   amountMultiplier;
                 totalFattyAcidsTransG += dietPlanItem.FoodProduct.FattyAcidsTotalTransG * amountMultiplier;
                 totalCholesterolMg += dietPlanItem.FoodProduct.CholesterolMg * amountMultiplier;
+                totalOmega3 += dietPlanItem.FoodProduct.Omega3 * amountMultiplier;
+                totalOmega6 += dietPlanItem.FoodProduct.Omega6 * amountMultiplier;
 
                 totalGrams += dietPlanItem.AmountGrams;
                 numIngredients += dietPlanItem.AmountGrams > 0 ? 1 : 0;
@@ -86,9 +92,11 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 totalFattyAcidsSaturatedG,
                 totalFattyAcidsMonounsaturatedG,
                 totalFattyAcidsPolyunsaturatedG,
-                totalFattyAcidsTransG, 
-                totalCholesterolMg
-                );
+                totalFattyAcidsTransG,
+                totalCholesterolMg,
+                totalOmega3,
+                totalOmega6
+            );
         }
     }
 }

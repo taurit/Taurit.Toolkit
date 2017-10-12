@@ -63,6 +63,8 @@ namespace Taurit.Toolkit.DietOptimization.Services
             score += GetScoreForSodium(diet);
             score += GetScoreForZinc(diet);
 
+            score += GetScoreForFats(diet, target);
+
             // price constraint (multiplier will largely depend on the currency and time period!)
             // eg. multiplier=100 => every dollar beyond a threshold is treated as bad as 100 kcal miss
             // currently disabled to optimize other variables faster while debugging
@@ -76,6 +78,15 @@ namespace Taurit.Toolkit.DietOptimization.Services
             // experimental: having diets with the same characteristics, prefer ones that have less ingredients (easier shopping)
             score += PunishForLargeNumberOfIngredients(diet);
 
+            return score;
+        }
+
+        private Double GetScoreForFats(DietCharacteristics diet, DietTarget target)
+        {
+            var score = 0d;
+            
+            score += PunishForDiffAbove(diet.TotalFattyAcidsSaturatedG, target.MaxGramsOfSaturatedFat, 50d);
+            score += PunishForDiffAbove(diet.TotalFattyAcidsTransG, DietTarget.MaxTransFatsG, 100d);
             return score;
         }
 

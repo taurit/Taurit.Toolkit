@@ -26,7 +26,9 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Double totalFattyAcidsMonounsaturatedG,
             Double totalFattyAcidsPolyunsaturatedG,
             Double totalFattyAcidsTransG,
-            Double totalCholesterolMg
+            Double totalCholesterolMg,
+            Double totalOmega3,
+            Double totalOmega6
         )
         {
             Debug.Assert(totalKcalIntake >= 0);
@@ -51,6 +53,8 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Debug.Assert(totalFattyAcidsSaturatedG >= 0);
             Debug.Assert(totalFattyAcidsTransG >= 0);
             Debug.Assert(totalCholesterolMg >= 0);
+            Debug.Assert(totalOmega3 >= 0);
+            Debug.Assert(totalOmega6 >= 0);
 
             TotalKcalIntake = totalKcalIntake;
             TotalPrice = totalPrice;
@@ -74,6 +78,8 @@ namespace Taurit.Toolkit.DietOptimization.Models
             TotalFattyAcidsPolyunsaturatedG = totalFattyAcidsPolyunsaturatedG;
             TotalFattyAcidsTransG = totalFattyAcidsTransG;
             TotalCholesterolMg = totalCholesterolMg;
+            TotalOmega3 = totalOmega3;
+            TotalOmega6 = totalOmega6;
         }
 
         public Double TotalKcalIntake { get; }
@@ -100,5 +106,11 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public Double TotalFattyAcidsPolyunsaturatedG { get; }
         public Double TotalFattyAcidsTransG { get; }
         public Double TotalCholesterolMg { get; }
+        public Double TotalOmega3 { get; }
+        public Double TotalOmega6 { get; }
+
+        public String Omega3To6Ratio => TotalOmega6 > TotalOmega3
+            ? $"1:{TotalOmega6 / TotalOmega3:0.00}"
+            : $"{TotalOmega3 / TotalOmega6:0.00}:1";
     }
 }

@@ -70,7 +70,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
             // todo: move to json, creating a generic solution
             IReadOnlyCollection<FoodProduct> productsFromUsdaDatabase = GetProductsFromUsdaDatabase(productsToConsider);
             var kfdProteinSupplement = new FoodProduct("KFD premium WPC 80",
-                415, 79, 7, 9, 0, 0, 0, 0, 0, 0, 0, 0, 581.37, 0, 0, 0, 0, 0, 0);
+                415, 79, 7, 9, 0, 0, 0, 0, 0, 0, 0, 0, 581.37, 0, 0, 0, 0, 0, 0, 0, 0);
             kfdProteinSupplement.Metadata =
                 new OptimizationMetadata
                 {
