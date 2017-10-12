@@ -10,7 +10,6 @@ namespace Taurit.Toolkit.FindOptimumDiet
     /// </summary>
     internal sealed class DietPlanPresenter
     {
-
         internal void Display(DietPlan diet, DietTarget referenceValue)
         {
             DisplayHeader();
@@ -107,7 +106,8 @@ namespace Taurit.Toolkit.FindOptimumDiet
         private static void DisplayChosenProducts(DietPlan diet)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            foreach (DietPlanItem item in diet.DietPlanItems.Where(x => x.AmountGrams > 0)) // skip 0g entries
+            foreach (DietPlanItem item in diet.DietPlanItems.Where(x => x.AmountGrams > 0)
+                .OrderByDescending(x => x.AmountGrams)) // skip 0g entries
                 Console.WriteLine($"{(item.AmountGrams + "g").PadLeft(6)}: {item.FoodProduct.Name}");
         }
 
@@ -116,7 +116,6 @@ namespace Taurit.Toolkit.FindOptimumDiet
             Console.ForegroundColor = ConsoleColor.Red;
             foreach (DietPlanItem item in diet.DietPlanItems.Where(x => x.AmountGrams == 0))
                 Console.WriteLine($"{(item.AmountGrams + "g").PadLeft(6)}: {item.FoodProduct.Name}");
-            
         }
 
         private void Display([NotNull] String label,
