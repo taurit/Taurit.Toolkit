@@ -79,7 +79,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
         private void DisplayMainMetadata(DietPlan diet, DietTarget referenceValue)
         {
             DisplayInColor("Score (lower is better)", $"{diet.ScoreToTarget:0}", "", "0", ConsoleColor.Cyan);
-            Int32 numSkippedProducts = diet.DietPlanItems.Count(x => x.AmountGrams == 0);
+            Int32 numSkippedProducts = diet.DietPlanItems.Count(x => Math.Abs(x.AmountGrams) < 0.1);
             DisplayInColor("Num skipped products", $"{numSkippedProducts:0}", "", "-", ConsoleColor.Gray);
             Display("Energy", diet.Characteristics.TotalKcalIntake, "kcal",
                 referenceValue.TotalKcalIntake - DietTarget.EnergyToleranceMarginKcal,
@@ -108,14 +108,14 @@ namespace Taurit.Toolkit.FindOptimumDiet
             Console.ForegroundColor = ConsoleColor.Green;
             foreach (DietPlanItem item in diet.DietPlanItems.Where(x => x.AmountGrams > 0)
                 .OrderByDescending(x => x.AmountGrams)) // skip 0g entries
-                Console.WriteLine($"{(item.AmountGrams + "g").PadLeft(6)}: {item.FoodProduct.Name}");
+                Console.WriteLine($"{(item.AmountGrams.ToString("0.00") + "g").PadLeft(10)}: {item.FoodProduct.Name}");
         }
 
         private static void DisplaySkippedProducts(DietPlan diet)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            foreach (DietPlanItem item in diet.DietPlanItems.Where(x => x.AmountGrams == 0))
-                Console.WriteLine($"{(item.AmountGrams + "g").PadLeft(6)}: {item.FoodProduct.Name}");
+            foreach (DietPlanItem item in diet.DietPlanItems.Where(x => Math.Abs(x.AmountGrams) < 0.1))
+                Console.WriteLine($"{(item.AmountGrams.ToString("0.00") + "g").PadLeft(10)}: {item.FoodProduct.Name}");
         }
 
         private void Display([NotNull] String label,

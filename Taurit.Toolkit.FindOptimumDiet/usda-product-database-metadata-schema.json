@@ -19,8 +19,20 @@
             "description": "Price of 1 kg of product."
           },
           "FixedAmountG": {
-            "type": "integer",
+            "type": "number",
             "description": "Non-negotiable, fixed amount of the product."
+          },
+          "MinAmountG": {
+            "type": "number",
+            "description": "Hard limit for minimum amount of the product."
+          },
+          "MaxAmountG": {
+            "type": "number",
+            "description": "Hard limit for maximum amount of the product."
+          },
+          "StartAmountG": {
+            "type": "number",
+            "description": "Hint for optimizer telling where to start."
           },
           "Comment": {
             "type": "string",

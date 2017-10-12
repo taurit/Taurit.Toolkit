@@ -21,7 +21,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Double totalPotassiumMg,
             Double totalSodiumMg,
             Double totalZincMg,
-            Int32 totalGramsEaten)
+            Double totalGramsEaten)
         {
             Debug.Assert(totalKcalIntake >= 0);
             Debug.Assert(totalPrice >= 0);
@@ -78,6 +78,6 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public Double TotalSodiumMg { get; }
         public Double TotalZincMg { get; }
 
-        public Int32 TotalGramsEaten { get; }
+        public Double TotalGramsEaten { get; }
     }
 }

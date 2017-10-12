@@ -43,7 +43,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
             var newDietPlanItems = new List<DietPlanItem>(basePlan.DietPlanItems.Count);
             foreach (DietPlanItem dietPlanItem in basePlan.DietPlanItems)
             {
-                Int32 amount = dietPlanItem.AmountGrams;
+                Double amount = dietPlanItem.AmountGrams;
                 Boolean amountShouldBeModified = dietPlanItem.FoodProduct.Metadata.FixedAmountG == null &&
                                                  ReturnTrueWithChanceOf(ChanceOfAmountMutation);
                 if (amountShouldBeModified)
@@ -55,6 +55,11 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
                     {
                         amount = 0;
                     }
+
+                    if (dietPlanItem.FoodProduct.Metadata.MaxAmountG.HasValue && amount > dietPlanItem.FoodProduct.Metadata.MaxAmountG)
+                        amount = dietPlanItem.FoodProduct.Metadata.MaxAmountG.Value;
+                    if (dietPlanItem.FoodProduct.Metadata.MinAmountG.HasValue && amount < dietPlanItem.FoodProduct.Metadata.MinAmountG)
+                        amount = dietPlanItem.FoodProduct.Metadata.MinAmountG.Value;
                 }
 
                 var newDietPlanItem = new DietPlanItem(dietPlanItem.FoodProduct, amount);

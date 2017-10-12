@@ -25,7 +25,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
             Double totalZincMg = 0;
             var numIngredients = 0;
 
-            var totalGrams = 0;
+            var totalGrams = 0d;
             foreach (DietPlanItem dietPlanItem in dietPlanItems)
             {
                 Double amountMultiplier = dietPlanItem.AmountGrams / 100.0;

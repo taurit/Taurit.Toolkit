@@ -31,6 +31,23 @@ namespace Taurit.Toolkit.DietOptimization.Models
         /// </summary>
         [CanBeNull]
         [JsonProperty]
-        public Int32? FixedAmountG { get; set; }
+        public Double? FixedAmountG { get; set; }
+
+        [CanBeNull]
+        [JsonProperty]
+        public Double? MinAmountG { get; set; }
+
+        [CanBeNull]
+        [JsonProperty]
+        public Double? MaxAmountG { get; set; }
+
+        /// <summary>
+        ///     Hint for optimizer that defines start amount for this product.
+        ///     This amount is likely to change during optimization, but will be used as a starting point in all plans in first
+        ///     generation.
+        /// </summary>
+        [CanBeNull]
+        [JsonProperty]
+        public Double? StartAmountG { get; set; }
     }
 }

@@ -83,8 +83,9 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 new OptimizationMetadata
                 {
                     Name = kfdProteinSupplement.Name,
-                    PricePerKg = 60
+                    PricePerKg = 60,
                     /*FixedAmountG = 2 * 40*/
+                    MaxAmountG = 2*40
                 };
 
             return productsFromUsdaDatabase.Union(new List<FoodProduct>
@@ -104,6 +105,12 @@ namespace Taurit.Toolkit.FindOptimumDiet
 
             Debug.Assert(productsMetadata != null, "Deserialization failed");
             Debug.Assert(productsMetadata.Products != null, "Deserialization of product list failed");
+            Debug.Assert(productsMetadata.Products.All(x => !(x.FixedAmountG != null && x.MinAmountG != null)));
+            Debug.Assert(productsMetadata.Products.All(x => !(x.FixedAmountG != null && x.MaxAmountG != null)));
+            Debug.Assert(productsMetadata.Products.All(
+                x => !(x.MinAmountG != null && x.MaxAmountG != null && x.MinAmountG >= x.MaxAmountG)));
+
+
             return productsMetadata.Products.ToImmutableList();
         }
     }

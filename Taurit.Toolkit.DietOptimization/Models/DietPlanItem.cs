@@ -6,7 +6,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
     [DebuggerDisplay("{FoodProduct.Name}, {AmountGrams}g")]
     public class DietPlanItem
     {
-        public DietPlanItem(FoodProduct foodProduct, Int32 amountGrams)
+        public DietPlanItem(FoodProduct foodProduct, Double amountGrams)
         {
             Debug.Assert(amountGrams >= 0);
 
@@ -15,6 +15,6 @@ namespace Taurit.Toolkit.DietOptimization.Models
         }
 
         public FoodProduct FoodProduct { get; }
-        public Int32 AmountGrams { get; }
+        public Double AmountGrams { get; }
     }
 }

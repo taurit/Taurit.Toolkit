@@ -35,10 +35,11 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
 
             foreach (FoodProduct product in availableProducts)
             {
-                Int32 randomAmount =
+                Double randomAmount =
                     _randomNumberGenerator
-                        .Next(100); // experimental
-                Int32 amount = product.Metadata.FixedAmountG ?? randomAmount;
+                        .NextDouble()*100; // experimental
+                Double amount = product.Metadata.FixedAmountG ?? product.Metadata.StartAmountG ?? product.Metadata.MinAmountG ??
+                               product.Metadata.MaxAmountG ?? randomAmount;
                 dietPlanItems.Add(new DietPlanItem(product, amount));
                 //dietPlanItems.Add(new DietPlanItem(product, 0)); // what if I start with 0
                 // ^ better start point when there's a lot of product to choose from (start point closer to minimum), but approaching optimum seems slow and almost no product has 0 grams
