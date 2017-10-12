@@ -27,10 +27,9 @@ namespace Taurit.Toolkit.DietOptimization.Models
 
         /// <summary>
         ///     Upper tolerance 10 000 IU, https://ods.od.nih.gov/factsheets/VitaminA-HealthProfessional/
-        ///     This limit refers to pre-formed Vitamin A, which can be found in foods and dietary supplements as palmitate, acetate or fish liver oil, all of which are derived from animal sources.
+        ///     This limit refers to pre-formed Vitamin A, which can be found in foods and dietary supplements as palmitate,
+        ///     acetate or fish liver oil, all of which are derived from animal sources.
         /// </summary>
-        //public const Double MaxDailyVitaminAiu = 10_000;
-
         /// <summary>
         ///     https://ods.od.nih.gov/factsheets/Iron-Consumer/
         /// </summary>
@@ -96,6 +95,14 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public const Double MinDailyZincMg = 11;
         public const Double MaxDailyZincMg = 40;
 
+        /// <summary>
+        ///     Margin for matronutrients in attempt to prevent optimization from falling into local minima (and not converging).
+        ///     This value might need to be tuned or removed if it does not help.
+        /// </summary>
+        public const Double MacronutrientToleranceMarginG = 10;
+
+        public const Double EnergyToleranceMarginKcal = 50;
+        public const Double FiberToleranceMarginG = 5;
 
         public DietTarget(Double totalKcalIntake,
             Double maxPrice,

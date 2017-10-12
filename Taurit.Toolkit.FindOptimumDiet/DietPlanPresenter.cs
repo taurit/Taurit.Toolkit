@@ -30,18 +30,22 @@ namespace Taurit.Toolkit.FindOptimumDiet
 
             DisplayInColor("Score (lower is better)", $"{diet.ScoreToTarget:0}", "", "0", ConsoleColor.Red);
             DisplayInColor("Num skipped products", $"{numSkippedProducts:0}", "", "-", ConsoleColor.White);
-            DisplayInColor("Energy", $"{diet.Characteristics.TotalKcalIntake:0}", "kcal",
-                $"{referenceValue.TotalKcalIntake}", ConsoleColor.Gray);
+            Display("Energy", diet.Characteristics.TotalKcalIntake, "kcal",
+                referenceValue.TotalKcalIntake - DietTarget.EnergyToleranceMarginKcal,
+                referenceValue.TotalKcalIntake + DietTarget.EnergyToleranceMarginKcal);
             DisplayInColor("Price", $"{diet.Characteristics.TotalPrice:0.00}", "PLN",
                 $"{referenceValue.MaxPrice}", ConsoleColor.Gray);
 
 
-            Display("Total protein", diet.Characteristics.TotalProtein, "g", referenceValue.TotalProtein - 5,
-                referenceValue.TotalProtein + 5);
-            Display("Total carbohydrates", diet.Characteristics.TotalCarbs, "g", referenceValue.TotalCarbs - 5,
-                referenceValue.TotalCarbs + 5);
-            Display("Total fat", diet.Characteristics.TotalFat, "g", referenceValue.TotalFat - 5,
-                referenceValue.TotalFat + 5);
+            Display("Total protein", diet.Characteristics.TotalProtein, "g",
+                referenceValue.TotalProtein - DietTarget.MacronutrientToleranceMarginG,
+                referenceValue.TotalProtein + DietTarget.MacronutrientToleranceMarginG);
+            Display("Total carbohydrates", diet.Characteristics.TotalCarbs, "g",
+                referenceValue.TotalCarbs - DietTarget.MacronutrientToleranceMarginG,
+                referenceValue.TotalCarbs + DietTarget.MacronutrientToleranceMarginG);
+            Display("Total fat", diet.Characteristics.TotalFat, "g",
+                referenceValue.TotalFat - DietTarget.MacronutrientToleranceMarginG,
+                referenceValue.TotalFat + DietTarget.MacronutrientToleranceMarginG);
 
             Display("Total Vitamin A", diet.Characteristics.TotalVitaminAiu, "IU",
                 DietTarget.MinDailyVitaminAiu);

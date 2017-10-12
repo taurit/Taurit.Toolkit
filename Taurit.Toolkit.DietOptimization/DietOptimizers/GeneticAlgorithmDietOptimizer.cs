@@ -21,7 +21,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers
         /// <summary>
         ///     How many generations are created/analyzed by single run of <see cref="Optimize" />?
         /// </summary>
-        private const Int32 MaxNumGenerations = 30_000;
+        private const Int32 MaxNumGenerations = 50_000;
 
         private const Int32 AcceptableScore = 5;
 
