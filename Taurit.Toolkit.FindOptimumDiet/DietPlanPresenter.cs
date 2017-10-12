@@ -35,6 +35,8 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 referenceValue.TotalKcalIntake + DietTarget.EnergyToleranceMarginKcal);
             DisplayInColor("Price", $"{diet.Characteristics.TotalPrice:0.00}", "PLN",
                 $"{referenceValue.MaxPrice}", ConsoleColor.Gray);
+            DisplayInColor("Avg monthly price", $"{diet.Characteristics.TotalPrice * (365d / 12d):0.00}", "PLN",
+                $"{referenceValue.MaxPrice * (365d / 12d):0.00}", ConsoleColor.Gray);
 
 
             Display("Total protein", diet.Characteristics.TotalProtein, "g",
@@ -93,7 +95,8 @@ namespace Taurit.Toolkit.FindOptimumDiet
             ConsoleColor valueColor = value >= minReferenceValue && value <= maxReferenceValue
                 ? ConsoleColor.White
                 : ConsoleColor.Red;
-            DisplayInColor(label, $"{value:0.0}", unit, $"{minReferenceValue:0.0} - {maxReferenceValue:0.0}", valueColor);
+            DisplayInColor(label, $"{value:0.0}", unit, $"{minReferenceValue:0.0} - {maxReferenceValue:0.0}",
+                valueColor);
         }
 
         private void DisplayInColor([NotNull] String label, [NotNull] String value, [NotNull] String unit,
@@ -105,7 +108,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
             Console.Write($"{label}: ".PadRight(25));
 
             Console.ForegroundColor = valueColor;
-            Console.Write((value + " " + unit).PadRight(10));
+            Console.Write((value + " " + unit).PadRight(12));
             if (referenceValue != null)
             {
                 Console.WriteLine("/ " + referenceValue + " " + unit);

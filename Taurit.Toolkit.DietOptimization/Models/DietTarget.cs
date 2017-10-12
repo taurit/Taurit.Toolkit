@@ -99,9 +99,9 @@ namespace Taurit.Toolkit.DietOptimization.Models
         ///     Margin for matronutrients in attempt to prevent optimization from falling into local minima (and not converging).
         ///     This value might need to be tuned or removed if it does not help.
         /// </summary>
-        public const Double MacronutrientToleranceMarginG = 10;
+        public const Double MacronutrientToleranceMarginG = 7;
 
-        public const Double EnergyToleranceMarginKcal = 50;
+        public const Double EnergyToleranceMarginKcal = 100;
         public const Double FiberToleranceMarginG = 5;
 
         public DietTarget(Double totalKcalIntake,

@@ -25,22 +25,25 @@ namespace Taurit.Toolkit.DietOptimization.Services
         public Double CalculateScore(DietCharacteristics diet, DietTarget target)
         {
             Double score = 0;
-            score += PunishForDiffBelow(diet.TotalKcalIntake, target.TotalKcalIntake - DietTarget.EnergyToleranceMarginKcal,
-                1.0);
-            score += PunishForDiffAbove(diet.TotalKcalIntake, target.TotalKcalIntake + DietTarget.EnergyToleranceMarginKcal,
-                1.0);
+
+            // theoretically energy can be derived from macronutient amounts, so it should not be a different variable,
+            // but since margins are allowed for macro amounts, this might help to choose better solution
+            score += PunishForCaloricIntakeDifference(diet, target);
 
             // 20g miss in macronutrients like 100kcal miss in diet overall
             const Double macroMultplier = 5.0;
-            score += PunishForDiffBelow(diet.TotalProtein, target.TotalProtein - DietTarget.MacronutrientToleranceMarginG,
+            score += PunishForDiffBelow(diet.TotalProtein,
+                target.TotalProtein - DietTarget.MacronutrientToleranceMarginG,
                 macroMultplier);
-            score += PunishForDiffAbove(diet.TotalProtein, target.TotalProtein + DietTarget.MacronutrientToleranceMarginG,
+            score += PunishForDiffAbove(diet.TotalProtein,
+                target.TotalProtein + DietTarget.MacronutrientToleranceMarginG,
                 macroMultplier);
             score += PunishForDiffBelow(diet.TotalCarbs, target.TotalCarbs - DietTarget.MacronutrientToleranceMarginG,
                 macroMultplier);
             score += PunishForDiffAbove(diet.TotalCarbs, target.TotalCarbs + DietTarget.MacronutrientToleranceMarginG,
                 macroMultplier);
-            score += PunishForDiffBelow(diet.TotalFat, target.TotalFat - DietTarget.MacronutrientToleranceMarginG,
+            score += PunishForDiffBelow(diet.TotalFat,
+                target.TotalFat - DietTarget.MacronutrientToleranceMarginG, // test
                 macroMultplier);
             score += PunishForDiffAbove(diet.TotalFat, target.TotalFat + DietTarget.MacronutrientToleranceMarginG,
                 macroMultplier);
@@ -71,8 +74,20 @@ namespace Taurit.Toolkit.DietOptimization.Services
             //score += PunishForDiffAbove(3000, diet.TotalGramsEaten, 0.5);
 
             // experimental: having diets with the same characteristics, prefer ones that have less ingredients (easier shopping)
-            //score += PunishForLargeNumberOfIngredients(diet);
+            score += PunishForLargeNumberOfIngredients(diet);
 
+            return score;
+        }
+
+        private Double PunishForCaloricIntakeDifference(DietCharacteristics diet, DietTarget target)
+        {
+            var score = 0d;
+            score += PunishForDiffBelow(diet.TotalKcalIntake,
+                target.TotalKcalIntake - DietTarget.EnergyToleranceMarginKcal,
+                1.0);
+            score += PunishForDiffAbove(diet.TotalKcalIntake,
+                target.TotalKcalIntake + DietTarget.EnergyToleranceMarginKcal,
+                1.0);
             return score;
         }
 
@@ -129,7 +144,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
         {
             Double score = 0;
             score += PunishForDiffBelow(diet.TotalPotassiumMg, DietTarget.MinDailyPotassiumMg, 0.5);
-            score += PunishForDiffAbove(diet.TotalPotassiumMg, DietTarget.MaxDailyPotassiumMg,  0.5);
+            score += PunishForDiffAbove(diet.TotalPotassiumMg, DietTarget.MaxDailyPotassiumMg, 0.5);
             return score;
         }
 
@@ -159,8 +174,9 @@ namespace Taurit.Toolkit.DietOptimization.Services
             // Recommendations:
             // * children and adults should consume 14 grams of fiber for every 1,000 calories of food eaten.
 
-            var idealFiberAmountG = 14 * (targetTotalKcalIntake / 1000);
-            Double score = PunishForDiffBelow(diet.TotalFiberGrams, idealFiberAmountG - DietTarget.FiberToleranceMarginG, 20);
+            Double idealFiberAmountG = 14 * (targetTotalKcalIntake / 1000);
+            Double score = PunishForDiffBelow(diet.TotalFiberGrams,
+                idealFiberAmountG - DietTarget.FiberToleranceMarginG, 20);
             score += PunishForDiffAbove(diet.TotalFiberGrams, idealFiberAmountG + DietTarget.FiberToleranceMarginG, 20);
             return score;
         }

@@ -28,42 +28,53 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         /// </summary>
         private const Int32 MaxNumGenerations = 1_000;
 
-        private const Int32 AcceptableScore = 10;
-
+        private const Int32 AcceptableScore = 20;
+        [NotNull] private readonly CrossoverHelper _crossoverHelper;
 
         [NotNull] private readonly MutationHelper _mutationHelper;
 
-        private readonly Random _randomNumberGenerator = new Random(123);
+        private readonly Random _randomNumberGenerator;
 
         [NotNull] private readonly StartPointProvider _startPointProvider;
-        [NotNull] private readonly CrossoverHelper _crossoverHelper;
 
-        public GeneticAlgorithmDietOptimizer([NotNull] DietCharacteristicsCalculator dietCharacteristicsCalculator,
-            [NotNull] ScoreCalculator scoreCalculator,
-            [NotNull] DietTarget dietTarget)
+        [CanBeNull] private DietPlan _bestPlanSoFar;
+        private readonly int _threadNumber;
+
+        public GeneticAlgorithmDietOptimizer([NotNull] DietCharacteristicsCalculator dietCharacteristicsCalculator, [NotNull] ScoreCalculator scoreCalculator, [NotNull] DietTarget dietTarget, Int32 threadNumber)
         {
             _crossoverHelper = new CrossoverHelper(dietCharacteristicsCalculator, scoreCalculator, dietTarget);
             _startPointProvider = new StartPointProvider(dietCharacteristicsCalculator, scoreCalculator, dietTarget);
             _mutationHelper = new MutationHelper(dietCharacteristicsCalculator, scoreCalculator, dietTarget);
+            _threadNumber = threadNumber;
+            _randomNumberGenerator = new Random(threadNumber); // for repeatable, but different results for each thread
         }
 
         public DietPlan Optimize(IReadOnlyCollection<FoodProduct> availableProducts)
         {
             ImmutableList<DietPlan> currentGeneration = CreateFirstGeneration(availableProducts);
             LogGenerationsBestScore(0, currentGeneration.First().ScoreToTarget);
-
+            _bestPlanSoFar = currentGeneration.First();
+            
             for (var i = 0; i < MaxNumGenerations; i++)
             {
                 currentGeneration = CreateNextGeneration(currentGeneration);
-                LogGenerationsBestScore(i + 1, currentGeneration.First().ScoreToTarget);
-                if (currentGeneration.First().ScoreToTarget < AcceptableScore)
+                DietPlan bestInGeneration = currentGeneration.First();
+                LogGenerationsBestScore(i + 1, bestInGeneration.ScoreToTarget);
+
+                Debug.Assert(_bestPlanSoFar != null);
+                if (bestInGeneration.ScoreToTarget < _bestPlanSoFar.ScoreToTarget)
+                {
+                    _bestPlanSoFar = bestInGeneration;
+                }
+                if (bestInGeneration.ScoreToTarget < AcceptableScore)
                 {
                     // result is good enough, we don't need to search further
                     break;
                 }
             }
 
-            return currentGeneration.First(); // this is the best one we have found so far
+            Debug.Assert(_bestPlanSoFar != null);
+            return _bestPlanSoFar;
         }
 
         /// <summary>
@@ -141,11 +152,10 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
             // parents matching (crossover)
             for (var j = 0; j < NumPlansInGeneration; j++)
             {
-                
                 // probability might end at 99.99999... due to rounding errors, therefore fallback is provided
                 DietPlan parent1 = null, parent2 = null;
                 // avoid using parent, as it leads to elitist selection and domination of population by this parent
-                while (parent1 == parent2) 
+                while (parent1 == parent2)
                 {
                     Double indexForParent1 = _randomNumberGenerator.NextDouble();
                     Double indexForParent2 = _randomNumberGenerator.NextDouble();
@@ -155,7 +165,8 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
                             ?.DietPlan ?? planWithProbabilities.Last().DietPlan;
                     parent2 =
                         planWithProbabilities.FirstOrDefault(x => x.AccumulatedProbability > indexForParent2)
-                            ?.DietPlan ?? planWithProbabilities.First().DietPlan; // first in fallback to avoid choosing parent1 again
+                            ?.DietPlan ??
+                        planWithProbabilities.First().DietPlan; // first in fallback to avoid choosing parent1 again
                 }
 
                 DietPlan child = _crossoverHelper.GetChild(parent1, parent2);
@@ -174,7 +185,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         {
             if (generationNumber % 100 == 0)
             {
-                Console.WriteLine($"Generation #{generationNumber}: best score is {score:0.00}");
+                Console.WriteLine($"Thread {_threadNumber}, generation #{generationNumber}: best score is {score:0.00}");
             }
         }
     }

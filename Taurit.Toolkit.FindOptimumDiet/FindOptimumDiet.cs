@@ -16,7 +16,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
     [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "It is instantiated by Ninject")]
     internal sealed class FindOptimumDiet
     {
-        private const Int32 NumOptimizationThreads = 1;
+        private const Int32 NumOptimizationThreads = 2;
         [NotNull] private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
         [NotNull] private readonly DietPlanPresenter _dietPlanPresenter;
         [NotNull] private readonly ProductLoader _productLoader;
@@ -63,9 +63,10 @@ namespace Taurit.Toolkit.FindOptimumDiet
 
             // find suboptimal diet (as close to a target as feasible)
             var optimizationTasks = new List<Task<DietPlan>>(NumOptimizationThreads);
-            for (var i = 0; i < NumOptimizationThreads; i++)
+            for (var threadNumber = 0; threadNumber < NumOptimizationThreads; threadNumber++)
             {
-                Task<DietPlan> optimumDiet = Task.Run(() => OptimizeDiet(products, dietTargets));
+                Int32 number = threadNumber;
+                Task<DietPlan> optimumDiet = Task.Run(() => OptimizeDiet(products, dietTargets, number));
                 optimizationTasks.Add(optimumDiet);
             }
 
@@ -92,10 +93,10 @@ namespace Taurit.Toolkit.FindOptimumDiet
             Console.ReadLine();
         }
 
-        private DietPlan OptimizeDiet(IReadOnlyCollection<FoodProduct> products, DietTarget target)
+        private DietPlan OptimizeDiet(IReadOnlyCollection<FoodProduct> products, DietTarget target, Int32 threadNumber)
         {
             IDietOptimizer dietOptimizer = new GeneticAlgorithmDietOptimizer(_dietCharacteristicsCalculator,
-                _scoreCalculator, target);
+                _scoreCalculator, target, threadNumber);
             DietPlan optimumDiet = dietOptimizer.Optimize(products);
 
             return optimumDiet;
