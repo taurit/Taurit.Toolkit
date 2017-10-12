@@ -202,6 +202,41 @@
       "Name": "Yogurt, plain, skim milk, 13 grams protein per 8 ounce",
       "PricePerKg": 5.35,
       "Comment": "Jovi, https://www.auchandirect.pl/auchan-warszawa/en/jovi-jogurt-0-naturalny/p-94500387?fromCategory=true"
+    },
+    {
+      "Name": "Beans, red, kidney, mature seeds, canned, drained solids",
+      "PricePerKg": 6.50,
+      "Comment": "lean protein, https://www.auchandirect.pl/auchan-warszawa/en/dawtona-fasola-czerwona-konserwowa/p-96901162"
+    },
+    {
+      "Name": "Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt",
+      "PricePerKg": 8.50,
+      "Comment": "lean protein"
+    },
+    {
+      "Name": "Oil, flaxseed, cold pressed",
+      "PricePerKg": 43,
+      "Comment": "good omega ratio"
+    },
+    {
+      "Name": "Buckwheat groats, roasted, cooked",
+      "PricePerKg": 103,
+      "Comment": "low IG carbo"
+    },
+    {
+      "Name": "Avocados, raw, all commercial varieties",
+      "PricePerKg": 32,
+      "Comment": "good omegas"
+    },
+    {
+      "Name": "Parsley, fresh",
+      "PricePerKg": 51,
+      "Comment": "good for balancing meat. price from frisco online"
+    },
+    {
+      "Name": "Oil, canola",
+      "PricePerKg": 15,
+      "Comment": "reasonable omega 3:6 ratio. 15 PLN for bio, 5 for normal"
     }
   ]
 }
