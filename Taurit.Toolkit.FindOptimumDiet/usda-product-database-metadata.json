@@ -69,7 +69,7 @@
     {
       "Name": "Cheese, gouda",
       "PricePerKg": 17,
-        "Comment": "Price for 400g block, Biedronka market" 
+      "Comment": "Price for 400g block, Biedronka market"
     },
     {
       "Name": "Cheese, edam",
@@ -178,6 +178,21 @@
       "Name": "Soybeans, mature cooked, boiled, without salt",
       "PricePerKg": 7,
       "Comment": "Price for 1kg dry in Auchan Direct, included for lean protein"
+    },
+    {
+      "Name": "Nuts, almonds, dry roasted, without salt added",
+      "PricePerKg": 50,
+      "Comment": "Price for 1kg dry in Auchan Direct, included because I like them"
+    },
+    {
+      "Name": "Spices, ginger, ground",
+      "PricePerKg": 25,
+      "Comment": "Price for 1kg in Auchan Direct, perhaps can be found cheaper"
+    },
+    {
+      "Name": "Yogurt, plain, skim milk, 13 grams protein per 8 ounce",
+      "PricePerKg": 5.35,
+      "Comment": "Jovi, https://www.auchandirect.pl/auchan-warszawa/en/jovi-jogurt-0-naturalny/p-94500387?fromCategory=true"
     }
   ]
 }
