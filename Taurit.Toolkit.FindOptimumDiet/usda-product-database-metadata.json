@@ -158,6 +158,26 @@
       "Name": "Mollusks, oyster, eastern, canned",
       "PricePerKg": 60,
       "Comment": "Included for zinc, the best source"
+    },
+    {
+      "Name": "Fish, tuna, light, canned in water, without salt, drained solids",
+      "PricePerKg": 24,
+      "Comment": "Price range 16-60, not sure which ones if any contain no salt"
+    },
+    {
+      "Name": "#Seaweed, spirulina, dried",
+      "PricePerKg": 70,
+      "Comment": "Allegro price, 16 pln for 250g in tabs. Max 2.25g / day (0.25g per 10kg of body weight)",
+    },
+    {
+      "Name": "Fish, cod, Atlantic, dried and salted",
+      "PricePerKg": 40,
+      "Comment": "Price for 1kg smoked cod, with refuse"
+    },
+    {
+      "Name": "Soybeans, mature cooked, boiled, without salt",
+      "PricePerKg": 7,
+      "Comment": "Price for 1kg dry in Auchan Direct, included for lean protein"
     }
   ]
 }

@@ -67,8 +67,6 @@ namespace Taurit.Toolkit.FindOptimumDiet
             IImmutableList<OptimizationMetadata> productsToConsider =
                 GetProductsMetadata("usda-product-database-metadata.json");
             IReadOnlyCollection<FoodProduct> productsFromUsdaDatabase = GetProductsFromUsdaDatabase(productsToConsider);
-#if DEBUG && NEEDED
-            // artificial products to make sure that optimization finds the best solution available, if it's only possible.
             var superProteinProduct = new FoodProduct("superProteinProduct", 400, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0);
             superProteinProduct.Metadata = new OptimizationMetadata {Name = superProteinProduct.Name};
@@ -78,17 +76,22 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 0, 0);
             superMagnesiumProduct.Metadata = new OptimizationMetadata {Name = superMagnesiumProduct.Name};
 
-            return productsFromUsdaDatabase.Union(new List<FoodProduct>
+            // todo: move to json, creating a generic solution
+            var kfdProteinSupplement = new FoodProduct("KFD premium WPC 80",
+                415, 79, 7, 9, 0, 0, 0, 0, 0, 0, 0, 0, 581.37, 0);
+            kfdProteinSupplement.Metadata =
+                new OptimizationMetadata
                 {
-                    superProteinProduct,
-                    //superCarboProduct,
-                    //superMagnesiumProduct
-                })
-                .ToList().AsReadOnly();
-#endif
+                    Name = kfdProteinSupplement.Name,
+                    PricePerKg = 60
+                    /*FixedAmountG = 2 * 40*/
+                };
 
-
-            return productsFromUsdaDatabase;
+            return productsFromUsdaDatabase.Union(new List<FoodProduct>
+            {
+                kfdProteinSupplement
+                //, superProteinProduct
+            }).ToImmutableList();
         }
 
         [NotNull]
