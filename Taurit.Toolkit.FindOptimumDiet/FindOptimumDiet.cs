@@ -3,30 +3,32 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Ninject;
 using Taurit.Toolkit.DietOptimization.DietOptimizers;
+using Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm;
 using Taurit.Toolkit.DietOptimization.Models;
 using Taurit.Toolkit.DietOptimization.Services;
 using Taurit.Toolkit.FindOptimumDiet.Mappings;
 
 namespace Taurit.Toolkit.FindOptimumDiet
 {
-    
     [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "It is instantiated by Ninject")]
     internal sealed class FindOptimumDiet
     {
-        private const Int32 NumOptimizationThreads = 2;
-        private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
-        private readonly ScoreCalculator _dietCharacteristicsDistanceCalculator;
-        private readonly DietPlanPresenter _dietPlanPresenter;
-        private readonly ProductLoader _productLoader;
+        private const Int32 NumOptimizationThreads = 1;
+        [NotNull] private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
+        [NotNull] private readonly DietPlanPresenter _dietPlanPresenter;
+        [NotNull] private readonly ProductLoader _productLoader;
+        [NotNull] private readonly ScoreCalculator _scoreCalculator;
 
         public FindOptimumDiet(DietCharacteristicsCalculator dietCharacteristicsCalculator,
-            ScoreCalculator dietCharacteristicsDistanceCalculator,
-            DietPlanPresenter dietPlanPresenter, ProductLoader productLoader)
+            [NotNull] ScoreCalculator scoreCalculator,
+            [NotNull] DietPlanPresenter dietPlanPresenter,
+            [NotNull] ProductLoader productLoader)
         {
             _dietCharacteristicsCalculator = dietCharacteristicsCalculator;
-            _dietCharacteristicsDistanceCalculator = dietCharacteristicsDistanceCalculator;
+            _scoreCalculator = scoreCalculator;
             _dietPlanPresenter = dietPlanPresenter;
             _productLoader = productLoader;
         }
@@ -93,7 +95,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
         private DietPlan OptimizeDiet(IReadOnlyCollection<FoodProduct> products, DietTarget target)
         {
             IDietOptimizer dietOptimizer = new GeneticAlgorithmDietOptimizer(_dietCharacteristicsCalculator,
-                _dietCharacteristicsDistanceCalculator, target);
+                _scoreCalculator, target);
             DietPlan optimumDiet = dietOptimizer.Optimize(products);
 
             return optimumDiet;
