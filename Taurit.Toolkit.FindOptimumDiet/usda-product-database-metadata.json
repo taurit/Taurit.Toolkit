@@ -175,7 +175,7 @@
     {
       "Name": "Seaweed, spirulina, dried",
       "PricePerKg": 70,
-      "Comment": "Allegro price, 16 pln for 250g in tabs. Max 2.25g / day (0.25g per 10kg of body weight)",
+      "Comment": "Allegro price, 16 pln for 250g in tabs. Max 2.25g a day (0.25g per 10kg of body weight)",
       "MaxAmountG": 2,
       "StartAmountG": 0
     },
@@ -202,12 +202,14 @@
     {
       "Name": "Yogurt, plain, skim milk, 13 grams protein per 8 ounce",
       "PricePerKg": 5.35,
-      "Comment": "Jovi, https://www.auchandirect.pl/auchan-warszawa/en/jovi-jogurt-0-naturalny/p-94500387?fromCategory=true"
+      "Comment":
+        "Jovi, https://www.auchandirect.pl/auchan-warszawa/en/jovi-jogurt-0-naturalny/p-94500387?fromCategory=true"
     },
     {
       "Name": "Beans, kidney, red, mature seeds, canned, drained solids, rinsed in tap water",
       "PricePerKg": 6.50,
-      "Comment": "lean protein, https://www.auchandirect.pl/auchan-warszawa/en/dawtona-fasola-czerwona-konserwowa/p-96901162"
+      "Comment":
+        "lean protein, https://www.auchandirect.pl/auchan-warszawa/en/dawtona-fasola-czerwona-konserwowa/p-96901162"
     },
     {
       "Name": "Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt",

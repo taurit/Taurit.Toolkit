@@ -21,7 +21,13 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Double totalPotassiumMg,
             Double totalSodiumMg,
             Double totalZincMg,
-            Double totalGramsEaten)
+            Double totalGramsEaten,
+            Double totalFattyAcidsSaturatedG,
+            Double totalFattyAcidsMonounsaturatedG,
+            Double totalFattyAcidsPolyunsaturatedG,
+            Double totalFattyAcidsTransG,
+            Double totalCholesterolMg
+        )
         {
             Debug.Assert(totalKcalIntake >= 0);
             Debug.Assert(totalPrice >= 0);
@@ -40,6 +46,11 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Debug.Assert(totalSodiumMg >= 0);
             Debug.Assert(totalZincMg >= 0);
             Debug.Assert(totalGramsEaten >= 0);
+            Debug.Assert(totalFattyAcidsMonounsaturatedG >= 0);
+            Debug.Assert(totalFattyAcidsPolyunsaturatedG >= 0);
+            Debug.Assert(totalFattyAcidsSaturatedG >= 0);
+            Debug.Assert(totalFattyAcidsTransG >= 0);
+            Debug.Assert(totalCholesterolMg >= 0);
 
             TotalKcalIntake = totalKcalIntake;
             TotalPrice = totalPrice;
@@ -58,6 +69,11 @@ namespace Taurit.Toolkit.DietOptimization.Models
             TotalSodiumMg = totalSodiumMg;
             TotalZincMg = totalZincMg;
             TotalGramsEaten = totalGramsEaten;
+            TotalFattyAcidsSaturatedG = totalFattyAcidsSaturatedG;
+            TotalFattyAcidsMonounsaturatedG = totalFattyAcidsMonounsaturatedG;
+            TotalFattyAcidsPolyunsaturatedG = totalFattyAcidsPolyunsaturatedG;
+            TotalFattyAcidsTransG = totalFattyAcidsTransG;
+            TotalCholesterolMg = totalCholesterolMg;
         }
 
         public Double TotalKcalIntake { get; }
@@ -79,5 +95,10 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public Double TotalZincMg { get; }
 
         public Double TotalGramsEaten { get; }
+        public Double TotalFattyAcidsSaturatedG { get; }
+        public Double TotalFattyAcidsMonounsaturatedG { get; }
+        public Double TotalFattyAcidsPolyunsaturatedG { get; }
+        public Double TotalFattyAcidsTransG { get; }
+        public Double TotalCholesterolMg { get; }
     }
 }

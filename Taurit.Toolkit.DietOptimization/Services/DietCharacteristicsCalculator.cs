@@ -23,6 +23,12 @@ namespace Taurit.Toolkit.DietOptimization.Services
             Double totalPotassiumMg = 0;
             Double totalSodiumMg = 0;
             Double totalZincMg = 0;
+            Double totalFattyAcidsSaturatedG = 0;
+            Double totalFattyAcidsMonounsaturatedG = 0;
+            Double totalFattyAcidsPolyunsaturatedG = 0;
+            Double totalFattyAcidsTransG = 0;
+            Double totalCholesterolMg = 0;
+
             var numIngredients = 0;
 
             var totalGrams = 0d;
@@ -50,6 +56,12 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 totalSodiumMg += dietPlanItem.FoodProduct.SodiumMg * amountMultiplier;
                 totalZincMg += dietPlanItem.FoodProduct.ZincMg * amountMultiplier;
 
+                totalFattyAcidsSaturatedG += dietPlanItem.FoodProduct.FattyAcidsTotalSaturatedG * amountMultiplier;
+                totalFattyAcidsMonounsaturatedG += dietPlanItem.FoodProduct.FattyAcidsTotalMonounsaturatedG * amountMultiplier;
+                totalFattyAcidsPolyunsaturatedG += dietPlanItem.FoodProduct.FattyAcidsTotalPolyunsaturatedG * amountMultiplier;
+                totalFattyAcidsTransG += dietPlanItem.FoodProduct.FattyAcidsTotalTransG * amountMultiplier;
+                totalCholesterolMg += dietPlanItem.FoodProduct.CholesterolMg * amountMultiplier;
+
                 totalGrams += dietPlanItem.AmountGrams;
                 numIngredients += dietPlanItem.AmountGrams > 0 ? 1 : 0;
             }
@@ -70,7 +82,13 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 totalPotassiumMg,
                 totalSodiumMg,
                 totalZincMg,
-                totalGrams);
+                totalGrams,
+                totalFattyAcidsSaturatedG,
+                totalFattyAcidsMonounsaturatedG,
+                totalFattyAcidsPolyunsaturatedG,
+                totalFattyAcidsTransG, 
+                totalCholesterolMg
+                );
         }
     }
 }

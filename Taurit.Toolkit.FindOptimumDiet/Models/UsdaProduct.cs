@@ -36,5 +36,11 @@ namespace Taurit.Toolkit.FindOptimumDiet.Models
         public String VitaminE_Mg { get; set; }
         public String VitaminD_IU { get; set; }
         public String VitaminC_Mg { get; set; }
+        public String FattyAcidsTotalSaturated_Grams { get; set; }
+        public String FattyAcidsTotalMonounsaturated_Grams { get; set; }
+        public String FattyAcidsTotalPolyunsaturated_Grams { get; set; }
+        public String Cholesterol_Mg { get; set; }
+        public String FattyAcidsTotalTrans_Grams { get; set; }
+
     }
 }

@@ -23,6 +23,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
             DisplayMacronutrientsMetadata(diet, referenceValue);
             DisplayVitaminAmounts(diet);
             DisplayMineralAmounts(diet);
+            DisplayFatsAmounts(diet);
 
             DisplayTotalGramsEaten(diet);
         }
@@ -51,6 +52,20 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 DietTarget.MinDailySodiumMg, DietTarget.MaxDailySodiumMg);
             Display("Total Zinc", diet.Characteristics.TotalZincMg, "Mg",
                 DietTarget.MinDailyZincMg, DietTarget.MaxDailyZincMg);
+        }
+
+        private void DisplayFatsAmounts(DietPlan diet)
+        {
+            Display("FA Saturated", diet.Characteristics.TotalFattyAcidsSaturatedG, "g",
+                0, 0); // todo range
+            Display("FA Monoun.", diet.Characteristics.TotalFattyAcidsMonounsaturatedG, "g",
+                0, 0);
+            Display("FA Polyun.", diet.Characteristics.TotalFattyAcidsPolyunsaturatedG, "g",
+                0, 0);
+            Display("FA Trans", diet.Characteristics.TotalFattyAcidsTransG, "g",
+                0, 0);
+            Display("FA Cholesterol Mg", diet.Characteristics.TotalCholesterolMg, "g",
+                0, 0);
         }
 
         private void DisplayVitaminAmounts(DietPlan diet)

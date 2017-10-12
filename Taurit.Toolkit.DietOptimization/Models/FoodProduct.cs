@@ -21,7 +21,12 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Double phosphorusMg,
             Double potassiumMg,
             Double sodiumMg,
-            Double zincMg
+            Double zincMg,
+            Double fattyAcidsTotalSaturatedG,
+            Double fattyAcidsTotalMonounsaturatedG,
+            Double fattyAcidsTotalPolyunsaturatedG,
+            Double fattyAcidsTotalTransG,
+            Double cholesterolMg
         )
         {
             Name = name;
@@ -39,6 +44,11 @@ namespace Taurit.Toolkit.DietOptimization.Models
             PotassiumMg = potassiumMg;
             SodiumMg = sodiumMg;
             ZincMg = zincMg;
+            FattyAcidsTotalSaturatedG = fattyAcidsTotalSaturatedG;
+            FattyAcidsTotalMonounsaturatedG = fattyAcidsTotalMonounsaturatedG;
+            FattyAcidsTotalPolyunsaturatedG = fattyAcidsTotalPolyunsaturatedG;
+            FattyAcidsTotalTransG = fattyAcidsTotalTransG;
+            CholesterolMg = cholesterolMg;
         }
 
         public OptimizationMetadata Metadata { get; set; }
@@ -66,6 +76,11 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public Double PotassiumMg { get; set; }
         public Double SodiumMg { get; set; }
         public Double ZincMg { get; set; }
+        public Double FattyAcidsTotalSaturatedG { get; }
+        public Double FattyAcidsTotalMonounsaturatedG { get; }
+        public Double FattyAcidsTotalPolyunsaturatedG { get; }
+        public Double FattyAcidsTotalTransG { get; }
+        public Double CholesterolMg { get; }
         public Double CopperMg { get; set; }
         public Double ManganeseMg { get; set; }
         public Double SeleniumUg { get; set; }

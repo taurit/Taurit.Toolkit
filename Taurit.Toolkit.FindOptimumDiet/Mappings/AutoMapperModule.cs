@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Ninject;
 using Ninject.Modules;
 using Taurit.Toolkit.DietOptimization.Models;
@@ -41,6 +42,17 @@ namespace Taurit.Toolkit.FindOptimumDiet.Mappings
                     .ForCtorParam("potassiumMg", opt => opt.MapFrom(src => src.Potassium_Mg))
                     .ForCtorParam("sodiumMg", opt => opt.MapFrom(src => src.Sodium_Mg))
                     .ForCtorParam("zincMg", opt => opt.MapFrom(src => src.Zinc_Mg))
+                    .ForCtorParam("fattyAcidsTotalSaturatedG",
+                        opt => opt.MapFrom(src => src.FattyAcidsTotalSaturated_Grams))
+                    .ForCtorParam("fattyAcidsTotalMonounsaturatedG",
+                        opt => opt.MapFrom(src => src.FattyAcidsTotalMonounsaturated_Grams))
+                    .ForCtorParam("fattyAcidsTotalPolyunsaturatedG",
+                        opt => opt.MapFrom(src => src.FattyAcidsTotalPolyunsaturated_Grams))
+                    .ForCtorParam("fattyAcidsTotalTransG",
+                        opt => opt.MapFrom(src => String.IsNullOrEmpty(src.FattyAcidsTotalTrans_Grams)
+                            ? "0"
+                            : src.FattyAcidsTotalTrans_Grams))
+                    .ForCtorParam("cholesterolMg", opt => opt.MapFrom(src => src.Cholesterol_Mg))
                     ;
 
 
