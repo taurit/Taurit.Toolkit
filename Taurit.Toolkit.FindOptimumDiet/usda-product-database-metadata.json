@@ -24,7 +24,8 @@
     {
       "Name": "Fish oil, cod liver",
       "PricePerKg": 113.00,
-      "FixedAmountG": 5
+      "MinAmountG": 5,
+      "MaxAmountG": 10
     },
     {
       "Name": "Oil, olive, salad or cooking",
@@ -204,7 +205,7 @@
       "Comment": "Jovi, https://www.auchandirect.pl/auchan-warszawa/en/jovi-jogurt-0-naturalny/p-94500387?fromCategory=true"
     },
     {
-      "Name": "Beans, red, kidney, mature seeds, canned, drained solids",
+      "Name": "Beans, kidney, red, mature seeds, canned, drained solids, rinsed in tap water",
       "PricePerKg": 6.50,
       "Comment": "lean protein, https://www.auchandirect.pl/auchan-warszawa/en/dawtona-fasola-czerwona-konserwowa/p-96901162"
     },
