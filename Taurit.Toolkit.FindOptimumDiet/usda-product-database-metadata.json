@@ -41,7 +41,10 @@
     },
     {
       "Name": "Milk, lowfat, fluid, 1% milkfat, with added vitamin A and vitamin D",
-      "PricePerKg": 2
+      "PricePerKg": 2,
+      "MinAmountG": 400,
+      "Comment": "Minimum amount specified for protein shakes and because I like it"
+
     },
     {
       "Name": "Egg, whole, cooked, hard-boiled",
@@ -115,7 +118,10 @@
     },
     {
       "Name": "Spinach, cooked, boiled, drained, without salt",
-      "PricePerKg": 13
+      "PricePerKg": 13,
+      "MaxAmountG": 200,
+      "Comment": "200 because I don't fancy eating half a kilo of it every day"
+
     },
     {
       "Name": "Spices, curry powder",
@@ -170,7 +176,8 @@
     {
       "Name": "Fish, tuna, light, canned in water, without salt, drained solids",
       "PricePerKg": 24,
-      "Comment": "Price range 16-60, not sure which ones if any contain no salt"
+      "Comment": "Price range 16-60, not sure which ones if any contain no salt",
+      "MaxAmountG": 130
     },
     {
       "Name": "Seaweed, spirulina, dried",
@@ -197,7 +204,8 @@
     {
       "Name": "Spices, ginger, ground",
       "PricePerKg": 25,
-      "Comment": "Price for 1kg in Auchan Direct, perhaps can be found cheaper"
+      "Comment": "Price for 1kg in Auchan Direct, perhaps can be found cheaper",
+      "MaxAmountG": 20
     },
     {
       "Name": "Yogurt, plain, skim milk, 13 grams protein per 8 ounce",
@@ -234,12 +242,56 @@
     {
       "Name": "Parsley, fresh",
       "PricePerKg": 51,
-      "Comment": "good for balancing meat. price from frisco online"
+      "Comment": "good for balancing meat. price from frisco online",
+      "MaxAmountG": 25
+
     },
     {
       "Name": "Oil, canola",
       "PricePerKg": 15,
       "Comment": "reasonable omega 3:6 ratio. 15 PLN for bio, 5 for normal"
+    },
+    {
+      "Name": "Spinach, raw",
+      "PricePerKg": 14.36,
+      "Comment": "tasty"
+    },
+    {
+      "Name": "Broccoli, frozen, chopped, cooked, boiled, drained, without salt",
+      "PricePerKg": 10,
+      "Comment": "healthy maybe?"
+    },
+    {
+      "Name": "Mushrooms, white, raw",
+      "PricePerKg": 9,
+      "Comment": "tasty"
+    },
+    {
+      "Name": "Mustard, prepared, yellow",
+      "PricePerKg":7.2,
+      "Comment": "spice",
+      "MaxAmountG": 5
+
+    },
+    {
+      "Name": "Carrots, raw",
+      "PricePerKg": 2.5,
+      "Comment": ""
+    },
+    {
+      "Name": "Lettuce, green leaf, raw",
+      "PricePerKg": 10,
+      "Comment": "1 item = about 200g for 2 pln"
+    },
+    {
+      "Name": "Corn, sweet, yellow, canned, vacuum pack, regular pack",
+      "PricePerKg": 8,
+      "Comment": "probably not too healthy"
+    },
+    {
+      "Name": "Peas, green, canned, drained solids, rinsed in tap water",
+      "PricePerKg": 4,
+      "Comment": "cheap protein?"
     }
   ]
 }
