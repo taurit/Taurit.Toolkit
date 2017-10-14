@@ -97,8 +97,8 @@ namespace Taurit.Toolkit.FindOptimumDiet
         private void DisplayMainMetadata(DietPlan diet, DietTarget referenceValue)
         {
             DisplayInColor("Score (lower is better)", $"{diet.ScoreToTarget:0}", "", "0", ConsoleColor.Cyan);
-            Int32 numSkippedProducts = diet.DietPlanItems.Count(x => Math.Abs(x.AmountGrams) < 0.1);
-            DisplayInColor("Num skipped products", $"{numSkippedProducts:0}", "", "-", ConsoleColor.Gray);
+            Int32 numUsedProducts = diet.DietPlanItems.Count(x => Math.Abs(x.AmountGrams) >= 0.1);
+            DisplayInColor("Num used products", $"{numUsedProducts:0}", "", $"{diet.DietPlanItems.Count:0}", ConsoleColor.Gray);
             Display("Energy", diet.Characteristics.TotalKcalIntake, "kcal",
                 referenceValue.TotalKcalIntake - DietTarget.EnergyToleranceMarginKcal,
                 referenceValue.TotalKcalIntake + DietTarget.EnergyToleranceMarginKcal);
