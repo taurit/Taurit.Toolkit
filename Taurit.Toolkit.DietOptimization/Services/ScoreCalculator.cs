@@ -105,7 +105,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
         [Pure]
         private static Double PunishForLargeNumberOfIngredients(DietCharacteristics diet)
         {
-            const Int32 preferredMaxIngredientCount = 15;
+            const Int32 preferredMaxIngredientCount = 18;
             Int32 numExcessiveIngredients = diet.NumIngredients - preferredMaxIngredientCount;
             if (numExcessiveIngredients < 0)
             {
