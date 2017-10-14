@@ -66,9 +66,17 @@ namespace Taurit.Toolkit.FindOptimumDiet
         {
             IImmutableList<OptimizationMetadata> productsToConsider =
                 GetProductsMetadata("usda-product-database-metadata.json");
-            
-            // todo: move to json, creating a generic solution
             IReadOnlyCollection<FoodProduct> productsFromUsdaDatabase = GetProductsFromUsdaDatabase(productsToConsider);
+            List<FoodProduct> productFromBeyondUsdaDatbase = GetProductsThatDontExistInUsdaDatabase();
+            return productsFromUsdaDatabase.Union(productFromBeyondUsdaDatbase).ToImmutableList();
+        }
+
+        /// <remarks>
+        ///     It will be convenient to have it moved to json when optimization variable set gets more stable
+        ///     currently it's easier to update strongly typed constructor call, as compiler instantly shows the problem
+        /// </remarks>
+        private static List<FoodProduct> GetProductsThatDontExistInUsdaDatabase()
+        {
             var kfdProteinSupplement = new FoodProduct("KFD premium WPC 80",
                 415, 79, 7, 9, 0, 0, 0, 0, 0, 0, 0, 0, 581.37, 0, 0, 0, 0, 0, 0, 0, 0);
             kfdProteinSupplement.Metadata =
@@ -76,13 +84,14 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 {
                     Name = kfdProteinSupplement.Name,
                     PricePerKg = 60,
-                    MaxAmountG = 2*40
+                    MaxAmountG = 2 * 40
                 };
 
-            return productsFromUsdaDatabase.Union(new List<FoodProduct>
+            var productFromBeyondUsdaDatbase = new List<FoodProduct>
             {
                 kfdProteinSupplement
-            }).ToImmutableList();
+            };
+            return productFromBeyondUsdaDatbase;
         }
 
         [NotNull]
