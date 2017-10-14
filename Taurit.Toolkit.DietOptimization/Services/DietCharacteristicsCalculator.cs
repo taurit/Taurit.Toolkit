@@ -4,6 +4,12 @@ using Taurit.Toolkit.DietOptimization.Models;
 
 namespace Taurit.Toolkit.DietOptimization.Services
 {
+    /// <summary>
+    ///     Calculate <see cref="DietCharacteristics" /> (statistics) for a <see cref="DietPlan" />.
+    ///     Mainly, calculate total amounts of macronutrients and micronutrients for all positions in a diet (with their
+    ///     specific amounts).
+    /// </summary>
+    /// ReSharper disable once ClassNeverInstantiated.Global - it is by Ninject
     public class DietCharacteristicsCalculator
     {
         public DietCharacteristics GetCharacteristics(IReadOnlyList<DietPlanItem> dietPlanItems)

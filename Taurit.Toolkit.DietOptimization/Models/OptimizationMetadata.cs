@@ -7,6 +7,13 @@ using Newtonsoft.Json;
 
 namespace Taurit.Toolkit.DietOptimization.Models
 {
+    /// <summary>
+    ///     User-provided optimization preferences related to a specific product.
+    ///     While data in <see cref="FoodProduct" /> is rather universal and should not change in time,
+    ///     <see cref="OptimizationMetadata" />  represents more of a users preference. Eg.:
+    ///     * how much of a product does user want in a diet (minimum, maximum, fixed amount)?
+    ///     * what is the local price for this product in user's location?
+    /// </summary>
     [DebuggerDisplay("{" + nameof(Name) + "}")]
     [JsonObject]
     public class OptimizationMetadata

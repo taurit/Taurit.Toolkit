@@ -6,13 +6,20 @@ using Taurit.Toolkit.DietOptimization.Services;
 
 namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
 {
+    /// <summary>
+    ///     Provides start point for optimization.
+    ///     Because only product amounts are optimized, this just assigns random amounts to all the products.
+    ///     From what I remember initializing with (pseudo)random numbers is probably best strategy.
+    ///     The only exception are products, for which user requested "fixed amount". Those amounts are not optimized and are
+    ///     initialized with their expected values.
+    /// </summary>
     public class StartPointProvider
     {
         [NotNull] private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
-        [NotNull] private readonly ScoreCalculator _scoreCalculator;
         [NotNull] private readonly DietTarget _dietTarget;
 
         private readonly Random _randomNumberGenerator = new Random(123);
+        [NotNull] private readonly ScoreCalculator _scoreCalculator;
 
         public StartPointProvider([NotNull] DietCharacteristicsCalculator dietCharacteristicsCalculator,
             [NotNull] ScoreCalculator scoreCalculator,
@@ -37,9 +44,10 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
             {
                 Double randomAmount =
                     _randomNumberGenerator
-                        .NextDouble()*100; // experimental
-                Double amount = product.Metadata.FixedAmountG ?? product.Metadata.StartAmountG ?? product.Metadata.MinAmountG ??
-                               product.Metadata.MaxAmountG ?? randomAmount;
+                        .NextDouble() * 100; // experimental
+                Double amount = product.Metadata.FixedAmountG ?? product.Metadata.StartAmountG ??
+                                product.Metadata.MinAmountG ??
+                                product.Metadata.MaxAmountG ?? randomAmount;
                 dietPlanItems.Add(new DietPlanItem(product, amount));
                 //dietPlanItems.Add(new DietPlanItem(product, 0)); // what if I start with 0
                 // ^ better start point when there's a lot of product to choose from (start point closer to minimum), but approaching optimum seems slow and almost no product has 0 grams

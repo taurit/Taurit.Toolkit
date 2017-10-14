@@ -1,8 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
+using Taurit.Toolkit.DietOptimization.Services;
 
 namespace Taurit.Toolkit.DietOptimization.Models
 {
+    /// <summary>
+    ///     Quantitive description of a single diet plan. It might be used to:
+    ///     * display characteristics of a diet plan to the user,
+    ///     * measure how close a diet plan is to a <see cref="DietTarget" /> specified by the user. This measurement is done
+    ///     by <see cref="ScoreCalculator" />.
+    /// </summary>
     public class DietCharacteristics
     {
         public DietCharacteristics(Double totalKcalIntake,
@@ -106,8 +113,8 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public Double TotalFattyAcidsPolyunsaturatedG { get; }
         public Double TotalFattyAcidsTransG { get; }
         public Double TotalCholesterolMg { get; }
-        public Double TotalOmega3 { get; }
-        public Double TotalOmega6 { get; }
+        private Double TotalOmega3 { get; }
+        private Double TotalOmega6 { get; }
 
         public String Omega3To6Ratio => TotalOmega6 > TotalOmega3
             ? $"1:{TotalOmega6 / TotalOmega3:0.00}"

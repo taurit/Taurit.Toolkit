@@ -3,7 +3,10 @@ using System.Diagnostics;
 
 namespace Taurit.Toolkit.DietOptimization.Models
 {
-    [DebuggerDisplay("{Name}")]
+    /// <summary>
+    ///     Represents a food type.
+    /// </summary>
+    [DebuggerDisplay("{" + nameof(Name) + "}")]
     // ReSharper disable once ClassNeverInstantiated.Global - it IS instantiated by AutoMapper
     public class FoodProduct
     {

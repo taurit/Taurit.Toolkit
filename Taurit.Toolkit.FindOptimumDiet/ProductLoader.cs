@@ -14,7 +14,11 @@ using Taurit.Toolkit.FindOptimumDiet.Models;
 namespace Taurit.Toolkit.FindOptimumDiet
 {
     /// <summary>
-    ///     Loads list of available products from external source
+    ///     Loads list of available products from external files:
+    ///     * usda-product-database.csv - contents of USDA SR26 database, denormalized into single table containing all
+    ///     basic product nutrient information
+    ///     * usda-product-database-metadata.json - file where products from the above database can be selected for
+    ///     optimization and decorated with additional metadata, like price, maximum daily amount or minumum daily amount.
     /// </summary>
     internal sealed class ProductLoader
     {

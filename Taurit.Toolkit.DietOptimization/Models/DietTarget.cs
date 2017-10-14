@@ -2,6 +2,13 @@
 
 namespace Taurit.Toolkit.DietOptimization.Models
 {
+    /// <summary>
+    ///     Optimization target for diet optimization problem.
+    ///     Represents ideal characteristics for a diet we're searching for.
+    ///     Some properties depend on user's preferences (eg. caloric intake or protein/carbo/fat ratio).
+    ///     Some other are constants based on literature (eg. minimum recommended amounts or maximum tolerable intakes for
+    ///     micronutrients).
+    /// </summary>
     /// <remarks>
     ///     Constant values for micronutrients are currently set accordingly for ~30 years old male, exercising.
     /// </remarks>

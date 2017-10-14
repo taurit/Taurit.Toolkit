@@ -6,14 +6,13 @@ using Taurit.Toolkit.DietOptimization.Models;
 namespace Taurit.Toolkit.DietOptimization.Services
 {
     /// <summary>
-    ///     Provides a metric for a "distance" between two diet characteristics.
+    ///     Provides a metric for a "distance" between <see cref="DietCharacteristics" /> and <see cref="DietTarget" />.
     ///     This metric is a single numeric value ("score") that have the following values:
-    ///     * it is equal 0 when two diet characteristics are exactly the same
-    ///     * its absolute value is greater for characteristics that are more distant
-    ///     * the closer is it to 0, the better diet characteristics matches
+    ///     * it is equal 0 when diet characteristics fulfills the optimization target
+    ///     * the closer is it to 0, the better diet characteristics matches target
+    ///     * the greater score value, the more distant diet is from what user wanted
     ///     * the score is weighted, so that diet characteristic's compounds represented with different units doen't have too
     ///     much or too little impact on overall score.
-    ///     * recommendations used are for adult males (18+ years old)
     /// </summary>
     [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "It is instantiated by Ninject")]
     public class ScoreCalculator
@@ -84,7 +83,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
         private Double GetScoreForFats(DietCharacteristics diet, DietTarget target)
         {
             var score = 0d;
-            
+
             score += PunishForDiffAbove(diet.TotalFattyAcidsSaturatedG, target.MaxGramsOfSaturatedFat, 50d);
             score += PunishForDiffAbove(diet.TotalFattyAcidsTransG, DietTarget.MaxTransFatsG, 100d);
             return score;

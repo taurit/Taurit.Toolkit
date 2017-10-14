@@ -7,6 +7,9 @@ using Taurit.Toolkit.FindOptimumDiet.Models;
 
 namespace Taurit.Toolkit.FindOptimumDiet.Mappings
 {
+    /// <summary>
+    ///     Configuration for AutoMapper. Importantly, contains definition of mappings between various model classes.
+    /// </summary>
     public sealed class AutoMapperModule : NinjectModule
     {
         public override void Load()

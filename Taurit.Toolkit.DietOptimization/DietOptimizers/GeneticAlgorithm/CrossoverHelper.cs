@@ -7,6 +7,9 @@ using Taurit.Toolkit.DietOptimization.Services;
 
 namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
 {
+    /// <summary>
+    ///     Implementation of crossover phase of genetic algorithm optimization.
+    /// </summary>
     public class CrossoverHelper
     {
         private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
@@ -27,14 +30,12 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
             Debug.Assert(parent1.DietPlanItems.Count == parent2.DietPlanItems.Count);
 
             Int32 numItems = parent1.DietPlanItems.Count;
-
-
+            
             // single point crossover
             Int32 crossoverIndex = _randomNumberGenerator.Next(numItems);
             List<DietPlanItem> childItems = parent1.DietPlanItems.Take(crossoverIndex)
                 .Union(parent2.DietPlanItems.Skip(crossoverIndex).Take(numItems - crossoverIndex)).ToList();
-
-
+            
             Debug.Assert(childItems.Count == parent1.DietPlanItems.Count);
 
             DietCharacteristics dietCharacteristics = _dietCharacteristicsCalculator.GetCharacteristics(childItems);

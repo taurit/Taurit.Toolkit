@@ -7,6 +7,9 @@ using Taurit.Toolkit.DietOptimization.Services;
 
 namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
 {
+    /// <summary>
+    ///     Implementation of mutation phase of genetic algorithm optimization.
+    /// </summary>
     public sealed class MutationHelper
     {
         /// <summary>
@@ -56,10 +59,16 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
                         amount = 0;
                     }
 
-                    if (dietPlanItem.FoodProduct.Metadata.MaxAmountG.HasValue && amount > dietPlanItem.FoodProduct.Metadata.MaxAmountG)
+                    if (dietPlanItem.FoodProduct.Metadata.MaxAmountG.HasValue &&
+                        amount > dietPlanItem.FoodProduct.Metadata.MaxAmountG)
+                    {
                         amount = dietPlanItem.FoodProduct.Metadata.MaxAmountG.Value;
-                    if (dietPlanItem.FoodProduct.Metadata.MinAmountG.HasValue && amount < dietPlanItem.FoodProduct.Metadata.MinAmountG)
+                    }
+                    if (dietPlanItem.FoodProduct.Metadata.MinAmountG.HasValue &&
+                        amount < dietPlanItem.FoodProduct.Metadata.MinAmountG)
+                    {
                         amount = dietPlanItem.FoodProduct.Metadata.MinAmountG.Value;
+                    }
                 }
 
                 var newDietPlanItem = new DietPlanItem(dietPlanItem.FoodProduct, amount);

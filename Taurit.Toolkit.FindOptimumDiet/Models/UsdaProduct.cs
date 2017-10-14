@@ -4,7 +4,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Globalization;
 
 namespace Taurit.Toolkit.FindOptimumDiet.Models
 {
@@ -56,7 +55,7 @@ namespace Taurit.Toolkit.FindOptimumDiet.Models
                 return 0;
             }
 
-            if (Double.TryParse(s, out var res))
+            if (Double.TryParse(s, out Double res))
             {
                 return res;
             }

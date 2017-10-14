@@ -9,6 +9,11 @@ using Taurit.Toolkit.DietOptimization.Services;
 
 namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
 {
+    /// <summary>
+    ///     Allows to find the diet that is closest to user-provided optimization target.
+    ///     Uses variation of Genetic Algorithm. I'm no expert in evolutionary algorithm so the implementation might be bad,
+    ///     but it usually converges and does it rather quickly when a scale is ~50 products.
+    /// </summary>
     public class GeneticAlgorithmDietOptimizer : IDietOptimizer
     {
         /// <summary>
@@ -143,7 +148,6 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
             Debug.Assert(newGeneration.Count == NumPlansInGeneration);
             return newGeneration.OrderBy(x => x.ScoreToTarget).ToImmutableList();
         }
-
 
         private void LogGenerationsBestScore(Int32 generationNumber, Double score)
         {

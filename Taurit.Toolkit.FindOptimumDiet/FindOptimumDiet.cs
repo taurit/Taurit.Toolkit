@@ -13,6 +13,9 @@ using Taurit.Toolkit.FindOptimumDiet.Mappings;
 
 namespace Taurit.Toolkit.FindOptimumDiet
 {
+    /// <summary>
+    ///     Main program class. Defines workflow of the optimization process and presentation of results on a high level.
+    /// </summary>
     [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "It is instantiated by Ninject")]
     internal sealed class FindOptimumDiet
     {

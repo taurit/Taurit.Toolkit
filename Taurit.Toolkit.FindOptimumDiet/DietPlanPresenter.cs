@@ -6,7 +6,7 @@ using Taurit.Toolkit.DietOptimization.Models;
 namespace Taurit.Toolkit.FindOptimumDiet
 {
     /// <summary>
-    ///     Presents data about Diet Plan in a console
+    ///     Presents data about Diet Plan in a console window
     /// </summary>
     internal sealed class DietPlanPresenter
     {
