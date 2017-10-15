@@ -52,6 +52,12 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 DietTarget.MinDailySodiumMg, DietTarget.MaxDailySodiumMg);
             Display("Total Zinc", diet.Characteristics.TotalZincMg, "Mg",
                 DietTarget.MinDailyZincMg, DietTarget.MaxDailyZincMg);
+            Display("Total Copper", diet.Characteristics.TotalCopperMg, "Mg",
+                DietTarget.MinDailyCopperMg, DietTarget.MaxDailyCopperMg);
+            Display("Total Manganese", diet.Characteristics.TotalManganeseMg, "Mg",
+                DietTarget.MinDailyManganeseMg, DietTarget.MaxDailyManganeseMg);
+            Display("Total Selenium", diet.Characteristics.TotalSeleniumUg, "Ug",
+                DietTarget.MinDailySeleniumUg, DietTarget.MaxDailySeleniumUg);
         }
 
         private void DisplayFatsAmounts(DietPlan diet, DietTarget referenceValue)

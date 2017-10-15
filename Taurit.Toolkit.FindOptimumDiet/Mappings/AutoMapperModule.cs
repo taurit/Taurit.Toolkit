@@ -58,6 +58,9 @@ namespace Taurit.Toolkit.FindOptimumDiet.Mappings
                     .ForCtorParam("cholesterolMg", opt => opt.MapFrom(src => src.Cholesterol_Mg))
                     .ForCtorParam("omega3", opt => opt.MapFrom(src => src.Omega3Total))
                     .ForCtorParam("omega6", opt => opt.MapFrom(src => src.Omega6Total))
+                    .ForCtorParam("copperMg", opt => opt.MapFrom(src => src.Copper_Mg))
+                    .ForCtorParam("manganeseMg", opt => opt.MapFrom(src => src.Manganese_Mg))
+                    .ForCtorParam("seleniumUg", opt => opt.MapFrom(src => src.Selenium_Ug))
                     ;
 
 

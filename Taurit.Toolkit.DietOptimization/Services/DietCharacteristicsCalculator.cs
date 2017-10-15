@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using Taurit.Toolkit.DietOptimization.Models;
 
 namespace Taurit.Toolkit.DietOptimization.Services
@@ -36,6 +37,9 @@ namespace Taurit.Toolkit.DietOptimization.Services
             Double totalCholesterolMg = 0;
             Double totalOmega3 = 0;
             Double totalOmega6 = 0;
+            Double totalCopperMg = 0;
+            Double totalManganeseMg = 0;
+            Double totalSeleniumUg = 0;
 
             var numIngredients = 0;
 
@@ -74,6 +78,10 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 totalOmega3 += dietPlanItem.FoodProduct.Omega3 * amountMultiplier;
                 totalOmega6 += dietPlanItem.FoodProduct.Omega6 * amountMultiplier;
 
+                totalCopperMg += dietPlanItem.FoodProduct.CopperMg * amountMultiplier;
+                totalManganeseMg += dietPlanItem.FoodProduct.ManganeseMg * amountMultiplier;
+                totalSeleniumUg += dietPlanItem.FoodProduct.SeleniumUg * amountMultiplier;
+
                 totalGrams += dietPlanItem.AmountGrams;
                 numIngredients += dietPlanItem.AmountGrams > 0 ? 1 : 0;
             }
@@ -101,7 +109,10 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 totalFattyAcidsTransG,
                 totalCholesterolMg,
                 totalOmega3,
-                totalOmega6
+                totalOmega6,
+                totalCopperMg,
+                totalManganeseMg, 
+                totalSeleniumUg
             );
         }
     }

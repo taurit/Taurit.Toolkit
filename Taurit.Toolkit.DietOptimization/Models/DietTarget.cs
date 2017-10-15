@@ -99,7 +99,16 @@ namespace Taurit.Toolkit.DietOptimization.Models
         /// </summary>
         public const Double MaxDailySodiumMg = 1500;
 
+        /// <summary>
+        ///     The RDA for zinc (8mg for women and 11mg for men) is likely too low to offset the abundance of copper in our diets
+        ///     and environment, so supplementation with a good quality amino acid chelate, such as zinc orotate, is a good idea.
+        /// </summary>
         public const Double MinDailyZincMg = 11;
+
+        /// <summary>
+        ///     The tolerable upper intake level, or UL, for adults is 40 mg, which means that you can take up to that dosage
+        ///     without worries.
+        /// </summary>
         public const Double MaxDailyZincMg = 40;
 
         /// <summary>
@@ -119,6 +128,57 @@ namespace Taurit.Toolkit.DietOptimization.Models
         ///     this equals 2 grams of trans fat per day."
         /// </summary>
         public const Double MaxTransFatsG = 1;
+
+        /// <summary>
+        ///     Copper works with iron to help the body form red blood cells. It also helps keep the blood vessels, nerves, immune
+        ///     system, and bones healthy. Copper also aids in iron absorption.
+        ///     Oysters and other shellfish, whole grains, beans, nuts, potatoes, and organ meats (kidneys, liver) are good sources
+        ///     of copper. Dark leafy greens, dried fruits such as prunes, cocoa, black pepper, and yeast are also sources of
+        ///     copper in the diet.
+        ///     https://medlineplus.gov/ency/article/002419.htm
+        /// </summary>
+        public const Double MinDailyCopperMg = 1; // 900mcg on one souce, 2000 mcg in other
+
+        /// <summary>
+        ///     "As little as 10 mg of copper can have a toxic effect"
+        ///     "routine use of dietary copper supplements containing 2 mg or more per day could lead to accumulation of excess
+        ///     copper,"​
+        ///     "Seven mg of copper is too much but we don't yet have the data to elucidate the right level for supplementation,"​
+        ///     Dr Turnlund said."
+        ///     "A copper deficiency is basically unheard of."
+        ///     https://www.nutraingredients.com/Article/2005/07/07/Copper-levels-in-supplements-should-be-reduced
+        ///     "Copper is very abundant in the average Western diet and water supply."
+        /// </summary>
+        public const Double MaxDailyCopperMg = 2;
+
+        /// <summary>
+        /// Approximately 37 percent of Americans may not get enough manganese in their diet, 
+        /// The recommended dietary intake of manganese is 1.8 mg for adult women and 2.3 mg for adult men. 
+        /// https://www.livestrong.com/article/520170-taking-too-much-manganese/
+        /// </summary>
+        public const Double MinDailyManganeseMg = 2.3;
+
+        /// <summary>
+        /// The tolerable upper intake level of manganese is 11 mg a day for all adults.
+        /// people eating vegetarian diets may have a dietary intake as high as 10.9 mg a day, according to the Linus Pauling Institute
+        /// https://www.livestrong.com/article/520170-taking-too-much-manganese/
+        /// http://lpi.oregonstate.edu/mic/minerals/manganese
+        /// exceeding it a bit should not be a big problem
+        /// https://discourse.soylent.com/t/have-you-asked-yourself-why-upper-limit-of-manganese-is-11mg-day/7660
+        /// </summary>
+        public const Double MaxDailyManganeseMg =11;
+
+        /// <summary>
+        ///     35 µg by one source
+        ///     55 µg by another
+        /// </summary>
+        public const Double MinDailySeleniumUg = 55;
+
+        /// <summary>
+        ///     Doses larger than 200 µg can be toxic (one source)
+        ///     400 µg (another)
+        /// </summary>
+        public const Double MaxDailySeleniumUg = 200;
 
         public DietTarget(Double totalKcalIntake,
             Double maxPrice,

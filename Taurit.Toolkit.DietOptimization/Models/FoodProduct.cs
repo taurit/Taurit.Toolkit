@@ -31,7 +31,10 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Double fattyAcidsTotalTransG,
             Double cholesterolMg,
             Double omega3,
-            Double omega6
+            Double omega6,
+            Double copperMg,
+            Double manganeseMg,
+            Double seleniumUg
         )
         {
             Name = name;
@@ -56,6 +59,9 @@ namespace Taurit.Toolkit.DietOptimization.Models
             CholesterolMg = cholesterolMg;
             Omega3 = omega3;
             Omega6 = omega6;
+            CopperMg = copperMg;
+            ManganeseMg = manganeseMg;
+            SeleniumUg = seleniumUg;
         }
 
         public OptimizationMetadata Metadata { get; set; }
