@@ -243,7 +243,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
         /// <summary>
         ///     http://lpi.oregonstate.edu/mic/vitamins/vitamin-E
         /// </summary>
-        public const Double MinDailyVitaminEMg = 0.015; // 15 micrograms
+        public const Double MinDailyVitaminEMg = 15;
 
         /// <summary>
         ///     A tolerable upper intake level (UL) for any form of supplemental α-tocopherol (all possible stereoisomers)
