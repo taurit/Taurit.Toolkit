@@ -38,7 +38,16 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Double totalOmega6,
             Double totalCopperMg,
             Double totalManganeseMg,
-            Double totalSeleniumUg
+            Double totalSeleniumUg,
+            Double totalVitaminB1Mg,
+            Double totalVitaminB2Mg,
+            Double totalVitaminB3Mg,
+            Double totalVitaminB5Mg,
+            Double totalVitaminB6Mg,
+            Double totalVitaminB12Mg,
+            Double totalCholineMg,
+            Double totalVitaminEMg,
+            Double totalVitaminKUg
         )
         {
             Debug.Assert(totalKcalIntake >= 0);
@@ -68,6 +77,15 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Debug.Assert(totalCopperMg >= 0);
             Debug.Assert(totalManganeseMg >= 0);
             Debug.Assert(totalSeleniumUg >= 0);
+            Debug.Assert(totalVitaminB1Mg >= 0);
+            Debug.Assert(totalVitaminB2Mg >= 0);
+            Debug.Assert(totalVitaminB3Mg >= 0);
+            Debug.Assert(totalVitaminB5Mg >= 0);
+            Debug.Assert(totalVitaminB6Mg >= 0);
+            Debug.Assert(totalVitaminB12Mg >= 0);
+            Debug.Assert(totalCholineMg >= 0);
+            Debug.Assert(totalVitaminEMg >= 0);
+            Debug.Assert(totalVitaminKUg >= 0);
 
             TotalKcalIntake = totalKcalIntake;
             TotalPrice = totalPrice;
@@ -96,6 +114,15 @@ namespace Taurit.Toolkit.DietOptimization.Models
             TotalCopperMg = totalCopperMg;
             TotalManganeseMg = totalManganeseMg;
             TotalSeleniumUg = totalSeleniumUg;
+            TotalVitaminB1Mg = totalVitaminB1Mg;
+            TotalVitaminB2Mg = totalVitaminB2Mg;
+            TotalVitaminB3Mg = totalVitaminB3Mg;
+            TotalVitaminB5Mg = totalVitaminB5Mg;
+            TotalVitaminB6Mg = totalVitaminB6Mg;
+            TotalVitaminB12Mg = totalVitaminB12Mg;
+            TotalCholineMg = totalCholineMg;
+            TotalVitaminEMg = totalVitaminEMg;
+            TotalVitaminKUg = totalVitaminKUg;
         }
 
         public Double TotalKcalIntake { get; }
@@ -106,6 +133,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public Double TotalFat { get; }
         public Double TotalCarbs { get; }
         public Double TotalVitaminAiu { get; }
+        
         public Double TotalVitaminCMg { get; }
         public Double TotalFiberGrams { get; }
         public Double TotalIronMg { get; }
@@ -127,6 +155,15 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public Double TotalCopperMg { get; }
         public Double TotalManganeseMg { get; }
         public Double TotalSeleniumUg { get; }
+        public Double TotalVitaminB1Mg { get; }
+        public Double TotalVitaminB2Mg { get; }
+        public Double TotalVitaminB3Mg { get; }
+        public Double TotalVitaminB5Mg { get; }
+        public Double TotalVitaminB6Mg { get; }
+        public Double TotalVitaminB12Mg { get; }
+        public Double TotalCholineMg { get; }
+        public Double TotalVitaminEMg { get; }
+        public Double TotalVitaminKUg { get; }
 
         public String Omega3To6Ratio => TotalOmega6 > TotalOmega3
             ? $"1:{TotalOmega6 / TotalOmega3:0.00}"

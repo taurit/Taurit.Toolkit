@@ -81,8 +81,16 @@ namespace Taurit.Toolkit.FindOptimumDiet
         {
             Display("Total Vitamin A", diet.Characteristics.TotalVitaminAiu, "IU",
                 DietTarget.MinDailyVitaminAiu);
-            Display("Total Vitamin C", diet.Characteristics.TotalVitaminCMg, "Mg",
-                DietTarget.MinDailyVitaminCMg, DietTarget.MaxDailyVitaminCMg);
+            Display("Total Vitamin B1", diet.Characteristics.TotalVitaminB1Mg, "Mg", DietTarget.MinDailyVitaminB1Mg, DietTarget.MaxDailyVitaminB1Mg);
+            Display("Total Vitamin B2", diet.Characteristics.TotalVitaminB2Mg, "Mg", DietTarget.MinDailyVitaminB2Mg);
+            Display("Total Vitamin B3", diet.Characteristics.TotalVitaminB3Mg, "Mg", DietTarget.MinDailyVitaminB3Mg, DietTarget.MaxDailyVitaminB3Mg);
+            Display("Total Vitamin B5", diet.Characteristics.TotalVitaminB5Mg, "Mg", DietTarget.MinDailyVitaminB5Mg, DietTarget.MaxDailyVitaminB5Mg);
+            Display("Total Vitamin B6", diet.Characteristics.TotalVitaminB6Mg, "Mg", DietTarget.MinDailyVitaminB6Mg, DietTarget.MaxDailyVitaminB6Mg);
+            Display("Total Vitamin B12", diet.Characteristics.TotalVitaminB12Mg, "Mg", DietTarget.MinDailyVitaminB12Mg);
+            Display("Total Vitamin E", diet.Characteristics.TotalVitaminEMg, "Mg", DietTarget.MinDailyVitaminEMg, DietTarget.MaxDailyVitaminEMg);
+            Display("Total Vitamin K", diet.Characteristics.TotalVitaminKUg, "Ug", DietTarget.MinDailyVitaminKUg);
+            Display("Total Vitamin C", diet.Characteristics.TotalVitaminCMg, "Mg", DietTarget.MinDailyVitaminCMg, DietTarget.MaxDailyVitaminCMg);
+            Display("Total Choline", diet.Characteristics.TotalCholineMg, "Mg", DietTarget.MinDailyCholineMg, DietTarget.MaxDailyCholineMg);
         }
 
         private void DisplayMacronutrientsMetadata(DietPlan diet, DietTarget referenceValue)
@@ -148,7 +156,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
             Double minReferenceValue)
         {
             ConsoleColor valueColor = value >= minReferenceValue ? ConsoleColor.White : ConsoleColor.Red;
-            DisplayInColor(label, $"{value:0}", unit, $"more than {minReferenceValue:0}", valueColor);
+            DisplayInColor(label, $"{value:0.0}", unit, $"more than {minReferenceValue:0}", valueColor);
         }
 
         private void Display([NotNull] String label,

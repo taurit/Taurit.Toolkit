@@ -34,7 +34,16 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Double omega6,
             Double copperMg,
             Double manganeseMg,
-            Double seleniumUg
+            Double seleniumUg,
+            Double vitaminB1Mg,
+            Double vitaminB2Mg,
+            Double vitaminB3Mg,
+            Double vitaminB5Mg,
+            Double vitaminB6Mg,
+            Double vitaminB12Mg,
+            Double cholineMg,
+            Double vitaminEMg,
+            Double vitaminKUg
         )
         {
             Name = name;
@@ -62,6 +71,15 @@ namespace Taurit.Toolkit.DietOptimization.Models
             CopperMg = copperMg;
             ManganeseMg = manganeseMg;
             SeleniumUg = seleniumUg;
+            VitaminB1Mg = vitaminB1Mg;
+            VitaminB2Mg = vitaminB2Mg;
+            VitaminB3Mg = vitaminB3Mg;
+            VitaminB5Mg = vitaminB5Mg;
+            VitaminB6Mg = vitaminB6Mg;
+            VitaminB12Mg = vitaminB12Mg;
+            CholineMg = cholineMg;
+            VitaminEMg = vitaminEMg;
+            VitaminKUg = vitaminKUg;
         }
 
         public OptimizationMetadata Metadata { get; set; }
@@ -80,15 +98,14 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public Double PercentFat { get; }
         public Double PercentCarb { get; }
 
-        public Double SugarGrams { get; set; }
-        public Double FiberTotalDietaryGrams { get; set; }
-        public Double CalciumMg { get; set; }
-        public Double IronMg { get; set; }
-        public Double MagnesiumMg { get; set; }
-        public Double PhosphorusMg { get; set; }
-        public Double PotassiumMg { get; set; }
-        public Double SodiumMg { get; set; }
-        public Double ZincMg { get; set; }
+        public Double FiberTotalDietaryGrams { get; }
+        public Double CalciumMg { get; }
+        public Double IronMg { get; }
+        public Double MagnesiumMg { get; }
+        public Double PhosphorusMg { get; }
+        public Double PotassiumMg { get; }
+        public Double SodiumMg { get; }
+        public Double ZincMg { get; }
         public Double FattyAcidsTotalSaturatedG { get; }
         public Double FattyAcidsTotalMonounsaturatedG { get; }
         public Double FattyAcidsTotalPolyunsaturatedG { get; }
@@ -96,13 +113,21 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public Double CholesterolMg { get; }
         public Double Omega3 { get; }
         public Double Omega6 { get; }
-        public Double CopperMg { get; set; }
-        public Double ManganeseMg { get; set; }
-        public Double SeleniumUg { get; set; }
-        public Double VitaminAIu { get; set; }
-        public Double CaroteneBetaUg { get; set; }
-        public Double VitaminEMg { get; set; }
-        public Double VitaminDIu { get; set; }
-        public Double VitaminCMg { get; set; }
+        public Double CopperMg { get; }
+        public Double ManganeseMg { get; }
+        public Double SeleniumUg { get; }
+        public Double VitaminAIu { get; }
+        public Double VitaminB1Mg { get; }
+        public Double VitaminB2Mg { get; }
+        public Double VitaminB3Mg { get; }
+        public Double VitaminB5Mg { get; }
+        public Double VitaminB6Mg { get; }
+        public Double VitaminB12Mg { get; }
+        public Double VitaminCMg { get; }
+        public Double VitaminEMg { get; }
+        public Double VitaminKUg { get; }
+        public Double CholineMg { get; }
+
+
     }
 }

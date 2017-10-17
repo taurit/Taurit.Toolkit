@@ -32,10 +32,38 @@ namespace Taurit.Toolkit.FindOptimumDiet.Models
         public String Manganese_Mg { get; set; }
         public String Selenium_Ug { get; set; }
         public String VitaminA_IU { get; set; }
-        public String CaroteneBeta_Ug { get; set; }
-        public String VitaminE_Mg { get; set; }
-        public String VitaminD_IU { get; set; }
+
+        /// <summary>
+        ///     Thiamine = Vitamin B1
+        /// </summary>
+        public String Thiamin_Mg { get; set; }
+
+        /// <summary>
+        ///     Riboflavin = Vitamin B2
+        /// </summary>
+        public String Riboflavin_Mg { get; set; }
+
+        /// <summary>
+        ///     Niacin = Vitamin B3
+        /// </summary>
+        public String Niacin_Mg { get; set; }
+
+        /// <summary>
+        ///     Pantothenic Acid = Vitamin B5
+        /// </summary>
+        public String PantothenicAcid_Mg { get; set; }
+
+        /// <summary>
+        /// Pyridoxine = Vitamin b6
+        /// </summary>
+        public String VitaminB6A_Mg { get; set; }
+
+        public String VitaminB12_Mg { get; set; }
+        public String CholineTotalMg { get; set; }
+        public String VitaminK_Ug { get; set; }
+
         public String VitaminC_Mg { get; set; }
+        public String VitaminE_Mg { get; set; }
         public String FattyAcidsTotalSaturated_Grams { get; set; }
         public String FattyAcidsTotalMonounsaturated_Grams { get; set; }
         public String FattyAcidsTotalPolyunsaturated_Grams { get; set; }

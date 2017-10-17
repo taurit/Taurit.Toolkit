@@ -21,6 +21,15 @@ namespace Taurit.Toolkit.DietOptimization.Services
             Double totalFat = 0;
             Double totalCarbs = 0;
             Double totalVitaminA = 0;
+            Double totalVitaminB1 = 0;
+            Double totalVitaminB2 = 0;
+            Double totalVitaminB3 = 0;
+            Double totalVitaminB5 = 0;
+            Double totalVitaminB6 = 0;
+            Double totalVitaminB12 = 0;
+            Double totalCholine = 0;
+            Double totalVitaminE = 0;
+            Double totalVitaminK = 0;
             Double totalVitaminC = 0;
             Double totalDietaryFiber = 0;
             Double totalIronMg = 0;
@@ -56,7 +65,16 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 totalFat += dietPlanItem.FoodProduct.PercentFat * amountMultiplier;
 
                 totalVitaminA += dietPlanItem.FoodProduct.VitaminAIu * amountMultiplier;
+                totalVitaminB1 += dietPlanItem.FoodProduct.VitaminB1Mg * amountMultiplier;
+                totalVitaminB2 += dietPlanItem.FoodProduct.VitaminB2Mg * amountMultiplier;
+                totalVitaminB3 += dietPlanItem.FoodProduct.VitaminB3Mg * amountMultiplier;
+                totalVitaminB5 += dietPlanItem.FoodProduct.VitaminB5Mg * amountMultiplier;
+                totalVitaminB6 += dietPlanItem.FoodProduct.VitaminB6Mg * amountMultiplier;
+                totalVitaminB12 += dietPlanItem.FoodProduct.VitaminB12Mg * amountMultiplier;
                 totalVitaminC += dietPlanItem.FoodProduct.VitaminCMg * amountMultiplier;
+                totalVitaminE += dietPlanItem.FoodProduct.VitaminEMg * amountMultiplier;
+                totalVitaminK += dietPlanItem.FoodProduct.VitaminKUg * amountMultiplier;
+                totalCholine += dietPlanItem.FoodProduct.CholineMg * amountMultiplier;
 
                 totalDietaryFiber += dietPlanItem.FoodProduct.FiberTotalDietaryGrams * amountMultiplier;
 
@@ -112,7 +130,16 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 totalOmega6,
                 totalCopperMg,
                 totalManganeseMg, 
-                totalSeleniumUg
+                totalSeleniumUg,
+                totalVitaminB1,
+                totalVitaminB2,
+                totalVitaminB3,
+                totalVitaminB5,
+                totalVitaminB6,
+                totalVitaminB12,
+                totalCholine,
+                totalVitaminE,
+                totalVitaminK
             );
         }
     }

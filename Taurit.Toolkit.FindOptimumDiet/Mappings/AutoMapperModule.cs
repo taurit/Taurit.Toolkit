@@ -52,15 +52,22 @@ namespace Taurit.Toolkit.FindOptimumDiet.Mappings
                     .ForCtorParam("fattyAcidsTotalPolyunsaturatedG",
                         opt => opt.MapFrom(src => src.FattyAcidsTotalPolyunsaturated_Grams))
                     .ForCtorParam("fattyAcidsTotalTransG",
-                        opt => opt.MapFrom(src => String.IsNullOrEmpty(src.FattyAcidsTotalTrans_Grams)
-                            ? "0"
-                            : src.FattyAcidsTotalTrans_Grams))
+                        opt => opt.MapFrom(src => GetValue(src.FattyAcidsTotalTrans_Grams)))
                     .ForCtorParam("cholesterolMg", opt => opt.MapFrom(src => src.Cholesterol_Mg))
                     .ForCtorParam("omega3", opt => opt.MapFrom(src => src.Omega3Total))
                     .ForCtorParam("omega6", opt => opt.MapFrom(src => src.Omega6Total))
                     .ForCtorParam("copperMg", opt => opt.MapFrom(src => src.Copper_Mg))
                     .ForCtorParam("manganeseMg", opt => opt.MapFrom(src => src.Manganese_Mg))
                     .ForCtorParam("seleniumUg", opt => opt.MapFrom(src => src.Selenium_Ug))
+                    .ForCtorParam("vitaminB1Mg", opt => opt.MapFrom(src => GetValue(src.Thiamin_Mg)))
+                    .ForCtorParam("vitaminB2Mg", opt => opt.MapFrom(src => GetValue(src.Riboflavin_Mg)))
+                    .ForCtorParam("vitaminB3Mg", opt => opt.MapFrom(src => GetValue(src.Niacin_Mg)))
+                    .ForCtorParam("vitaminB5Mg", opt => opt.MapFrom(src => GetValue(src.PantothenicAcid_Mg)))
+                    .ForCtorParam("vitaminB6Mg", opt => opt.MapFrom(src => GetValue(src.VitaminB6A_Mg)))
+                    .ForCtorParam("vitaminB12Mg", opt => opt.MapFrom(src => GetValue(src.VitaminB12_Mg)))
+                    .ForCtorParam("cholineMg", opt => opt.MapFrom(src => GetValue(src.CholineTotalMg)))
+                    .ForCtorParam("vitaminEMg", opt => opt.MapFrom(src => GetValue(src.VitaminE_Mg)))
+                    .ForCtorParam("vitaminKUg", opt => opt.MapFrom(src => GetValue(src.VitaminK_Ug)))
                     ;
 
 
@@ -69,6 +76,15 @@ namespace Taurit.Toolkit.FindOptimumDiet.Mappings
             });
 
             return config;
+        }
+
+        private String GetValue(String s)
+        {
+            if (String.IsNullOrEmpty(s))
+            {
+                return "0";
+            }
+            return s;
         }
     }
 }

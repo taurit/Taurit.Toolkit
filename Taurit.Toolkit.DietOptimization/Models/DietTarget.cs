@@ -21,6 +21,8 @@ namespace Taurit.Toolkit.DietOptimization.Models
         ///     * 120-200 perceived as optimum by some other reasonable researchers.
         /// </summary>
         public const Double MinDailyVitaminCMg = 120;
+        public const Double MinDailyCholineMg = 550;
+        public const Double MaxDailyCholineMg = 3500;
 
         /// <summary>
         ///     it doesn't seem to do any harm up to 2000mg/day, https://ods.od.nih.gov/factsheets/VitaminC-Consumer/#h2
@@ -152,21 +154,22 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public const Double MaxDailyCopperMg = 2;
 
         /// <summary>
-        /// Approximately 37 percent of Americans may not get enough manganese in their diet, 
-        /// The recommended dietary intake of manganese is 1.8 mg for adult women and 2.3 mg for adult men. 
-        /// https://www.livestrong.com/article/520170-taking-too-much-manganese/
+        ///     Approximately 37 percent of Americans may not get enough manganese in their diet,
+        ///     The recommended dietary intake of manganese is 1.8 mg for adult women and 2.3 mg for adult men.
+        ///     https://www.livestrong.com/article/520170-taking-too-much-manganese/
         /// </summary>
         public const Double MinDailyManganeseMg = 2.3;
 
         /// <summary>
-        /// The tolerable upper intake level of manganese is 11 mg a day for all adults.
-        /// people eating vegetarian diets may have a dietary intake as high as 10.9 mg a day, according to the Linus Pauling Institute
-        /// https://www.livestrong.com/article/520170-taking-too-much-manganese/
-        /// http://lpi.oregonstate.edu/mic/minerals/manganese
-        /// exceeding it a bit should not be a big problem
-        /// https://discourse.soylent.com/t/have-you-asked-yourself-why-upper-limit-of-manganese-is-11mg-day/7660
+        ///     The tolerable upper intake level of manganese is 11 mg a day for all adults.
+        ///     people eating vegetarian diets may have a dietary intake as high as 10.9 mg a day, according to the Linus Pauling
+        ///     Institute
+        ///     https://www.livestrong.com/article/520170-taking-too-much-manganese/
+        ///     http://lpi.oregonstate.edu/mic/minerals/manganese
+        ///     exceeding it a bit should not be a big problem
+        ///     https://discourse.soylent.com/t/have-you-asked-yourself-why-upper-limit-of-manganese-is-11mg-day/7660
         /// </summary>
-        public const Double MaxDailyManganeseMg =11;
+        public const Double MaxDailyManganeseMg = 11;
 
         /// <summary>
         ///     35 µg by one source
@@ -179,6 +182,89 @@ namespace Taurit.Toolkit.DietOptimization.Models
         ///     400 µg (another)
         /// </summary>
         public const Double MaxDailySeleniumUg = 200;
+
+        /// <summary>
+        ///     http://lpi.oregonstate.edu/mic/vitamins/thiamin
+        /// </summary>
+        public const Double MinDailyVitaminB1Mg = 1.2;
+
+        /// <summary>
+        ///     The Food and Nutrition Board did not set a tolerable upper intake level(UL) for thiamin because there are no
+        ///     well-established toxic effects from consumption of excess thiamin in food or through long-term, oral
+        ///     supplementation(up to 200 mg/day).
+        /// </summary>
+        public const Double MaxDailyVitaminB1Mg = 200;
+
+        /// <summary>
+        ///     pantothenic acid deficiency in humans is very rare and has been observed only in cases of severe malnutrition
+        /// </summary>
+        public const Double MinDailyVitaminB5Mg = 5;
+
+        /// <summary>
+        ///     http://lpi.oregonstate.edu/mic/vitamins/riboflavin
+        ///     High-dose riboflavin therapy has been found to intensify urine color to a bright yellow (flavinuria), but this is a
+        ///     harmless side effect. The Food and Nutrition Board did not establish a tolerable upper intake level (UL) when the
+        ///     RDA was revised in 1998 (1).
+        /// </summary>
+        public const Double MinDailyVitaminB2Mg = 1.3;
+
+        /// <summary>
+        ///     Pantothenic acid is not known to be toxic in humans. The only adverse effect noted was diarrhea resulting from very
+        ///     high intakes of 10 to 20 g/day of calcium D-pantothenate
+        /// </summary>
+        public const Double MaxDailyVitaminB5Mg = 10000;
+
+
+        /// <summary>
+        ///     http://lpi.oregonstate.edu/mic/vitamins/niacin
+        /// </summary>
+        public const Double MinDailyVitaminB3Mg = 16;
+
+        /// <summary>
+        ///     Flushing of the skin primarily on the face, arms, and chest is a common side effect of niacin and may occur
+        ///     initially at doses as low as 30 mg/day. Although flushing from nicotinamide is rare, the Food and Nutrition Board
+        ///     set the UL for niacin (nicotinic acid and nicotinamide) at 35 mg/day to avoid the adverse effect of flushing (25;
+        ///     Table 3).
+        ///     http://lpi.oregonstate.edu/mic/vitamins/niacin
+        /// </summary>
+        public const Double MaxDailyVitaminB3Mg = 30;
+
+        /// <summary>
+        ///     http://lpi.oregonstate.edu/mic/vitamins/vitamin-B6
+        /// </summary>
+        public const Double MinDailyVitaminB6Mg = 1.3;
+
+        /// <summary>
+        ///     http://lpi.oregonstate.edu/mic/vitamins/vitamin-K
+        ///     No tolerable upper intake level (UL) has been established for vitamin K (42).
+        /// </summary>
+        public const Double MinDailyVitaminKUg = 120;
+
+        /// <summary>
+        ///     http://lpi.oregonstate.edu/mic/vitamins/vitamin-E
+        /// </summary>
+        public const Double MinDailyVitaminEMg = 0.015; // 15 micrograms
+
+        /// <summary>
+        ///     A tolerable upper intake level (UL) for any form of supplemental α-tocopherol (all possible stereoisomers)
+        ///     http://lpi.oregonstate.edu/mic/vitamins/vitamin-E
+        /// </summary>
+        public const Double MaxDailyVitaminEMg = 1000; // 1000 milligrams
+
+
+        /// <summary>
+        ///     http://lpi.oregonstate.edu/mic/vitamins/vitamin-B6
+        /// </summary>
+        public const Double MaxDailyVitaminB6Mg = 100;
+
+        /// <summary>
+        ///     Because of the low toxicity of vitamin B12, no tolerable upper intake level (UL) has been set by the US Food and
+        ///     Nutrition Board (17).
+        ///     Doses as high as 2 mg (2,000 μg) daily by mouth or 1 mg monthly by intramuscular (IM) injection have been used to
+        ///     treat pernicious anemia without significant side effects (84).
+        ///     http://lpi.oregonstate.edu/mic/vitamins/vitamin-B12#toxicity
+        /// </summary>
+        public const Double MinDailyVitaminB12Mg = 0.0024; // 2.4 microgram. Strange that units are chosen this way
 
         public DietTarget(Double totalKcalIntake,
             Double maxPrice,
