@@ -29,7 +29,6 @@ namespace Taurit.Toolkit.DietOptimization.Services
             // but since margins are allowed for macro amounts, this might help to choose better solution
             score += PunishForCaloricIntakeDifference(diet, target);
 
-            // 20g miss in macronutrients like 100kcal miss in diet overall
             const Double macroMultplier = 5.0;
             score += PunishForDiffBelow(diet.TotalProtein,
                 target.TotalProtein - DietTarget.MacronutrientToleranceMarginG,
@@ -50,8 +49,13 @@ namespace Taurit.Toolkit.DietOptimization.Services
             // multiplers should be chosen, so the score increases by:
             // * 1000 if component was completely ignored
             // * 500 if component was underdosed/overdosed by about 50%
-            score += GetScoreForVitaminC(diet);
             score += GetScoreForVitaminA(diet);
+
+            //score += GetScoreForVitaminB(diet);
+            score += GetScoreForVitaminC(diet);
+            //score += GetScoreForVitaminE(diet);
+            //score += GetScoreForVitaminK(diet);
+            
             score += GetScoreForFiber(diet, target.TotalKcalIntake);
 
             score += GetScoreForIron(diet);
@@ -190,6 +194,38 @@ namespace Taurit.Toolkit.DietOptimization.Services
             score += PunishForDiffAbove(diet.TotalFiberGrams, idealFiberAmountG + DietTarget.FiberToleranceMarginG, 20);
             return score;
         }
+        
+        [Pure]
+        private Double GetScoreForVitaminA([NotNull] DietCharacteristics diet)
+        {
+            Double score = 0;
+            score += PunishForDiffBelow(diet.TotalVitaminAiu, DietTarget.MinDailyVitaminAiu, 1);
+            return score;
+        }
+
+        [Pure]
+        private Double GetScoreForVitaminB([NotNull] DietCharacteristics diet)
+        {
+            Double score = 0;
+            score += PunishForDiffBelow(diet.TotalVitaminB1Mg, DietTarget.MinDailyVitaminB1Mg, 100);
+            score += PunishForDiffAbove(diet.TotalVitaminB1Mg, DietTarget.MaxDailyVitaminB1Mg, 100);
+
+            score += PunishForDiffBelow(diet.TotalVitaminB2Mg, DietTarget.MinDailyVitaminB2Mg, 100);
+
+            score += PunishForDiffBelow(diet.TotalVitaminB3Mg, DietTarget.MinDailyVitaminB3Mg, 100);
+            score += PunishForDiffAbove(diet.TotalVitaminB3Mg, DietTarget.MaxDailyVitaminB3Mg, 15);
+
+            score += PunishForDiffBelow(diet.TotalVitaminB5Mg, DietTarget.MinDailyVitaminB5Mg, 100);
+            score += PunishForDiffAbove(diet.TotalVitaminB5Mg, DietTarget.MaxDailyVitaminB5Mg, 100);
+
+            score += PunishForDiffBelow(diet.TotalVitaminB6Mg, DietTarget.MinDailyVitaminB6Mg, 100);
+            score += PunishForDiffAbove(diet.TotalVitaminB6Mg, DietTarget.MaxDailyVitaminB6Mg, 100);
+
+            score += PunishForDiffBelow(diet.TotalVitaminB12Mg, DietTarget.MinDailyVitaminB12Mg, 100);
+
+            return score;
+        }
+
 
         [Pure]
         private Double GetScoreForVitaminC([NotNull] DietCharacteristics diet)
@@ -201,10 +237,18 @@ namespace Taurit.Toolkit.DietOptimization.Services
         }
 
         [Pure]
-        private Double GetScoreForVitaminA([NotNull] DietCharacteristics diet)
+        private Double GetScoreForVitaminE([NotNull] DietCharacteristics diet)
         {
             Double score = 0;
-            score += PunishForDiffBelow(diet.TotalVitaminAiu, DietTarget.MinDailyVitaminAiu, 1);
+            score += PunishForDiffBelow(diet.TotalVitaminEMg, DietTarget.MinDailyVitaminEMg, 50);
+            return score;
+        }
+
+        [Pure]
+        private Double GetScoreForVitaminK([NotNull] DietCharacteristics diet)
+        {
+            Double score = 0;
+            score += PunishForDiffBelow(diet.TotalVitaminKUg, DietTarget.MinDailyVitaminKUg, 10);
             return score;
         }
 
