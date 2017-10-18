@@ -34,10 +34,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
         {
             var csv = new CsvReader(File.OpenText("usda-product-database.csv"));
             Dictionary<String, UsdaProduct> usdaProductNameToProduct =
-                csv.GetRecords<UsdaProduct>()
-                    .GroupBy(p => p.Name,
-                        StringComparer.OrdinalIgnoreCase) // duplicates happen in data, trick to skip them
-                    .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
+                csv.GetRecords<UsdaProduct>().ToDictionary(x => x.Name, y => y);
 
             var products = new List<FoodProduct>(productsToConsider.Count);
             foreach (OptimizationMetadata product in productsToConsider)
