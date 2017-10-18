@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -98,9 +99,13 @@ namespace Taurit.Toolkit.FindOptimumDiet
 
         private DietPlan OptimizeDiet(IReadOnlyCollection<FoodProduct> products, DietTarget target, Int32 threadNumber)
         {
+            Stopwatch optimizeTime= Stopwatch.StartNew();
             IDietOptimizer dietOptimizer = new GeneticAlgorithmDietOptimizer(_dietCharacteristicsCalculator,
                 _scoreCalculator, target, threadNumber);
             DietPlan optimumDiet = dietOptimizer.Optimize(products);
+
+            optimizeTime.Stop();
+            Console.WriteLine($"Total optimization time for thread: {optimizeTime.ElapsedMilliseconds} ms");
 
             return optimumDiet;
         }
