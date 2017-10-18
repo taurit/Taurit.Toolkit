@@ -39,6 +39,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
 
         public Double ScoreToTarget { get; }
 
+        public Double InvertedScoreToTarget => 1d / ScoreToTarget;
         [NotNull]
         public ImmutableList<DietPlanItem> DietPlanItems { get; }
     }

@@ -102,7 +102,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         {
             var newGeneration = new List<DietPlan>(NumPlansInGeneration);
 
-            Double sumOfInvertedScores = currentGeneration.Sum(x => 1 / x.ScoreToTarget);
+            Double sumOfInvertedScores = currentGeneration.Sum(x => x.InvertedScoreToTarget);
 
             // select parents
             var planWithProbabilities = new List<DietPlanWithProbability>(currentGeneration.Count);
@@ -111,7 +111,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
             {
                 // w maksymalizacji: Przystosowanie / Suma przystosowania wszystkich osobników
 
-                Double probability = 1 / plan.ScoreToTarget / sumOfInvertedScores; // for minimization
+                Double probability = plan.InvertedScoreToTarget / sumOfInvertedScores; // for minimization
                 Debug.Assert(probability >= 0);
                 Debug.Assert(probability <= 1);
                 accumulatedProbability += probability;
