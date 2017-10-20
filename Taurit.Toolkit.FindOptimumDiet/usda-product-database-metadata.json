@@ -49,7 +49,9 @@
     {
       "Name": "Egg, whole, cooked, hard-boiled",
       "PricePerKg": 13.70,
-      "Comment": "Ściółkowe, rozmiar L, Auchan Direct"
+      "Comment": "Ściółkowe, rozmiar L, Auchan Direct. 1 egg set as minimum, as I know it is a top quality protein (PDCAAS = 1), which is not considered by optimization algorithm",
+      "MinAmountG": 65
+
     },
     {
       "Name": "Egg, whole, cooked, scrambled",
@@ -133,7 +135,7 @@
       "Name": "Spices, cinnamon, ground",
       "PricePerKg": 90,
       "Comment": "Price in range 80-105 PLN. 2g = about 1 teaspoon",
-      "MaxAmountG": 1
+      "MaxAmountG": 0.5
     },
     {
       "Name": "Spices, basil, dried",
@@ -169,9 +171,14 @@
       "Comment": "I have no idea what's the price, guess"
     },
     {
-      "Name": "Mollusks, oyster, eastern, canned",
+      "Name": "Mollusks, mussel, blue, cooked, moist heat",
       "PricePerKg": 60,
-      "Comment": "Included for zinc, the best source"
+      "Comment": "Included for zinc. The best source, Oysters, are not sold anywhere here"
+    },
+    {
+      "Name": "Beef, ribeye cap steak, boneless, separable lean only, trimmed to 0\" fat, all grades, cooked, grilled",
+      "PricePerKg": 65,
+      "Comment": "Included for zinc, there aren't many alternatives. https://www.frisco.pl/pid,95211/n,frisco-fresh-antrykot-wolowy-bez-kosci/stn,product"
     },
     {
       "Name": "Fish, tuna, light, canned in water, without salt, drained solids",
@@ -210,14 +217,12 @@
     {
       "Name": "Yogurt, plain, skim milk, 13 grams protein per 8 ounce",
       "PricePerKg": 5.35,
-      "Comment":
-        "Jovi, https://www.auchandirect.pl/auchan-warszawa/en/jovi-jogurt-0-naturalny/p-94500387?fromCategory=true"
+      "Comment": "Jovi, https://www.auchandirect.pl/auchan-warszawa/en/jovi-jogurt-0-naturalny/p-94500387?fromCategory=true"
     },
     {
       "Name": "Beans, kidney, red, mature seeds, canned, drained solids, rinsed in tap water",
       "PricePerKg": 6.50,
-      "Comment":
-        "lean protein, https://www.auchandirect.pl/auchan-warszawa/en/dawtona-fasola-czerwona-konserwowa/p-96901162"
+      "Comment": "lean protein, https://www.auchandirect.pl/auchan-warszawa/en/dawtona-fasola-czerwona-konserwowa/p-96901162"
     },
     {
       "Name": "Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt",
@@ -257,9 +262,9 @@
       "Comment": "tasty"
     },
     {
-      "Name": "Broccoli, frozen, chopped, cooked, boiled, drained, without salt",
+      "Name": "#Broccoli, frozen, chopped, cooked, boiled, drained, without salt",
       "PricePerKg": 10,
-      "Comment": "healthy maybe?"
+      "Comment": "healthy maybe? .. but i hate it"
     },
     {
       "Name": "Mushrooms, white, raw",
@@ -268,7 +273,7 @@
     },
     {
       "Name": "Mustard, prepared, yellow",
-      "PricePerKg":7.2,
+      "PricePerKg": 7.2,
       "Comment": "spice",
       "MaxAmountG": 5
 
@@ -292,6 +297,16 @@
       "Name": "Peas, green, canned, drained solids, rinsed in tap water",
       "PricePerKg": 4,
       "Comment": "cheap protein?"
+    },
+    {
+      "Name": "Yeast extract spread",
+      "PricePerKg": 94,
+      "Comment": "Marmite, price on Allegro, import from UK"
+    },
+    {
+      "Name": "Seeds, flaxseed",
+      "PricePerKg": 6,
+      "Comment": "Included for Vitamin B1 (Thiamine)"
     }
   ]
 }
