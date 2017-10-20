@@ -21,6 +21,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
         ///     * 120-200 perceived as optimum by some other reasonable researchers.
         /// </summary>
         public const Double MinDailyVitaminCMg = 120;
+
         public const Double MinDailyCholineMg = 550;
         public const Double MaxDailyCholineMg = 3500;
 
@@ -178,13 +179,21 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public const Double MinDailySeleniumUg = 55;
 
         /// <summary>
-        ///     Doses larger than 200 µg can be toxic (one source)
-        ///     400 µg (another)
+        ///     Source: https://ods.od.nih.gov/factsheets/Selenium-HealthProfessional/
         /// </summary>
-        public const Double MaxDailySeleniumUg = 200;
+        public const Double MaxDailySeleniumUg = 400;
 
         /// <summary>
         ///     http://lpi.oregonstate.edu/mic/vitamins/thiamin
+        ///     "Increased physical activity, pregnancy and lactation increase vitamin B1 requirements because of greater energy
+        ///     need;"
+        ///     http://www.efsa.europa.eu/sites/default/files/efsa_rep/blobserver_assets/ndatolerableuil.pdf
+        ///     increased from common RDA 1.2 do 10 mg considering eg.:
+        ///     "results confirms that the thiamine supplementation for more than 4 weeks brings significant effect on the energy
+        ///     metabolism during exercise, decreases the lactate and ammonia concentration and the rating of perceived exertion;
+        ///     it also positively affects anti-fatigue and may be used as an effective treatment similar to the endurance
+        ///     training."
+        ///     https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4241913/
         /// </summary>
         public const Double MinDailyVitaminB1Mg = 1.2;
 
@@ -226,8 +235,8 @@ namespace Taurit.Toolkit.DietOptimization.Models
         ///     set the UL for niacin (nicotinic acid and nicotinamide) at 35 mg/day to avoid the adverse effect of flushing (25;
         ///     Table 3).
         ///     http://lpi.oregonstate.edu/mic/vitamins/niacin
-        /// 
-        ///     Niacin flush, a common side effect in doses 100 mg and above, is harmless; it starts on your face and may travel to your chest and arms, disappearing after 30 minutes to two hours
+        ///     Niacin flush, a common side effect in doses 100 mg and above, is harmless; it starts on your face and may travel to
+        ///     your chest and arms, disappearing after 30 minutes to two hours
         /// </summary>
         public const Double MaxDailyVitaminB3Mg = 100;
 
