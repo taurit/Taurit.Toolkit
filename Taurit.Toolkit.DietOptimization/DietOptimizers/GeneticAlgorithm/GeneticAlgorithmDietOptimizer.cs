@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using JetBrains.Annotations;
 using Taurit.Toolkit.DietOptimization.Models;
 using Taurit.Toolkit.DietOptimization.Services;
@@ -26,7 +27,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         /// </summary>
         private const Int32 MaxNumGenerations = 1_000;
 
-        private const Int32 AcceptableScore = 5;
+        private const Int32 AcceptableScore = 10;
         [NotNull] private readonly CrossoverHelper _crossoverHelper;
 
         [NotNull] private readonly MutationHelper _mutationHelper;
@@ -48,7 +49,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
             _randomNumberGenerator = new Random(threadNumber); // for repeatable, but different results for each thread
         }
 
-        public DietPlan Optimize(IReadOnlyCollection<FoodProduct> availableProducts)
+        public DietPlan Optimize(IReadOnlyCollection<FoodProduct> availableProducts, CancellationToken cancellationToken)
         {
             ImmutableList<DietPlan> currentGeneration = CreateFirstGeneration(availableProducts);
             LogGenerationsBestScore(0, currentGeneration.First().ScoreToTarget);
@@ -65,7 +66,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
                 {
                     _bestPlanSoFar = bestInGeneration;
                 }
-                if (bestInGeneration.ScoreToTarget < AcceptableScore)
+                if (bestInGeneration.ScoreToTarget < AcceptableScore || cancellationToken.IsCancellationRequested)
                 {
                     // result is good enough, we don't need to search further
                     break;
