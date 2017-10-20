@@ -55,6 +55,8 @@ namespace Taurit.Toolkit.DietOptimization.Services
             score += GetScoreForVitaminC(diet);
             score += GetScoreForVitaminE(diet);
             score += GetScoreForVitaminK(diet);
+            score += GetScoreForCholine(diet);
+
             score += GetScoreForFiber(diet, target.TotalKcalIntake);
 
             score += GetScoreForIron(diet);
@@ -250,6 +252,16 @@ namespace Taurit.Toolkit.DietOptimization.Services
             score += PunishForDiffBelow(diet.TotalVitaminKUg, DietTarget.MinDailyVitaminKUg, 10);
             return score;
         }
+
+        [Pure]
+        private Double GetScoreForCholine([NotNull] DietCharacteristics diet)
+        {
+            Double score = 0;
+            score += PunishForDiffBelow(diet.TotalCholineMg, DietTarget.MinDailyCholineMg, 10);
+            score += PunishForDiffAbove(diet.TotalCholineMg, DietTarget.MaxDailyCholineMg, 10);
+            return score;
+        }
+
 
         [Pure]
         private Double PunishForDiffAbove(Double actualValue, Double threshold, Double multiplier)
