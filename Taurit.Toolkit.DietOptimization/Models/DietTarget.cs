@@ -226,8 +226,10 @@ namespace Taurit.Toolkit.DietOptimization.Models
         ///     set the UL for niacin (nicotinic acid and nicotinamide) at 35 mg/day to avoid the adverse effect of flushing (25;
         ///     Table 3).
         ///     http://lpi.oregonstate.edu/mic/vitamins/niacin
+        /// 
+        ///     Niacin flush, a common side effect in doses 100 mg and above, is harmless; it starts on your face and may travel to your chest and arms, disappearing after 30 minutes to two hours
         /// </summary>
-        public const Double MaxDailyVitaminB3Mg = 30;
+        public const Double MaxDailyVitaminB3Mg = 100;
 
         /// <summary>
         ///     http://lpi.oregonstate.edu/mic/vitamins/vitamin-B6
