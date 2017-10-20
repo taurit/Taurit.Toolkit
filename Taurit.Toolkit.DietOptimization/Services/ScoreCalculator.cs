@@ -51,11 +51,10 @@ namespace Taurit.Toolkit.DietOptimization.Services
             // * 500 if component was underdosed/overdosed by about 50%
             score += GetScoreForVitaminA(diet);
 
-            //score += GetScoreForVitaminB(diet);
+            score += GetScoreForVitaminB(diet);
             score += GetScoreForVitaminC(diet);
-            //score += GetScoreForVitaminE(diet);
-            //score += GetScoreForVitaminK(diet);
-            
+            score += GetScoreForVitaminE(diet);
+            score += GetScoreForVitaminK(diet);
             score += GetScoreForFiber(diet, target.TotalKcalIntake);
 
             score += GetScoreForIron(diet);
