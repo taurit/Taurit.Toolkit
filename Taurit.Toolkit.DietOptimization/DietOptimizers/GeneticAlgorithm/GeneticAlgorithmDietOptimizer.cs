@@ -19,7 +19,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         /// <summary>
         ///     How many diet plans a single generation of genetic algorithm contains?
         /// </summary>
-        private const Int32 NumPlansInGeneration = 600;
+        private const Int32 NumPlansInGeneration = 500;
 
         /// <summary>
         ///     How many generations are created/analyzed by single run of <see cref="Optimize" />?

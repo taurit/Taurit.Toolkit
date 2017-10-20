@@ -20,7 +20,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
     [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "It is instantiated by Ninject")]
     internal sealed class FindOptimumDiet
     {
-        private const Int32 NumOptimizationThreads = 2;
+        private const Int32 NumOptimizationThreads = 1;
         [NotNull] private readonly DietCharacteristicsCalculator _dietCharacteristicsCalculator;
         [NotNull] private readonly DietPlanPresenter _dietPlanPresenter;
         [NotNull] private readonly ProductLoader _productLoader;
