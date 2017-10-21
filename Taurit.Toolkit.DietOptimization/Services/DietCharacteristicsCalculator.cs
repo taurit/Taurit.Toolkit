@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using Taurit.Toolkit.DietOptimization.Models;
 
 namespace Taurit.Toolkit.DietOptimization.Services
@@ -129,7 +128,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 totalOmega3,
                 totalOmega6,
                 totalCopperMg,
-                totalManganeseMg, 
+                totalManganeseMg,
                 totalSeleniumUg,
                 totalVitaminB1,
                 totalVitaminB2,

@@ -27,7 +27,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         /// </summary>
         private const Int32 MaxNumGenerations = 10_000;
 
-        private const Int32 AcceptableScore = 20;
+        private const Int32 AcceptableScore = 5;
         [NotNull] private readonly CrossoverHelper _crossoverHelper;
 
         [NotNull] private readonly MutationHelper _mutationHelper;
@@ -37,7 +37,6 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         [NotNull] private readonly StartPointProvider _startPointProvider;
         private readonly Int32 _threadNumber;
 
-        [CanBeNull] private DietPlan _bestPlanSoFar;
 
         public GeneticAlgorithmDietOptimizer([NotNull] DietCharacteristicsCalculator dietCharacteristicsCalculator,
             [NotNull] ScoreCalculator scoreCalculator, [NotNull] DietTarget dietTarget, Int32 threadNumber)
@@ -54,19 +53,18 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
         {
             ImmutableList<DietPlan> currentGeneration = CreateFirstGeneration(availableProducts);
             LogGenerationsBestScore(0, currentGeneration.First().ScoreToTarget, -1);
-            _bestPlanSoFar = currentGeneration.First();
+            DietPlan bestPlanSoFar = currentGeneration.First();
 
             for (var i = 0; i < MaxNumGenerations; i++)
             {
                 currentGeneration = CreateNextGeneration(currentGeneration);
                 DietPlan bestInGeneration = currentGeneration.First();
 
-                LogGenerationsBestScore(i + 1, bestInGeneration.ScoreToTarget, _bestPlanSoFar.ScoreToTarget);
+                LogGenerationsBestScore(i + 1, bestInGeneration.ScoreToTarget, bestPlanSoFar.ScoreToTarget);
 
-                Debug.Assert(_bestPlanSoFar != null);
-                if (bestInGeneration.ScoreToTarget < _bestPlanSoFar.ScoreToTarget)
+                if (bestInGeneration.ScoreToTarget < bestPlanSoFar.ScoreToTarget)
                 {
-                    _bestPlanSoFar = bestInGeneration;
+                    bestPlanSoFar = bestInGeneration;
                 }
                 if (bestInGeneration.ScoreToTarget < AcceptableScore || cancellationToken.IsCancellationRequested)
                 {
@@ -75,8 +73,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
                 }
             }
 
-            Debug.Assert(_bestPlanSoFar != null);
-            return _bestPlanSoFar;
+            return bestPlanSoFar;
         }
 
         /// <summary>
@@ -154,7 +151,7 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
 
         private void LogGenerationsBestScore(Int32 generationNumber, Double score, Double bestScore)
         {
-            if (generationNumber % 50 == 0)
+            if (generationNumber % 10 == 0)
             {
                 Console.SetCursorPosition(0, _threadNumber);
                 ClearCurrentConsoleLine();

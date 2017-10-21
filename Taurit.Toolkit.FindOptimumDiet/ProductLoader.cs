@@ -104,7 +104,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
         }
 
         private static FoodProduct AddProductNonexistentInUsdaDatabase(FoodProduct product, Double pricePerKg,
-            Double maxAmountG, Double oneItemWeight, string oneItemDescription)
+            Double maxAmountG, Double oneItemWeight, String oneItemDescription)
         {
             product.Metadata =
                 new OptimizationMetadata

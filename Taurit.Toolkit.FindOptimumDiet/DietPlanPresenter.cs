@@ -180,13 +180,6 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 : (Double?) null;
         }
 
-        private static void DisplaySkippedProducts(DietPlan diet)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            foreach (DietPlanItem item in diet.DietPlanItems.Where(x => Math.Abs(x.AmountGrams) < 0.1))
-                Console.WriteLine($"{(item.AmountGrams.ToString("0.00") + "g").PadLeft(10)}: {item.FoodProduct.Name}");
-        }
-
         private void Display([NotNull] String label,
             Double value,
             [NotNull] String unit,
