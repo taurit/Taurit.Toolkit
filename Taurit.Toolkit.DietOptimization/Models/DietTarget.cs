@@ -120,7 +120,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
         /// </summary>
         public const Double MacronutrientToleranceMarginG = 7;
 
-        public const Double EnergyToleranceMarginKcal = 100;
+        public const Double EnergyToleranceMarginKcal = 25;
         public const Double FiberToleranceMarginG = 5;
 
         /// <summary>
