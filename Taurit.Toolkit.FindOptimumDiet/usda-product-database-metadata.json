@@ -17,13 +17,13 @@
       "Name": "Tomatoes, red, ripe, raw, year round average",
       "PricePerKg": 4.00,
       "OneItemWeight": 147,
-      "OneItemDescription": "average tomato"
+      "OneItemDescription": "średni pomidor"
     },
     {
       "Name": "Peppers, sweet, red, raw",
       "PricePerKg": 7.00,
       "OneItemWeight": 180,
-      "OneItemDescription": "medium-sized pepper",
+      "OneItemDescription": "średnia papryka",
       "MaxAmountG": 360,
       "Comment": "Limited because optimization tends to choose more of it than is eatable (eg. 4 peppers a day)"
 
@@ -42,13 +42,13 @@
       "MinAmountG": 5,
       "MaxAmountG": 10,
       "OneItemWeight": 5,
-      "OneItemDescription": "small spoon"
+      "OneItemDescription": "łyżeczka"
     },
     {
       "Name": "Oil, olive, salad or cooking",
       "PricePerKg": 33.0,
       "OneItemWeight": 10,
-      "OneItemDescription": "large spoon"
+      "OneItemDescription": "łyżka"
 
 
     },
@@ -74,13 +74,15 @@
         "Ściółkowe, rozmiar L, Auchan Direct. 1 egg set as minimum, as I know it is a top quality protein (PDCAAS = 1), which is not considered by optimization algorithm",
       "MinAmountG": 60,
       "OneItemWeight": 60,
-      "OneItemDescription": "medium/L egg"
+      "OneItemDescription": "średnia sztuka (L)"
 
     },
     {
       "Name": "Egg, whole, cooked, scrambled",
       "PricePerKg": 13.70,
-      "Comment": "Ściółkowe, rozmiar L, Auchan Direct"
+      "Comment": "Ściółkowe, rozmiar L, Auchan Direct",
+      "OneItemWeight": 60,
+      "OneItemDescription": "średnia sztuka (L)"
     },
     {
       "Name": "Turkey, all classes, light meat, cooked, roasted",
@@ -94,11 +96,12 @@
     },
     {
       "Name": "Bananas, raw",
-      "PricePerKg": 4,
+      "PricePerKg": 5,
       "OneItemWeight": 120,
       "Comment": "This is *peeled* banana, like in USDA db. Shop price needs to multiplied by 1.66. Force minimum because it helps with maintainability of diet.",
-      "OneItemDescription": "1 large peeled banana",
-      "MinAmountG": 120
+      "OneItemDescription": "large, peeled",
+      "MinAmountG": 120,
+      "MaxAmountG": 360
     },
     {
       "Name": "Cheese, gouda",
@@ -127,7 +130,7 @@
       "Name": "Bread, wheat",
       "PricePerKg": 7,
       "OneItemWeight": 25,
-      "OneItemDescription": "1 bread slice,"
+      "OneItemDescription": "slice"
     },
     {
       "Name": "Jams and preserves",
@@ -142,7 +145,7 @@
       "Name": "Onions, cooked, boiled, drained, without salt",
       "PricePerKg": 2,
       "OneItemWeight": 50,
-      "OneItemDescription": "small onion",
+      "OneItemDescription": "mała sztuka",
       "MaxAmountG": 100,
       "Comment": "50 is weight of a small one. big ones are up to 200g"
 
@@ -171,7 +174,7 @@
       "Comment": "Price in range 40-114 PLN. 2grams = 1 teaspoon",
       "MaxAmountG": 4,
       "OneItemWeight": 8,
-      "OneItemDescription": "flat little spoon"
+      "OneItemDescription": "płaska łyżeczka"
     },
     {
       "Name": "Spices, cinnamon, ground",
@@ -229,16 +232,16 @@
       "Comment": "Price range 16-60, not sure which ones if any contain no salt. 1 can = 130g of dried fish ",
       "MaxAmountG": 130,
       "OneItemWeight": 130,
-      "OneItemDescription": "1 can"
+      "OneItemDescription": "puszka"
     },
     {
       "Name": "Seaweed, spirulina, dried",
       "PricePerKg": 70,
       "Comment": "Allegro price, 16 pln for 250g in tabs. Max 2.25g a day (0.25g per 10kg of body weight)",
-      "MaxAmountG": 2,
+      "MaxAmountG": 5,
       "StartAmountG": 0,
-      "OneItemWeight": 0.25,
-      "OneItemDescription": "pill"
+      "OneItemWeight": 2.5,
+      "OneItemDescription": "3/4 płaskiej łyżeczki"
     },
     {
       "Name": "Fish, cod, Atlantic, dried and salted",
@@ -255,7 +258,7 @@
       "PricePerKg": 50,
       "Comment": "Price for 1kg dry in Auchan Direct, included because I like them",
       "OneItemWeight": 1,
-      "OneItemDescription": "1 almond"
+      "OneItemDescription": "sztuka"
 
 
     },
@@ -280,11 +283,14 @@
     {
       "Name": "Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt",
       "PricePerKg": 8.50,
-      "Comment": "lean protein"
+      "Comment": "lean protein. 240 g odsączonego w puszce",
+      "OneItemWeight": 240,
+      "OneItemDescription": "puszka odsączonego"
     },
     {
       "Name": "Oil, flaxseed, cold pressed",
       "PricePerKg": 43,
+      "MinAmountG": 5,
       "Comment": "good omega ratio"
     },
     {
@@ -311,7 +317,7 @@
       "PricePerKg": 15,
       "Comment": "reasonable omega 3:6 ratio. 15 PLN for bio, 5 for normal",
       "OneItemWeight": 10,
-      "OneItemDescription": "big spoon"
+      "OneItemDescription": "łyżka"
 
     },
     {
@@ -341,7 +347,7 @@
       "PricePerKg": 2.5,
       "Comment": "",
       "OneItemWeight": 50,
-      "OneItemDescription": "small carrot"
+      "OneItemDescription": "mała sztuka"
     },
     {
       "Name": "Lettuce, green leaf, raw",

@@ -93,18 +93,33 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 "Calcium + Magnesium supplement",
                 0, 0, 0, 0, 0, 0, 0, 0, 500, 250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0), 29, 1, 1, "pill");
+
+            FoodProduct citrullineMalateSupplement = AddProductNonexistentInUsdaDatabase(new FoodProduct(
+                "Citrulline malate",
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0), 110, null, 3, "łyżeczka");
+            citrullineMalateSupplement.Metadata.FixedAmountG = 3;
+
+            FoodProduct creatineSupplement = AddProductNonexistentInUsdaDatabase(new FoodProduct(
+                "Creatine monohydrate",
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0), 48, null, 5, "łyżeczka");
+            creatineSupplement.Metadata.FixedAmountG = 5;
+
             var productFromBeyondUsdaDatbase = new List<FoodProduct>
             {
                 kfdProteinSupplement,
                 kfdProteinDessertSupplement,
                 kfdZincSupplement,
-                calciumMagnesiumSupplement
+                calciumMagnesiumSupplement,
+                citrullineMalateSupplement,
+                creatineSupplement
             };
             return productFromBeyondUsdaDatbase;
         }
 
         private static FoodProduct AddProductNonexistentInUsdaDatabase(FoodProduct product, Double pricePerKg,
-            Double maxAmountG, Double oneItemWeight, String oneItemDescription)
+            Double? maxAmountG, Double oneItemWeight, String oneItemDescription)
         {
             product.Metadata =
                 new OptimizationMetadata
