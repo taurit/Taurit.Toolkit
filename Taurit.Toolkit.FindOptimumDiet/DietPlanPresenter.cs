@@ -162,11 +162,15 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 if (numItems.HasValue)
                 {
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.Write($" {numItems.Value:0.0} items");
+                    Console.Write($" {numItems.Value:0.0} ");
 
                     if (!String.IsNullOrEmpty(item.FoodProduct.Metadata.OneItemDescription))
                     {
-                        Console.Write($" (1 item = {item.FoodProduct.Metadata.OneItemDescription})");
+                        Console.Write($"* {item.FoodProduct.Metadata.OneItemDescription}");
+                    }
+                    else
+                    {
+                        Console.Write("items");
                     }
                 }
                 Console.WriteLine("");
