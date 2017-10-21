@@ -69,7 +69,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
             Display("FA Trans", diet.Characteristics.TotalFattyAcidsTransG, "g",
                 0, DietTarget.MaxTransFatsG);
             Display("FA Cholesterol Mg", diet.Characteristics.TotalCholesterolMg, "Mg");
-            DisplayInColor("Omega3:Omega6 ratio", diet.Characteristics.Omega3To6Ratio, "Mg", "1:1 is best", ConsoleColor.Gray);
+            DisplayInColor("Omega3:Omega6 ratio", diet.Characteristics.Omega3To6Ratio, "", "1:1 is best", ConsoleColor.Gray);
         }
 
         private void Display(String label, Double value, String unit)
