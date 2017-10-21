@@ -88,7 +88,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0), 10, 1);
             // https://sklep.kfd.pl/scitec-calcium-magnesium-100tabs-p-6338.html
-            FoodProduct calciumMagnesiumSupplement = AddProductNonexistentInUsdaDatabase(new FoodProduct("KFD Zinc tabs",
+            FoodProduct calciumMagnesiumSupplement = AddProductNonexistentInUsdaDatabase(new FoodProduct("Calcium + Magnesium supplement",
                 0, 0, 0, 0, 0, 0, 0, 0, 500, 250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0), 29, 1);
             var productFromBeyondUsdaDatbase = new List<FoodProduct>
