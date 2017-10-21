@@ -56,5 +56,13 @@ namespace Taurit.Toolkit.DietOptimization.Models
         [CanBeNull]
         [JsonProperty]
         public Double? StartAmountG { get; set; }
+
+        [CanBeNull]
+        [JsonProperty]
+        public Double? OneItemWeight { get; set; }
+
+        [CanBeNull]
+        [JsonProperty]
+        public String OneItemDescription { get; set; }
     }
 }

@@ -37,6 +37,14 @@
           "Comment": {
             "type": "string",
             "description": "Comment for myself, not used in optimization."
+          },
+          "OneItemWeight": {
+            "type": "number",
+            "description": "How much 1 item weights, for easier result interpretation by user (wg. to quickly see how much eggs or bananas or paprikas is 300g)."
+          },
+          "OneItemDescription": {
+            "type": "string",
+            "description": "What is one item in case of this product?"
           }
         }
       }

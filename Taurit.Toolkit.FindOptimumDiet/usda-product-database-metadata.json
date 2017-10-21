@@ -11,7 +11,9 @@
     },
     {
       "Name": "Tomatoes, red, ripe, raw, year round average",
-      "PricePerKg": 4.00
+      "PricePerKg": 4.00,
+      "OneItemWeight": 147,
+      "OneItemDescription": "average tomato"
     },
     {
       "Name": "Peppers, sweet, red, raw",
@@ -49,8 +51,11 @@
     {
       "Name": "Egg, whole, cooked, hard-boiled",
       "PricePerKg": 13.70,
-      "Comment": "Ściółkowe, rozmiar L, Auchan Direct. 1 egg set as minimum, as I know it is a top quality protein (PDCAAS = 1), which is not considered by optimization algorithm",
-      "MinAmountG": 65
+      "Comment":
+        "Ściółkowe, rozmiar L, Auchan Direct. 1 egg set as minimum, as I know it is a top quality protein (PDCAAS = 1), which is not considered by optimization algorithm",
+      "MinAmountG": 60,
+      "OneItemWeight": 60,
+      "OneItemDescription": "medium/L egg"
 
     },
     {
@@ -70,7 +75,10 @@
     },
     {
       "Name": "Bananas, raw",
-      "PricePerKg": 4
+      "PricePerKg": 4,
+      "OneItemWeight": 120,
+      "Comment": "This is *peeled* banana, like in USDA db. Shop price needs to multiplied by 1.66.",
+      "OneItemDescription": "1 large peeled banana"
     },
     {
       "Name": "Cheese, gouda",
@@ -97,7 +105,9 @@
     },
     {
       "Name": "Bread, wheat",
-      "PricePerKg": 7
+      "PricePerKg": 7,
+      "OneItemWeight": 25,
+      "OneItemDescription": "1 bread slice,"
     },
     {
       "Name": "Jams and preserves",
@@ -108,11 +118,18 @@
     },
     {
       "Name": "Onions, cooked, boiled, drained, without salt",
-      "PricePerKg": 2
+      "PricePerKg": 2,
+      "OneItemWeight": 50,
+      "OneItemDescription": "small onion",
+      "Comment": "50 is weight of a small one. big ones are up to 200g"
+
     },
     {
       "Name": "Cucumber, with peel, raw",
-      "PricePerKg": 3
+      "PricePerKg": 3,
+      "OneItemWeight": 84,
+      "OneItemDescription": "średni gruntowy",
+      "Comment": "84 g is weight of average cucumber (gruntowy! nie ten duży)"
     },
     {
       "Name": "Pickles, cucumber, sour",
@@ -120,7 +137,7 @@
     },
     {
       "Name": "Spinach, cooked, boiled, drained, without salt",
-      "PricePerKg": 13,
+      "PricePerKg": 7.1,
       "MaxAmountG": 200,
       "Comment": "200 because I don't fancy eating half a kilo of it every day"
 
@@ -178,13 +195,16 @@
     {
       "Name": "Beef, ribeye cap steak, boneless, separable lean only, trimmed to 0\" fat, all grades, cooked, grilled",
       "PricePerKg": 65,
-      "Comment": "Included for zinc, there aren't many alternatives. https://www.frisco.pl/pid,95211/n,frisco-fresh-antrykot-wolowy-bez-kosci/stn,product"
+      "Comment":
+        "Included for zinc, there aren't many alternatives. https://www.frisco.pl/pid,95211/n,frisco-fresh-antrykot-wolowy-bez-kosci/stn,product"
     },
     {
       "Name": "Fish, tuna, light, canned in water, without salt, drained solids",
       "PricePerKg": 24,
-      "Comment": "Price range 16-60, not sure which ones if any contain no salt",
-      "MaxAmountG": 130
+      "Comment": "Price range 16-60, not sure which ones if any contain no salt. 1 can = 130g of dried fish ",
+      "MaxAmountG": 130,
+      "OneItemWeight": 130,
+      "OneItemDescription": "1 can"
     },
     {
       "Name": "Seaweed, spirulina, dried",
@@ -217,12 +237,14 @@
     {
       "Name": "Yogurt, plain, skim milk, 13 grams protein per 8 ounce",
       "PricePerKg": 5.35,
-      "Comment": "Jovi, https://www.auchandirect.pl/auchan-warszawa/en/jovi-jogurt-0-naturalny/p-94500387?fromCategory=true"
+      "Comment":
+        "Jovi, https://www.auchandirect.pl/auchan-warszawa/en/jovi-jogurt-0-naturalny/p-94500387?fromCategory=true"
     },
     {
       "Name": "Beans, kidney, red, mature seeds, canned, drained solids, rinsed in tap water",
       "PricePerKg": 6.50,
-      "Comment": "lean protein, https://www.auchandirect.pl/auchan-warszawa/en/dawtona-fasola-czerwona-konserwowa/p-96901162"
+      "Comment":
+        "lean protein, https://www.auchandirect.pl/auchan-warszawa/en/dawtona-fasola-czerwona-konserwowa/p-96901162"
     },
     {
       "Name": "Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt",
@@ -281,7 +303,9 @@
     {
       "Name": "Carrots, raw",
       "PricePerKg": 2.5,
-      "Comment": ""
+      "Comment": "",
+      "OneItemWeight": 50,
+      "OneItemDescription": "small carrot"
     },
     {
       "Name": "Lettuce, green leaf, raw",

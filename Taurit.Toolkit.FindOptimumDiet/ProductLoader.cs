@@ -80,17 +80,19 @@ namespace Taurit.Toolkit.FindOptimumDiet
         {
             FoodProduct kfdProteinSupplement = AddProductNonexistentInUsdaDatabase(new FoodProduct("KFD premium WPC 80",
                 415, 79, 7, 9, 0, 0, 0, 0, 0, 0, 0, 0, 581.37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0), 60, 2 * 40);
-            FoodProduct kfdProteinDessertSupplement = AddProductNonexistentInUsdaDatabase(new FoodProduct("KFD Protein Dessert",
+                0), 60, 2 * 40, 40, "recommended portion");
+            FoodProduct kfdProteinDessertSupplement = AddProductNonexistentInUsdaDatabase(new FoodProduct(
+                "KFD Protein Dessert",
                 347, 80, 1.3, 3.7, 0, 0, 0, 0, 0, 0, 0, 0, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0), 60, 40);
+                0), 60, 40, 40, "recommended portion");
             FoodProduct kfdZincSupplement = AddProductNonexistentInUsdaDatabase(new FoodProduct("KFD Zinc tabs",
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0), 10, 1);
+                0), 10, 1, 1, "pill");
             // https://sklep.kfd.pl/scitec-calcium-magnesium-100tabs-p-6338.html
-            FoodProduct calciumMagnesiumSupplement = AddProductNonexistentInUsdaDatabase(new FoodProduct("Calcium + Magnesium supplement",
+            FoodProduct calciumMagnesiumSupplement = AddProductNonexistentInUsdaDatabase(new FoodProduct(
+                "Calcium + Magnesium supplement",
                 0, 0, 0, 0, 0, 0, 0, 0, 500, 250, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0), 29, 1);
+                0), 29, 1, 1, "pill");
             var productFromBeyondUsdaDatbase = new List<FoodProduct>
             {
                 kfdProteinSupplement,
@@ -101,14 +103,17 @@ namespace Taurit.Toolkit.FindOptimumDiet
             return productFromBeyondUsdaDatbase;
         }
 
-        private static FoodProduct AddProductNonexistentInUsdaDatabase(FoodProduct product, double pricePerKg, double maxAmountG)
+        private static FoodProduct AddProductNonexistentInUsdaDatabase(FoodProduct product, Double pricePerKg,
+            Double maxAmountG, Double oneItemWeight, string oneItemDescription)
         {
             product.Metadata =
                 new OptimizationMetadata
                 {
                     Name = product.Name,
                     PricePerKg = pricePerKg,
-                    MaxAmountG = maxAmountG
+                    MaxAmountG = maxAmountG,
+                    OneItemWeight = oneItemWeight,
+                    OneItemDescription = oneItemDescription
                 };
             return product;
         }

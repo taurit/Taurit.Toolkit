@@ -13,8 +13,8 @@ namespace Taurit.Toolkit.FindOptimumDiet
         internal void Display(DietPlan diet, DietTarget referenceValue)
         {
             DisplayHeader();
-            DisplaySkippedProducts(diet);
-            DisplaySeparator();
+            //DisplaySkippedProducts(diet);
+            //DisplaySeparator();
             DisplayChosenProducts(diet);
             DisplaySeparator();
 
@@ -69,7 +69,8 @@ namespace Taurit.Toolkit.FindOptimumDiet
             Display("FA Trans", diet.Characteristics.TotalFattyAcidsTransG, "g",
                 0, DietTarget.MaxTransFatsG);
             Display("FA Cholesterol Mg", diet.Characteristics.TotalCholesterolMg, "Mg");
-            DisplayInColor("Omega3:Omega6 ratio", diet.Characteristics.Omega3To6Ratio, "", "1:1 is best", ConsoleColor.Gray);
+            DisplayInColor("Omega3:Omega6 ratio", diet.Characteristics.Omega3To6Ratio, "", "1:1 is best",
+                ConsoleColor.Gray);
         }
 
         private void Display(String label, Double value, String unit)
@@ -81,16 +82,23 @@ namespace Taurit.Toolkit.FindOptimumDiet
         {
             Display("Total Vitamin A", diet.Characteristics.TotalVitaminAiu, "IU",
                 DietTarget.MinDailyVitaminAiu);
-            Display("Total Vitamin B1", diet.Characteristics.TotalVitaminB1Mg, "Mg", DietTarget.MinDailyVitaminB1Mg, DietTarget.MaxDailyVitaminB1Mg);
+            Display("Total Vitamin B1", diet.Characteristics.TotalVitaminB1Mg, "Mg", DietTarget.MinDailyVitaminB1Mg,
+                DietTarget.MaxDailyVitaminB1Mg);
             Display("Total Vitamin B2", diet.Characteristics.TotalVitaminB2Mg, "Mg", DietTarget.MinDailyVitaminB2Mg);
-            Display("Total Vitamin B3", diet.Characteristics.TotalVitaminB3Mg, "Mg", DietTarget.MinDailyVitaminB3Mg, DietTarget.MaxDailyVitaminB3Mg);
-            Display("Total Vitamin B5", diet.Characteristics.TotalVitaminB5Mg, "Mg", DietTarget.MinDailyVitaminB5Mg, DietTarget.MaxDailyVitaminB5Mg);
-            Display("Total Vitamin B6", diet.Characteristics.TotalVitaminB6Mg, "Mg", DietTarget.MinDailyVitaminB6Mg, DietTarget.MaxDailyVitaminB6Mg);
+            Display("Total Vitamin B3", diet.Characteristics.TotalVitaminB3Mg, "Mg", DietTarget.MinDailyVitaminB3Mg,
+                DietTarget.MaxDailyVitaminB3Mg);
+            Display("Total Vitamin B5", diet.Characteristics.TotalVitaminB5Mg, "Mg", DietTarget.MinDailyVitaminB5Mg,
+                DietTarget.MaxDailyVitaminB5Mg);
+            Display("Total Vitamin B6", diet.Characteristics.TotalVitaminB6Mg, "Mg", DietTarget.MinDailyVitaminB6Mg,
+                DietTarget.MaxDailyVitaminB6Mg);
             Display("Total Vitamin B12", diet.Characteristics.TotalVitaminB12Ug, "Ug", DietTarget.MinDailyVitaminB12Ug);
-            Display("Total Vitamin E", diet.Characteristics.TotalVitaminEMg, "Mg", DietTarget.MinDailyVitaminEMg, DietTarget.MaxDailyVitaminEMg);
+            Display("Total Vitamin E", diet.Characteristics.TotalVitaminEMg, "Mg", DietTarget.MinDailyVitaminEMg,
+                DietTarget.MaxDailyVitaminEMg);
             Display("Total Vitamin K", diet.Characteristics.TotalVitaminKUg, "Ug", DietTarget.MinDailyVitaminKUg);
-            Display("Total Vitamin C", diet.Characteristics.TotalVitaminCMg, "Mg", DietTarget.MinDailyVitaminCMg, DietTarget.MaxDailyVitaminCMg);
-            Display("Total Choline", diet.Characteristics.TotalCholineMg, "Mg", DietTarget.MinDailyCholineMg, DietTarget.MaxDailyCholineMg);
+            Display("Total Vitamin C", diet.Characteristics.TotalVitaminCMg, "Mg", DietTarget.MinDailyVitaminCMg,
+                DietTarget.MaxDailyVitaminCMg);
+            Display("Total Choline", diet.Characteristics.TotalCholineMg, "Mg", DietTarget.MinDailyCholineMg,
+                DietTarget.MaxDailyCholineMg);
         }
 
         private void DisplayMacronutrientsMetadata(DietPlan diet, DietTarget referenceValue)
@@ -112,7 +120,8 @@ namespace Taurit.Toolkit.FindOptimumDiet
         {
             DisplayInColor("Score (lower is better)", $"{diet.ScoreToTarget:0}", "", "0", ConsoleColor.Cyan);
             Int32 numUsedProducts = diet.DietPlanItems.Count(x => Math.Abs(x.AmountGrams) >= 0.1);
-            DisplayInColor("Num used products", $"{numUsedProducts:0}", "", $"{diet.DietPlanItems.Count:0}", ConsoleColor.Gray);
+            DisplayInColor("Num used products", $"{numUsedProducts:0}", "", $"{diet.DietPlanItems.Count:0}",
+                ConsoleColor.Gray);
             Display("Energy", diet.Characteristics.TotalKcalIntake, "kcal",
                 referenceValue.TotalKcalIntake - DietTarget.EnergyToleranceMarginKcal,
                 referenceValue.TotalKcalIntake + DietTarget.EnergyToleranceMarginKcal);
@@ -137,10 +146,38 @@ namespace Taurit.Toolkit.FindOptimumDiet
 
         private static void DisplayChosenProducts(DietPlan diet)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
             foreach (DietPlanItem item in diet.DietPlanItems.Where(x => x.AmountGrams > 0)
                 .OrderByDescending(x => x.AmountGrams)) // skip 0g entries
-                Console.WriteLine($"{(item.AmountGrams.ToString("0.00") + "g").PadLeft(10)}: {item.FoodProduct.Name}");
+            {
+                Double price = (item.AmountGrams/1000d) * item.FoodProduct.Metadata.PricePerKg;
+                Double? numItems = CalculateNumItems(item);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(
+                    $"{(item.AmountGrams.ToString("0.00") + "g").PadLeft(10)}: {item.FoodProduct.Name}");
+
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.Write($" {price:0.00} PLN/day");
+
+                if (numItems.HasValue)
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write($" {numItems.Value:0.0} items");
+
+                    if (!String.IsNullOrEmpty(item.FoodProduct.Metadata.OneItemDescription))
+                    {
+                        Console.Write($" (1 item = {item.FoodProduct.Metadata.OneItemDescription})");
+                    }
+                }
+                Console.WriteLine("");
+            }
+        }
+
+        private static Double? CalculateNumItems(DietPlanItem item)
+        {
+            return item.FoodProduct.Metadata.OneItemWeight.HasValue
+                ? item.AmountGrams / item.FoodProduct.Metadata.OneItemWeight.Value
+                : (Double?) null;
         }
 
         private static void DisplaySkippedProducts(DietPlan diet)
