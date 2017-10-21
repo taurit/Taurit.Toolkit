@@ -70,7 +70,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
                 totalVitaminB3 += dietPlanItem.FoodProduct.VitaminB3Mg * amountMultiplier;
                 totalVitaminB5 += dietPlanItem.FoodProduct.VitaminB5Mg * amountMultiplier;
                 totalVitaminB6 += dietPlanItem.FoodProduct.VitaminB6Mg * amountMultiplier;
-                totalVitaminB12 += dietPlanItem.FoodProduct.VitaminB12Mg * amountMultiplier;
+                totalVitaminB12 += dietPlanItem.FoodProduct.VitaminB12Ug * amountMultiplier;
                 totalVitaminC += dietPlanItem.FoodProduct.VitaminCMg * amountMultiplier;
                 totalVitaminE += dietPlanItem.FoodProduct.VitaminEMg * amountMultiplier;
                 totalVitaminK += dietPlanItem.FoodProduct.VitaminKUg * amountMultiplier;

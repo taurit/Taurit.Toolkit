@@ -40,7 +40,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Double vitaminB3Mg,
             Double vitaminB5Mg,
             Double vitaminB6Mg,
-            Double vitaminB12Mg,
+            Double vitaminB12Ug,
             Double cholineMg,
             Double vitaminEMg,
             Double vitaminKUg
@@ -76,7 +76,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
             VitaminB3Mg = vitaminB3Mg;
             VitaminB5Mg = vitaminB5Mg;
             VitaminB6Mg = vitaminB6Mg;
-            VitaminB12Mg = vitaminB12Mg;
+            VitaminB12Ug = vitaminB12Ug;
             CholineMg = cholineMg;
             VitaminEMg = vitaminEMg;
             VitaminKUg = vitaminKUg;
@@ -122,7 +122,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public Double VitaminB3Mg { get; }
         public Double VitaminB5Mg { get; }
         public Double VitaminB6Mg { get; }
-        public Double VitaminB12Mg { get; }
+        public Double VitaminB12Ug { get; }
         public Double VitaminCMg { get; }
         public Double VitaminEMg { get; }
         public Double VitaminKUg { get; }

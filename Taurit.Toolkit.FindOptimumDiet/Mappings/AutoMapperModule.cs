@@ -64,7 +64,7 @@ namespace Taurit.Toolkit.FindOptimumDiet.Mappings
                     .ForCtorParam("vitaminB3Mg", opt => opt.MapFrom(src => GetValue(src.Niacin_Mg)))
                     .ForCtorParam("vitaminB5Mg", opt => opt.MapFrom(src => GetValue(src.PantothenicAcid_Mg)))
                     .ForCtorParam("vitaminB6Mg", opt => opt.MapFrom(src => GetValue(src.VitaminB6A_Mg)))
-                    .ForCtorParam("vitaminB12Mg", opt => opt.MapFrom(src => GetValue(src.VitaminB12_Mg)))
+                    .ForCtorParam("vitaminB12Ug", opt => opt.MapFrom(src => GetValue(src.VitaminB12_Ug)))
                     .ForCtorParam("cholineMg", opt => opt.MapFrom(src => GetValue(src.CholineTotalMg)))
                     .ForCtorParam("vitaminEMg", opt => opt.MapFrom(src => GetValue(src.VitaminE_Mg)))
                     .ForCtorParam("vitaminKUg", opt => opt.MapFrom(src => GetValue(src.VitaminK_Ug)))

@@ -44,7 +44,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Double totalVitaminB3Mg,
             Double totalVitaminB5Mg,
             Double totalVitaminB6Mg,
-            Double totalVitaminB12Mg,
+            Double totalVitaminB12Ug,
             Double totalCholineMg,
             Double totalVitaminEMg,
             Double totalVitaminKUg
@@ -82,7 +82,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Debug.Assert(totalVitaminB3Mg >= 0);
             Debug.Assert(totalVitaminB5Mg >= 0);
             Debug.Assert(totalVitaminB6Mg >= 0);
-            Debug.Assert(totalVitaminB12Mg >= 0);
+            Debug.Assert(totalVitaminB12Ug >= 0);
             Debug.Assert(totalCholineMg >= 0);
             Debug.Assert(totalVitaminEMg >= 0);
             Debug.Assert(totalVitaminKUg >= 0);
@@ -119,7 +119,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
             TotalVitaminB3Mg = totalVitaminB3Mg;
             TotalVitaminB5Mg = totalVitaminB5Mg;
             TotalVitaminB6Mg = totalVitaminB6Mg;
-            TotalVitaminB12Mg = totalVitaminB12Mg;
+            TotalVitaminB12Ug = totalVitaminB12Ug;
             TotalCholineMg = totalCholineMg;
             TotalVitaminEMg = totalVitaminEMg;
             TotalVitaminKUg = totalVitaminKUg;
@@ -160,7 +160,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
         public Double TotalVitaminB3Mg { get; }
         public Double TotalVitaminB5Mg { get; }
         public Double TotalVitaminB6Mg { get; }
-        public Double TotalVitaminB12Mg { get; }
+        public Double TotalVitaminB12Ug { get; }
         public Double TotalCholineMg { get; }
         public Double TotalVitaminEMg { get; }
         public Double TotalVitaminKUg { get; }

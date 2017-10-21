@@ -58,7 +58,7 @@ namespace Taurit.Toolkit.FindOptimumDiet.Models
         /// </summary>
         public String VitaminB6A_Mg { get; set; }
 
-        public String VitaminB12_Mg { get; set; }
+        public String VitaminB12_Ug { get; set; }
         public String CholineTotalMg { get; set; }
         public String VitaminK_Ug { get; set; }
 

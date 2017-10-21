@@ -222,7 +222,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
             score += PunishForDiffBelow(diet.TotalVitaminB6Mg, DietTarget.MinDailyVitaminB6Mg, 100);
             score += PunishForDiffAbove(diet.TotalVitaminB6Mg, DietTarget.MaxDailyVitaminB6Mg, 100);
 
-            score += PunishForDiffBelow(diet.TotalVitaminB12Mg, DietTarget.MinDailyVitaminB12Mg, 100);
+            score += PunishForDiffBelow(diet.TotalVitaminB12Ug, DietTarget.MinDailyVitaminB12Ug, 100);
 
             return score;
         }

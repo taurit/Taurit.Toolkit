@@ -275,7 +275,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
         ///     treat pernicious anemia without significant side effects (84).
         ///     http://lpi.oregonstate.edu/mic/vitamins/vitamin-B12#toxicity
         /// </summary>
-        public const Double MinDailyVitaminB12Mg = 0.0024; // 2.4 microgram. Strange that units are chosen this way
+        public const Double MinDailyVitaminB12Ug = 2.4;
 
         public DietTarget(Double totalKcalIntake,
             Double maxPrice,

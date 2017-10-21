@@ -86,7 +86,7 @@ namespace Taurit.Toolkit.FindOptimumDiet
             Display("Total Vitamin B3", diet.Characteristics.TotalVitaminB3Mg, "Mg", DietTarget.MinDailyVitaminB3Mg, DietTarget.MaxDailyVitaminB3Mg);
             Display("Total Vitamin B5", diet.Characteristics.TotalVitaminB5Mg, "Mg", DietTarget.MinDailyVitaminB5Mg, DietTarget.MaxDailyVitaminB5Mg);
             Display("Total Vitamin B6", diet.Characteristics.TotalVitaminB6Mg, "Mg", DietTarget.MinDailyVitaminB6Mg, DietTarget.MaxDailyVitaminB6Mg);
-            Display("Total Vitamin B12", diet.Characteristics.TotalVitaminB12Mg, "Mg", DietTarget.MinDailyVitaminB12Mg);
+            Display("Total Vitamin B12", diet.Characteristics.TotalVitaminB12Ug, "Ug", DietTarget.MinDailyVitaminB12Ug);
             Display("Total Vitamin E", diet.Characteristics.TotalVitaminEMg, "Mg", DietTarget.MinDailyVitaminEMg, DietTarget.MaxDailyVitaminEMg);
             Display("Total Vitamin K", diet.Characteristics.TotalVitaminKUg, "Ug", DietTarget.MinDailyVitaminKUg);
             Display("Total Vitamin C", diet.Characteristics.TotalVitaminCMg, "Mg", DietTarget.MinDailyVitaminCMg, DietTarget.MaxDailyVitaminCMg);
