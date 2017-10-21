@@ -283,6 +283,15 @@ namespace Taurit.Toolkit.DietOptimization.Models
             Double totalFat,
             Double totalCarbs)
         {
+            const Double kcalWarningThreshold = 20d;
+            Double expectedKcalIntake = 4d * totalCarbs + 4 * totalProtein + 9 * totalFat;
+            Double kcalDiff = Math.Abs(totalKcalIntake - expectedKcalIntake);
+            if (kcalDiff > kcalWarningThreshold)
+            {
+                Console.WriteLine(
+                    $"! Target energy intake (kcal) is different from calculated (distance={kcalDiff} kcal). Make sure that target is consistent.");
+            }
+
             TotalKcalIntake = totalKcalIntake;
             MaxPrice = maxPrice;
             TotalProtein = totalProtein;
