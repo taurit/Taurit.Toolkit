@@ -17,11 +17,20 @@
     },
     {
       "Name": "Peppers, sweet, red, raw",
-      "PricePerKg": 7.00
+      "PricePerKg": 7.00,
+      "OneItemWeight": 180,
+      "OneItemDescription": "medium-sized pepper",
+      "MaxAmountG": 360,
+      "Comment": "Limited because optimization tends to choose more of it than is eatable (eg. 4 peppers a day)"
+
     },
     {
       "Name": "Rice, white, medium-grain, cooked",
-      "PricePerKg": 2.79
+      "PricePerKg": 2.79,
+      "OneItemWeight": 120,
+      "OneItemDescription": "szklanka ugotowanego",
+      "MaxAmountG": 240,
+      "Comment": "Limited for diet maintainability. Weight src: http://www.ilewazy.pl/szklanka-ugotowanego-ryzu-bialego"
     },
     {
       "Name": "Fish oil, cod liver",
@@ -77,8 +86,9 @@
       "Name": "Bananas, raw",
       "PricePerKg": 4,
       "OneItemWeight": 120,
-      "Comment": "This is *peeled* banana, like in USDA db. Shop price needs to multiplied by 1.66.",
-      "OneItemDescription": "1 large peeled banana"
+      "Comment": "This is *peeled* banana, like in USDA db. Shop price needs to multiplied by 1.66. Force minimum because it helps with maintainability of diet.",
+      "OneItemDescription": "1 large peeled banana",
+      "MinAmountG": 120
     },
     {
       "Name": "Cheese, gouda",
@@ -113,14 +123,17 @@
       "Name": "Jams and preserves",
       "PricePerKg": 7,
       "Comment": "Intencja: dżem truskawkowy auchan direct. 80g = około 1/3 słoika (słoik to 270g)",
-      "MaxAmountG": 80,
-      "StartAmountG": 0
+      "MaxAmountG": 75,
+      "StartAmountG": 0,
+      "OneItemWeight": 25,
+      "OneItemDescription": "duża łyżka lekko czubata"
     },
     {
       "Name": "Onions, cooked, boiled, drained, without salt",
       "PricePerKg": 2,
       "OneItemWeight": 50,
       "OneItemDescription": "small onion",
+      "MaxAmountG": 100,
       "Comment": "50 is weight of a small one. big ones are up to 200g"
 
     },
@@ -226,7 +239,11 @@
     {
       "Name": "Nuts, almonds, dry roasted, without salt added",
       "PricePerKg": 50,
-      "Comment": "Price for 1kg dry in Auchan Direct, included because I like them"
+      "Comment": "Price for 1kg dry in Auchan Direct, included because I like them",
+      "OneItemWeight": 1,
+      "OneItemDescription": "1 almond"
+
+
     },
     {
       "Name": "Spices, ginger, ground",
@@ -276,7 +293,10 @@
     {
       "Name": "Oil, canola",
       "PricePerKg": 15,
-      "Comment": "reasonable omega 3:6 ratio. 15 PLN for bio, 5 for normal"
+      "Comment": "reasonable omega 3:6 ratio. 15 PLN for bio, 5 for normal",
+      "OneItemWeight": 10,
+      "OneItemDescription": "big spoon"
+
     },
     {
       "Name": "Spinach, raw",
