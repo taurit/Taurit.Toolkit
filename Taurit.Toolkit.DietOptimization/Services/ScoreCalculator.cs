@@ -72,7 +72,7 @@ namespace Taurit.Toolkit.DietOptimization.Services
             // price constraint (multiplier will largely depend on the currency and time period!)
             // eg. multiplier=100 => every dollar beyond a threshold is treated as bad as 100 kcal miss
             // currently disabled to optimize other variables faster while debugging
-            score += PunishForDiffAbove(diet.TotalPrice, target.MaxPrice, 100.0);
+            score += PunishForDiffAbove(diet.TotalPrice, target.MaxPrice, 20.0);
 
             // experimental: make sure there's not too many kilograms to eat ;)
             // currently disabled in scoring function to reduce number of constraints and achieve better results
