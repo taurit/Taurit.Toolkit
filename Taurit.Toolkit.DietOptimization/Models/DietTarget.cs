@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace Taurit.Toolkit.DietOptimization.Models
 {
@@ -290,6 +291,7 @@ namespace Taurit.Toolkit.DietOptimization.Models
             {
                 Console.WriteLine(
                     $"! Target energy intake (kcal) is different from calculated (distance={kcalDiff} kcal). Make sure that target is consistent.");
+                throw new ArgumentException("Target energy intake (kcal) is different from calculated");
             }
 
             TotalKcalIntake = totalKcalIntake;

@@ -68,23 +68,24 @@ namespace Taurit.Toolkit.FindOptimumDiet
 
             // find suboptimal diet (as close to a target as feasible)
             var cancellationTokenSource = new CancellationTokenSource();
-            var cancellationToken = cancellationTokenSource.Token;
+            CancellationToken cancellationToken = cancellationTokenSource.Token;
             var optimizationTasks = new List<Task<DietPlan>>(NumOptimizationThreads);
             for (var threadNumber = 0; threadNumber < NumOptimizationThreads; threadNumber++)
             {
                 Int32 number = threadNumber;
-                Task<DietPlan> optimumDiet = Task.Run(() => OptimizeDiet(products, dietTargets, number, cancellationToken));
+                Task<DietPlan> optimumDiet =
+                    Task.Run(() => OptimizeDiet(products, dietTargets, number, cancellationToken));
                 optimizationTasks.Add(optimumDiet);
             }
 
             // allow manually cancel before stop conditions are true
             while (!Console.KeyAvailable && optimizationTasks.Cast<Task>().All(x => x.IsCompleted == false))
-            {
                 Thread.Sleep(500);
-            }
             cancellationTokenSource.Cancel();
-            
+
             Task.WaitAll(optimizationTasks.Cast<Task>().ToArray(), new TimeSpan(0, 0, 1, 0));
+            // first NumOptimizationThreads lines are used to track progress of threads; print results below
+            Console.SetCursorPosition(0,NumOptimizationThreads); 
 
             // display result
             DietPlan bestDietPlan = null;
@@ -107,15 +108,17 @@ namespace Taurit.Toolkit.FindOptimumDiet
             Console.ReadLine();
         }
 
-        private DietPlan OptimizeDiet(IReadOnlyCollection<FoodProduct> products, DietTarget target, Int32 threadNumber, CancellationToken cancellationToken)
+        private DietPlan OptimizeDiet(IReadOnlyCollection<FoodProduct> products, DietTarget target, Int32 threadNumber,
+            CancellationToken cancellationToken)
         {
-            Stopwatch optimizeTime= Stopwatch.StartNew();
+            Stopwatch optimizeTime = Stopwatch.StartNew();
             IDietOptimizer dietOptimizer = new GeneticAlgorithmDietOptimizer(_dietCharacteristicsCalculator,
                 _scoreCalculator, target, threadNumber);
             DietPlan optimumDiet = dietOptimizer.Optimize(products, cancellationToken);
 
             optimizeTime.Stop();
-            Console.WriteLine($"Total optimization time for thread: {optimizeTime.ElapsedMilliseconds} ms");
+            Console.WriteLine(
+                $"Total optimization time for thread {threadNumber}: {optimizeTime.ElapsedMilliseconds} ms");
 
             return optimumDiet;
         }

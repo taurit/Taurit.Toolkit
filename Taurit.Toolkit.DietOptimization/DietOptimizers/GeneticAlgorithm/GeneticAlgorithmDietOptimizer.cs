@@ -49,17 +49,19 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
             _randomNumberGenerator = new Random(threadNumber); // for repeatable, but different results for each thread
         }
 
-        public DietPlan Optimize(IReadOnlyCollection<FoodProduct> availableProducts, CancellationToken cancellationToken)
+        public DietPlan Optimize(IReadOnlyCollection<FoodProduct> availableProducts,
+            CancellationToken cancellationToken)
         {
             ImmutableList<DietPlan> currentGeneration = CreateFirstGeneration(availableProducts);
-            LogGenerationsBestScore(0, currentGeneration.First().ScoreToTarget);
+            LogGenerationsBestScore(0, currentGeneration.First().ScoreToTarget, -1);
             _bestPlanSoFar = currentGeneration.First();
 
             for (var i = 0; i < MaxNumGenerations; i++)
             {
                 currentGeneration = CreateNextGeneration(currentGeneration);
                 DietPlan bestInGeneration = currentGeneration.First();
-                LogGenerationsBestScore(i + 1, bestInGeneration.ScoreToTarget);
+
+                LogGenerationsBestScore(i + 1, bestInGeneration.ScoreToTarget, _bestPlanSoFar.ScoreToTarget);
 
                 Debug.Assert(_bestPlanSoFar != null);
                 if (bestInGeneration.ScoreToTarget < _bestPlanSoFar.ScoreToTarget)
@@ -150,13 +152,23 @@ namespace Taurit.Toolkit.DietOptimization.DietOptimizers.GeneticAlgorithm
             return newGeneration.OrderBy(x => x.ScoreToTarget).ToImmutableList();
         }
 
-        private void LogGenerationsBestScore(Int32 generationNumber, Double score)
+        private void LogGenerationsBestScore(Int32 generationNumber, Double score, Double bestScore)
         {
             if (generationNumber % 50 == 0)
             {
+                Console.SetCursorPosition(0, _threadNumber);
+                ClearCurrentConsoleLine();
                 Console.WriteLine(
-                    $"Thread {_threadNumber}, generation #{generationNumber}: best score is {score:0.00}");
+                    $"Thread {_threadNumber}, gen. {generationNumber}/{MaxNumGenerations}: score is {score:0.00} (best={bestScore:0.00})");
             }
+        }
+
+        private void ClearCurrentConsoleLine()
+        {
+            Int32 currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(new String(' ', Console.BufferWidth));
+            Console.SetCursorPosition(0, currentLineCursor);
         }
     }
 }
