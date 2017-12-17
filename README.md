@@ -18,8 +18,11 @@ Currently the toolkit contains:
 
 * __Taurit.Toolkit.RemoveJpgFilesWhenCr2FilesExist__. Removes JPG (or JPEG) file if a file with the same name but extension 'CR2' is found in a directory. This is for removing preview files for photos dumped from Canon EOS camera.
 
+
+The following tools were moved to a separate repository:
+
 * __Taurit.Toolkit.DietOptimization__. Library that allows me to find optimum diet for a given criteria.
 
-* __Taurit.Toolkit.FindOptimumDiet__. Console interface to work with _Taurit.Toolkit.DietOptimization_ library. See screenshot below, as a picture is worth a thousand words.
+* __Taurit.Toolkit.FindOptimalDiet__. Console interface to work with _Taurit.Toolkit.DietOptimization_ library. See screenshot below, as a picture is worth a thousand words.
 
 ![Taurit.Toolkit.FindOptimumDiet](docs/images/find-optimum-diet-tool-screenshot.png)

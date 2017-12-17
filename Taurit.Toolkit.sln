@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.CompressVideo", "Taurit.Toolkit.CompressVideo\Taurit.Toolkit.CompressVideo.csproj", "{4324BE48-BDA6-4785-99A6-62A235EAB603}"
 EndProject
@@ -22,12 +22,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2ED56955-F3FC-49D7-8CA2-8B6D61C5A751}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.FixDateFormatInFilenames.Tests", "Taurit.Toolkit.FixDateFormatInFilenames.Tests\Taurit.Toolkit.FixDateFormatInFilenames.Tests.csproj", "{E6E0C9B7-ACC0-4963-A74D-C67C3E5E18AF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.DietOptimization", "Taurit.Toolkit.DietOptimization\Taurit.Toolkit.DietOptimization.csproj", "{3683C79E-06BC-4FF4-9295-CFDD1935644D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.FindOptimumDiet", "Taurit.Toolkit.FindOptimumDiet\Taurit.Toolkit.FindOptimumDiet.csproj", "{815AE8EC-E80C-43EB-9F1C-940766B430E2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.DietOptimization.Tests", "Taurit.Toolkit.DietOptimization.Tests\Taurit.Toolkit.DietOptimization.Tests.csproj", "{73AA2DA9-703C-4459-9DEF-E81E6FDC2A4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,25 +53,12 @@ Global
 		{E6E0C9B7-ACC0-4963-A74D-C67C3E5E18AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6E0C9B7-ACC0-4963-A74D-C67C3E5E18AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6E0C9B7-ACC0-4963-A74D-C67C3E5E18AF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3683C79E-06BC-4FF4-9295-CFDD1935644D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3683C79E-06BC-4FF4-9295-CFDD1935644D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3683C79E-06BC-4FF4-9295-CFDD1935644D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3683C79E-06BC-4FF4-9295-CFDD1935644D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{815AE8EC-E80C-43EB-9F1C-940766B430E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{815AE8EC-E80C-43EB-9F1C-940766B430E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{815AE8EC-E80C-43EB-9F1C-940766B430E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{815AE8EC-E80C-43EB-9F1C-940766B430E2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{73AA2DA9-703C-4459-9DEF-E81E6FDC2A4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{73AA2DA9-703C-4459-9DEF-E81E6FDC2A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{73AA2DA9-703C-4459-9DEF-E81E6FDC2A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73AA2DA9-703C-4459-9DEF-E81E6FDC2A4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E6E0C9B7-ACC0-4963-A74D-C67C3E5E18AF} = {2ED56955-F3FC-49D7-8CA2-8B6D61C5A751}
-		{73AA2DA9-703C-4459-9DEF-E81E6FDC2A4E} = {2ED56955-F3FC-49D7-8CA2-8B6D61C5A751}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1422CC07-49FB-48AA-9AFB-25077121E1E1}
