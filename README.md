@@ -18,6 +18,9 @@ Currently the toolkit contains:
 
 * __Taurit.Toolkit.RemoveJpgFilesWhenCr2FilesExist__. Removes JPG (or JPEG) file if a file with the same name but extension 'CR2' is found in a directory. This is for removing preview files for photos dumped from Canon EOS camera.
 
+* __Taurit.Toolkit.OptimizeRssForFeedly__. This app allows to enrich RSS feed with some metadata specific to [Feedly](https://feedly.com).
+
+
 
 The following tools were moved to a separate repository:
 
