@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
-using Taurit.Toolkit.ProcessRecognizedInboxFiles.Domain;
+using Taurit.Toolkit.FileProcessors.FileNameProcessors.FileNameFormatProviders;
+using Taurit.Toolkit.FixDateFormatInFilenames.Domain;
 
 namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
 {
@@ -18,14 +17,20 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
         /// <param name="args"></param>
         private static void Main(String[] args)
         {
-            Debug.Assert(args.Length == 2);
+            if (args.Length != 1)
+            {
+                throw new ArgumentException("Invalid parameters, expected: [inboxFolderPath]");
+            }
 
-            String fileInboxPath = args[0];
-            var inbox = new Inbox(fileInboxPath);
+            String inboxDirectoryPath = args[0];
 
-            // ...
+            var fileProcessors = new IFileProcessor[]
+            {
+                new ChangeDateFormatFileProcessor(new IsoDateFileNameFormatProvider())
+            };
+
+            var inboxFolder = new Folder(fileProcessors);
+            inboxFolder.ProcessAllFiles(inboxDirectoryPath);
         }
-
-
     }
 }

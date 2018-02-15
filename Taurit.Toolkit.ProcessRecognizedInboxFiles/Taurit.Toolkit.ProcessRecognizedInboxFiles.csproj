@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\Inbox.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -58,6 +57,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="arrow_right.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Taurit.Toolkit.FileProcessors\Taurit.Toolkit.FileProcessors.csproj">
+      <Project>{A5C88488-5F85-443B-AF34-BF392351913D}</Project>
+      <Name>Taurit.Toolkit.FileProcessors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Taurit.Toolkit.FixDateFormatInFilenames\Taurit.Toolkit.FixDateFormatInFilenames.csproj">
+      <Project>{56bcc883-348d-4d69-8d75-061ba2c3ae93}</Project>
+      <Name>Taurit.Toolkit.FixDateFormatInFilenames</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Domain\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
