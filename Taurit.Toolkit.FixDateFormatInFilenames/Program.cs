@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Taurit.Toolkit.FileProcessors.FileNameProcessors.FileNameFormatProviders;
+using Taurit.Toolkit.FixDateFormatInFilenames.Domain;
 
 namespace Taurit.Toolkit.FixDateFormatInFilenames
 {
@@ -10,8 +12,28 @@ namespace Taurit.Toolkit.FixDateFormatInFilenames
     {
         private static void Main(String[] args)
         {
+            if (args.Length != 1)
+            {
+                PrintHelp();
+
+                Console.WriteLine("Invalid number of arguments. Exiting.");
+                Console.ReadKey();
+                return;
+            }
+            String directory = args[0];
+            
+            var fileProcessors = new IFileProcessor[] { 
+                new ChangeDateFormatFileProcessor(new IsoDateFileNameFormatProvider())
+            };
+            
+            var inboxFolder = new Folder(fileProcessors);
+            inboxFolder.ProcessAllFiles(directory);
+        }
+
+        private static void PrintHelp()
+        {
             Console.WriteLine(
-                @"TauritToolkit.FixDateFormatInFilenames
+                @"TauritToolkit.ProcessMatchingFiles
 ---------------------------
 This program replaces date format in a filename like the one from Office Lens:
 '27.08.2017 15 54 wizytowka.jpg'
@@ -22,50 +44,6 @@ with a standard ISO format:
 Arguments:
 [0] path to directory containing files to rename. If no such files are recognized, nothing happens.
 ");
-
-            if (args.Length != 1)
-            {
-                Console.WriteLine("Invalid number of arguments. Exiting.");
-                Console.ReadKey();
-                return;
-            }
-
-
-            String directory = args[0];
-            List<String> filesInDirectory = GetFilesInDirectory(directory);
-
-            RenameFiles(new FileNameFixer(), filesInDirectory, directory);
-        }
-
-        private static void RenameFiles(FileNameFixer fileNameFixer, List<String> filesInDirectory, String path)
-        {
-            var fileWithInvalidDateFormat =
-                new Regex(@"(?<day>\d\d)\.(?<month>\d\d)\.(?<year>\d\d\d\d) \d\d \d\d (.*)");
-
-
-            foreach (String file in filesInDirectory)
-            {
-                Match m = fileWithInvalidDateFormat.Match(file);
-                if (m.Success)
-                {
-                    String day = m.Groups["day"].Value;
-                    String month = m.Groups["month"].Value;
-                    String year = m.Groups["year"].Value;
-                    String description = m.Groups[4].Value;
-
-                    String newFileName = fileNameFixer.GetProperFileName(year, month, day, description);
-                    String newFilePath = Path.Combine(path, newFileName);
-                    while (File.Exists(newFilePath))
-                        newFilePath = Path.Combine(path,
-                            Path.GetFileNameWithoutExtension(newFileName) + "(2)" + Path.GetExtension(newFileName));
-                    File.Move(file, newFilePath);
-                }
-            }
-        }
-
-        private static List<String> GetFilesInDirectory(String directory)
-        {
-            return Directory.GetFiles(directory).ToList();
         }
     }
 }

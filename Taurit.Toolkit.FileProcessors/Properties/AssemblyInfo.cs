@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Taurit.Toolkit.ProcessMatchingFiles.Tests")]
+[assembly: AssemblyTitle("Taurit.Toolkit.FileProcessors")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Taurit.Toolkit.ProcessMatchingFiles.Tests")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyProduct("Taurit.Toolkit.FileProcessors")]
+[assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e6e0c9b7-acc0-4963-a74d-c67c3e5e18af")]
+[assembly: Guid("a5c88488-5f85-443b-af34-bf392351913d")]
 
 // Version information for an assembly consists of the following four values:
 //

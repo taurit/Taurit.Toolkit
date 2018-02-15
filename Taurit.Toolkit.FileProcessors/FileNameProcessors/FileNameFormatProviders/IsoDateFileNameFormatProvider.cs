@@ -1,10 +1,11 @@
 ﻿using System;
+using Taurit.Toolkit.FixDateFormatInFilenames.Domain;
 
-namespace Taurit.Toolkit.FixDateFormatInFilenames
+namespace Taurit.Toolkit.FileProcessors.FileNameProcessors.FileNameFormatProviders
 {
-    internal class FileNameFixer
+    public class IsoDateFileNameFormatProvider : IFileNameFormatProvider
     {
-        public String GetProperFileName(String year, String month, String day, String description)
+        public String FormatFileName(String year, String month, String day, String description)
         {
             Int32 yearParsed = Convert.ToInt32(year);
             Int32 monthParsed = Convert.ToInt32(month);

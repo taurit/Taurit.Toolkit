@@ -58,13 +58,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileNameFixerTests.cs" />
+    <Compile Include="IsoDateFileNameProviderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Taurit.Toolkit.FileProcessors\Taurit.Toolkit.FileProcessors.csproj">
+      <Project>{A5C88488-5F85-443B-AF34-BF392351913D}</Project>
+      <Name>Taurit.Toolkit.FileProcessors</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Taurit.Toolkit.FixDateFormatInFilenames\Taurit.Toolkit.FixDateFormatInFilenames.csproj">
       <Project>{56BCC883-348D-4D69-8D75-061BA2C3AE93}</Project>
       <Name>Taurit.Toolkit.FixDateFormatInFilenames</Name>
