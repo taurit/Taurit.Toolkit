@@ -63,10 +63,6 @@
       <Project>{A5C88488-5F85-443B-AF34-BF392351913D}</Project>
       <Name>Taurit.Toolkit.FileProcessors</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Taurit.Toolkit.FixDateFormatInFilenames\Taurit.Toolkit.FixDateFormatInFilenames.csproj">
-      <Project>{56bcc883-348d-4d69-8d75-061ba2c3ae93}</Project>
-      <Name>Taurit.Toolkit.FixDateFormatInFilenames</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Domain\" />
