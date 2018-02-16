@@ -27,9 +27,17 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
                 String fileName = Path.GetFileName(filePath);
                 Debug.Assert(fileName != null);
 
-                ChangeLocationRule ruleToApply = _rules.FirstOrDefault(rule => rule.CanBeAppliedTo(fileName));
-                if (ruleToApply != null)
+                List<ChangeLocationRule> applicableRules = _rules.Where(rule => rule.CanBeAppliedTo(fileName)).ToList();
+                if (applicableRules.Count > 1)
                 {
+                    Console.WriteLine($"Manual action required: conflicting rules were found for file {fileName}");
+                    foreach (ChangeLocationRule rule in applicableRules)
+                        Console.WriteLine($"* Move to {rule.TargetLocation}");
+                }
+                else if (applicableRules.Count == 1)
+                {
+                    ChangeLocationRule ruleToApply = applicableRules.Single();
+
                     String targetFilePath = Path.Combine(ruleToApply.TargetLocation, fileName);
                     Console.WriteLine($"Moving {fileName} to {targetFilePath}");
                     File.Move(filePath, targetFilePath);

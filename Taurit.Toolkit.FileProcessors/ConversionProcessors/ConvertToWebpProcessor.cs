@@ -72,7 +72,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
                 // try convert with a slightly higher quality
                 if (compressedFileSize < _preserveOriginalThresholdBytes)
                 {
-                    var betterQuality = _quality.GetSlightlyBetterQuality();
+                    WebpFileQuality betterQuality = _quality.GetSlightlyBetterQuality();
                     Console.WriteLine($"Converting {fileInfo.Name} to WebP({betterQuality.QualityNumeric}%)");
                     ImageMagickWrapper.ConvertToWebp(filePath, webPPath, betterQuality);
                 }
@@ -84,6 +84,10 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
                     Console.WriteLine($"Deleting {fileInfo.Name}");
                     File.Delete(filePath);
                 }
+            }
+            else
+            {
+                Console.WriteLine($"Manual action required: ${webPPath} already exists, remove or rename source file");
             }
         }
     }

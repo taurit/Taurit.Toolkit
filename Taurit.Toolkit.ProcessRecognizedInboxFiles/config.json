@@ -3,7 +3,11 @@
   "MoveToLocationRules": [
     {
       "TargetLocation": "d:\\workflowTests\\paragony\\",
-      "Patterns": ["auchan", "carrefour", "lens"]
+      "Patterns": ["auchan"]
+    },
+    {
+      "TargetLocation": "d:\\workflowTests\\paragony\\cf\\",
+      "Patterns": ["carrefour", "conflicting-rules-test"]
     }
   ],
   "ConvertToWebpRules":  [
