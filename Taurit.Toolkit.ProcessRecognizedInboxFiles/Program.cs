@@ -17,7 +17,7 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
         private static void Main(String[] args)
         {
             var workflowConfiguration = new InboxConfiguration(args.Length > 0 ? args[0] : "config.json");
-            var inboxWorkflow = new InboxWorkflowX(workflowConfiguration);
+            var inboxWorkflow = new InboxWorkflow(workflowConfiguration);
             inboxWorkflow.Start();
 
             Console.WriteLine("Done.");
