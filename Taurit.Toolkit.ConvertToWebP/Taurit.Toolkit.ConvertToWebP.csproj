@@ -60,5 +60,11 @@
     <Content Include="camera_high_quality.ico" />
     <Content Include="camera_low_quality.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Taurit.Toolkit.FileProcessors\Taurit.Toolkit.FileProcessors.csproj">
+      <Project>{a5c88488-5f85-443b-af34-bf392351913d}</Project>
+      <Name>Taurit.Toolkit.FileProcessors</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

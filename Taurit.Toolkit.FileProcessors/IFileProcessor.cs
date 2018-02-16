@@ -6,5 +6,6 @@ namespace Taurit.Toolkit.FileProcessors
     public interface IFileProcessor
     {
         void ProcessMatchingFiles([NotNull] String directoryPath);
+        void ProcessMatchingFile([NotNull] String filePath);
     }
 }

@@ -42,15 +42,18 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
             Contract.Assert(Directory.Exists(directoryPath), "Inbox directory must exist to enumerate files");
 
             String[] filesInDirectory = Directory.GetFiles(directoryPath);
-            foreach (String filePath in filesInDirectory)
-            {
-                String fileName = Path.GetFileName(filePath);
-                Debug.Assert(fileName != null);
+            foreach (String filePath in filesInDirectory) ProcessMatchingFile(filePath);
+        }
 
-                if (_fileMatchRegex.Match(fileName).Success)
-                {
-                    ConvertSingleFile(filePath);
-                }
+        /// <inheritdoc />
+        public void ProcessMatchingFile(String filePath)
+        {
+            String fileName = Path.GetFileName(filePath);
+            Debug.Assert(fileName != null);
+
+            if (_fileMatchRegex.Match(fileName).Success)
+            {
+                ConvertSingleFile(filePath);
             }
         }
 

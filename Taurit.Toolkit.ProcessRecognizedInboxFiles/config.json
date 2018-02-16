@@ -4,16 +4,12 @@
     {
       "TargetLocation": "d:\\workflowTests\\paragony\\",
       "Patterns": ["auchan"]
-    },
-    {
-      "TargetLocation": "d:\\workflowTests\\paragony\\cf\\",
-      "Patterns": ["carrefour", "conflicting-rules-test"]
     }
   ],
   "ConvertToWebpRules":  [
     {
       "Directory": "d:\\workflowTests\\paragony\\",
-      "Pattern": ".jpg$",
+      "Pattern": ".xjpg$",
       "Quality": 80,
       "PreserveOriginalThresholdBytes":  20000 
     }

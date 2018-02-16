@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -30,24 +31,29 @@ namespace Taurit.Toolkit.FileProcessors.NameProcessors
             }
 
             ReadOnlyCollection<String> allFilesInDirectory = Directory.GetFiles(directoryPath).ToList().AsReadOnly();
+            foreach (String file in allFilesInDirectory) ProcessMatchingFile(file);
+        }
 
-            foreach (String file in allFilesInDirectory)
+        /// <inheritdoc />
+        public void ProcessMatchingFile(String file)
+        {
+            String directoryPath = new FileInfo(file).DirectoryName;
+            Debug.Assert(directoryPath != null);
+
+            Match match = FileWithInvalidDateFormat.Match(file);
+            if (match.Success)
             {
-                Match match = FileWithInvalidDateFormat.Match(file);
-                if (match.Success)
-                {
-                    String day = match.Groups["day"].Value;
-                    String month = match.Groups["month"].Value;
-                    String year = match.Groups["year"].Value;
-                    String description = match.Groups["description"].Value;
+                String day = match.Groups["day"].Value;
+                String month = match.Groups["month"].Value;
+                String year = match.Groups["year"].Value;
+                String description = match.Groups["description"].Value;
 
-                    String newFileName = _fileNameFormatProvider.FormatFileName(year, month, day, description);
-                    String newFilePath = Path.Combine(directoryPath, newFileName);
-                    while (File.Exists(newFilePath))
-                        newFilePath = Path.Combine(directoryPath,
-                            Path.GetFileNameWithoutExtension(newFileName) + "(2)" + Path.GetExtension(newFileName));
-                    File.Move(file, newFilePath);
-                }
+                String newFileName = _fileNameFormatProvider.FormatFileName(year, month, day, description);
+                String newFilePath = Path.Combine(directoryPath, newFileName);
+                while (File.Exists(newFilePath))
+                    newFilePath = Path.Combine(directoryPath,
+                        Path.GetFileNameWithoutExtension(newFileName) + "(2)" + Path.GetExtension(newFileName));
+                File.Move(file, newFilePath);
             }
         }
     }
