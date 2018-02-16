@@ -51,11 +51,16 @@
   <ItemGroup>
     <Compile Include="ConversionProcessors\ChangeExtensionStrategy.cs" />
     <Compile Include="ConversionProcessors\ConvertToJpegProcessor.cs" />
+    <Compile Include="ConversionProcessors\ConvertToPngProcessor.cs" />
     <Compile Include="ConversionProcessors\ConvertToWebpProcessor.cs" />
+    <Compile Include="ConversionProcessors\EmptyConversionStrategy.cs" />
+    <Compile Include="ConversionProcessors\IConversionStrategy.cs" />
     <Compile Include="ConversionProcessors\IConvertedFileNamingStrategy.cs" />
     <Compile Include="ConversionProcessors\ImageMagickWrapper.cs" />
     <Compile Include="ConversionProcessors\JpegFileQuality.cs" />
+    <Compile Include="ConversionProcessors\PngFileQuality.cs" />
     <Compile Include="ConversionProcessors\ReplaceEndStrategy.cs" />
+    <Compile Include="ConversionProcessors\ResizeStrategy.cs" />
     <Compile Include="ConversionProcessors\WebpFileQuality.cs" />
     <Compile Include="ConversionSourceFactory.cs" />
     <Compile Include="FileProcessorBase.cs" />

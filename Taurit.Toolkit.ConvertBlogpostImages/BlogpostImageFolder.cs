@@ -27,8 +27,46 @@ namespace Taurit.Toolkit.ConvertBlogpostImages
             {
                 var conversionOptions = new IFileProcessor[]
                 {
-                    new ConvertToJpegProcessor(@"\.1200x627\.hq\.jpg$", new JpegFileQuality(70),
-                        new ReplaceEndStrategy(".hq.jpg", ".jpg"))
+                    // generate compressed representation of a wide image
+                    new ConvertToJpegProcessor(@"\.1200x627\.hq\.jpg$",
+                        new JpegFileQuality(70),
+                        new ReplaceEndStrategy(".hq.jpg", ".jpg"),
+                        new EmptyConversionStrategy()),
+
+                    // generate compressed representation of a square image
+                    new ConvertToJpegProcessor(@"\.600x600\.hq\.jpg$",
+                        new JpegFileQuality(70),
+                        new ReplaceEndStrategy(".hq.jpg", ".jpg"),
+                        new EmptyConversionStrategy()),
+
+                    // generate compressed and downsized representation of a square image
+                    new ConvertToJpegProcessor(@"\.600x600\.hq\.jpg$",
+                        new JpegFileQuality(70),
+                        new ReplaceEndStrategy(".600x600.hq.jpg", ".150x150.jpg"),
+                        new ResizeStrategy(150, 150)
+                    ),
+
+                    // generate downsized representation of a square image converted to WebP
+                    new ConvertToWebpProcessor(@"\.600x600\.hq\.jpg$",
+                        new WebpFileQuality(80),
+                        Int32.MaxValue,
+                        new ReplaceEndStrategy(".600x600.hq.jpg", ".150x150.webp"),
+                        new ResizeStrategy(150, 150)
+                    ),
+
+                    // in case thumbnail is png, and not jpg
+                    new ConvertToWebpProcessor(@"\.600x600\.hq\.png$",
+                        new WebpFileQuality(80),
+                        Int32.MaxValue,
+                        new ReplaceEndStrategy(".600x600.hq.png", ".150x150.webp"),
+                        new ResizeStrategy(150, 150)
+                    ),
+
+                    // in case thumbnail is png, and not jpg
+                    new ConvertToPngProcessor(@"\.600x600\.hq\.png$",
+                        new PngFileQuality(100), 
+                        new ReplaceEndStrategy(".hq.png", ".png"),
+                        new EmptyConversionStrategy())
                 };
                 IConversionSource conversionSource =
                     ConversionSourceFactory.GetConversionSource(postDirectory, conversionOptions);

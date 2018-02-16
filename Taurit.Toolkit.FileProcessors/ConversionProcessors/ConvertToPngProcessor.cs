@@ -5,15 +5,15 @@ using JetBrains.Annotations;
 
 namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
 {
-    public class ConvertToJpegProcessor : FileProcessorBase
+    public class ConvertToPngProcessor : FileProcessorBase
     {
         [NotNull] private readonly IConversionStrategy _conversionStrategy;
         [NotNull] private readonly Regex _matchPattern;
         [NotNull] private readonly IConvertedFileNamingStrategy _namingStrategy;
-        [NotNull] private readonly JpegFileQuality _quality;
+        [NotNull] private readonly PngFileQuality _quality;
 
-        public ConvertToJpegProcessor([RegexPattern] [NotNull] String matchPattern,
-            [NotNull] JpegFileQuality quality,
+        public ConvertToPngProcessor([RegexPattern] [NotNull] String matchPattern,
+            [NotNull] PngFileQuality quality,
             [NotNull] IConvertedFileNamingStrategy namingStrategy,
             [NotNull] IConversionStrategy conversionStrategy)
         {
@@ -37,8 +37,8 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
                 // do not replace existing converted files
                 if (!File.Exists(convertedFilePath))
                 {
-                    Console.WriteLine($"Converting {fileInfo.Name} to Jpg ({_quality.QualityNumeric}%)");
-                    ImageMagickWrapper.ConvertToJpeg(filePath, convertedFilePath, _quality, _conversionStrategy);
+                    Console.WriteLine($"Converting {fileInfo.Name} to Png ({_quality.QualityNumeric}%)");
+                    ImageMagickWrapper.ConvertToPng(filePath, convertedFilePath, _quality, _conversionStrategy);
                 }
             }
         }

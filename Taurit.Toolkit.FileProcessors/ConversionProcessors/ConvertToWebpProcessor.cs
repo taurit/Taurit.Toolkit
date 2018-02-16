@@ -8,6 +8,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
     public class ConvertToWebpProcessor : FileProcessorBase
     {
         [NotNull] private readonly IConvertedFileNamingStrategy _convertedFileNamingStrategy;
+        [NotNull] private readonly IConversionStrategy _conversionStrategy;
         [NotNull] private readonly Regex _fileMatchRegex;
 
         /// <summary>
@@ -19,8 +20,11 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
 
         [NotNull] private readonly WebpFileQuality _quality;
 
-        public ConvertToWebpProcessor([NotNull] [RegexPattern] String pattern, [NotNull] WebpFileQuality quality,
-            Int32 preserveOriginalThresholdBytes, [NotNull] IConvertedFileNamingStrategy convertedFileNamingStrategy)
+        public ConvertToWebpProcessor([NotNull] [RegexPattern] String pattern,
+            [NotNull] WebpFileQuality quality,
+            Int32 preserveOriginalThresholdBytes, 
+            [NotNull] IConvertedFileNamingStrategy convertedFileNamingStrategy,
+            [NotNull] IConversionStrategy conversionStrategy)
         {
             if (pattern == null) throw new ArgumentNullException(nameof(pattern));
 
@@ -28,6 +32,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
             _preserveOriginalThresholdBytes = preserveOriginalThresholdBytes;
             _convertedFileNamingStrategy = convertedFileNamingStrategy ??
                                            throw new ArgumentNullException(nameof(convertedFileNamingStrategy));
+            _conversionStrategy = conversionStrategy ?? throw new ArgumentNullException(nameof(conversionStrategy));
             _fileMatchRegex = new Regex(pattern, RegexOptions.Compiled);
         }
 
@@ -45,16 +50,16 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
             // assume that the output file was manually created and is expected not to be replaced.
             if (!File.Exists(webPPath))
             {
-                Console.WriteLine($"Converting {fileInfo.Name} to WebP({_quality.QualityNumeric}%)");
-                //ImageMagickWrapper.ConvertToWebp(filePath, webPPath, _quality);
+                Console.WriteLine($"Converting {fileInfo.Name} to WebP ({_quality.QualityNumeric}%)");
+                ImageMagickWrapper.ConvertToWebp(filePath, webPPath, _quality, _conversionStrategy);
 
                 Int64 compressedFileSize = new FileInfo(webPPath).Length;
                 // try convert with a slightly higher quality
                 if (compressedFileSize < _preserveOriginalThresholdBytes)
                 {
                     WebpFileQuality betterQuality = _quality.GetSlightlyBetterQuality();
-                    Console.WriteLine($"Converting {fileInfo.Name} to WebP({betterQuality.QualityNumeric}%)");
-                    //ImageMagickWrapper.ConvertToWebp(filePath, webPPath, betterQuality);
+                    Console.WriteLine($"Converting {fileInfo.Name} to WebP ({betterQuality.QualityNumeric}%)");
+                    ImageMagickWrapper.ConvertToWebp(filePath, webPPath, betterQuality, _conversionStrategy);
                 }
 
                 Int64 convertedFileSize = new FileInfo(webPPath).Length;
@@ -62,7 +67,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
                     convertedFileSize > _preserveOriginalThresholdBytes)
                 {
                     Console.WriteLine($"Deleting {fileInfo.Name}");
-                    //File.Delete(filePath);
+                    File.Delete(filePath);
                 }
             }
             else

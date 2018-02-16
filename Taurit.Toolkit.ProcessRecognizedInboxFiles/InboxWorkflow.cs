@@ -36,7 +36,9 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
                         new ConvertToWebpProcessor(rule.Pattern,
                             new WebpFileQuality(rule.Quality),
                             rule.PreserveOriginalThresholdBytes,
-                            new ChangeExtensionStrategy("webp"))
+                            new ChangeExtensionStrategy("webp"),
+                            new EmptyConversionStrategy()
+                            )
                     });
                 inboxFolder.Process();
             }
