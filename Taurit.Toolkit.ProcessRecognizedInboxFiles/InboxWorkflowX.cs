@@ -10,11 +10,11 @@ using Taurit.Toolkit.ProcessRecognizedInboxFiles.Models;
 
 namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
 {
-    internal class InboxWorkflow
+    internal class InboxWorkflowX
     {
         private readonly InboxConfiguration _workflowConfiguration;
 
-        internal InboxWorkflow([NotNull] InboxConfiguration workflowConfiguration)
+        internal InboxWorkflowX([NotNull] InboxConfiguration workflowConfiguration)
         {
             _workflowConfiguration =
                 workflowConfiguration ?? throw new ArgumentNullException(nameof(workflowConfiguration));

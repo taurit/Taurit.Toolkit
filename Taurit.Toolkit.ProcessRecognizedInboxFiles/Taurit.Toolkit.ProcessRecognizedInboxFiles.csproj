@@ -57,7 +57,7 @@
     <Compile Include="Models\ConvertToWebpRule.cs" />
     <Compile Include="Models\InboxConfigFile.cs" />
     <Compile Include="Models\MoveToLocationRule.cs" />
-    <Compile Include="InboxWorkflow.cs" />
+    <Compile Include="InboxWorkflowX.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
