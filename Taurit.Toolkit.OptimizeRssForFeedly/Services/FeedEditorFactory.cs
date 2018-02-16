@@ -9,10 +9,7 @@ namespace Taurit.Toolkit.OptimizeRssForFeedly.Services
         {
             XDocument rssDocument = XDocument.Load(inputRssFilePath);
 
-            if (inputRssFilePath.EndsWith("atom"))
-            {
-                return new AtomFeedEditor(rssDocument);
-            }
+            if (inputRssFilePath.EndsWith("atom")) return new AtomFeedEditor(rssDocument);
 
             return new RssFeedEditor(rssDocument);
         }

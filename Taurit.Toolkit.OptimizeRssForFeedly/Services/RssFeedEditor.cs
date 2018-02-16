@@ -10,7 +10,7 @@ namespace Taurit.Toolkit.OptimizeRssForFeedly.Services
         public RssFeedEditor([NotNull] XDocument rssDocument) : base(rssDocument)
         {
         }
-        
+
         /// <inheritdoc />
         protected override XElement ChannelNode
         {

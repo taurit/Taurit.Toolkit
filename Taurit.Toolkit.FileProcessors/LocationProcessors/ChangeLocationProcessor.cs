@@ -22,10 +22,7 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
             Contract.Assert(Directory.Exists(directoryPath), "Inbox directory must exist to enumerate files");
 
             String[] filesInDirectory = Directory.GetFiles(directoryPath);
-            foreach (String filePath in filesInDirectory)
-            {
-                ProcessMatchingFile(filePath);
-            }
+            foreach (String filePath in filesInDirectory) ProcessMatchingFile(filePath);
         }
 
         /// <inheritdoc />

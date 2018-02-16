@@ -24,10 +24,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
         public ConvertToWebpProcessor([NotNull] [RegexPattern] String pattern, [NotNull] WebpFileQuality quality,
             Int32 preserveOriginalThresholdBytes, [NotNull] IConvertedFileNamingStrategy convertedFileNamingStrategy)
         {
-            if (pattern == null)
-            {
-                throw new ArgumentNullException(nameof(pattern));
-            }
+            if (pattern == null) throw new ArgumentNullException(nameof(pattern));
 
             _quality = quality ?? throw new ArgumentNullException(nameof(quality));
             _preserveOriginalThresholdBytes = preserveOriginalThresholdBytes;
@@ -51,10 +48,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
             String fileName = Path.GetFileName(filePath);
             Debug.Assert(fileName != null);
 
-            if (_fileMatchRegex.Match(fileName).Success)
-            {
-                ConvertSingleFile(filePath);
-            }
+            if (_fileMatchRegex.Match(fileName).Success) ConvertSingleFile(filePath);
         }
 
         private void ConvertSingleFile(String filePath)
@@ -89,9 +83,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
                 }
             }
             else
-            {
                 Console.WriteLine($"Manual action required: ${webPPath} already exists, remove or rename source file");
-            }
         }
     }
 }

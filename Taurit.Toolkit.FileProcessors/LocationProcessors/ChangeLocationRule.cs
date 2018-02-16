@@ -11,15 +11,10 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
 
         public ChangeLocationRule([RegexPattern] [NotNull] String fileNamePattern, [NotNull] String targetLocation)
         {
-            if (fileNamePattern == null)
-            {
-                throw new ArgumentNullException(nameof(fileNamePattern));
-            }
+            if (fileNamePattern == null) throw new ArgumentNullException(nameof(fileNamePattern));
 
             if (!Directory.Exists(targetLocation))
-            {
                 throw new ArgumentException("Target directory must exist", nameof(targetLocation));
-            }
 
             _fileNamePattern = new Regex(fileNamePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
             TargetLocation = targetLocation ?? throw new ArgumentNullException(nameof(targetLocation));
@@ -29,10 +24,7 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
 
         public Boolean CanBeAppliedTo([NotNull] String fileName)
         {
-            if (fileName == null)
-            {
-                throw new ArgumentNullException(nameof(fileName));
-            }
+            if (fileName == null) throw new ArgumentNullException(nameof(fileName));
 
             return _fileNamePattern.Match(fileName).Success;
         }

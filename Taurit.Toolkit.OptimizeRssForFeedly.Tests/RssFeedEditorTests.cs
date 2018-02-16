@@ -38,6 +38,23 @@ namespace Taurit.Toolkit.OptimizeRssForFeedly.Tests
         }
 
         [Fact]
+        public void RssAccentColorCanBeDefined()
+        {
+            // Arrange
+            XDocument rssDocument = XDocument.Load("sample-feed.xml");
+            var sut = new RssFeedEditor(rssDocument);
+
+            // Act
+            sut.AddFeedlyNamespace();
+            sut.SetAccentColor("FF0000");
+
+            // Assert
+            Assert.NotNull(sut.Feed.Root);
+            Assert.Contains("<webfeeds:accentColor>FF0000</webfeeds:accentColor>",
+                sut.Feed.Root.ToString());
+        }
+
+        [Fact]
         public void RssCoverImageCanBeAdded()
         {
             // Arrange
@@ -72,6 +89,18 @@ namespace Taurit.Toolkit.OptimizeRssForFeedly.Tests
                 sut.Feed.Root.ToString()); // fix when I'm better at LINQ to XML
         }
 
+        [Fact]
+        public void RssinvalidAccentColorIsNotAccepted()
+        {
+            // Arrange
+            XDocument rssDocument = XDocument.Load("sample-feed.xml");
+            var sut = new RssFeedEditor(rssDocument);
+            sut.AddFeedlyNamespace();
+
+            // Act
+            Assert.Throws<ArgumentException>(() => sut.SetAccentColor("#FF0000")); // hash is not expected
+        }
+
 
         [Fact]
         public void RssLogoCanBeAdded()
@@ -88,36 +117,6 @@ namespace Taurit.Toolkit.OptimizeRssForFeedly.Tests
             Assert.NotNull(sut.Feed.Root);
             Assert.Contains("<webfeeds:logo>https://example.com/image.png</webfeeds:logo>",
                 sut.Feed.Root.ToString());
-        }
-
-        [Fact]
-        public void RssAccentColorCanBeDefined()
-        {
-            // Arrange
-            XDocument rssDocument = XDocument.Load("sample-feed.xml");
-            var sut = new RssFeedEditor(rssDocument);
-
-            // Act
-            sut.AddFeedlyNamespace();
-            sut.SetAccentColor("FF0000");
-
-            // Assert
-            Assert.NotNull(sut.Feed.Root);
-            Assert.Contains("<webfeeds:accentColor>FF0000</webfeeds:accentColor>",
-                sut.Feed.Root.ToString());
-        }
-
-        [Fact]
-        public void RssinvalidAccentColorIsNotAccepted()
-        {
-            // Arrange
-            XDocument rssDocument = XDocument.Load("sample-feed.xml");
-            var sut = new RssFeedEditor(rssDocument);
-            sut.AddFeedlyNamespace();
-
-            // Act
-            Assert.Throws<ArgumentException>(() => sut.SetAccentColor("#FF0000")); // hash is not expected
-            
         }
     }
 }

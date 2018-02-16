@@ -15,10 +15,7 @@ namespace Taurit.Toolkit.FileProcessors
 
         public void ProcessFile(String filePath)
         {
-            if (!File.Exists(filePath))
-            {
-                throw new ArgumentException("Given file does not exist", nameof(filePath));
-            }
+            if (!File.Exists(filePath)) throw new ArgumentException("Given file does not exist", nameof(filePath));
 
             foreach (IFileProcessor fileProcessor in _fileProcessors) fileProcessor.ProcessMatchingFile(filePath);
         }

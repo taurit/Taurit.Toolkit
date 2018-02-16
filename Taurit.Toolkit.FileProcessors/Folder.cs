@@ -12,10 +12,11 @@ namespace Taurit.Toolkit.FileProcessors
         {
             _fileProcessors = fileProcessors ?? throw new ArgumentNullException(nameof(fileProcessors));
         }
-        
+
         public void ProcessAllFiles(String directory)
         {
-            if (!Directory.Exists(directory)) throw new ArgumentException("Given directory does not exist", nameof(directory));
+            if (!Directory.Exists(directory))
+                throw new ArgumentException("Given directory does not exist", nameof(directory));
 
             foreach (IFileProcessor fileProcessor in _fileProcessors) fileProcessor.ProcessMatchingFiles(directory);
         }

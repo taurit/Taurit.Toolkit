@@ -26,9 +26,7 @@ namespace Taurit.Toolkit.FileProcessors.NameProcessors
         public void ProcessMatchingFiles(String directoryPath)
         {
             if (!Directory.Exists(directoryPath))
-            {
                 throw new ArgumentException("Directory does not exist", nameof(directoryPath));
-            }
 
             ReadOnlyCollection<String> allFilesInDirectory = Directory.GetFiles(directoryPath).ToList().AsReadOnly();
             foreach (String file in allFilesInDirectory) ProcessMatchingFile(file);

@@ -12,15 +12,9 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles.Domain
     {
         public InboxConfiguration([NotNull] String configJsonPath)
         {
-            if (configJsonPath == null)
-            {
-                throw new ArgumentNullException(nameof(configJsonPath));
-            }
+            if (configJsonPath == null) throw new ArgumentNullException(nameof(configJsonPath));
 
-            if (!File.Exists(configJsonPath))
-            {
-                throw new ArgumentException("Config file does not exist");
-            }
+            if (!File.Exists(configJsonPath)) throw new ArgumentException("Config file does not exist");
 
             var config = JsonConvert.DeserializeObject<InboxConfigFile>(File.ReadAllText(configJsonPath));
             InboxPath = config.InboxFolder;

@@ -11,9 +11,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
         public WebpFileQuality(Int32 qualityNumeric)
         {
             if (qualityNumeric < 1 || qualityNumeric > 100)
-            {
                 throw new ArgumentOutOfRangeException(nameof(qualityNumeric));
-            }
 
             QualityNumeric = qualityNumeric;
         }

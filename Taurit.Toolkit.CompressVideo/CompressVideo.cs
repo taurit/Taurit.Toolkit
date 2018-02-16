@@ -31,10 +31,7 @@ namespace Taurit.Toolkit.CompressVideo
         [JetBrains.Annotations.Pure]
         private static List<String> GetFilesInDirectory(String directoryOrFilePath)
         {
-            if (File.Exists(directoryOrFilePath))
-            {
-                return new List<String> {directoryOrFilePath};
-            }
+            if (File.Exists(directoryOrFilePath)) return new List<String> {directoryOrFilePath};
 
             return Directory.GetFiles(directoryOrFilePath).ToList();
         }

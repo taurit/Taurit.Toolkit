@@ -47,15 +47,12 @@ namespace Taurit.Toolkit.OptimizeRssForFeedly.Services
 
         public void SetAccentColor([NotNull] String accentColor)
         {
-            if (accentColor == null)
-            {
-                throw new ArgumentNullException(nameof(accentColor));
-            }
+            if (accentColor == null) throw new ArgumentNullException(nameof(accentColor));
 
             if (accentColor.Length != 6)
-            {
-                throw new ArgumentException("Color should be in a form of hex-encoded RGB, without hash (6 characters in total)", nameof(accentColor));
-            }
+                throw new ArgumentException(
+                    "Color should be in a form of hex-encoded RGB, without hash (6 characters in total)",
+                    nameof(accentColor));
 
             ChannelNode.AddFirst(new XElement(_webFeedsNamespace + "accentColor", accentColor));
         }

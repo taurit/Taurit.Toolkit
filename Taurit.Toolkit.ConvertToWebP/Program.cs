@@ -34,6 +34,7 @@ namespace Taurit.Toolkit.ConvertToWebP
                 Console.WriteLine("Specified path doesn't exist in a filesystem. Exiting.");
                 return;
             }
+
             String pathType = isDirectory ? "directoryOrFilePath" : "file";
 
             Console.WriteLine("The following arguments were found:");
@@ -100,9 +101,7 @@ Arguments:
                             &&
                             conversionsResultSeemsReasonable // arbitrary rules to avoid situations when compression was so big that the file lost its readability. This happens when image is bad quality, contrast is low and noise is high and conversion might produce very small, almost unreadable files
                             && removeOriginals)
-                        {
                             File.Delete(filePath);
-                        }
                     }
                 }
             }
@@ -111,16 +110,14 @@ Arguments:
         [JetBrains.Annotations.Pure]
         private static List<String> GetFilesInDirectory(String directoryOrFilePath)
         {
-            if (File.Exists(directoryOrFilePath))
-            {
-                return new List<String> {directoryOrFilePath};
-            }
+            if (File.Exists(directoryOrFilePath)) return new List<String> {directoryOrFilePath};
 
             return Directory.GetFiles(directoryOrFilePath).ToList();
         }
 
         private static void RunConvert([NotNull] String inputFile, [NotNull] String outputFile,
-            [AssertionCondition(AssertionConditionType.IS_TRUE)] Int32 quality)
+            [AssertionCondition(AssertionConditionType.IS_TRUE)]
+            Int32 quality)
         {
             Contract.Assert(inputFile != null);
             Contract.Assert(outputFile != null);

@@ -6,12 +6,12 @@
       "Patterns": ["auchan"]
     }
   ],
-  "ConvertToWebpRules":  [
+  "ConvertToWebpRules": [
     {
       "Directory": "d:\\workflowTests\\paragony\\",
       "Pattern": ".xjpg$",
       "Quality": 80,
-      "PreserveOriginalThresholdBytes":  20000 
+      "PreserveOriginalThresholdBytes": 20000
     }
-  ] 
+  ]
 }
