@@ -1,7 +1,7 @@
 ﻿using System;
 using Taurit.Toolkit.FixDateFormatInFilenames.Domain;
 
-namespace Taurit.Toolkit.FileProcessors.FileNameProcessors.FileNameFormatProviders
+namespace Taurit.Toolkit.FileProcessors.NameProcessors.NameFormatProviders
 {
     public class IsoDateFileNameFormatProvider : IFileNameFormatProvider
     {

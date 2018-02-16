@@ -1,5 +1,5 @@
 ﻿using System;
-using Taurit.Toolkit.FileProcessors.FileNameProcessors.FileNameFormatProviders;
+using Taurit.Toolkit.FileProcessors.NameProcessors.NameFormatProviders;
 using Taurit.Toolkit.FixDateFormatInFilenames.Domain;
 using Xunit;
 

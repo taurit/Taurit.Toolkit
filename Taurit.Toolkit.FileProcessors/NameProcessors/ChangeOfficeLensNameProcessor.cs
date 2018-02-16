@@ -4,10 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
+using Taurit.Toolkit.FixDateFormatInFilenames.Domain;
 
-namespace Taurit.Toolkit.FixDateFormatInFilenames.Domain
+namespace Taurit.Toolkit.FileProcessors.NameProcessors
 {
-    public class ChangeDateFormatFileProcessor : IFileProcessor
+    public class ChangeOfficeLensNameProcessor : IFileProcessor
     {
         [NotNull] private static readonly Regex FileWithInvalidDateFormat =
             new Regex(@"(?<day>\d\d)\.(?<month>\d\d)\.(?<year>\d\d\d\d) \d\d \d\d (?<description>.*)",
@@ -15,7 +16,7 @@ namespace Taurit.Toolkit.FixDateFormatInFilenames.Domain
 
         [NotNull] private readonly IFileNameFormatProvider _fileNameFormatProvider;
 
-        public ChangeDateFormatFileProcessor([NotNull] IFileNameFormatProvider fileNameFormatProvider)
+        public ChangeOfficeLensNameProcessor([NotNull] IFileNameFormatProvider fileNameFormatProvider)
         {
             _fileNameFormatProvider = fileNameFormatProvider ??
                                 throw new ArgumentNullException(nameof(fileNameFormatProvider));

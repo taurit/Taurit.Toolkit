@@ -1,6 +1,9 @@
 ﻿using System;
-using Taurit.Toolkit.FileProcessors.FileNameProcessors.FileNameFormatProviders;
+using Taurit.Toolkit.FileProcessors.LocationProcessors;
+using Taurit.Toolkit.FileProcessors.NameProcessors;
+using Taurit.Toolkit.FileProcessors.NameProcessors.NameFormatProviders;
 using Taurit.Toolkit.FixDateFormatInFilenames.Domain;
+using Taurit.Toolkit.ProcessRecognizedInboxFiles.Domain;
 
 namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
 {
@@ -17,20 +20,21 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
         /// <param name="args"></param>
         private static void Main(String[] args)
         {
-            if (args.Length != 1)
-            {
-                throw new ArgumentException("Invalid parameters, expected: [inboxFolderPath]");
-            }
-
-            String inboxDirectoryPath = args[0];
-
-            var fileProcessors = new IFileProcessor[]
-            {
-                new ChangeDateFormatFileProcessor(new IsoDateFileNameFormatProvider())
-            };
+            var workflowConfiguration = new InboxConfiguration("config.json");
+            IFileProcessor[] fileProcessors = ReadConfig(workflowConfiguration);
 
             var inboxFolder = new Folder(fileProcessors);
-            inboxFolder.ProcessAllFiles(inboxDirectoryPath);
+            inboxFolder.ProcessAllFiles(workflowConfiguration.InboxPath);
+        }
+
+        private static IFileProcessor[] ReadConfig(InboxConfiguration config)
+        {
+            var fileProcessors = new IFileProcessor[]
+            {
+                new ChangeOfficeLensNameProcessor(new IsoDateFileNameFormatProvider()),
+                new ChangeLocationProcessor(config.ChangeLocationRules)
+            };
+            return fileProcessors;
         }
     }
 }

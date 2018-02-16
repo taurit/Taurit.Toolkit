@@ -1,0 +1,9 @@
+﻿{
+  "InboxFolder": "d:\\inbox\\",
+  "MoveToLocationRules": [
+    {
+      "Pattern": "paragon",
+      "TargetLocation": "d:\\paragony\\"
+    }
+  ]
+}

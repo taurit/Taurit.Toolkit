@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Taurit.Toolkit.FileProcessors.FileNameProcessors.FileNameFormatProviders;
+using Taurit.Toolkit.FileProcessors.NameProcessors;
+using Taurit.Toolkit.FileProcessors.NameProcessors.NameFormatProviders;
 using Taurit.Toolkit.FixDateFormatInFilenames.Domain;
 
 namespace Taurit.Toolkit.FixDateFormatInFilenames
@@ -23,7 +24,7 @@ namespace Taurit.Toolkit.FixDateFormatInFilenames
             String directory = args[0];
             
             var fileProcessors = new IFileProcessor[] { 
-                new ChangeDateFormatFileProcessor(new IsoDateFileNameFormatProvider())
+                new ChangeOfficeLensNameProcessor(new IsoDateFileNameFormatProvider())
             };
             
             var inboxFolder = new Folder(fileProcessors);
