@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Linq;
-using JetBrains.Annotations;
 using Taurit.Toolkit.FileProcessors;
 using Taurit.Toolkit.FileProcessors.ConversionProcessors;
 
@@ -23,7 +19,7 @@ namespace Taurit.Toolkit.ConvertToWebP
                 return;
             }
 
-            Int32 quality = Convert.ToInt32(args[0]); 
+            Int32 quality = Convert.ToInt32(args[0]);
             String directoryOrFilePath = args[1];
             Boolean isDirectory = Directory.Exists(directoryOrFilePath);
             Boolean isFile = File.Exists(directoryOrFilePath);
@@ -40,7 +36,8 @@ namespace Taurit.Toolkit.ConvertToWebP
                     new ChangeExtensionStrategy("webp"))
             };
 
-            var filesSource = ConversionSourceFactory.GetConversionSource(directoryOrFilePath, conversionConfiguration);
+            IConversionSource filesSource =
+                ConversionSourceFactory.GetConversionSource(directoryOrFilePath, conversionConfiguration);
             filesSource.Process();
         }
 

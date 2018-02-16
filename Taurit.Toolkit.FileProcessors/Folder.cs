@@ -6,8 +6,8 @@ namespace Taurit.Toolkit.FileProcessors
 {
     internal class Folder : IConversionSource
     {
-        [NotNull] private readonly IFileProcessor[] _fileProcessors;
         [NotNull] private readonly String _directory;
+        [NotNull] private readonly IFileProcessor[] _fileProcessors;
 
         public Folder([NotNull] IFileProcessor[] fileProcessors, [NotNull] String directory)
         {
@@ -19,7 +19,7 @@ namespace Taurit.Toolkit.FileProcessors
         }
 
         public void Process()
-        {    
+        {
             foreach (IFileProcessor fileProcessor in _fileProcessors) fileProcessor.ProcessMatchingFiles(_directory);
         }
     }

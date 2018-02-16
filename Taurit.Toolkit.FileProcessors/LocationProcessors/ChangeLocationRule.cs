@@ -20,7 +20,8 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
             TargetLocation = targetLocation ?? throw new ArgumentNullException(nameof(targetLocation));
         }
 
-        [NotNull] public String TargetLocation { get; }
+        [NotNull]
+        public String TargetLocation { get; }
 
         public Boolean CanBeAppliedTo([NotNull] String fileName)
         {

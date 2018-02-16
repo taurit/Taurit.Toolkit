@@ -7,9 +7,13 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles.Models
     [DataContract]
     internal class InboxConfigFile
     {
-        [DataMember] public String InboxFolder { get; private set; }
+        [DataMember]
+        public String InboxFolder { get; private set; }
 
-        [DataMember] public List<MoveToLocationRule> MoveToLocationRules { get; private set; }
-        [DataMember] public List<ConvertToWebpRule> ConvertToWebpRules { get; set; }
+        [DataMember]
+        public List<MoveToLocationRule> MoveToLocationRules { get; private set; }
+
+        [DataMember]
+        public List<ConvertToWebpRule> ConvertToWebpRules { get; set; }
     }
 }
