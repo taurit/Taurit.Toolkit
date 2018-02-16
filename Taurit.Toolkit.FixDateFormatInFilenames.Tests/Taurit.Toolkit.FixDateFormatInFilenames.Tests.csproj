@@ -69,10 +69,6 @@
       <Project>{A5C88488-5F85-443B-AF34-BF392351913D}</Project>
       <Name>Taurit.Toolkit.FileProcessors</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Taurit.Toolkit.FixDateFormatInFilenames\Taurit.Toolkit.FixDateFormatInFilenames.csproj">
-      <Project>{56BCC883-348D-4D69-8D75-061BA2C3AE93}</Project>
-      <Name>Taurit.Toolkit.FixDateFormatInFilenames</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.8.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
