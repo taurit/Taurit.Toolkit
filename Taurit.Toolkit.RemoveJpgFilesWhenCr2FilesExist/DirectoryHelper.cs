@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Taurit.Toolkit.Commons
+namespace Taurit.Toolkit.RemoveJpgFilesWhenCr2FilesExist
 {
     public static class DirectoryHelper
     {

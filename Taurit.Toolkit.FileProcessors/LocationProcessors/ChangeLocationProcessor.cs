@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 
 namespace Taurit.Toolkit.FileProcessors.LocationProcessors
 {
-    public class ChangeLocationProcessor : IFileProcessor
+    public class ChangeLocationProcessor : FileProcessorBase
     {
         private readonly IList<ChangeLocationRule> _rules;
 
@@ -17,16 +16,7 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
         }
 
         /// <inheritdoc />
-        public void ProcessMatchingFiles(String directoryPath)
-        {
-            Contract.Assert(Directory.Exists(directoryPath), "Inbox directory must exist to enumerate files");
-
-            String[] filesInDirectory = Directory.GetFiles(directoryPath);
-            foreach (String filePath in filesInDirectory) ProcessMatchingFile(filePath);
-        }
-
-        /// <inheritdoc />
-        public void ProcessMatchingFile(String filePath)
+        public override void ProcessMatchingFile(String filePath)
         {
             String fileName = Path.GetFileName(filePath);
             Debug.Assert(fileName != null);

@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using Taurit.Toolkit.FileProcessors.NameProcessors.NameFormatProviders;
 
 namespace Taurit.Toolkit.FileProcessors.NameProcessors
 {
-    public class ChangeOfficeLensNameProcessor : IFileProcessor
+    public class ChangeOfficeLensNameProcessor : FileProcessorBase
     {
         [NotNull] private static readonly Regex FileWithInvalidDateFormat =
             new Regex(@"(?<day>\d\d)\.(?<month>\d\d)\.(?<year>\d\d\d\d) \d\d \d\d (?<description>.*)",
@@ -23,17 +21,8 @@ namespace Taurit.Toolkit.FileProcessors.NameProcessors
                                       throw new ArgumentNullException(nameof(fileNameFormatProvider));
         }
 
-        public void ProcessMatchingFiles(String directoryPath)
-        {
-            if (!Directory.Exists(directoryPath))
-                throw new ArgumentException("Directory does not exist", nameof(directoryPath));
-
-            ReadOnlyCollection<String> allFilesInDirectory = Directory.GetFiles(directoryPath).ToList().AsReadOnly();
-            foreach (String file in allFilesInDirectory) ProcessMatchingFile(file);
-        }
-
         /// <inheritdoc />
-        public void ProcessMatchingFile(String file)
+        public override void ProcessMatchingFile(String file)
         {
             String directoryPath = new FileInfo(file).DirectoryName;
             Debug.Assert(directoryPath != null);

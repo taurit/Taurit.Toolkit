@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 
 namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
 {
-    public class ConvertToWebpProcessor : IFileProcessor
+    public class ConvertToWebpProcessor : FileProcessorBase
     {
         [NotNull] private readonly IConvertedFileNamingStrategy _convertedFileNamingStrategy;
         [NotNull] private readonly Regex _fileMatchRegex;
@@ -34,25 +32,10 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
         }
 
         /// <inheritdoc />
-        public void ProcessMatchingFiles(String directoryPath)
+        public override void ProcessMatchingFile(String filePath)
         {
-            Contract.Assert(Directory.Exists(directoryPath), "Inbox directory must exist to enumerate files");
+            if (!_fileMatchRegex.Match(filePath).Success) return;
 
-            String[] filesInDirectory = Directory.GetFiles(directoryPath);
-            foreach (String filePath in filesInDirectory) ProcessMatchingFile(filePath);
-        }
-
-        /// <inheritdoc />
-        public void ProcessMatchingFile(String filePath)
-        {
-            String fileName = Path.GetFileName(filePath);
-            Debug.Assert(fileName != null);
-
-            if (_fileMatchRegex.Match(fileName).Success) ConvertSingleFile(filePath);
-        }
-
-        private void ConvertSingleFile(String filePath)
-        {
             var fileInfo = new FileInfo(filePath);
             Int64 originalFileSize = fileInfo.Length;
 
@@ -63,7 +46,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
             if (!File.Exists(webPPath))
             {
                 Console.WriteLine($"Converting {fileInfo.Name} to WebP({_quality.QualityNumeric}%)");
-                ImageMagickWrapper.ConvertToWebp(filePath, webPPath, _quality);
+                //ImageMagickWrapper.ConvertToWebp(filePath, webPPath, _quality);
 
                 Int64 compressedFileSize = new FileInfo(webPPath).Length;
                 // try convert with a slightly higher quality
@@ -71,7 +54,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
                 {
                     WebpFileQuality betterQuality = _quality.GetSlightlyBetterQuality();
                     Console.WriteLine($"Converting {fileInfo.Name} to WebP({betterQuality.QualityNumeric}%)");
-                    ImageMagickWrapper.ConvertToWebp(filePath, webPPath, betterQuality);
+                    //ImageMagickWrapper.ConvertToWebp(filePath, webPPath, betterQuality);
                 }
 
                 Int64 convertedFileSize = new FileInfo(webPPath).Length;
@@ -79,7 +62,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
                     convertedFileSize > _preserveOriginalThresholdBytes)
                 {
                     Console.WriteLine($"Deleting {fileInfo.Name}");
-                    File.Delete(filePath);
+                    //File.Delete(filePath);
                 }
             }
             else

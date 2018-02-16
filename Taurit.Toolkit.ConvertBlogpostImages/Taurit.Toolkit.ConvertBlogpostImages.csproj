@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A5C88488-5F85-443B-AF34-BF392351913D}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Taurit.Toolkit.FileProcessors</RootNamespace>
-    <AssemblyName>Taurit.Toolkit.FileProcessors</AssemblyName>
+    <ProjectGuid>{F9B1CFF0-FD23-44DA-B886-443015889A2D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Taurit.Toolkit.ConvertBlogpostImages</RootNamespace>
+    <AssemblyName>Taurit.Toolkit.ConvertBlogpostImages</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,14 +35,8 @@
     <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
-    <Reference Include="MoreLinq, Version=2.10.21623.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
-      <HintPath>..\packages\morelinq.2.10.0\lib\net40\MoreLinq.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net47\System.ValueTuple.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,29 +45,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConversionProcessors\ChangeExtensionStrategy.cs" />
-    <Compile Include="ConversionProcessors\ConvertToJpegProcessor.cs" />
-    <Compile Include="ConversionProcessors\ConvertToWebpProcessor.cs" />
-    <Compile Include="ConversionProcessors\IConvertedFileNamingStrategy.cs" />
-    <Compile Include="ConversionProcessors\ImageMagickWrapper.cs" />
-    <Compile Include="ConversionProcessors\JpegFileQuality.cs" />
-    <Compile Include="ConversionProcessors\ReplaceEndStrategy.cs" />
-    <Compile Include="ConversionProcessors\WebpFileQuality.cs" />
-    <Compile Include="ConversionSourceFactory.cs" />
-    <Compile Include="FileProcessorBase.cs" />
-    <Compile Include="IConversionSource.cs" />
-    <Compile Include="LocationProcessors\ChangeLocationProcessor.cs" />
-    <Compile Include="LocationProcessors\ChangeLocationRule.cs" />
-    <Compile Include="NameProcessors\ChangeOfficeLensNameProcessor.cs" />
-    <Compile Include="NameProcessors\NameFormatProviders\INameFormatProvider.cs" />
-    <Compile Include="NameProcessors\NameFormatProviders\IsoDateNameFormatProvider.cs" />
-    <Compile Include="Folder.cs" />
-    <Compile Include="IFileProcessor.cs" />
+    <Compile Include="BlogpostImageFolder.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SingleFile.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Taurit.Toolkit.FileProcessors\Taurit.Toolkit.FileProcessors.csproj">
+      <Project>{a5c88488-5f85-443b-af34-bf392351913d}</Project>
+      <Name>Taurit.Toolkit.FileProcessors</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

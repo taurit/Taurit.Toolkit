@@ -12,12 +12,31 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
         {
             Contract.Assert(inputFile != null);
             Contract.Assert(outputFile != null);
+            Contract.Assert(quality != null);
 
             // this requires ImageMagick to be installed and added to windows path
             var magickProcess = new Process();
             magickProcess.StartInfo.FileName = "magick";
             magickProcess.StartInfo.Arguments =
                 $"convert \"{inputFile}\" -quality {quality.QualityNumeric} -define webp:lossless=false \"{outputFile}\"";
+
+            magickProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            magickProcess.Start();
+            magickProcess.WaitForExit();
+        }
+
+        public static void ConvertToJpeg([NotNull] String inputFile, [NotNull] String outputFile,
+            [NotNull] JpegFileQuality quality)
+        {
+            Contract.Assert(inputFile != null);
+            Contract.Assert(outputFile != null);
+            Contract.Assert(quality != null);
+
+            // this requires ImageMagick to be installed and added to windows path
+            var magickProcess = new Process();
+            magickProcess.StartInfo.FileName = "magick";
+            magickProcess.StartInfo.Arguments =
+                $"convert \"{inputFile}\" -quality {quality.QualityNumeric}% \"{outputFile}\"";
 
             magickProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             magickProcess.Start();
