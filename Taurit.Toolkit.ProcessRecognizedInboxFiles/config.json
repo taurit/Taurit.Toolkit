@@ -2,8 +2,8 @@
   "InboxFolder": "d:\\workflowTests\\inbox\\",
   "MoveToLocationRules": [
     {
-      "Pattern": "auchan",
-      "TargetLocation": "d:\\workflowTests\\paragony\\"
+      "TargetLocation": "d:\\workflowTests\\paragony\\",
+      "Patterns": ["auchan", "carrefour", "lens"]
     }
   ],
   "ConvertToWebpRules":  [

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Taurit.Toolkit.FileProcessors.LocationProcessors;
@@ -26,9 +25,12 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles.Domain
             var config = JsonConvert.DeserializeObject<InboxConfigFile>(File.ReadAllText(configJsonPath));
             InboxPath = config.InboxFolder;
 
-            ChangeLocationRules = config.MoveToLocationRules
-                .Select(x => new ChangeLocationRule(x.Pattern, x.TargetLocation)).ToList().AsReadOnly();
+            var rules = new List<ChangeLocationRule>();
+            foreach (MoveToLocationRule rule in config.MoveToLocationRules)
+            foreach (String pattern in rule.Patterns)
+                rules.Add(new ChangeLocationRule(pattern, rule.TargetLocation));
 
+            ChangeLocationRules = rules.AsReadOnly();
             ConvertToWebpRules = config.ConvertToWebpRules;
         }
 

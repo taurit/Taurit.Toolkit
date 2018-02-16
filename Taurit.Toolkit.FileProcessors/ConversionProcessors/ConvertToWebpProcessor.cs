@@ -56,7 +56,8 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
 
         private void ConvertSingleFile(String filePath)
         {
-            Int64 originalFileSize = new FileInfo(filePath).Length;
+            var fileInfo = new FileInfo(filePath);
+            Int64 originalFileSize = fileInfo.Length;
 
             String webPPath = _convertedFileNamingStrategy.GetConvertedFilePath(filePath);
 
@@ -64,19 +65,23 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
             // assume that the output file was manually created and is expected not to be replaced.
             if (!File.Exists(webPPath))
             {
+                Console.WriteLine($"Converting {fileInfo.Name} to WebP({_quality.QualityNumeric}%)");
                 ImageMagickWrapper.ConvertToWebp(filePath, webPPath, _quality);
 
                 Int64 compressedFileSize = new FileInfo(webPPath).Length;
                 // try convert with a slightly higher quality
                 if (compressedFileSize < _preserveOriginalThresholdBytes)
                 {
-                    ImageMagickWrapper.ConvertToWebp(filePath, webPPath, _quality.GetSlightlyBetterQuality());
+                    var betterQuality = _quality.GetSlightlyBetterQuality();
+                    Console.WriteLine($"Converting {fileInfo.Name} to WebP({betterQuality.QualityNumeric}%)");
+                    ImageMagickWrapper.ConvertToWebp(filePath, webPPath, betterQuality);
                 }
 
                 Int64 convertedFileSize = new FileInfo(webPPath).Length;
                 if (File.Exists(webPPath) && convertedFileSize < originalFileSize &&
                     convertedFileSize > _preserveOriginalThresholdBytes)
                 {
+                    Console.WriteLine($"Deleting {fileInfo.Name}");
                     File.Delete(filePath);
                 }
             }

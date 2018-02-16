@@ -31,6 +31,7 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
                 if (ruleToApply != null)
                 {
                     String targetFilePath = Path.Combine(ruleToApply.TargetLocation, fileName);
+                    Console.WriteLine($"Moving {fileName} to {targetFilePath}");
                     File.Move(filePath, targetFilePath);
                 }
             }
