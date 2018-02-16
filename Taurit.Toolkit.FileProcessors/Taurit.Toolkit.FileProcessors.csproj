@@ -54,6 +54,8 @@
     <Compile Include="ConversionProcessors\IConvertedFileNamingStrategy.cs" />
     <Compile Include="ConversionProcessors\ImageMagickWrapper.cs" />
     <Compile Include="ConversionProcessors\WebpFileQuality.cs" />
+    <Compile Include="ConversionSourceFactory.cs" />
+    <Compile Include="IConversionSource.cs" />
     <Compile Include="LocationProcessors\ChangeLocationProcessor.cs" />
     <Compile Include="LocationProcessors\ChangeLocationRule.cs" />
     <Compile Include="NameProcessors\ChangeOfficeLensNameProcessor.cs" />

@@ -30,14 +30,14 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
         {
             foreach (ConvertToWebpRule rule in workflowConfiguration.ConvertToWebpRules)
             {
-                var inboxFolder = new Folder(new IFileProcessor[]
+                var inboxFolder = ConversionSourceFactory.GetConversionSource(rule.Directory, new IFileProcessor[]
                 {
                     new ConvertToWebpProcessor(rule.Pattern,
                         new WebpFileQuality(rule.Quality),
                         rule.PreserveOriginalThresholdBytes,
                         new ChangeExtensionStrategy("webp"))
                 });
-                inboxFolder.ProcessAllFiles(rule.Directory);
+                inboxFolder.Process();
             }
         }
 
@@ -48,8 +48,9 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
                 new ChangeOfficeLensNameProcessor(new IsoDateFileNameFormatProvider()),
                 new ChangeLocationProcessor(workflowConfiguration.ChangeLocationRules)
             };
-            var inboxFolder = new Folder(fileProcessors);
-            inboxFolder.ProcessAllFiles(workflowConfiguration.InboxPath);
+            var inboxFolder =
+                ConversionSourceFactory.GetConversionSource(workflowConfiguration.InboxPath, fileProcessors);
+            inboxFolder.Process();
         }
     }
 }

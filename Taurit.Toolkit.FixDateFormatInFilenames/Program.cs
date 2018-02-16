@@ -25,8 +25,8 @@ namespace Taurit.Toolkit.FixDateFormatInFilenames
                 new ChangeOfficeLensNameProcessor(new IsoDateFileNameFormatProvider())
             };
 
-            var inboxFolder = new Folder(fileProcessors);
-            inboxFolder.ProcessAllFiles(directory);
+            var inboxFolder = ConversionSourceFactory.GetConversionSource(directory, fileProcessors);
+            inboxFolder.Process();
         }
 
         private static void PrintHelp()

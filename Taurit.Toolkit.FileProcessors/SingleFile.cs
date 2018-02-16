@@ -4,20 +4,21 @@ using JetBrains.Annotations;
 
 namespace Taurit.Toolkit.FileProcessors
 {
-    public class SingleFile
+    internal class SingleFile : IConversionSource
     {
+        [NotNull] private readonly String _filePath;
         [NotNull] private readonly IFileProcessor[] _fileProcessors;
 
-        public SingleFile([NotNull] IFileProcessor[] fileProcessors)
-        {
-            _fileProcessors = fileProcessors ?? throw new ArgumentNullException(nameof(fileProcessors));
-        }
-
-        public void ProcessFile(String filePath)
+        public SingleFile([NotNull] IFileProcessor[] fileProcessors, [NotNull] String filePath)
         {
             if (!File.Exists(filePath)) throw new ArgumentException("Given file does not exist", nameof(filePath));
+            _fileProcessors = fileProcessors ?? throw new ArgumentNullException(nameof(fileProcessors));
+            _filePath = filePath;
+        }
 
-            foreach (IFileProcessor fileProcessor in _fileProcessors) fileProcessor.ProcessMatchingFile(filePath);
+        public void Process()
+        {
+            foreach (IFileProcessor fileProcessor in _fileProcessors) fileProcessor.ProcessMatchingFile(_filePath);
         }
     }
 }
