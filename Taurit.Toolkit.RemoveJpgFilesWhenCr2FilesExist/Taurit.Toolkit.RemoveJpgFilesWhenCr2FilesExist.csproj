@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DirectoryHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -57,12 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="delete.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Taurit.Toolkit.Commons\Taurit.Toolkit.Commons.csproj">
-      <Project>{862fa69b-a2c1-44af-a876-d4eb4b4cd435}</Project>
-      <Name>Taurit.Toolkit.Commons</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
