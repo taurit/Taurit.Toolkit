@@ -8,8 +8,7 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
     public class ChangeLocationRule
     {
         [NotNull] private readonly Regex _fileNamePattern;
-        [NotNull] public String TargetLocation { get; }
-    
+
         public ChangeLocationRule([RegexPattern] [NotNull] String fileNamePattern, [NotNull] String targetLocation)
         {
             if (fileNamePattern == null)
@@ -26,6 +25,8 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
             TargetLocation = targetLocation ?? throw new ArgumentNullException(nameof(targetLocation));
         }
 
+        [NotNull] public String TargetLocation { get; }
+
         public Boolean CanBeAppliedTo([NotNull] String fileName)
         {
             if (fileName == null)
@@ -33,7 +34,7 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            return this._fileNamePattern.Match(fileName).Success;
+            return _fileNamePattern.Match(fileName).Success;
         }
     }
 }

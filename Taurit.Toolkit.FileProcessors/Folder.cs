@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Taurit.Toolkit.FixDateFormatInFilenames.Domain
+namespace Taurit.Toolkit.FileProcessors
 {
     public class Folder
     {

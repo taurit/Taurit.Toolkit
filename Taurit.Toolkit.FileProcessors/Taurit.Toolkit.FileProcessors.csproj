@@ -49,6 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConversionProcessors\ChangeExtensionStrategy.cs" />
+    <Compile Include="ConversionProcessors\ConvertToWebpProcessor.cs" />
+    <Compile Include="ConversionProcessors\IConvertedFileNamingStrategy.cs" />
+    <Compile Include="ConversionProcessors\ImageMagickWrapper.cs" />
+    <Compile Include="ConversionProcessors\WebpFileQuality.cs" />
     <Compile Include="LocationProcessors\ChangeLocationProcessor.cs" />
     <Compile Include="LocationProcessors\ChangeLocationRule.cs" />
     <Compile Include="NameProcessors\ChangeOfficeLensNameProcessor.cs" />

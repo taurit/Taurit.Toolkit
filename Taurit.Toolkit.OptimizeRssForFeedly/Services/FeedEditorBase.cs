@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Xml.Linq;
-using System.Xml.XPath;
 using JetBrains.Annotations;
 
 namespace Taurit.Toolkit.OptimizeRssForFeedly.Services
@@ -20,7 +19,7 @@ namespace Taurit.Toolkit.OptimizeRssForFeedly.Services
         }
 
         public XDocument Feed { get; }
-        
+
         [NotNull] protected abstract XElement ChannelNode { get; }
 
         public void AddFeedlyNamespace()
@@ -55,8 +54,7 @@ namespace Taurit.Toolkit.OptimizeRssForFeedly.Services
 
             if (accentColor.Length != 6)
             {
-                throw new ArgumentException(nameof(accentColor),
-                    "Color should be in a form of hex-encoded RGB, without hash (6 characters in total)");
+                throw new ArgumentException("Color should be in a form of hex-encoded RGB, without hash (6 characters in total)", nameof(accentColor));
             }
 
             ChannelNode.AddFirst(new XElement(_webFeedsNamespace + "accentColor", accentColor));

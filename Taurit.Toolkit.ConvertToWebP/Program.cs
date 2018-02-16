@@ -12,21 +12,10 @@ namespace Taurit.Toolkit.ConvertToWebP
     {
         private static void Main(String[] args)
         {
-            Console.WriteLine(
-                @"TauritToolkit.ConvertToWebP
----------------------------
-Converts images (jpg, jpeg, png) into WebP with a specified quality.
-
-Remember, ImageMagick is required installed and available in PATH.
-
-Arguments:
-[0] quality (int). 1 is usually enough to retain readability of documents. 80-90 makes sense for high quality results.
-[1] remove originals? if 'true' originals will be removed (only if the conversion succeeds)
-[2] path to directoryOrFilePath with images to convert or path to a single image
-");
-
             if (args.Length != 3)
             {
+                DisplayHelp();
+
                 Console.WriteLine("Invalid number of arguments. Exiting.");
                 Console.ReadKey();
                 return;
@@ -63,6 +52,22 @@ Arguments:
 
             List<String> filesInDirectory = GetFilesInDirectory(directoryOrFilePath);
             ConvertFiles(filesInDirectory, removeOriginals, quality);
+        }
+
+        private static void DisplayHelp()
+        {
+            Console.WriteLine(
+                @"TauritToolkit.ConvertToWebP
+---------------------------
+Converts images (jpg, jpeg, png) into WebP with a specified quality.
+
+Remember, ImageMagick is required installed and available in PATH.
+
+Arguments:
+[0] quality (int). 1 is usually enough to retain readability of documents. 80-90 makes sense for high quality results.
+[1] remove originals? if 'true' originals will be removed (only if the conversion succeeds)
+[2] path to directoryOrFilePath with images to convert or path to a single image
+");
         }
 
         private static void ConvertFiles([NotNull] List<String> filesInDirectory, Boolean removeOriginals,

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Taurit.Toolkit.FixDateFormatInFilenames.Domain
+namespace Taurit.Toolkit.FileProcessors.NameProcessors.NameFormatProviders
 {
     public interface IFileNameFormatProvider
     {

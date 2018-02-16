@@ -1,5 +1,4 @@
 ﻿using System;
-using Taurit.Toolkit.FixDateFormatInFilenames.Domain;
 
 namespace Taurit.Toolkit.FileProcessors.NameProcessors.NameFormatProviders
 {

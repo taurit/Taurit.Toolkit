@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
-using Taurit.Toolkit.FixDateFormatInFilenames.Domain;
+using Taurit.Toolkit.FileProcessors.NameProcessors.NameFormatProviders;
 
 namespace Taurit.Toolkit.FileProcessors.NameProcessors
 {
@@ -19,10 +19,10 @@ namespace Taurit.Toolkit.FileProcessors.NameProcessors
         public ChangeOfficeLensNameProcessor([NotNull] IFileNameFormatProvider fileNameFormatProvider)
         {
             _fileNameFormatProvider = fileNameFormatProvider ??
-                                throw new ArgumentNullException(nameof(fileNameFormatProvider));
+                                      throw new ArgumentNullException(nameof(fileNameFormatProvider));
         }
 
-        public void ProcessMatchingFiles([NotNull] String directoryPath)
+        public void ProcessMatchingFiles(String directoryPath)
         {
             if (!Directory.Exists(directoryPath))
             {

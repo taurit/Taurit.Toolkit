@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
-using JetBrains.Annotations;
-using Taurit.Toolkit.FixDateFormatInFilenames.Domain;
 
 namespace Taurit.Toolkit.FileProcessors.LocationProcessors
 {
@@ -17,7 +15,7 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
         {
             _rules = rules.ToList();
         }
-        
+
         /// <inheritdoc />
         public void ProcessMatchingFiles(String directoryPath)
         {

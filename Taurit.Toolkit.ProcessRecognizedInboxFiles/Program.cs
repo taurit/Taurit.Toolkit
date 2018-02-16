@@ -1,13 +1,9 @@
 ﻿using System;
-using Taurit.Toolkit.FileProcessors.LocationProcessors;
-using Taurit.Toolkit.FileProcessors.NameProcessors;
-using Taurit.Toolkit.FileProcessors.NameProcessors.NameFormatProviders;
-using Taurit.Toolkit.FixDateFormatInFilenames.Domain;
 using Taurit.Toolkit.ProcessRecognizedInboxFiles.Domain;
 
 namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
 {
-    internal class Program
+    internal static class Program
     {
         /// <summary>
         ///     Go through the files in "file inbox", which consists of files coming from:
@@ -17,24 +13,12 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
         ///     - photos of receipts may need to go to some directory X and get compressed with low quality setting,
         ///     - etc.
         /// </summary>
-        /// <param name="args"></param>
+        /// <param name="args">[0]: config file path (defaults to "config.json")</param>
         private static void Main(String[] args)
         {
-            var workflowConfiguration = new InboxConfiguration("config.json");
-            IFileProcessor[] fileProcessors = ReadConfig(workflowConfiguration);
-
-            var inboxFolder = new Folder(fileProcessors);
-            inboxFolder.ProcessAllFiles(workflowConfiguration.InboxPath);
-        }
-
-        private static IFileProcessor[] ReadConfig(InboxConfiguration config)
-        {
-            var fileProcessors = new IFileProcessor[]
-            {
-                new ChangeOfficeLensNameProcessor(new IsoDateFileNameFormatProvider()),
-                new ChangeLocationProcessor(config.ChangeLocationRules)
-            };
-            return fileProcessors;
+            var workflowConfiguration = new InboxConfiguration(args.Length > 0 ? args[0] : "config.json");
+            var inboxWorkflow = new InboxWorkflow(workflowConfiguration);
+            inboxWorkflow.Start();
         }
     }
 }

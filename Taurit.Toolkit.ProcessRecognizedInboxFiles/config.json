@@ -1,9 +1,17 @@
 ﻿{
-  "InboxFolder": "d:\\inbox\\",
+  "InboxFolder": "d:\\workflowTests\\inbox\\",
   "MoveToLocationRules": [
     {
-      "Pattern": "paragon",
-      "TargetLocation": "d:\\paragony\\"
+      "Pattern": "auchan",
+      "TargetLocation": "d:\\workflowTests\\paragony\\"
     }
-  ]
+  ],
+  "ConvertToWebpRules":  [
+    {
+      "Directory": "d:\\workflowTests\\paragony\\",
+      "Pattern": ".jpg$",
+      "Quality": 80,
+      "PreserveOriginalThresholdBytes":  20000 
+    }
+  ] 
 }
