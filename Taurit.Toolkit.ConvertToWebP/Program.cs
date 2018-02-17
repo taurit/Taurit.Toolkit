@@ -33,7 +33,7 @@ namespace Taurit.Toolkit.ConvertToWebP
             var conversionConfiguration = new IFileProcessor[]
             {
                 new ConvertToWebpProcessor(".(jpg|png|jpeg)$", new WebpFileQuality(quality), 20000,
-                    new ChangeExtensionStrategy("webp"), new EmptyConversionStrategy())
+                    new ChangeExtensionStrategy("webp"), new EmptyConversionStrategy(), new ConsoleLoggingStrategy(ConsoleLoggingStrategy.LogLevel.ActionsAndSuggestions))
             };
 
             IConversionSource filesSource =

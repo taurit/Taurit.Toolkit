@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleLoggingStrategy.cs" />
     <Compile Include="ConversionProcessors\ChangeExtensionStrategy.cs" />
     <Compile Include="ConversionProcessors\ConvertToJpegProcessor.cs" />
     <Compile Include="ConversionProcessors\ConvertToPngProcessor.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="ConversionSourceFactory.cs" />
     <Compile Include="FileProcessorBase.cs" />
     <Compile Include="IConversionSource.cs" />
+    <Compile Include="ILoggingStrategy.cs" />
     <Compile Include="LocationProcessors\ChangeLocationProcessor.cs" />
     <Compile Include="LocationProcessors\ChangeLocationRule.cs" />
     <Compile Include="NameProcessors\ChangeOfficeLensNameProcessor.cs" />

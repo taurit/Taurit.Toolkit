@@ -51,7 +51,8 @@ namespace Taurit.Toolkit.ConvertBlogpostImages
                         new WebpFileQuality(80),
                         Int32.MaxValue,
                         new ReplaceEndStrategy(".600x600.hq.jpg", ".150x150.webp"),
-                        new ResizeStrategy(150, 150)
+                        new ResizeStrategy(150, 150),
+                        new ConsoleLoggingStrategy(ConsoleLoggingStrategy.LogLevel.Actions)
                     ),
 
                     // in case thumbnail is png, and not jpg
@@ -59,7 +60,8 @@ namespace Taurit.Toolkit.ConvertBlogpostImages
                         new WebpFileQuality(80),
                         Int32.MaxValue,
                         new ReplaceEndStrategy(".600x600.hq.png", ".150x150.webp"),
-                        new ResizeStrategy(150, 150)
+                        new ResizeStrategy(150, 150),
+                        new ConsoleLoggingStrategy(ConsoleLoggingStrategy.LogLevel.Actions)
                     ),
 
                     // in case thumbnail is png, and not jpg
