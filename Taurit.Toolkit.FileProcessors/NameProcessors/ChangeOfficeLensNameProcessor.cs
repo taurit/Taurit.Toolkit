@@ -37,9 +37,10 @@ namespace Taurit.Toolkit.FileProcessors.NameProcessors
 
                 String newFileName = _fileNameFormatProvider.FormatFileName(year, month, day, description);
                 String newFilePath = Path.Combine(directoryPath, newFileName);
+                Int32 copyIndex = 2;
                 while (File.Exists(newFilePath))
                     newFilePath = Path.Combine(directoryPath,
-                        Path.GetFileNameWithoutExtension(newFileName) + "(2)" + Path.GetExtension(newFileName));
+                        Path.GetFileNameWithoutExtension(newFileName) + $"({copyIndex++})" + Path.GetExtension(newFileName));
                 File.Move(file, newFilePath);
             }
         }
