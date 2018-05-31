@@ -17,6 +17,15 @@
     <Window.Resources>
         <converters:PriorityToTextConverter x:Key="PriorityToTextConverter" />
         <converters:PriorityToColorConverter x:Key="PriorityToColorConverter" />
+        <Style x:Key="local.HiddenGridViewHeader" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+        <Style TargetType="{x:Type ListViewItem}">
+            <Style.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#00000000" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#00000000" />
+            </Style.Resources>
+        </Style>
     </Window.Resources>
     <DockPanel d:DataContext="{d:DesignInstance designData:MainWindowDesignData, IsDesignTimeCreatable=True}" LastChildFill="True">
         <StackPanel
@@ -40,9 +49,12 @@
                     Those tasks will be classified
                 </TextBlock>
 
-                <ListView ItemsSource="{Binding PlannedActions}">
-
+                <ListView
+                    BorderBrush="LightGray"
+                    BorderThickness="1"
+                    ItemsSource="{Binding PlannedActions}">
                     <ListView.View>
+
 
                         <GridView>
                             <GridViewColumn Width="500" Header="Name">
@@ -72,10 +84,13 @@
                     <Run>Those tasks will</Run> <Bold>not</Bold>
                     be changed:</TextBlock>
 
-                <ListView Foreground="DarkGray" ItemsSource="{Binding SkippedTasks}">
+                <ListView
+                    BorderThickness="0"
+                    Foreground="DarkGray"
+                    ItemsSource="{Binding SkippedTasks}">
 
                     <ListView.View>
-                        <GridView>
+                        <GridView ColumnHeaderContainerStyle="{StaticResource local.HiddenGridViewHeader}">
                             <GridViewColumn
                                 Width="750"
                                 DisplayMemberBinding="{Binding Path=Name}"
