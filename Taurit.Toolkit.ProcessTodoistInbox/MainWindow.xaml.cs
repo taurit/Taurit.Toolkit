@@ -87,18 +87,18 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
         {
             foreach (TaskActionModel action in PlannedActions)
             {
+                
                 Int64 taskId = action.TaskId;
                 Int32 priority = action.Priority;
                 Int64 label = action.Label.id;
+                Int64 oldProjectId = action.OldProjectId;
                 Int64 project = action.Project.id;
 
-                _todoistCommandService.AddUpdateTaskCommand(taskId, priority, label, project);
+                _todoistCommandService.AddUpdateTaskCommand(oldProjectId, taskId, priority, label, project);
             }
 
             String response = _todoistCommandService.ExecuteCommands();
-
-
-            MessageBox.Show("Done!");
+            
             ProceedButton.IsEnabled = false;
         }
     }

@@ -15,17 +15,23 @@ namespace Taurit.Toolkit.TodoistInboxHelper
         }
 
         /// <inheritdoc />
-        public void AddUpdateTaskCommand(Int64 taskId, Int32 priority, Int64 labelId, Int64 project)
+        public void AddUpdateTaskCommand(Int64 oldProjectId, Int64 taskId, Int32 priority, Int64 labelId, Int64 project)
         {
+            // update task values
             Guid commandId = Guid.NewGuid();
             var labels = new List<Int64> {labelId};
-
-            // JSON array with int64 ids
             String labelsArrayString = "[" + String.Join(",", labels) + "]";
             String commandString =
                 $"{{\"type\": \"item_update\", \"uuid\": \"{commandId}\", \"args\": {{\"id\": {taskId}, \"priority\": {priority}, \"labels\": {labelsArrayString}}}}}";
-
+            
             commandsStrings.Add(commandString);
+
+            // move task to another project
+            Guid moveCommandId = Guid.NewGuid();
+            String projectItems = $"{{\"{oldProjectId}\": [{taskId}]}}";
+            String moveCommandString =
+                $"{{\"type\": \"item_move\", \"uuid\": \"{moveCommandId}\", \"args\": {{\"project_items\": {projectItems}, \"to_project\": {project} }}}}";
+            commandsStrings.Add(moveCommandString);
         }
 
 
@@ -44,6 +50,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             request.AddParameter("commands", commandsString.ToString());
 
             IRestResponse<TodoistSyncResponseTasks> response = client.Execute<TodoistSyncResponseTasks>(request);
+            commandsStrings.Clear();
             String apiResponse = response.Content;
             return apiResponse;
         }

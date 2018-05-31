@@ -6,7 +6,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Services
     public class TodoistFakeCommandService : ITodoistCommandService
     {
         /// <inheritdoc />
-        public void AddUpdateTaskCommand(Int64 taskId, Int32 priority, Int64 labelId, Int64 project)
+        public void AddUpdateTaskCommand(Int64 oldProjectId, Int64 taskId, Int32 priority, Int64 labelId, Int64 project)
         {
         }
 

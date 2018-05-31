@@ -19,6 +19,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models
             Project = newProject;
             Priority = newPriority;
             TaskId = task.id;
+            OldProjectId = task.project_id;
         }
 
         public String Name { get; set; }
@@ -26,5 +27,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models
         public Label Label { get; set; }
         public Int32 Priority { get; set; }
         public Int64 TaskId { get; set; }
+        public Int64 OldProjectId { get; set; }
     }
 }
