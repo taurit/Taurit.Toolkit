@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -18,17 +17,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly ITodoistQueryService _todoistQueryService;
+        private ITodoistCommandService _todoistCommandService;
+        private ITodoistQueryService _todoistQueryService;
 
         public MainWindow()
         {
             InitializeComponent();
 
-#if DEBUG
-            _todoistQueryService = new TodoistFakeQueryService();
-#else
-            _todoistQueryService = new TodoistQueryService(UserSettings.TodoistApiKey);
-            #endif
         }
 
         public ObservableCollection<TaskActionModel> PlannedActions { get; set; } =
@@ -73,8 +68,34 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
         {
             String settingsFileContent = File.ReadAllText(settingsFilePath);
             UserSettings = JsonConvert.DeserializeObject<SettingsFileModel>(settingsFileContent);
+            
+#if !DEBUG
+            _todoistQueryService = new TodoistFakeQueryService();
+            _todoistCommandService = new TodoistFakeCommandService();
+#else
+            _todoistQueryService = new TodoistQueryService(UserSettings.TodoistApiKey);
+            _todoistCommandService = new TodoistCommandService(UserSettings.TodoistApiKey);
+#endif
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void ProceedButton_Click(Object sender, RoutedEventArgs e)
+        {
+            foreach (TaskActionModel action in PlannedActions)
+            {
+                Int64 taskId = action.TaskId;
+                Int32 priority = action.Priority;
+                Int64 label = action.Label.id;
+                Int64 project = action.Project.id;
+
+                _todoistCommandService.AddUpdateTaskCommand(taskId, priority, label, project);
+            }
+
+            String response = _todoistCommandService.ExecuteCommands();
+
+
+            MessageBox.Show("Done!");
+            this.ProceedButton.IsEnabled = false;
+        }
     }
 }

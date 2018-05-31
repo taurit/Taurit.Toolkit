@@ -33,8 +33,10 @@
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
             <Button
+                x:Name="ProceedButton"
                 Margin="5"
                 Padding="35,5,35,5"
+                Click="ProceedButton_Click"
                 IsDefault="True">
                 Looks good, proceed!
             </Button>
@@ -66,11 +68,11 @@
                             </GridViewColumn>
                             <GridViewColumn
                                 Width="50"
-                                DisplayMemberBinding="{Binding Path=Label}"
+                                DisplayMemberBinding="{Binding Path=Label.name}"
                                 Header="Label" />
                             <GridViewColumn
                                 Width="150"
-                                DisplayMemberBinding="{Binding Path=Project}"
+                                DisplayMemberBinding="{Binding Path=Project.name}"
                                 Header="Project" />
                         </GridView>
 

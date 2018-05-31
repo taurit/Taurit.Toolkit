@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Taurit.Toolkit.ProcessTodoistInbox.Models;
+using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.DesignData
 {
@@ -11,22 +12,22 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.DesignData
                 new TaskActionModel
                 {
                     Name = "Task with a super long long long long long long long long name",
-                    Project = "Obowiązki",
-                    Label = "anki",
+                    Project = new Project() { name = "Obowiązki" },
+                    Label = new Label() { name = "anki" },
                     Priority = 2
                 },
                 new TaskActionModel
                 {
                     Name = "Task with a typical name",
-                    Project = "Obowiązki",
-                    Label = "anki",
+                    Project = new Project() { name = "Obowiązki" },
+                    Label = new Label() { name = "anki" },
                     Priority = 2
                 },
                 new TaskActionModel
                 {
                     Name = "Task with a typical name 2",
-                    Project = "Praca",
-                    Label = "biuro",
+                    Project = new Project() { name = "Praca" },
+                    Label = new Label() { name = "biuro" },
                     Priority = 4
                 }
             };

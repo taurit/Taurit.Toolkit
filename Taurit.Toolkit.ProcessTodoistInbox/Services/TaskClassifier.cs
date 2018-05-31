@@ -30,8 +30,20 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Services
             {
                 ClassificationRule matchingRule = _classificationRules.SingleOrDefault(x => x.Matches(task));
                 if (matchingRule != null)
-                    actions.Add(new TaskActionModel(task, matchingRule.setLabel, matchingRule.setPriority,
-                        matchingRule.moveToProject));
+                {
+                    Label label = _labels.SingleOrDefault(x => x.name == matchingRule.setLabel && x.is_deleted == 0);
+                    Project project = _projects.SingleOrDefault(x =>
+                        x.name == matchingRule.moveToProject && x.is_deleted == 0 && x.is_archived == 0);
+
+                    if (label != null && project != null)
+                    {
+                        var action = new TaskActionModel(task, label, matchingRule.setPriority, project);
+                        actions.Add(action);
+                    }
+                    else
+                        noActions.Add(new TaskNoActionModel(task));
+                }
+
                 else
                     noActions.Add(new TaskNoActionModel(task));
             }

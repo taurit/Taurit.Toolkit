@@ -64,6 +64,7 @@
     <Compile Include="Models\TaskActionModel.cs" />
     <Compile Include="Models\TaskNoActionModel.cs" />
     <Compile Include="Services\TaskClassifier.cs" />
+    <Compile Include="Services\TodoistFakeCommandService.cs" />
     <Compile Include="Services\TodoistFakeQueryService.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
