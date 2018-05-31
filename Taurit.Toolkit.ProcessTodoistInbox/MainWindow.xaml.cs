@@ -4,10 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using Newtonsoft.Json;
-using Taurit.Toolkit.ProcessTodoistInbox.Annotations;
 using Taurit.Toolkit.ProcessTodoistInbox.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
@@ -26,9 +24,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
         {
             InitializeComponent();
 
-            #if DEBUG
+#if DEBUG
             _todoistQueryService = new TodoistFakeQueryService();
-            #else
+#else
             _todoistQueryService = new TodoistQueryService(UserSettings.TodoistApiKey);
             #endif
         }
@@ -51,12 +49,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
             (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
                 taskClassifier.Classify(tasksThatNeedReview);
 
-            foreach (TaskActionModel action in actions)
+            foreach (TaskActionModel action in actions.OrderByDescending(x => x.Priority))
                 PlannedActions.Add(action);
 
             foreach (TaskNoActionModel noAction in noActions)
                 SkippedTasks.Add(noAction);
-            
         }
 
         private IReadOnlyList<TodoTask> GetNotReviewedTasks(IReadOnlyList<Project> allProjects)
@@ -79,6 +76,5 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        
     }
 }

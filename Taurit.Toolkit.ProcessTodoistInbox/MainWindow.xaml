@@ -33,25 +33,29 @@
         </StackPanel>
         <ScrollViewer>
             <StackPanel>
-                <TextBlock>Will be changed</TextBlock>
+                <TextBlock
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    FontSize="20">
+                    Those tasks will be classified
+                </TextBlock>
 
                 <ListView ItemsSource="{Binding PlannedActions}">
 
                     <ListView.View>
 
                         <GridView>
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Name" />
+                            <GridViewColumn Width="500" Header="Name">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate DataType="models:TaskActionModel">
+                                        <TextBlock Background="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}" Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                             <GridViewColumn
                                 Width="50"
                                 DisplayMemberBinding="{Binding Path=Label}"
                                 Header="Label" />
-                            <GridViewColumn Width="100" Header="Priority">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate DataType="models:TaskActionModel">
-                                        <TextBlock Background="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}" Text="{Binding Priority, Converter={StaticResource PriorityToTextConverter}}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
                             <GridViewColumn
                                 Width="150"
                                 DisplayMemberBinding="{Binding Path=Project}"
@@ -61,15 +65,21 @@
                     </ListView.View>
                 </ListView>
 
-                <TextBlock Margin="0,10,0,0">
-                    <Run>Will</Run> <Bold>not</Bold>
-                    be changed</TextBlock>
+                <TextBlock
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    FontSize="20">
+                    <Run>Those tasks will</Run> <Bold>not</Bold>
+                    be changed:</TextBlock>
 
-                <ListView ItemsSource="{Binding SkippedTasks}">
+                <ListView Foreground="DarkGray" ItemsSource="{Binding SkippedTasks}">
 
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Name" />
+                            <GridViewColumn
+                                Width="750"
+                                DisplayMemberBinding="{Binding Path=Name}"
+                                Header="Name" />
                         </GridView>
                     </ListView.View>
                 </ListView>
