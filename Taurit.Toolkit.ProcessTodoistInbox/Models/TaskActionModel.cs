@@ -4,9 +4,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models
 {
     public class TaskActionModel
     {
-        private String Name { get; set; }
-        private String Project { get; set; }
-        private String Label { get; set; }
-        private String Priority { get; set; }
+        public String Name { get; set; }
+        public String Project { get; set; }
+        public String Label { get; set; }
+        public String Priority { get; set; }
     }
 }
