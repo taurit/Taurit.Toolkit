@@ -66,6 +66,7 @@
     <Compile Include="Services\TaskClassifier.cs" />
     <Compile Include="Services\TodoistFakeCommandService.cs" />
     <Compile Include="Services\TodoistFakeQueryService.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

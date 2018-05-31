@@ -11,7 +11,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
     {
         private void Application_Startup(Object sender, StartupEventArgs e)
         {
-            var mainWindow = new MainWindow();
             if (e.Args.Length != 1)
             {
                 MessageBox.Show("Path to the settings file should be passed as an argument");
@@ -25,7 +24,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
                 return;
             }
 
-            mainWindow.LoadSettings(settingsFilePath);
+            var mainWindow = new MainWindow(settingsFilePath);
             mainWindow.Show();
         }
     }

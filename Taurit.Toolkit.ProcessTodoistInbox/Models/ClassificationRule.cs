@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Linq;
 using Newtonsoft.Json;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
@@ -8,6 +10,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models
     {
         [JsonProperty]
         public String taskContains { get; set; }
+
+        [JsonProperty]
+        public String[] taskStartsWith { get; set; }
 
         [JsonProperty]
         public Int32 setPriority { get; set; }
@@ -20,7 +25,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models
 
         public Boolean Matches(TodoTask task)
         {
-            return task.content.Contains(taskContains);
+            return taskContains != null &&
+                   task.content.Contains(taskContains, StringComparison.InvariantCultureIgnoreCase)
+                   || taskStartsWith != null &&
+                   taskStartsWith.Any(x => task.content.StartsWith(x, true, CultureInfo.InvariantCulture))
+                ;
         }
     }
 }

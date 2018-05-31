@@ -17,11 +17,27 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ITodoistCommandService _todoistCommandService;
-        private ITodoistQueryService _todoistQueryService;
+        private readonly ITodoistCommandService _todoistCommandService;
+        private readonly ITodoistQueryService _todoistQueryService;
 
         public MainWindow()
         {
+            InitializeComponent();
+        }
+
+        public MainWindow(String settingsFilePath)
+        {
+            
+            String settingsFileContent = File.ReadAllText(settingsFilePath);
+            UserSettings = JsonConvert.DeserializeObject<SettingsFileModel>(settingsFileContent);
+
+//#if DEBUG
+//            _todoistQueryService = new TodoistFakeQueryService();
+//            _todoistCommandService = new TodoistFakeCommandService();
+//#else
+            _todoistQueryService = new TodoistQueryService(UserSettings.TodoistApiKey);
+            _todoistCommandService = new TodoistCommandService(UserSettings.TodoistApiKey);
+//#endif
             InitializeComponent();
 
         }
@@ -34,7 +50,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
 
         private SettingsFileModel UserSettings { get; set; }
 
-        private void Window_Activated(Object sender, EventArgs e)
+        private void Initialize(Object sender, EventArgs e)
         {
             IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
@@ -64,19 +80,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
             return tasksThatNeedProcessing;
         }
 
-        public void LoadSettings(String settingsFilePath)
-        {
-            String settingsFileContent = File.ReadAllText(settingsFilePath);
-            UserSettings = JsonConvert.DeserializeObject<SettingsFileModel>(settingsFileContent);
-            
-#if !DEBUG
-            _todoistQueryService = new TodoistFakeQueryService();
-            _todoistCommandService = new TodoistFakeCommandService();
-#else
-            _todoistQueryService = new TodoistQueryService(UserSettings.TodoistApiKey);
-            _todoistCommandService = new TodoistCommandService(UserSettings.TodoistApiKey);
-#endif
-        }
+
 
 
         private void ProceedButton_Click(Object sender, RoutedEventArgs e)
@@ -95,7 +99,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
 
 
             MessageBox.Show("Done!");
-            this.ProceedButton.IsEnabled = false;
+            ProceedButton.IsEnabled = false;
         }
     }
 }

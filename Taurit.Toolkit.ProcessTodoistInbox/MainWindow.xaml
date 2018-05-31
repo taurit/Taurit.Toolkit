@@ -11,8 +11,8 @@
     Title="Process Todoist Inbox"
     Width="800"
     Height="450"
-    Activated="Window_Activated"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
+    Initialized="Initialize"
     mc:Ignorable="d">
     <Window.Resources>
         <converters:PriorityToTextConverter x:Key="PriorityToTextConverter" />
