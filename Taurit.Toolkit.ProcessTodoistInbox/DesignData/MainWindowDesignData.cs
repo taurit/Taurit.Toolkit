@@ -13,21 +13,21 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.DesignData
                     Name = "Task with a super long long long long long long long long name",
                     Project = "Obowiązki",
                     Label = "anki",
-                    Priority = "2"
+                    Priority = 2
                 },
                 new TaskActionModel
                 {
                     Name = "Task with a typical name",
                     Project = "Obowiązki",
                     Label = "anki",
-                    Priority = "2"
+                    Priority = 2
                 },
                 new TaskActionModel
                 {
                     Name = "Task with a typical name 2",
                     Project = "Praca",
                     Label = "biuro",
-                    Priority = "4"
+                    Priority = 4
                 }
             };
 

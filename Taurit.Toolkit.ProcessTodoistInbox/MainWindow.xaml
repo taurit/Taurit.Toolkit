@@ -12,6 +12,7 @@
     Width="800"
     Height="450"
     Activated="Window_Activated"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}"
     mc:Ignorable="d">
     <Window.Resources>
         <converters:PriorityToTextConverter x:Key="PriorityToTextConverter" />
@@ -22,7 +23,12 @@
             HorizontalAlignment="Center"
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
-            <Button Padding="35,5,35,5" IsDefault="True">Looks good, proceed!</Button>
+            <Button
+                Margin="5"
+                Padding="35,5,35,5"
+                IsDefault="True">
+                Looks good, proceed!
+            </Button>
 
         </StackPanel>
         <ScrollViewer>

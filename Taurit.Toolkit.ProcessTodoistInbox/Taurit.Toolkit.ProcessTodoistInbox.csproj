@@ -59,9 +59,13 @@
     <Compile Include="Converters\PriorityToColorConverter.cs" />
     <Compile Include="Converters\PriorityToTextConverter.cs" />
     <Compile Include="DesignData\MainWindowDesignData.cs" />
+    <Compile Include="Models\ClassificationRule.cs" />
     <Compile Include="Models\SettingsFileModel.cs" />
     <Compile Include="Models\TaskActionModel.cs" />
     <Compile Include="Models\TaskNoActionModel.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Services\TaskClassifier.cs" />
+    <Compile Include="Services\TodoistFakeQueryService.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

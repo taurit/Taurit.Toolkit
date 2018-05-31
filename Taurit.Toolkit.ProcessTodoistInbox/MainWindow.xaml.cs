@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using Newtonsoft.Json;
+using Taurit.Toolkit.ProcessTodoistInbox.Annotations;
 using Taurit.Toolkit.ProcessTodoistInbox.Models;
+using Taurit.Toolkit.ProcessTodoistInbox.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
@@ -16,29 +20,49 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
     /// </summary>
     public partial class MainWindow : Window
     {
-        private TodoistQueryService _todoistQueryService;
+        private readonly ITodoistQueryService _todoistQueryService;
 
         public MainWindow()
         {
             InitializeComponent();
-            this._todoistQueryService = new TodoistQueryService(UserSettings.TodoistApiKey);
+
+            #if DEBUG
+            _todoistQueryService = new TodoistFakeQueryService();
+            #else
+            _todoistQueryService = new TodoistQueryService(UserSettings.TodoistApiKey);
+            #endif
         }
 
-        public ObservableCollection<TaskActionModel> PlannedActions { get; set; }
-        public ObservableCollection<TaskNoActionModel> SkippedTasks { get; set; }
+        public ObservableCollection<TaskActionModel> PlannedActions { get; set; } =
+            new ObservableCollection<TaskActionModel>();
+
+        public ObservableCollection<TaskNoActionModel> SkippedTasks { get; set; } =
+            new ObservableCollection<TaskNoActionModel>();
 
         private SettingsFileModel UserSettings { get; set; }
 
         private void Window_Activated(Object sender, EventArgs e)
         {
-            IList<TodoTask> tasksThatNeedReview = GetNotReviewedTasks(_todoistQueryService);
+            IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
+            IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
+            IReadOnlyList<TodoTask> tasksThatNeedReview = GetNotReviewedTasks(allProjects);
+
+            var taskClassifier = new TaskClassifier(UserSettings.ClassificationRules, allLabels, allProjects);
+            (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
+                taskClassifier.Classify(tasksThatNeedReview);
+
+            foreach (TaskActionModel action in actions)
+                PlannedActions.Add(action);
+
+            foreach (TaskNoActionModel noAction in noActions)
+                SkippedTasks.Add(noAction);
+            
         }
 
-        private IList<TodoTask> GetNotReviewedTasks(TodoistQueryService queryService)
+        private IReadOnlyList<TodoTask> GetNotReviewedTasks(IReadOnlyList<Project> allProjects)
         {
-            IList<Project> projects = queryService.GetAllProjects();
-            Project inboxProject = projects.Single(x => x.name == "Inbox");
-            IList<TodoTask> allTasks = queryService.GetAllTasks();
+            Project inboxProject = allProjects.Single(x => x.name == "Inbox");
+            IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks();
             List<TodoTask> tasksThatNeedProcessing = allTasks
                 .Where(x => x.project_id == inboxProject.id &&
                             x.@checked == 0 &&
@@ -53,5 +77,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
             String settingsFileContent = File.ReadAllText(settingsFilePath);
             UserSettings = JsonConvert.DeserializeObject<SettingsFileModel>(settingsFileContent);
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        
     }
 }

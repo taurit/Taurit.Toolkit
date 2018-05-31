@@ -5,13 +5,13 @@ using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 namespace Taurit.Toolkit.TodoistInboxHelper
 {
-    public class TodoistQueryService : TodoistApiService
+    public class TodoistQueryService : TodoistApiService, ITodoistQueryService
     {
         public TodoistQueryService(String authToken) : base(authToken)
         {
         }
 
-        public IList<Label> GetAllLabels()
+        public IReadOnlyList<Label> GetAllLabels()
         {
             var client = new RestClient(ApiUrl);
 
@@ -25,7 +25,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             return response.Data.labels;
         }
 
-        public IList<Project> GetAllProjects()
+        public IReadOnlyList<Project> GetAllProjects()
         {
             var client = new RestClient(ApiUrl);
 
@@ -40,7 +40,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             return response.Data.projects;
         }
 
-        public IList<TodoTask> GetAllTasks()
+        public IReadOnlyList<TodoTask> GetAllTasks()
         {
             var client = new RestClient(ApiUrl);
 
@@ -57,7 +57,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             return response.Data.items;
         }
 
-        public IList<TodoTask> GetTasks()
+        public IReadOnlyList<TodoTask> GetTasks()
         {
             var client = new RestClient(ApiUrl);
 
