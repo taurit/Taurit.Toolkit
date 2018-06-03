@@ -71,8 +71,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
             List<TodoTask> tasksThatNeedProcessing = allTasks
                 .Where(x => x.@checked == 0 &&
                             x.is_deleted == 0 &&
-                            x.labels != null && x.labels.Count == 0 &&
-                            x.priority == 1).ToList();
+                            x.labels != null).ToList();
             return tasksThatNeedProcessing;
         }
 
