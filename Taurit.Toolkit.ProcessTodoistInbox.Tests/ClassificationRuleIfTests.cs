@@ -37,6 +37,20 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
         }
 
         [Fact]
+        public void ContainsIgnoresDiacritics()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf {contains = new[] {"Umyć"}};
+            var task = new TodoTask {content = "umyc"};
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.True(match);
+        }
+
+        [Fact]
         public void ItIsEnoughForOneElementInContainsListToMatch()
         {
             // Arrange

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -36,11 +37,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models.Classification
 
         public Boolean Matches(TodoTask task)
         {
-            String[] contentWords = SplitIntoWords(task.content);
-
             var match = true;
             match &= DoesTaskContainsMatch(task);
-            match &= DoesTaskStartsWithWordMatch(task, contentWords);
+            match &= DoesTaskStartsWithWordMatch(task);
             match &= DoesTaskPriorityMatch(task);
             match &= DoesTaskProjectMatch(task);
             match &= DoesTaskLabelPresenceMatch(task);
@@ -69,9 +68,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models.Classification
             return task.priority == priority.Value;
         }
 
-        private Boolean DoesTaskStartsWithWordMatch(TodoTask task, String[] contentWords)
+        private Boolean DoesTaskStartsWithWordMatch(TodoTask task)
         {
+            
             if (startsWith == null) return true;
+            String[] contentWords = SplitIntoWords(task.content);
 
             foreach (String keyword in startsWith)
             {
