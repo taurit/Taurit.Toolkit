@@ -26,7 +26,21 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
         public void ContainsIsCaseInsensitive()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {taskContains = "world"};
+            var sut = new ClassificationRuleIf {contains = new[] {"world"}};
+            var task = new TodoTask {content = "hello WORLD"};
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.True(match);
+        }
+
+        [Fact]
+        public void ItIsEnoughForOneElementInContainsListToMatch()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf {contains = new[] {"hola", "world"}};
             var task = new TodoTask {content = "hello WORLD"};
 
             // Act
@@ -40,7 +54,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
         public void ContainsReturnsFalseWhenTheresNoMatch()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {taskContains = "world"};
+            var sut = new ClassificationRuleIf {contains = new[] {"world"}};
             var task = new TodoTask {content = "yo dawg"};
 
             // Act
@@ -54,7 +68,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
         public void StartsWithWordReturnsFalseWhenWordIsNotAFirstWord()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {taskStartsWithWord = new [] { "Buy" }};
+            var sut = new ClassificationRuleIf {startsWith = new [] { "Buy" }};
             var task = new TodoTask {content = "Do not buy a TV, ever!"};
 
             // Act
@@ -68,7 +82,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
         public void StartsWithWordReturnsTrueWhenWordIsAFirstWord()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {taskStartsWithWord = new [] { "Buy" }};
+            var sut = new ClassificationRuleIf {startsWith = new [] { "Buy" }};
             var task = new TodoTask {content = "Buy milk"};
 
             // Act
@@ -82,7 +96,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
         public void StartsWithWordIsNotCaseSensitive()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {taskStartsWithWord = new [] { "bUy" }};
+            var sut = new ClassificationRuleIf {startsWith = new [] { "bUy" }};
             var task = new TodoTask {content = "BUY milk"};
 
             // Act
@@ -96,7 +110,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
         public void StartsWithWordIgnoresDifferenceInNationalCharacters()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {taskStartsWithWord = new [] { "Zapytać" }};
+            var sut = new ClassificationRuleIf {startsWith = new [] { "Zapytać" }};
             var task = new TodoTask {content = "Zapytac telefonicznie o cene"};
 
             // Act
@@ -110,7 +124,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
         public void IfPriorityDoesNotMatchThereIsNoMatch()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {taskHasPriority = 3 };
+            var sut = new ClassificationRuleIf {priority = 3 };
             var task = new TodoTask {priority = 1};
 
             // Act
@@ -124,7 +138,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
         public void IfPriorityMatchesThereIsAMatch()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {taskHasPriority = 3 };
+            var sut = new ClassificationRuleIf {priority = 3 };
             var task = new TodoTask {priority = 3};
 
             // Act
@@ -138,7 +152,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
         public void ProjectCanBeMatchedByNameCaseInsensitive()
         {
             // Arrange
-            var sut = new ClassificationRuleIf { taskProject = "Inbox" };
+            var sut = new ClassificationRuleIf { project = "Inbox" };
             var task = new TodoTask {project_name = "inbox"};
 
             // Act
@@ -152,7 +166,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
         public void WhenProjectDoesNotMatchTaskDoesNotMatch()
         {
             // Arrange
-            var sut = new ClassificationRuleIf { taskProject = "Inbox" };
+            var sut = new ClassificationRuleIf { project = "Inbox" };
             var task = new TodoTask {project_name = "Obowiązki"};
 
             // Act
@@ -166,7 +180,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
         public void RuleOfNoLabelsDoesNotMatchWithTaskWithOneLabel()
         {
             // Arrange
-            var sut = new ClassificationRuleIf { taskHasLabels = 0 };
+            var sut = new ClassificationRuleIf { numLabels = 0 };
             var task = new TodoTask { labels = new List<Int64>() { 123 }}; // one label with id "123"
 
             // Act

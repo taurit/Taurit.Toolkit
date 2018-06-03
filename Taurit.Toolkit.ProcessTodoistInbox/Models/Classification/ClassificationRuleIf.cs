@@ -15,23 +15,23 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models.Classification
     {
         [CanBeNull]
         [JsonProperty]
-        public String taskContains { get; set; }
+        public String[] contains { get; set; }
 
         [CanBeNull]
         [JsonProperty]
-        public String[] taskStartsWithWord { get; set; }
+        public String[] startsWith { get; set; }
 
         [CanBeNull]
         [JsonProperty]
-        public Int32? taskHasPriority { get; set; }
+        public Int32? priority { get; set; }
 
         [CanBeNull]
         [JsonProperty]
-        public String taskProject { get; set; }
+        public String project { get; set; }
 
         [CanBeNull]
         [JsonProperty]
-        public Int32? taskHasLabels { get; set; }
+        public Int32? numLabels { get; set; }
 
 
         public Boolean Matches(TodoTask task)
@@ -50,30 +50,30 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models.Classification
 
         private Boolean DoesTaskLabelPresenceMatch(TodoTask task)
         {
-            if (!taskHasLabels.HasValue) return true;
+            if (!numLabels.HasValue) return true;
 
-            return task.labels.Count == taskHasLabels;
+            return task.labels.Count == numLabels;
         }
 
         private Boolean DoesTaskProjectMatch(TodoTask task)
         {
-            if (taskProject == null) return true;
+            if (project == null) return true;
 
-            return String.Equals(task.project_name, taskProject, StringComparison.InvariantCultureIgnoreCase);
+            return String.Equals(task.project_name, project, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private Boolean DoesTaskPriorityMatch(TodoTask task)
         {
-            if (!taskHasPriority.HasValue) return true;
+            if (!priority.HasValue) return true;
 
-            return task.priority == taskHasPriority.Value;
+            return task.priority == priority.Value;
         }
 
         private Boolean DoesTaskStartsWithWordMatch(TodoTask task, String[] contentWords)
         {
-            if (taskStartsWithWord == null) return true;
+            if (startsWith == null) return true;
 
-            foreach (String keyword in taskStartsWithWord)
+            foreach (String keyword in startsWith)
             {
                 String keywordWithoutDiacritics = keyword.RemoveDiacritics();
                 String firstWord = contentWords.First().RemoveDiacritics();
@@ -86,11 +86,19 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models.Classification
 
         private Boolean DoesTaskContainsMatch(TodoTask task)
         {
-            if (taskContains == null) return true;
+            if (contains == null) return true;
 
-            String taskContentWithoutDiacritics = task.content.RemoveDiacritics();
-            return taskContentWithoutDiacritics.Contains(taskContains.RemoveDiacritics(),
-                StringComparison.InvariantCultureIgnoreCase);
+            foreach (String keyword in contains)
+            {
+                String taskContentWithoutDiacritics = task.content.RemoveDiacritics();
+                String ruleKeywordWithoutDiacritics = keyword.RemoveDiacritics();
+
+                Boolean keywordInRuleMatchesTask = taskContentWithoutDiacritics.Contains(ruleKeywordWithoutDiacritics,
+                    StringComparison.InvariantCultureIgnoreCase);
+                if (keywordInRuleMatchesTask) return true;
+            }
+
+            return false;
         }
 
         internal String[] SplitIntoWords(String phrase)
