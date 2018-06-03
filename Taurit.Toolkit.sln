@@ -31,9 +31,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ConvertBlogp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.FileProcessors.Tests", "Taurit.Toolkit.FileProcessors.Tests\Taurit.Toolkit.FileProcessors.Tests.csproj", "{A6A186D7-1C19-4AD4-B26C-607B1DF82FDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.TodoistInboxHelper", "Taurit.Toolkit.TodoistInboxHelper\Taurit.Toolkit.TodoistInboxHelper.csproj", "{7B2467AB-A5B7-4516-A2E4-36A09EE2A55D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Taurit.Toolkit.TodoistInboxHelper", "Taurit.Toolkit.TodoistInboxHelper\Taurit.Toolkit.TodoistInboxHelper.csproj", "{7B2467AB-A5B7-4516-A2E4-36A09EE2A55D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInbox", "Taurit.Toolkit.ProcessTodoistInbox\Taurit.Toolkit.ProcessTodoistInbox.csproj", "{E00546B3-6D43-4BDF-91BB-FAEA67C79FF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInbox.Tests", "Taurit.Toolkit.ProcessTodoistInbox.Tests\Taurit.Toolkit.ProcessTodoistInbox.Tests.csproj", "{17AAF849-79C6-4FC9-A771-3EE83A2E94BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{E00546B3-6D43-4BDF-91BB-FAEA67C79FF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E00546B3-6D43-4BDF-91BB-FAEA67C79FF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E00546B3-6D43-4BDF-91BB-FAEA67C79FF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17AAF849-79C6-4FC9-A771-3EE83A2E94BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17AAF849-79C6-4FC9-A771-3EE83A2E94BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17AAF849-79C6-4FC9-A771-3EE83A2E94BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17AAF849-79C6-4FC9-A771-3EE83A2E94BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{E6E0C9B7-ACC0-4963-A74D-C67C3E5E18AF} = {2ED56955-F3FC-49D7-8CA2-8B6D61C5A751}
 		{C102CAEE-32CB-4CE9-B2C4-320274811197} = {2ED56955-F3FC-49D7-8CA2-8B6D61C5A751}
 		{A6A186D7-1C19-4AD4-B26C-607B1DF82FDF} = {2ED56955-F3FC-49D7-8CA2-8B6D61C5A751}
+		{17AAF849-79C6-4FC9-A771-3EE83A2E94BB} = {2ED56955-F3FC-49D7-8CA2-8B6D61C5A751}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1422CC07-49FB-48AA-9AFB-25077121E1E1}

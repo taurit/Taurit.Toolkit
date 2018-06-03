@@ -27,19 +27,17 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
 
         public MainWindow(String settingsFilePath)
         {
-            
             String settingsFileContent = File.ReadAllText(settingsFilePath);
             UserSettings = JsonConvert.DeserializeObject<SettingsFileModel>(settingsFileContent);
 
-//#if DEBUG
-//            _todoistQueryService = new TodoistFakeQueryService();
-//            _todoistCommandService = new TodoistFakeCommandService();
-//#else
+#if DEBUG
+            _todoistQueryService = new TodoistFakeQueryService();
+            _todoistCommandService = new TodoistFakeCommandService();
+#else
             _todoistQueryService = new TodoistQueryService(UserSettings.TodoistApiKey);
             _todoistCommandService = new TodoistCommandService(UserSettings.TodoistApiKey);
-//#endif
+#endif
             InitializeComponent();
-
         }
 
         public ObservableCollection<TaskActionModel> PlannedActions { get; set; } =
@@ -48,13 +46,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
         public ObservableCollection<TaskNoActionModel> SkippedTasks { get; set; } =
             new ObservableCollection<TaskNoActionModel>();
 
-        private SettingsFileModel UserSettings { get; set; }
+        private SettingsFileModel UserSettings { get; }
 
         private void Initialize(Object sender, EventArgs e)
         {
             IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
-            IReadOnlyList<TodoTask> tasksThatNeedReview = GetNotReviewedTasks(allProjects);
+            IReadOnlyList<TodoTask> tasksThatNeedReview = GetNotReviewedTasks(allProjects.ToLookup(x => x.id));
 
             var taskClassifier = new TaskClassifier(UserSettings.ClassificationRules, allLabels, allProjects);
             (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
@@ -67,13 +65,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
                 SkippedTasks.Add(noAction);
         }
 
-        private IReadOnlyList<TodoTask> GetNotReviewedTasks(IReadOnlyList<Project> allProjects)
+        private IReadOnlyList<TodoTask> GetNotReviewedTasks(ILookup<Int64, Project> allProjectsIndexedById)
         {
-            Project inboxProject = allProjects.Single(x => x.name == "Inbox");
-            IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks();
+            IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjectsIndexedById);
             List<TodoTask> tasksThatNeedProcessing = allTasks
-                .Where(x => x.project_id == inboxProject.id &&
-                            x.@checked == 0 &&
+                .Where(x => x.@checked == 0 &&
                             x.is_deleted == 0 &&
                             x.labels != null && x.labels.Count == 0 &&
                             x.priority == 1).ToList();
@@ -81,13 +77,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
         }
 
 
-
-
         private void ProceedButton_Click(Object sender, RoutedEventArgs e)
         {
             foreach (TaskActionModel action in PlannedActions)
             {
-                
                 Int64 taskId = action.TaskId;
                 Int32 priority = action.Priority;
                 Int64 label = action.Label.id;
@@ -98,7 +91,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
             }
 
             String response = _todoistCommandService.ExecuteCommands();
-            
+
             ProceedButton.IsEnabled = false;
         }
     }

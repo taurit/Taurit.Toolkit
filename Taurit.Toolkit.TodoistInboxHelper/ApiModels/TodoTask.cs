@@ -9,6 +9,8 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
     /// </summary>
     public class TodoTask
     {
+        public String project_name;
+
         [JsonProperty]
         public Int64 id { get; set; }
 

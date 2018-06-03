@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Taurit.Toolkit.ProcessTodoistInbox.Models;
+using Taurit.Toolkit.ProcessTodoistInbox.Models.Classification;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Services
@@ -28,16 +30,17 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Services
 
             foreach (TodoTask task in tasksToClassify)
             {
-                ClassificationRule matchingRule = _classificationRules.SingleOrDefault(x => x.Matches(task));
+                ClassificationRule matchingRule = FindMatchingRule(task);
                 if (matchingRule != null)
                 {
-                    Label label = _labels.SingleOrDefault(x => x.name == matchingRule.setLabel && x.is_deleted == 0);
-                    Project project = _projects.SingleOrDefault(x =>
-                        x.name == matchingRule.moveToProject && x.is_deleted == 0 && x.is_archived == 0);
+                    Label labelToSet =
+                        _labels.SingleOrDefault(x => x.name == matchingRule.Then.setLabel && x.is_deleted == 0);
+                    Project projectToSet = _projects.SingleOrDefault(x =>
+                        x.name == matchingRule.Then.moveToProject && x.is_deleted == 0 && x.is_archived == 0);
 
-                    if (label != null && project != null)
+                    if (labelToSet != null && projectToSet != null)
                     {
-                        var action = new TaskActionModel(task, label, matchingRule.setPriority, project);
+                        var action = new TaskActionModel(task, labelToSet, matchingRule.Then.setPriority, projectToSet);
                         actions.Add(action);
                     }
                     else
@@ -50,6 +53,12 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Services
 
 
             return (actions, noActions);
+        }
+
+        [CanBeNull]
+        private ClassificationRule FindMatchingRule(TodoTask task)
+        {
+            return _classificationRules.FirstOrDefault(rule => rule.If.Matches(task));
         }
     }
 }

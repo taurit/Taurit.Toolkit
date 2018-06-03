@@ -23,7 +23,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             String labelsArrayString = "[" + String.Join(",", labels) + "]";
             String commandString =
                 $"{{\"type\": \"item_update\", \"uuid\": \"{commandId}\", \"args\": {{\"id\": {taskId}, \"priority\": {priority}, \"labels\": {labelsArrayString}}}}}";
-            
+
             commandsStrings.Add(commandString);
 
             // move task to another project
@@ -54,6 +54,5 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             String apiResponse = response.Content;
             return apiResponse;
         }
-        
     }
 }

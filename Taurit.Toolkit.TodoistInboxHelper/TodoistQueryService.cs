@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using RestSharp;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
@@ -40,7 +41,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             return response.Data.projects;
         }
 
-        public IReadOnlyList<TodoTask> GetAllTasks()
+        public IReadOnlyList<TodoTask> GetAllTasks(ILookup<Int64, Project> allProjectsIndexedById)
         {
             var client = new RestClient(ApiUrl);
 
@@ -53,6 +54,9 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
             IRestResponse<TodoistSyncResponseTasks> response =
                 client.Execute<TodoistSyncResponseTasks>(request);
+
+            foreach (TodoTask task in response.Data.items)
+                task.project_name = allProjectsIndexedById[task.project_id].Single().name;
 
             return response.Data.items;
         }
@@ -73,6 +77,5 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
             return response.Data.items;
         }
-        
     }
 }

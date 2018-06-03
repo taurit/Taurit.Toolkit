@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Taurit.Toolkit.TodoistInboxHelper;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
@@ -52,12 +53,20 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Services
                     id = InboxProjectId,
                     is_archived = 0,
                     name = "Inbox"
+                },
+                new Project
+                {
+                    is_deleted = 0,
+                    id = 2,
+                    is_archived = 0,
+                    name = "Obowiązki"
                 }
             };
         }
 
+        /// <param name="allProjects"></param>
         /// <inheritdoc />
-        public IReadOnlyList<TodoTask> GetAllTasks()
+        public IReadOnlyList<TodoTask> GetAllTasks(ILookup<Int64, Project> allProjectsIndexedById)
         {
             return new List<TodoTask>
             {
