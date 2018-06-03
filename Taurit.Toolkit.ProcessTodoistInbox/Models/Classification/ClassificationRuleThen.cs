@@ -6,7 +6,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models.Classification
     public class ClassificationRuleThen
     {
         [JsonProperty]
-        public Int32 setPriority { get; set; }
+        public Int32? setPriority { get; set; }
 
         [JsonProperty]
         public String setLabel { get; set; }

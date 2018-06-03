@@ -4,7 +4,9 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 {
     public interface ITodoistCommandService
     {
-        void AddUpdateTaskCommand(Int64 oldProjectId, Int64 taskId, Int32 priority, Int64 labelId, Int64 project);
         String ExecuteCommands();
+        void AddUpdateProjectCommand(Int64 taskId, Int64 oldProjectId, Int64? newProjectId);
+        void AddUpdateLabelCommand(Int64 taskId, Int64? newLabelId);
+        void AddUpdatePriorityCommand(Int64 taskId, Int32? newPriority);
     }
 }

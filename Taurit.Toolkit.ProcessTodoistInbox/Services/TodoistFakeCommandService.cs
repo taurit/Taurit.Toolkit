@@ -6,14 +6,24 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Services
     public class TodoistFakeCommandService : ITodoistCommandService
     {
         /// <inheritdoc />
-        public void AddUpdateTaskCommand(Int64 oldProjectId, Int64 taskId, Int32 priority, Int64 labelId, Int64 project)
+        public String ExecuteCommands()
+        {
+            return "well done!";
+        }
+
+        /// <inheritdoc />
+        public void AddUpdateProjectCommand(Int64 taskId, Int64 oldProjectId, Int64? newProjectId)
         {
         }
 
         /// <inheritdoc />
-        public String ExecuteCommands()
+        public void AddUpdateLabelCommand(Int64 taskId, Int64? newLabelId)
         {
-            return "well done!";
+        }
+
+        /// <inheritdoc />
+        public void AddUpdatePriorityCommand(Int64 taskId, Int32? newPriority)
+        {
         }
     }
 }

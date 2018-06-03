@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using JetBrains.Annotations;
 using RestSharp;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
@@ -12,26 +13,6 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
         public TodoistCommandService(String apiKey) : base(apiKey)
         {
-        }
-
-        /// <inheritdoc />
-        public void AddUpdateTaskCommand(Int64 oldProjectId, Int64 taskId, Int32 priority, Int64 labelId, Int64 project)
-        {
-            // update task values
-            Guid commandId = Guid.NewGuid();
-            var labels = new List<Int64> {labelId};
-            String labelsArrayString = "[" + String.Join(",", labels) + "]";
-            String commandString =
-                $"{{\"type\": \"item_update\", \"uuid\": \"{commandId}\", \"args\": {{\"id\": {taskId}, \"priority\": {priority}, \"labels\": {labelsArrayString}}}}}";
-
-            commandsStrings.Add(commandString);
-
-            // move task to another project
-            Guid moveCommandId = Guid.NewGuid();
-            String projectItems = $"{{\"{oldProjectId}\": [{taskId}]}}";
-            String moveCommandString =
-                $"{{\"type\": \"item_move\", \"uuid\": \"{moveCommandId}\", \"args\": {{\"project_items\": {projectItems}, \"to_project\": {project} }}}}";
-            commandsStrings.Add(moveCommandString);
         }
 
 
@@ -53,6 +34,45 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             commandsStrings.Clear();
             String apiResponse = response.Content;
             return apiResponse;
+        }
+
+        /// <inheritdoc />
+        public void AddUpdateProjectCommand(Int64 taskId, Int64 oldProjectId, [CanBeNull] Int64? newProjectId)
+        {
+            if (!newProjectId.HasValue) return;
+
+            // move task to another project
+            Guid moveCommandId = Guid.NewGuid();
+            String projectItems = $"{{\"{oldProjectId}\": [{taskId}]}}";
+            String moveCommandString =
+                $"{{\"type\": \"item_move\", \"uuid\": \"{moveCommandId}\", \"args\": {{\"project_items\": {projectItems}, \"to_project\": {newProjectId.Value} }}}}";
+            commandsStrings.Add(moveCommandString);
+        }
+
+        /// <inheritdoc />
+        public void AddUpdateLabelCommand(Int64 taskId, [CanBeNull] Int64? newLabelId)
+        {
+            if (!newLabelId.HasValue) return;
+
+            Guid commandId = Guid.NewGuid();
+            var labels = new List<Int64> {newLabelId.Value};
+            String labelsArrayString = "[" + String.Join(",", labels) + "]";
+            String commandString =
+                $"{{\"type\": \"item_update\", \"uuid\": \"{commandId}\", \"args\": {{\"id\": {taskId}, \"labels\": {labelsArrayString}}}}}";
+
+            commandsStrings.Add(commandString);
+        }
+
+        /// <inheritdoc />
+        public void AddUpdatePriorityCommand(Int64 taskId, [CanBeNull] Int32? newPriority)
+        {
+            if (!newPriority.HasValue) return;
+
+            Guid commandId = Guid.NewGuid();
+            String commandString =
+                $"{{\"type\": \"item_update\", \"uuid\": \"{commandId}\", \"args\": {{\"id\": {taskId}, \"priority\": {newPriority.Value}}}}}";
+
+            commandsStrings.Add(commandString);
         }
     }
 }

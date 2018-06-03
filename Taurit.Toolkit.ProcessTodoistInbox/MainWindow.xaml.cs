@@ -82,12 +82,16 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
             foreach (TaskActionModel action in PlannedActions)
             {
                 Int64 taskId = action.TaskId;
-                Int32 priority = action.Priority;
-                Int64 label = action.Label.id;
+                Int32? newPriority = action.Priority;
+                Int64? newLabelId = action.Label?.id;
                 Int64 oldProjectId = action.OldProjectId;
-                Int64 project = action.Project.id;
+                Int64? newProjectId = action.Project?.id;
 
-                _todoistCommandService.AddUpdateTaskCommand(oldProjectId, taskId, priority, label, project);
+                _todoistCommandService.AddUpdateProjectCommand(taskId, oldProjectId, newProjectId);
+                _todoistCommandService.AddUpdateLabelCommand(taskId, newLabelId);
+                _todoistCommandService.AddUpdatePriorityCommand(taskId, newPriority);
+
+                //_todoistCommandService.AddUpdateTaskCommand(oldProjectId, taskId, priority, label, newProjectId);
             }
 
             String response = _todoistCommandService.ExecuteCommands();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Taurit.Toolkit.ProcessTodoistInbox.Models;
@@ -37,8 +38,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Services
                         _labels.SingleOrDefault(x => x.name == matchingRule.Then.setLabel && x.is_deleted == 0);
                     Project projectToSet = _projects.SingleOrDefault(x =>
                         x.name == matchingRule.Then.moveToProject && x.is_deleted == 0 && x.is_archived == 0);
+                    Int32? priorityToSet = matchingRule.Then.setPriority;
 
-                    if (labelToSet != null && projectToSet != null)
+                    if (labelToSet != null || projectToSet != null || priorityToSet != null)
                     {
                         var action = new TaskActionModel(task, labelToSet, matchingRule.Then.setPriority, projectToSet);
                         actions.Add(action);
