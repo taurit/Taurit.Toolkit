@@ -93,6 +93,34 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
         }
 
         [Fact]
+        public void ContainsWordReturnsTrueEvenWhenWordIsNotAFirstWord()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf {containsWord = new [] { "xyz", "Buy" }};
+            var task = new TodoTask {content = "Do not buy a TV, ever!"};
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.True(match);
+        }
+
+        [Fact]
+        public void ContainsWordReturnsFalseWhenWordIsNotFound()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf {containsWord = new [] { "xyz", "zyx" }};
+            var task = new TodoTask {content = "Do not buy a TV, ever!"};
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.False(match);
+        }
+
+        [Fact]
         public void StartsWithWordReturnsTrueWhenWordIsAFirstWord()
         {
             // Arrange

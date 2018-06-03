@@ -20,6 +20,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models.Classification
 
         [CanBeNull]
         [JsonProperty]
+        public String[] containsWord { get; set; }
+
+        [CanBeNull]
+        [JsonProperty]
         public String[] startsWith { get; set; }
 
         [CanBeNull]
@@ -40,12 +44,15 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models.Classification
             var match = true;
             match &= DoesTaskContainsMatch(task);
             match &= DoesTaskStartsWithWordMatch(task);
+            match &= DoesTaskContainsWordMatch(task);
             match &= DoesTaskPriorityMatch(task);
             match &= DoesTaskProjectMatch(task);
             match &= DoesTaskLabelPresenceMatch(task);
 
             return match;
         }
+
+      
 
         private Boolean DoesTaskLabelPresenceMatch(TodoTask task)
         {
@@ -79,6 +86,21 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models.Classification
                 String keywordWithoutDiacritics = keyword.RemoveDiacritics();
                 String firstWord = contentWords.First().RemoveDiacritics();
                 if (String.Equals(firstWord, keywordWithoutDiacritics, StringComparison.InvariantCultureIgnoreCase))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private Boolean DoesTaskContainsWordMatch(TodoTask task)
+        {
+            if (containsWord == null) return true;
+            String[] contentWords = SplitIntoWords(task.content);
+
+            foreach (String keyword in containsWord)
+            {
+                String keywordWithoutDiacritics = keyword.RemoveDiacritics();
+                if (contentWords.Any(x => String.Equals(x.RemoveDiacritics(), keywordWithoutDiacritics, StringComparison.InvariantCultureIgnoreCase)))
                     return true;
             }
 
