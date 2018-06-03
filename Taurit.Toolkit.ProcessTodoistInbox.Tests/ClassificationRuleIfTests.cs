@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Taurit.Toolkit.ProcessTodoistInbox.Models.Classification;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 using Xunit;
@@ -153,6 +154,20 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
             // Arrange
             var sut = new ClassificationRuleIf { taskProject = "Inbox" };
             var task = new TodoTask {project_name = "Obowiązki"};
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.False(match);
+        }
+
+        [Fact]
+        public void RuleOfNoLabelsDoesNotMatchWithTaskWithOneLabel()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf { taskHasLabels = 0 };
+            var task = new TodoTask { labels = new List<Int64>() { 123 }}; // one label with id "123"
 
             // Act
             Boolean match = sut.Matches(task);

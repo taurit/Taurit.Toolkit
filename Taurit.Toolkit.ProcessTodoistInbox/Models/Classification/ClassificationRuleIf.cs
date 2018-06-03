@@ -29,6 +29,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models.Classification
         [JsonProperty]
         public String taskProject { get; set; }
 
+        [CanBeNull]
+        [JsonProperty]
+        public Int32? taskHasLabels { get; set; }
+
 
         public Boolean Matches(TodoTask task)
         {
@@ -39,8 +43,16 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models.Classification
             match &= DoesTaskStartsWithWordMatch(task, contentWords);
             match &= DoesTaskPriorityMatch(task);
             match &= DoesTaskProjectMatch(task);
+            match &= DoesTaskLabelPresenceMatch(task);
 
             return match;
+        }
+
+        private Boolean DoesTaskLabelPresenceMatch(TodoTask task)
+        {
+            if (!taskHasLabels.HasValue) return true;
+
+            return task.labels.Count == taskHasLabels;
         }
 
         private Boolean DoesTaskProjectMatch(TodoTask task)

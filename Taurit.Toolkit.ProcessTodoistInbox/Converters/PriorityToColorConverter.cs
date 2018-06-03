@@ -11,7 +11,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Converters
             Object parameter, CultureInfo culture)
         {
             // Do the conversion from bool to visibility
-            switch (value.ToString())
+            switch ((value ?? "priority won't be set").ToString())
             {
                 case "2": return new SolidColorBrush(Color.FromRgb(255, 246, 225)); // Low
                 case "3": return new SolidColorBrush(Color.FromRgb(255, 242, 232)); // High
