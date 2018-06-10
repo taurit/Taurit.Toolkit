@@ -10,17 +10,19 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Services
 {
     public class TaskClassifier
     {
-        private readonly IReadOnlyList<ClassificationRule> _classificationRules;
-        private readonly IReadOnlyList<Label> _labels;
-        private readonly IReadOnlyList<Project> _projects;
+        [NotNull] private readonly IReadOnlyList<ClassificationRule> _classificationRules;
 
-        public TaskClassifier(IReadOnlyList<ClassificationRule> classificationRules,
-            IReadOnlyList<Label> labels,
-            IReadOnlyList<Project> projects)
+        [NotNull] private readonly IReadOnlyList<Label> _labels;
+
+        [NotNull] private readonly IReadOnlyList<Project> _projects;
+
+        public TaskClassifier([NotNull] IReadOnlyList<ClassificationRule> classificationRules,
+            [NotNull] IReadOnlyList<Label> labels,
+            [NotNull] IReadOnlyList<Project> projects)
         {
-            _classificationRules = classificationRules;
-            _labels = labels;
-            _projects = projects;
+            _classificationRules = classificationRules ?? throw new ArgumentNullException(nameof(classificationRules));
+            _labels = labels ?? throw new ArgumentNullException(nameof(labels));
+            _projects = projects ?? throw new ArgumentNullException(nameof(projects));
         }
 
         public (IReadOnlyList<TaskActionModel>, IReadOnlyList<TaskNoActionModel>) Classify(
@@ -31,8 +33,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Services
 
             foreach (TodoTask task in tasksToClassify)
             {
-                ClassificationRule matchingRule = FindMatchingRule(task);
-                if (matchingRule != null)
+                List<ClassificationRule> matchingRules = FindMatchingRules(task).Where(x => x != null).ToList();
+                Boolean matchFound = matchingRules.Any();
+                foreach (ClassificationRule matchingRule in matchingRules)
                 {
                     Label labelToSet =
                         _labels.SingleOrDefault(x => x.name == matchingRule.Then.setLabel && x.is_deleted == 0);
@@ -42,25 +45,25 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Services
 
                     if (labelToSet != null || projectToSet != null || priorityToSet != null)
                     {
-                        var action = new TaskActionModel(task, labelToSet, matchingRule.Then.setPriority, projectToSet);
+                        var action = new TaskActionModel(task, labelToSet, matchingRule.Then.setPriority,
+                            projectToSet);
                         actions.Add(action);
                     }
-                    else
-                        noActions.Add(new TaskNoActionModel(task));
                 }
 
-                else
+                // also, list tasks that seem like they need classification (they have the default priority, sit in inbox, or have no labels assigned)
+                if (!matchFound && (task.labels.Count == 0 || task.priority == 1 || task.project_name == "Inbox"))
                     noActions.Add(new TaskNoActionModel(task));
             }
-
 
             return (actions, noActions);
         }
 
-        [CanBeNull]
-        private ClassificationRule FindMatchingRule(TodoTask task)
+        [NotNull]
+        [ItemCanBeNull]
+        private IReadOnlyList<ClassificationRule> FindMatchingRules(TodoTask task)
         {
-            return _classificationRules.FirstOrDefault(rule => rule.If.Matches(task));
+            return _classificationRules.Where(rule => rule.If.Matches(task)).ToList();
         }
     }
 }
