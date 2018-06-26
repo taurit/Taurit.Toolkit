@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInbox.Tests", "Taurit.Toolkit.ProcessTodoistInbox.Tests\Taurit.Toolkit.ProcessTodoistInbox.Tests.csproj", "{17AAF849-79C6-4FC9-A771-3EE83A2E94BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ContdownToSleep", "Taurit.Toolkit.ContdownToSleep\Taurit.Toolkit.ContdownToSleep.csproj", "{D9F7EDE5-D855-4951-B0D8-4421597A90F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.CountdownToSleep", "Taurit.Toolkit.CountdownToSleep\Taurit.Toolkit.CountdownToSleep.csproj", "{D9F7EDE5-D855-4951-B0D8-4421597A90F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

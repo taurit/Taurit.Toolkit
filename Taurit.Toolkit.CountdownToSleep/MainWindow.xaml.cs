@@ -4,9 +4,9 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Threading;
-using Taurit.Toolkit.ContdownToSleep.Annotations;
+using Taurit.Toolkit.CountdownToSleep.Properties;
 
-namespace Taurit.Toolkit.ContdownToSleep
+namespace Taurit.Toolkit.CountdownToSleep
 {
     /// <summary>
     ///     Interaction logic for MainWindow.xaml

@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D9F7EDE5-D855-4951-B0D8-4421597A90F1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Taurit.Toolkit.ContdownToSleep</RootNamespace>
-    <AssemblyName>Taurit.Toolkit.ContdownToSleep</AssemblyName>
+    <RootNamespace>Taurit.Toolkit.CountdownToSleep</RootNamespace>
+    <AssemblyName>Taurit.Toolkit.CountdownToSleep</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
