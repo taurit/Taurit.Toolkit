@@ -7,7 +7,10 @@
     Title="Countdown to sleep"
     Width="469.322"
     Height="213.172"
+    BorderBrush="Black"
+    BorderThickness="1"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
+    MouseDown="MainWindow_OnMouseDown"
     ResizeMode="NoResize"
     WindowStyle="None"
     mc:Ignorable="d">

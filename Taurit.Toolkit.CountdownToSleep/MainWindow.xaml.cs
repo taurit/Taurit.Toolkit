@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Threading;
 using Taurit.Toolkit.CountdownToSleep.Properties;
 
@@ -67,5 +68,11 @@ namespace Taurit.Toolkit.CountdownToSleep
 
         [DllImport("Powrprof.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         public static extern Boolean SetSuspendState(Boolean hiberate, Boolean forceCritical, Boolean disableWakeEvent);
+
+        private void MainWindow_OnMouseDown(Object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                DragMove();
+        }
     }
 }
