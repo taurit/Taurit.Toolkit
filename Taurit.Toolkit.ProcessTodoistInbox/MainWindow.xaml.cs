@@ -22,6 +22,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
         private readonly ITodoistCommandService _todoistCommandService;
         private readonly ITodoistQueryService _todoistQueryService;
         private readonly FilteredTaskAccessor _filteredTaskAccessor;
+        private readonly ChangeExecutor _changeExecutor;
 
         public MainWindow()
         {
@@ -42,6 +43,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
 #endif
 
             _filteredTaskAccessor = new FilteredTaskAccessor(_todoistQueryService);
+            _changeExecutor = new ChangeExecutor(_todoistCommandService);
 
             InitializeComponent();
         }
@@ -73,24 +75,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
         
         private void ProceedButton_Click(Object sender, RoutedEventArgs e)
         {
-            foreach (TaskActionModel action in PlannedActions)
-            {
-                Int64 taskId = action.TaskId;
-                Int32? newPriority = action.Priority;
-                Int64? newLabelId = action.Label?.id;
-                Int64 oldProjectId = action.OldProjectId;
-                Int64? newProjectId = action.Project?.id;
-
-                _todoistCommandService.AddUpdateProjectCommand(taskId, oldProjectId, newProjectId);
-                _todoistCommandService.AddUpdateLabelCommand(taskId, newLabelId);
-                _todoistCommandService.AddUpdatePriorityCommand(taskId, newPriority);
-
-                //_todoistCommandService.AddUpdateTaskCommand(oldProjectId, taskId, priority, label, newProjectId);
-            }
-
-            String response = _todoistCommandService.ExecuteCommands();
-
+            _changeExecutor.ApplyPlan(PlannedActions);
             ProceedButton.IsEnabled = false;
         }
+
+       
     }
 }

@@ -9,7 +9,7 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
     /// <summary>
     ///     Allows to access pre-filtered sets of Todoist tasks.
     /// </summary>
-    public class FilteredTaskAccessor
+    public sealed class FilteredTaskAccessor
     {
         private readonly ITodoistQueryService _todoistQueryService;
 

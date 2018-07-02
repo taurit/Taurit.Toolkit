@@ -18,8 +18,11 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 {
     public sealed class StartupTask : IBackgroundTask
     {
+        private ChangeExecutor _changeExecutor;
         private FilteredTaskAccessor _filteredTaskAccessor;
+        private TodoistCommandService _todoistCommandService;
         private TodoistQueryService _todoistQueryService;
+
 
         public void Run(IBackgroundTaskInstance taskInstance)
         {
@@ -36,7 +39,9 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
         private void InitializeDependencies(SettingsFileModel settings)
         {
             _todoistQueryService = new TodoistQueryService(settings.TodoistApiKey);
+            _todoistCommandService = new TodoistCommandService(settings.TodoistApiKey);
             _filteredTaskAccessor = new FilteredTaskAccessor(_todoistQueryService);
+            _changeExecutor = new ChangeExecutor(_todoistCommandService);
         }
 
         private async Task<SettingsFileModel> LoadSettings()
@@ -53,7 +58,8 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             var plannedActions = new List<TaskActionModel>();
             IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
-            IReadOnlyList<TodoTask> tasksThatNeedReview = _filteredTaskAccessor.GetNotReviewedTasks(allProjects.ToLookup(x => x.id));
+            IReadOnlyList<TodoTask> tasksThatNeedReview =
+                _filteredTaskAccessor.GetNotReviewedTasks(allProjects.ToLookup(x => x.id));
 
             var taskClassifier = new TaskClassifier(settings.ClassificationRules, allLabels, allProjects);
             (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
@@ -62,7 +68,8 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             foreach (TaskActionModel action in actions.OrderByDescending(x => x.Priority))
                 plannedActions.Add(action);
 
-            // todo move "onbuttonclick" logic
+            // Apply actions
+            _changeExecutor.ApplyPlan(plannedActions);
         }
     }
 }
