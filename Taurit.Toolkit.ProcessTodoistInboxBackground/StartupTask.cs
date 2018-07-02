@@ -18,18 +18,25 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 {
     public sealed class StartupTask : IBackgroundTask
     {
+        private FilteredTaskAccessor _filteredTaskAccessor;
         private TodoistQueryService _todoistQueryService;
 
         public void Run(IBackgroundTaskInstance taskInstance)
         {
             SettingsFileModel settings = LoadSettings().Result;
-            this._todoistQueryService = new TodoistQueryService(settings.TodoistApiKey);
+            InitializeDependencies(settings);
 
             while (true)
             {
                 TryClassifyAllTasks(settings);
                 Thread.Sleep(TimeSpan.FromHours(1));
             }
+        }
+
+        private void InitializeDependencies(SettingsFileModel settings)
+        {
+            _todoistQueryService = new TodoistQueryService(settings.TodoistApiKey);
+            _filteredTaskAccessor = new FilteredTaskAccessor(_todoistQueryService);
         }
 
         private async Task<SettingsFileModel> LoadSettings()
@@ -46,7 +53,7 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             var plannedActions = new List<TaskActionModel>();
             IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
-            IReadOnlyList<TodoTask> tasksThatNeedReview = GetNotReviewedTasks(allProjects.ToLookup(x => x.id));
+            IReadOnlyList<TodoTask> tasksThatNeedReview = _filteredTaskAccessor.GetNotReviewedTasks(allProjects.ToLookup(x => x.id));
 
             var taskClassifier = new TaskClassifier(settings.ClassificationRules, allLabels, allProjects);
             (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
@@ -56,17 +63,6 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
                 plannedActions.Add(action);
 
             // todo move "onbuttonclick" logic
-        }
-
-        private IReadOnlyList<TodoTask> GetNotReviewedTasks(ILookup<Int64, Project> allProjectsIndexedById)
-        {
-            // todo: this is duplicated in MainWindow.cs, move to a shared location in commons
-            IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjectsIndexedById);
-            List<TodoTask> tasksThatNeedProcessing = allTasks
-                .Where(x => x.@checked == 0 &&
-                            x.is_deleted == 0 &&
-                            x.labels != null).ToList();
-            return tasksThatNeedProcessing;
         }
     }
 }

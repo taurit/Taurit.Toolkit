@@ -87,6 +87,24 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Services
                     is_deleted = 0,
                     labels = new List<Int64>(),
                     project_id = InboxProjectId
+                },
+                new TodoTask
+                {
+                    id = 123,
+                    priority = 1,
+                    content = "Ang mesmerize",
+                    is_deleted = 0,
+                    labels = new List<Int64>(),
+                    project_id = InboxProjectId
+                },
+                new TodoTask
+                {
+                    id = 123,
+                    priority = 1,
+                    content = "Kup mleko",
+                    is_deleted = 0,
+                    labels = new List<Int64>(),
+                    project_id = InboxProjectId
                 }
             };
         }

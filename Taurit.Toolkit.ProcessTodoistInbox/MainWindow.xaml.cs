@@ -21,6 +21,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
     {
         private readonly ITodoistCommandService _todoistCommandService;
         private readonly ITodoistQueryService _todoistQueryService;
+        private readonly FilteredTaskAccessor _filteredTaskAccessor;
 
         public MainWindow()
         {
@@ -39,6 +40,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
             _todoistQueryService = new TodoistQueryService(UserSettings.TodoistApiKey);
             _todoistCommandService = new TodoistCommandService(UserSettings.TodoistApiKey);
 #endif
+
+            _filteredTaskAccessor = new FilteredTaskAccessor(_todoistQueryService);
+
             InitializeComponent();
         }
 
@@ -54,7 +58,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
         {
             IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
-            IReadOnlyList<TodoTask> tasksThatNeedReview = GetNotReviewedTasks(allProjects.ToLookup(x => x.id));
+            IReadOnlyList<TodoTask> tasksThatNeedReview = _filteredTaskAccessor.GetNotReviewedTasks(allProjects.ToLookup(x => x.id));
 
             var taskClassifier = new TaskClassifier(UserSettings.ClassificationRules, allLabels, allProjects);
             (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
@@ -66,18 +70,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
             foreach (TaskNoActionModel noAction in noActions)
                 SkippedTasks.Add(noAction);
         }
-
-        private IReadOnlyList<TodoTask> GetNotReviewedTasks(ILookup<Int64, Project> allProjectsIndexedById)
-        {
-            IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjectsIndexedById);
-            List<TodoTask> tasksThatNeedProcessing = allTasks
-                .Where(x => x.@checked == 0 &&
-                            x.is_deleted == 0 &&
-                            x.labels != null).ToList();
-            return tasksThatNeedProcessing;
-        }
-
-
+        
         private void ProceedButton_Click(Object sender, RoutedEventArgs e)
         {
             foreach (TaskActionModel action in PlannedActions)
