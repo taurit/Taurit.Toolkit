@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Storage;
 using Newtonsoft.Json;
-using Taurit.Toolkit.ProcessTodoistInbox.Models;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
@@ -31,9 +30,17 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 
             while (true)
             {
-                TryClassifyAllTasks(settings);
+                if (!IsCurrentHourSleepHour()) // no need to query API too much, eg. at night
+                    TryClassifyAllTasks(settings);
+
                 Thread.Sleep(TimeSpan.FromHours(1));
             }
+        }
+
+        private static Boolean IsCurrentHourSleepHour()
+        {
+            Int32 currentHour = DateTime.Now.Hour;
+            return currentHour > 22 || currentHour < 7;
         }
 
         private void InitializeDependencies(SettingsFileModel settings)
@@ -61,7 +68,12 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             IReadOnlyList<TodoTask> tasksThatNeedReview =
                 _filteredTaskAccessor.GetNotReviewedTasks(allProjects.ToLookup(x => x.id));
 
-            var taskClassifier = new TaskClassifier(settings.ClassificationRules, allLabels, allProjects);
+            var taskClassifier = new TaskClassifier(
+                settings.ClassificationRules,
+                settings.ClassificationRulesConcise,
+                allLabels,
+                allProjects
+            );
             (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
                 taskClassifier.Classify(tasksThatNeedReview);
 

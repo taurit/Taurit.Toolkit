@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Models
+namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models
 {
     public class SettingsFileModel
     {
@@ -12,5 +12,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Models
 
         [JsonProperty]
         public List<ClassificationRule> ClassificationRules { get; set; }
+
+        [JsonProperty]
+        public List<String> ClassificationRulesConcise { get; set; }
     }
 }

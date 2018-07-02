@@ -10,17 +10,27 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
 {
     public class TaskClassifier
     {
-        [NotNull] private readonly IReadOnlyList<ClassificationRule> _classificationRules;
+        [NotNull] private readonly List<ClassificationRule> _classificationRules;
 
         [NotNull] private readonly IReadOnlyList<Label> _labels;
 
         [NotNull] private readonly IReadOnlyList<Project> _projects;
 
         public TaskClassifier([NotNull] IReadOnlyList<ClassificationRule> classificationRules,
+            [NotNull] IReadOnlyList<String> classificationRulesInConciseFormat,
             [NotNull] IReadOnlyList<Label> labels,
             [NotNull] IReadOnlyList<Project> projects)
         {
-            _classificationRules = classificationRules ?? throw new ArgumentNullException(nameof(classificationRules));
+            if (classificationRules == null) throw new ArgumentNullException(nameof(classificationRules));
+            if (classificationRulesInConciseFormat == null)
+                throw new ArgumentNullException(nameof(classificationRulesInConciseFormat));
+
+            IClassificationRulesFormatConverter formatConverter = new ClassificationRulesFormatConverter();
+            _classificationRules = classificationRules.ToList();
+            IEnumerable<ClassificationRule> convertedConciseRules =
+                classificationRulesInConciseFormat.Select(x => formatConverter.Convert(x));
+            _classificationRules.AddRange(convertedConciseRules);
+
             _labels = labels ?? throw new ArgumentNullException(nameof(labels));
             _projects = projects ?? throw new ArgumentNullException(nameof(projects));
         }

@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using Newtonsoft.Json;
-using Taurit.Toolkit.ProcessTodoistInbox.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Services;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Services;
@@ -62,7 +61,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
             IReadOnlyList<TodoTask> tasksThatNeedReview = _filteredTaskAccessor.GetNotReviewedTasks(allProjects.ToLookup(x => x.id));
 
-            var taskClassifier = new TaskClassifier(UserSettings.ClassificationRules, allLabels, allProjects);
+            var taskClassifier = new TaskClassifier(UserSettings.ClassificationRules, UserSettings.ClassificationRulesConcise, allLabels, allProjects);
             (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
                 taskClassifier.Classify(tasksThatNeedReview);
 
