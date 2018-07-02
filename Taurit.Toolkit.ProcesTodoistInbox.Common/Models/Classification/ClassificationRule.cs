@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Models.Classification
+namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
 {
     public class ClassificationRule
     {

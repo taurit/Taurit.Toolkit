@@ -1,7 +1,7 @@
 ﻿using System;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Models
+namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models
 {
     public class TaskNoActionModel
     {

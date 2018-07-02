@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Taurit.Toolkit.ProcessTodoistInbox.Models;
-using Taurit.Toolkit.ProcessTodoistInbox.Models.Classification;
+using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
+using Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Services

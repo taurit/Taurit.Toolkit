@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using Taurit.Toolkit.ProcessTodoistInbox.Models;
+using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.DesignData

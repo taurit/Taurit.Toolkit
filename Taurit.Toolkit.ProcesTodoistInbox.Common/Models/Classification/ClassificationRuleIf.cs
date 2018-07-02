@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using Taurit.Toolkit.ProcessTodoistInbox;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 // ReSharper disable InconsistentNaming
 
 // ReSharper disable ReplaceWithSingleAssignment.True
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Models.Classification
+namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
 {
     public class ClassificationRuleIf
     {

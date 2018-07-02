@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using Taurit.Toolkit.ProcessTodoistInbox.Models.Classification;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
-using Xunit;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
 {
+    [TestClass]
     public class ClassificationRuleIfTests
     {
-        [Fact]
+        [TestMethod]
         public void EmptyRuleMatchesAnything()
         {
             // Arrange
@@ -19,10 +20,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.True(match);
+            Assert.IsTrue(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void ContainsIsCaseInsensitive()
         {
             // Arrange
@@ -33,10 +34,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.True(match);
+            Assert.IsTrue(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void ContainsIgnoresDiacritics()
         {
             // Arrange
@@ -47,10 +48,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.True(match);
+            Assert.IsTrue(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void ItIsEnoughForOneElementInContainsListToMatch()
         {
             // Arrange
@@ -61,10 +62,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.True(match);
+            Assert.IsTrue(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void ContainsReturnsFalseWhenTheresNoMatch()
         {
             // Arrange
@@ -75,161 +76,161 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Tests
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.False(match);
+            Assert.IsFalse(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void StartsWithWordReturnsFalseWhenWordIsNotAFirstWord()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {startsWith = new [] { "Buy" }};
+            var sut = new ClassificationRuleIf {startsWith = new[] {"Buy"}};
             var task = new TodoTask {content = "Do not buy a TV, ever!"};
 
             // Act
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.False(match);
+            Assert.IsFalse(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void ContainsWordReturnsTrueEvenWhenWordIsNotAFirstWord()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {containsWord = new [] { "xyz", "Buy" }};
+            var sut = new ClassificationRuleIf {containsWord = new[] {"xyz", "Buy"}};
             var task = new TodoTask {content = "Do not buy a TV, ever!"};
 
             // Act
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.True(match);
+            Assert.IsTrue(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void ContainsWordReturnsFalseWhenWordIsNotFound()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {containsWord = new [] { "xyz", "zyx" }};
+            var sut = new ClassificationRuleIf {containsWord = new[] {"xyz", "zyx"}};
             var task = new TodoTask {content = "Do not buy a TV, ever!"};
 
             // Act
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.False(match);
+            Assert.IsFalse(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void StartsWithWordReturnsTrueWhenWordIsAFirstWord()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {startsWith = new [] { "Buy" }};
+            var sut = new ClassificationRuleIf {startsWith = new[] {"Buy"}};
             var task = new TodoTask {content = "Buy milk"};
 
             // Act
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.True(match);
+            Assert.IsTrue(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void StartsWithWordIsNotCaseSensitive()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {startsWith = new [] { "bUy" }};
+            var sut = new ClassificationRuleIf {startsWith = new[] {"bUy"}};
             var task = new TodoTask {content = "BUY milk"};
 
             // Act
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.True(match);
+            Assert.IsTrue(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void StartsWithWordIgnoresDifferenceInNationalCharacters()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {startsWith = new [] { "Zapytać" }};
+            var sut = new ClassificationRuleIf {startsWith = new[] {"Zapytać"}};
             var task = new TodoTask {content = "Zapytac telefonicznie o cene"};
 
             // Act
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.True(match);
+            Assert.IsTrue(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void IfPriorityDoesNotMatchThereIsNoMatch()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {priority = 3 };
+            var sut = new ClassificationRuleIf {priority = 3};
             var task = new TodoTask {priority = 1};
 
             // Act
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.False(match);
+            Assert.IsFalse(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void IfPriorityMatchesThereIsAMatch()
         {
             // Arrange
-            var sut = new ClassificationRuleIf {priority = 3 };
+            var sut = new ClassificationRuleIf {priority = 3};
             var task = new TodoTask {priority = 3};
 
             // Act
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.True(match);
+            Assert.IsTrue(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void ProjectCanBeMatchedByNameCaseInsensitive()
         {
             // Arrange
-            var sut = new ClassificationRuleIf { project = "Inbox" };
+            var sut = new ClassificationRuleIf {project = "Inbox"};
             var task = new TodoTask {project_name = "inbox"};
 
             // Act
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.True(match);
+            Assert.IsTrue(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void WhenProjectDoesNotMatchTaskDoesNotMatch()
         {
             // Arrange
-            var sut = new ClassificationRuleIf { project = "Inbox" };
+            var sut = new ClassificationRuleIf {project = "Inbox"};
             var task = new TodoTask {project_name = "Obowiązki"};
 
             // Act
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.False(match);
+            Assert.IsFalse(match);
         }
 
-        [Fact]
+        [TestMethod]
         public void RuleOfNoLabelsDoesNotMatchWithTaskWithOneLabel()
         {
             // Arrange
-            var sut = new ClassificationRuleIf { numLabels = 0 };
-            var task = new TodoTask { labels = new List<Int64>() { 123 }}; // one label with id "123"
+            var sut = new ClassificationRuleIf {numLabels = 0};
+            var task = new TodoTask {labels = new List<Int64> {123}}; // one label with id "123"
 
             // Act
             Boolean match = sut.Matches(task);
 
             // Assert
-            Assert.False(match);
+            Assert.IsFalse(match);
         }
     }
 }

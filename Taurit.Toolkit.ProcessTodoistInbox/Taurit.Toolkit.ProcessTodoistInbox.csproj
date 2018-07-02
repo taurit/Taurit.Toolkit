@@ -39,9 +39,6 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations">
-      <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -65,16 +62,10 @@
     <Compile Include="Converters\PriorityToColorConverter.cs" />
     <Compile Include="Converters\PriorityToTextConverter.cs" />
     <Compile Include="DesignData\MainWindowDesignData.cs" />
-    <Compile Include="Models\Classification\ClassificationRule.cs" />
-    <Compile Include="Models\Classification\ClassificationRuleIf.cs" />
-    <Compile Include="Models\Classification\ClassificationRuleThen.cs" />
     <Compile Include="Models\SettingsFileModel.cs" />
-    <Compile Include="Models\TaskActionModel.cs" />
-    <Compile Include="Models\TaskNoActionModel.cs" />
     <Compile Include="Services\TaskClassifier.cs" />
     <Compile Include="Services\TodoistFakeCommandService.cs" />
     <Compile Include="Services\TodoistFakeQueryService.cs" />
-    <Compile Include="StringExtensions.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -115,6 +106,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Taurit.Toolkit.ProcesTodoistInbox.Common\Taurit.Toolkit.ProcesTodoistInbox.Common.csproj">
+      <Project>{382cf559-6d20-465a-b8ef-b10852f40ff3}</Project>
+      <Name>Taurit.Toolkit.ProcesTodoistInbox.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Taurit.Toolkit.TodoistInboxHelper\Taurit.Toolkit.TodoistInboxHelper.csproj">
       <Project>{7b2467ab-a5b7-4516-a2e4-36a09ee2a55d}</Project>
       <Name>Taurit.Toolkit.TodoistInboxHelper</Name>
