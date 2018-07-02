@@ -62,8 +62,6 @@
     <Compile Include="Converters\PriorityToColorConverter.cs" />
     <Compile Include="Converters\PriorityToTextConverter.cs" />
     <Compile Include="DesignData\MainWindowDesignData.cs" />
-    <Compile Include="Models\SettingsFileModel.cs" />
-    <Compile Include="Services\TaskClassifier.cs" />
     <Compile Include="Services\TodoistFakeCommandService.cs" />
     <Compile Include="Services\TodoistFakeQueryService.cs" />
     <Page Include="MainWindow.xaml">

@@ -5,7 +5,7 @@ using Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Models
 {
-    internal class SettingsFileModel
+    public class SettingsFileModel
     {
         [JsonProperty]
         public String TodoistApiKey { get; set; }

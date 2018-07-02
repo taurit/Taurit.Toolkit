@@ -6,7 +6,7 @@ using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Services
+namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
 {
     public class TaskClassifier
     {

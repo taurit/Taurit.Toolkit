@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
+using Windows.Storage;
+using Newtonsoft.Json;
+using Taurit.Toolkit.ProcessTodoistInbox.Models;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
+using Taurit.Toolkit.ProcesTodoistInbox.Common.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
@@ -13,32 +18,55 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 {
     public sealed class StartupTask : IBackgroundTask
     {
+        private TodoistQueryService _todoistQueryService;
+
         public void Run(IBackgroundTaskInstance taskInstance)
         {
+            SettingsFileModel settings = LoadSettings().Result;
+            this._todoistQueryService = new TodoistQueryService(settings.TodoistApiKey);
+
             while (true)
             {
-                Console.WriteLine("yo world");
-                //TryClassifyAllTasks();
-                Thread.Sleep(1000);
+                TryClassifyAllTasks(settings);
+                Thread.Sleep(TimeSpan.FromHours(1));
             }
         }
 
-        private void TryClassifyAllTasks()
+        private async Task<SettingsFileModel> LoadSettings()
         {
-            //var _todoistQueryService = new TodoistQueryService("todo");
-            //IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
-            //IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
-            //IReadOnlyList<TodoTask> tasksThatNeedReview = GetNotReviewedTasks(allProjects.ToLookup(x => x.id));
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            StorageFile sampleFile = await localFolder.GetFileAsync("ProcessTodoistInboxSettings.json");
+            String settingsFileContents = await FileIO.ReadTextAsync(sampleFile);
+            var settingsDeserialized = JsonConvert.DeserializeObject<SettingsFileModel>(settingsFileContents);
+            return settingsDeserialized;
+        }
 
-            //var taskClassifier = new TaskClassifier(UserSettings.ClassificationRules, allLabels, allProjects);
-            //(IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
-            //    taskClassifier.Classify(tasksThatNeedReview);
+        private void TryClassifyAllTasks(SettingsFileModel settings)
+        {
+            var plannedActions = new List<TaskActionModel>();
+            IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
+            IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
+            IReadOnlyList<TodoTask> tasksThatNeedReview = GetNotReviewedTasks(allProjects.ToLookup(x => x.id));
 
-            //foreach (TaskActionModel action in actions.OrderByDescending(x => x.Priority))
-            //    PlannedActions.Add(action);
+            var taskClassifier = new TaskClassifier(settings.ClassificationRules, allLabels, allProjects);
+            (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
+                taskClassifier.Classify(tasksThatNeedReview);
 
-            //foreach (TaskNoActionModel noAction in noActions)
-            //    SkippedTasks.Add(noAction);
+            foreach (TaskActionModel action in actions.OrderByDescending(x => x.Priority))
+                plannedActions.Add(action);
+
+            // todo move "onbuttonclick" logic
+        }
+
+        private IReadOnlyList<TodoTask> GetNotReviewedTasks(ILookup<Int64, Project> allProjectsIndexedById)
+        {
+            // todo: this is duplicated in MainWindow.cs, move to a shared location in commons
+            IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjectsIndexedById);
+            List<TodoTask> tasksThatNeedProcessing = allTasks
+                .Where(x => x.@checked == 0 &&
+                            x.is_deleted == 0 &&
+                            x.labels != null).ToList();
+            return tasksThatNeedProcessing;
         }
     }
 }
