@@ -9,7 +9,14 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
         [NotNull]
         public ClassificationRule Convert(String conciseRule)
         {
-            return new ClassificationRule();
+            return new ClassificationRule
+            {
+                If = new ClassificationRuleIf
+                {
+                    startsWith = new[] { "anki" } 
+                },
+                Then = new ClassificationRuleThen()
+            };
         }
     }
 }
