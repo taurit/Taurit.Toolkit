@@ -36,6 +36,37 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
         }
 
         [TestMethod]
+        public void StartsWithConditionIsCorrectlyRecognizedWithMultipleArguments()
+        {
+            // Arrange
+            var sut = new ClassificationRulesFormatConverter();
+
+            // Act
+            ClassificationRule result = sut.Convert("if startsWith(anki|supermemo|angielski) and numLabelsIs(0) then setLabel(nauka)");
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.If);
+            Assert.IsNotNull(result.Then);
+            
+            Assert.IsNull(result.If.project);
+            Assert.IsNull(result.If.containsWord);
+            Assert.IsNull(result.If.priority);
+            Assert.AreEqual(0, result.If.numLabels);
+
+            Assert.IsNotNull(result.If.startsWith);
+            Assert.AreEqual(3, result.If.startsWith.Length);
+            Assert.IsTrue(result.If.startsWith.Contains("anki"));
+            Assert.IsTrue(result.If.startsWith.Contains("supermemo"));
+            Assert.IsTrue(result.If.startsWith.Contains("angielski"));
+
+            Assert.IsNull(result.Then.moveToProject);
+            Assert.IsNull(result.Then.setPriority);
+            Assert.IsNotNull(result.Then.setLabel);
+            Assert.AreEqual("nauka", result.Then.setLabel);
+        }
+
+        [TestMethod]
         public void ContainsWordConditionIsCorrectlyRecognized()
         {
             // Arrange
@@ -63,6 +94,38 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
         }
 
         [TestMethod]
+        public void ContainsWordConditionIsCorrectlyRecognizedWithMultipleArguments()
+        {
+            // Arrange
+            var sut = new ClassificationRulesFormatConverter();
+
+            // Act
+            ClassificationRule result = sut.Convert("if containsWord(anki|supermemo|angielski) and numLabelsIs(0) then setLabel(nauka)");
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.If);
+            Assert.IsNotNull(result.Then);
+            
+            Assert.IsNull(result.If.project);
+            Assert.IsNull(result.If.startsWith);
+            Assert.IsNull(result.If.priority);
+            
+            Assert.IsNotNull(result.If.containsWord); 
+            Assert.AreEqual(3, result.If.containsWord.Length);
+            Assert.IsTrue(result.If.containsWord.Contains("anki"));
+            Assert.IsTrue(result.If.containsWord.Contains("supermemo"));
+            Assert.IsTrue(result.If.containsWord.Contains("angielski"));
+
+            Assert.AreEqual(0, result.If.numLabels);
+
+            Assert.IsNull(result.Then.moveToProject);
+            Assert.IsNull(result.Then.setPriority);
+            Assert.IsNotNull(result.Then.setLabel);
+            Assert.AreEqual("nauka", result.Then.setLabel);
+        }
+
+        [TestMethod]
         public void ProjectConditionIsCorrectlyRecognized()
         {
             // Arrange
@@ -81,7 +144,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.IsNull(result.If.startsWith);
             Assert.IsNull(result.If.priority);
             Assert.IsNotNull(result.If.project);
-            Assert.AreEqual("Inbox", result.If.project.Single());
+            Assert.AreEqual("Inbox", result.If.project);
 
             Assert.IsNull(result.Then.moveToProject);
             Assert.IsNull(result.Then.setPriority);
