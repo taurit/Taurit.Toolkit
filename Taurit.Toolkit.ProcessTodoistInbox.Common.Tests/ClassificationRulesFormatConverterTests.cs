@@ -32,7 +32,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.IsNull(result.Then.moveToProject);
             Assert.IsNull(result.Then.setPriority);
             Assert.IsNotNull(result.Then.setLabel);
-            Assert.AreEqual("nauka", result.Then.setLabel.Single());
+            Assert.AreEqual("nauka", result.Then.setLabel);
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.IsNull(result.Then.moveToProject);
             Assert.IsNull(result.Then.setPriority);
             Assert.IsNotNull(result.Then.setLabel);
-            Assert.AreEqual("nauka", result.Then.setLabel.Single());
+            Assert.AreEqual("nauka", result.Then.setLabel);
         }
 
         [TestMethod]
@@ -86,7 +86,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.IsNull(result.Then.moveToProject);
             Assert.IsNull(result.Then.setPriority);
             Assert.IsNotNull(result.Then.setLabel);
-            Assert.AreEqual("nauka", result.Then.setLabel.Single());
+            Assert.AreEqual("nauka", result.Then.setLabel);
         }
 
         [TestMethod]
@@ -113,7 +113,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.IsNull(result.Then.moveToProject);
             Assert.IsNull(result.Then.setPriority);
             Assert.IsNotNull(result.Then.setLabel);
-            Assert.AreEqual("nauka", result.Then.setLabel.Single());
+            Assert.AreEqual("nauka", result.Then.setLabel);
         }
 
         
@@ -185,7 +185,149 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.IsNull(result.Then.moveToProject);
             Assert.IsNull(result.Then.setPriority);
             Assert.IsNotNull(result.Then.setLabel);
-            Assert.AreEqual("nauka", result.Then.setLabel.Single());
+            Assert.AreEqual("nauka", result.Then.setLabel);
+        }
+
+        [TestMethod]
+        public void SetLabelActionIsCorrectlyRecognized()
+        {
+            // Arrange
+            var sut = new ClassificationRulesFormatConverter();
+
+            // Act
+            ClassificationRule result = sut.Convert("if numLabelsIs(0) then setLabel(nauka)");
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.If);
+            Assert.IsNotNull(result.Then);
+
+            Assert.IsNull(result.Then.moveToProject);
+            Assert.IsNull(result.Then.setPriority);
+            Assert.IsNotNull(result.Then.setLabel);
+            Assert.AreEqual("nauka", result.Then.setLabel);
+        }
+
+        [TestMethod]
+        public void MoveToProjectActionIsCorrectlyRecognized()
+        {
+            // Arrange
+            var sut = new ClassificationRulesFormatConverter();
+
+            // Act
+            ClassificationRule result = sut.Convert("if numLabelsIs(0) then moveToProject(Obowiązki)");
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.If);
+            Assert.IsNotNull(result.Then);
+
+            Assert.IsNull(result.Then.setLabel);
+            Assert.IsNull(result.Then.setPriority);
+            Assert.IsNotNull(result.Then.moveToProject);
+            Assert.AreEqual("Obowiązki", result.Then.moveToProject);
+        }
+
+        [TestMethod]
+        public void SetPriorityActionIsCorrectlyRecognized()
+        {
+            // Arrange
+            var sut = new ClassificationRulesFormatConverter();
+
+            // Act
+            ClassificationRule result = sut.Convert("if numLabelsIs(0) then setPriority(4)");
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.If);
+            Assert.IsNotNull(result.Then);
+
+            Assert.IsNull(result.Then.setLabel);
+            Assert.IsNull(result.Then.moveToProject);
+            Assert.IsNotNull(result.Then.setPriority);
+            Assert.AreEqual(4, result.Then.setPriority.Value);
+        }
+
+
+        [TestMethod]
+        public void PriorityInActionCanBeDefinedInNaturalLanguage()
+        {
+            // Arrange
+            var sut = new ClassificationRulesFormatConverter();
+
+            // Act
+            ClassificationRule resultUppercase = sut.Convert("if numLabelsIs(0) then setPriority(HIGH)");
+            ClassificationRule resultLowercase = sut.Convert("if numLabelsIs(0) then setPriority(high)");
+
+            // Assert
+            Assert.IsNotNull(resultUppercase);
+            Assert.IsNotNull(resultUppercase.If);
+            Assert.IsNotNull(resultUppercase.Then);
+            Assert.IsNotNull(resultLowercase);
+            Assert.IsNotNull(resultLowercase.If);
+            Assert.IsNotNull(resultLowercase.Then);
+
+            Assert.IsNull(resultUppercase.Then.setLabel);
+            Assert.IsNull(resultUppercase.Then.moveToProject);
+            Assert.IsNotNull(resultUppercase.Then.setPriority);
+            Assert.AreEqual(4, resultUppercase.Then.setPriority.Value);
+
+            Assert.IsNull(resultLowercase.Then.setLabel);
+            Assert.IsNull(resultLowercase.Then.moveToProject);
+            Assert.IsNotNull(resultLowercase.Then.setPriority);
+            Assert.AreEqual(4, resultLowercase.Then.setPriority.Value);
+
+        }
+
+        [TestMethod]
+        public void MultipleActionsAreRecognizedInASingleRule()
+        {
+            // Arrange
+            var sut = new ClassificationRulesFormatConverter();
+
+            // Act
+            ClassificationRule result = sut.Convert("if numLabelsIs(0) then setPriority(4) and setLabel(home) and moveToProject(Nauka)");
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.If);
+            Assert.IsNotNull(result.Then);
+
+            Assert.IsNotNull(result.Then.setLabel);
+            Assert.AreEqual("home", result.Then.setLabel);
+
+            Assert.IsNotNull(result.Then.moveToProject);
+            Assert.AreEqual("Nauka", result.Then.moveToProject);
+
+            Assert.IsNotNull(result.Then.setPriority);
+            Assert.AreEqual(4, result.Then.setPriority.Value);
+        }
+
+        [TestMethod]
+        public void MultipleConditionsAreRecognizedInASingleRule()
+        {
+            // Arrange
+            var sut = new ClassificationRulesFormatConverter();
+
+            // Act
+            ClassificationRule result = sut.Convert("if numLabelsIs(0) and projectIs(Inbox) and containsWord(aaa) and priorityIs(low) and startsWith(abc) then setPriority(4)");
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.If);
+            Assert.IsNotNull(result.Then);
+            
+            Assert.IsNotNull(result.If.project);
+            Assert.IsNotNull(result.If.containsWord);
+            Assert.IsNotNull(result.If.priority);
+            Assert.IsNotNull(result.If.startsWith);
+            Assert.IsNotNull(result.If.numLabels);
+
+            Assert.AreEqual("Inbox", result.If.project);
+            Assert.AreEqual("aaa", result.If.containsWord);
+            Assert.AreEqual("2", result.If.priority);
+            Assert.AreEqual("abc", result.If.startsWith);
+            Assert.AreEqual("0", result.If.numLabels);
         }
 
     }
