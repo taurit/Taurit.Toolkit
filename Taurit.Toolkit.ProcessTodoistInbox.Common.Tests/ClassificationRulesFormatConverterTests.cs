@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Services;
@@ -8,6 +9,54 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
     [TestClass]
     public class ClassificationRulesFormatConverterTests
     {
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void WhenNullRuleIsPassedThenExceptionIsThrown()
+        {
+            // Arrange
+            var sut = new ClassificationRulesFormatConverter();
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            ClassificationRule result = sut.Convert(null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void WhenIfOrThenClauseIsNotPresentThenExceptionIsThrown()
+        {
+            // Arrange
+            var sut = new ClassificationRulesFormatConverter();
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            ClassificationRule result = sut.Convert("yo dawg");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void WhenIfClauseIsEmptyExceptionIsThrown()
+        {
+            // Arrange
+            var sut = new ClassificationRulesFormatConverter();
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            ClassificationRule result = sut.Convert("if then setLabel(nauka)");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void WhenThenClauseIsEmptyExceptionIsThrown()
+        {
+            // Arrange
+            var sut = new ClassificationRulesFormatConverter();
+
+            // Act
+            // ReSharper disable once AssignNullToNotNullAttribute
+            ClassificationRule result = sut.Convert("if startsWith(anki) then ");
+        }
+
         [TestMethod]
         public void StartsWithConditionIsCorrectlyRecognized()
         {
