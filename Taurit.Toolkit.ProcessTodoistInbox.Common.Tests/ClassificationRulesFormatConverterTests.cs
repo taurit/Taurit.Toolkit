@@ -436,10 +436,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.IsNotNull(result.If.numLabels);
 
             Assert.AreEqual("Inbox", result.If.project);
-            Assert.AreEqual("aaa", result.If.containsWord);
-            Assert.AreEqual("2", result.If.priority);
-            Assert.AreEqual("abc", result.If.startsWith);
-            Assert.AreEqual("0", result.If.numLabels);
+            Assert.AreEqual("aaa", result.If.containsWord.Single());
+            Assert.AreEqual(2, result.If.priority);
+            Assert.AreEqual("abc", result.If.startsWith.Single());
+            Assert.AreEqual(0, result.If.numLabels);
         }
 
     }

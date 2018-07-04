@@ -23,7 +23,7 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
             var argumentForKeyRegex = new Regex($@"{key}\((?<argument>.*?)\)", RegexOptions.IgnoreCase);
             Match match = argumentForKeyRegex.Match(_userProvidedString);
             if (!match.Success) return null;
-            return match.Groups["argument"].Value;
+            return match.Groups["argument"]?.Value;
         }
 
         [CanBeNull]
@@ -33,6 +33,7 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
 
             String arraySerialized = GetStringArgument(key);
             if (arraySerialized == null) return null;
+
             String[] splitArray = arraySerialized.Split(_arraySplitCharacter, StringSplitOptions.RemoveEmptyEntries);
             return splitArray;
         }
@@ -44,7 +45,15 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
 
             String prioritySerialized = GetStringArgument(key);
             if (prioritySerialized == null) return null;
-            return Convert.ToInt32(prioritySerialized);
+
+            switch (prioritySerialized.ToLowerInvariant())
+            {
+                case "undefined": return 1;
+                case "low": return 2;
+                case "medium": return 3;
+                case "high": return 4;
+                default: return Convert.ToInt32(prioritySerialized);
+            }
         }
 
         [CanBeNull]

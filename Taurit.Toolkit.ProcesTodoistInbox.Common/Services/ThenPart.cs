@@ -18,7 +18,7 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
         private String MoveToProject => GetStringArgument("moveToProject");
 
         [CanBeNull]
-        private Int32? SetPriority => GetIntArgument("setPriority");
+        private Int32? SetPriority => GetPriorityArgument("setPriority");
 
         [NotNull]
         public ClassificationRuleThen ToClassificationRule()
