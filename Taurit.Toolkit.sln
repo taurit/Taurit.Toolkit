@@ -41,9 +41,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.CountdownToS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInboxBackground", "Taurit.Toolkit.ProcessTodoistInboxBackground\Taurit.Toolkit.ProcessTodoistInboxBackground.csproj", "{3D9D4823-3671-46B8-953A-157A06461F58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcesTodoistInbox.Common", "Taurit.Toolkit.ProcesTodoistInbox.Common\Taurit.Toolkit.ProcesTodoistInbox.Common.csproj", "{382CF559-6D20-465A-B8EF-B10852F40FF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Taurit.Toolkit.ProcesTodoistInbox.Common", "Taurit.Toolkit.ProcesTodoistInbox.Common\Taurit.Toolkit.ProcesTodoistInbox.Common.csproj", "{382CF559-6D20-465A-B8EF-B10852F40FF3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInbox.Common.Tests", "Taurit.Toolkit.ProcessTodoistInbox.Common.Tests\Taurit.Toolkit.ProcessTodoistInbox.Common.Tests.csproj", "{77636582-2305-4274-B05F-3E68C9177D63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInbox.Function", "Taurit.Toolkit.ProcessTodoistInbox.Function\Taurit.Toolkit.ProcessTodoistInbox.Function.csproj", "{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -333,6 +335,22 @@ Global
 		{77636582-2305-4274-B05F-3E68C9177D63}.Release|x64.Build.0 = Release|Any CPU
 		{77636582-2305-4274-B05F-3E68C9177D63}.Release|x86.ActiveCfg = Release|Any CPU
 		{77636582-2305-4274-B05F-3E68C9177D63}.Release|x86.Build.0 = Release|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Debug|ARM.Build.0 = Debug|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Debug|x64.Build.0 = Debug|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Debug|x86.Build.0 = Debug|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Release|ARM.ActiveCfg = Release|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Release|ARM.Build.0 = Release|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Release|x64.ActiveCfg = Release|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Release|x64.Build.0 = Release|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Release|x86.ActiveCfg = Release|Any CPU
+		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
