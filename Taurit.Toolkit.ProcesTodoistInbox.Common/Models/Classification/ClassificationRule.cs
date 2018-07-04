@@ -1,9 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using JetBrains.Annotations;
+using Newtonsoft.Json;
 
 namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
 {
     public class ClassificationRule
     {
+        [JsonConstructor]
+        [Obsolete("Should only be used by deserializer")]
+        public ClassificationRule()
+        {
+        }
+
+        public ClassificationRule([NotNull] ClassificationRuleIf ifPart, [NotNull] ClassificationRuleThen thenPart)
+        {
+            this.If = ifPart;
+            this.Then = thenPart;
+        }
+
         [JsonProperty]
         public ClassificationRuleIf If { get; set; }
 

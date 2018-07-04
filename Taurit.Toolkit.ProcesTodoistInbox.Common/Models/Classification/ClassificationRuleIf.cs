@@ -14,6 +14,28 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
 {
     public class ClassificationRuleIf
     {
+        [JsonConstructor]
+        [Obsolete("Use only if you are JSON deserializer")]
+        public ClassificationRuleIf()
+        {
+        }
+
+        public ClassificationRuleIf(String[] contains,
+            String[] containsWord,
+            String[] startsWith,
+            Int32? priority,
+            String project,
+            Int32? numLabels)
+        {
+            this.contains = contains;
+            this.containsWord = containsWord;
+            this.startsWith = startsWith;
+            this.priority = priority;
+            this.project = project;
+            this.numLabels = numLabels;
+        }
+
+
         [CanBeNull]
         [JsonProperty]
         public String[] contains { get; set; }
@@ -52,8 +74,6 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
             return match;
         }
 
-      
-
         private Boolean DoesTaskLabelPresenceMatch(TodoTask task)
         {
             if (!numLabels.HasValue) return true;
@@ -77,7 +97,6 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
 
         private Boolean DoesTaskStartsWithWordMatch(TodoTask task)
         {
-            
             if (startsWith == null) return true;
             String[] contentWords = SplitIntoWords(task.content);
 
@@ -100,7 +119,8 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
             foreach (String keyword in containsWord)
             {
                 String keywordWithoutDiacritics = keyword.RemoveDiacritics();
-                if (contentWords.Any(x => String.Equals(x.RemoveDiacritics(), keywordWithoutDiacritics, StringComparison.InvariantCultureIgnoreCase)))
+                if (contentWords.Any(x => String.Equals(x.RemoveDiacritics(), keywordWithoutDiacritics,
+                    StringComparison.InvariantCultureIgnoreCase)))
                     return true;
             }
 
