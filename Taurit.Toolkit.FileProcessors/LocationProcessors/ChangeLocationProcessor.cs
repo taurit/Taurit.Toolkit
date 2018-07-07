@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using MoreLinq;
 
 namespace Taurit.Toolkit.FileProcessors.LocationProcessors
 {
@@ -23,7 +22,8 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
             Debug.Assert(fileName != null);
 
             List<ChangeLocationRule> applicableRules = _rules.Where(rule => rule.CanBeAppliedTo(fileName)).ToList();
-            List<ChangeLocationRule> uniqueRules = applicableRules.ToHashSet(new ChangeLocationRuleTargetComparer()).ToList();
+            var comparer = new ChangeLocationRuleTargetComparer();
+            List<ChangeLocationRule> uniqueRules = applicableRules.ToHashSet(comparer).ToList();
             if (uniqueRules.Count > 1)
             {
                 Console.WriteLine($"Manual action required: conflicting rules were found for file {fileName}");

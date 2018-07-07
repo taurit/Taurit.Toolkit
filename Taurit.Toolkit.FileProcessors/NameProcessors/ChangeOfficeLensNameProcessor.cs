@@ -13,6 +13,13 @@ namespace Taurit.Toolkit.FileProcessors.NameProcessors
             new Regex(@"(?<day>\d\d)\.(?<month>\d\d)\.(?<year>\d\d\d\d) \d\d \d\d (?<description>.*)",
                 RegexOptions.Compiled);
 
+        /// <summary>
+        ///     New filename format introduced around June or July of 2018
+        /// </summary>
+        [NotNull] private static readonly Regex FileWithInvalidDateFormat2 =
+            new Regex(@"(?<year>\d\d\d\d)_(?<month>\d\d)_(?<day>\d\d) \d\d_\d\d (?<description>.*)",
+                RegexOptions.Compiled);
+
         [NotNull] private readonly IFileNameFormatProvider _fileNameFormatProvider;
 
         public ChangeOfficeLensNameProcessor([NotNull] IFileNameFormatProvider fileNameFormatProvider)
@@ -26,8 +33,8 @@ namespace Taurit.Toolkit.FileProcessors.NameProcessors
         {
             String directoryPath = new FileInfo(file).DirectoryName;
             Debug.Assert(directoryPath != null);
+            Match match = GetMatch(file);
 
-            Match match = FileWithInvalidDateFormat.Match(file);
             if (match.Success)
             {
                 String day = match.Groups["day"].Value;
@@ -37,12 +44,22 @@ namespace Taurit.Toolkit.FileProcessors.NameProcessors
 
                 String newFileName = _fileNameFormatProvider.FormatFileName(year, month, day, description);
                 String newFilePath = Path.Combine(directoryPath, newFileName);
-                Int32 copyIndex = 2;
+                var copyIndex = 2;
                 while (File.Exists(newFilePath))
                     newFilePath = Path.Combine(directoryPath,
-                        Path.GetFileNameWithoutExtension(newFileName) + $"({copyIndex++})" + Path.GetExtension(newFileName));
+                        Path.GetFileNameWithoutExtension(newFileName) + $"({copyIndex++})" +
+                        Path.GetExtension(newFileName));
                 File.Move(file, newFilePath);
             }
+        }
+
+        [NotNull]
+        public Match GetMatch([NotNull] String fileName)
+        {
+            Match match = FileWithInvalidDateFormat.Match(fileName);
+            if (!match.Success) match = FileWithInvalidDateFormat2.Match(fileName);
+
+            return match;
         }
     }
 }
