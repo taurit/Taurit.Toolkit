@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
@@ -49,6 +50,9 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             _todoistCommandService = new TodoistCommandService(settings.TodoistApiKey);
             _filteredTaskAccessor = new FilteredTaskAccessor(_todoistQueryService);
             _changeExecutor = new ChangeExecutor(_todoistCommandService);
+
+            // needed to avoid "'Cyrillic' is not a supported encoding name." error later in code where a trick is used to compare string in an accent-insensitive way 
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
         private async Task<SettingsFileModel> LoadSettings()
