@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Taurit.Toolkit.TodoistInboxHelper;
+using JetBrains.Annotations;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
@@ -11,16 +10,9 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
     /// </summary>
     public sealed class FilteredTaskAccessor
     {
-        private readonly ITodoistQueryService _todoistQueryService;
-
-        public FilteredTaskAccessor(ITodoistQueryService todoistQueryService)
+        [NotNull]
+        public IReadOnlyList<TodoTask> GetNotReviewedTasks([NotNull] IReadOnlyList<TodoTask> allTasks)
         {
-            _todoistQueryService = todoistQueryService;
-        }
-
-        public IReadOnlyList<TodoTask> GetNotReviewedTasks(ILookup<Int64, Project> allProjectsIndexedById)
-        {
-            IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjectsIndexedById);
             List<TodoTask> tasksThatNeedProcessing = allTasks
                 .Where(x => x.@checked == 0 &&
                             x.is_deleted == 0 &&

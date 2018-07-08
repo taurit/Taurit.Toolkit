@@ -48,7 +48,7 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
         {
             _todoistQueryService = new TodoistQueryService(settings.TodoistApiKey);
             _todoistCommandService = new TodoistCommandService(settings.TodoistApiKey);
-            _filteredTaskAccessor = new FilteredTaskAccessor(_todoistQueryService);
+            _filteredTaskAccessor = new FilteredTaskAccessor();
             _changeExecutor = new ChangeExecutor(_todoistCommandService);
 
             // needed to avoid "'Cyrillic' is not a supported encoding name." error later in code where a trick is used to compare string in an accent-insensitive way 
@@ -69,8 +69,10 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             var plannedActions = new List<TaskActionModel>();
             IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
+            IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjects.ToLookup(x => x.id));
+
             IReadOnlyList<TodoTask> tasksThatNeedReview =
-                _filteredTaskAccessor.GetNotReviewedTasks(allProjects.ToLookup(x => x.id));
+                _filteredTaskAccessor.GetNotReviewedTasks(allTasks);
 
             var taskClassifier = new TaskClassifier(
                 settings.ClassificationRules,
