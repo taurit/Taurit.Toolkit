@@ -45,7 +45,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Taurit.Toolkit.ProcesTodois
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInbox.Common.Tests", "Taurit.Toolkit.ProcessTodoistInbox.Common.Tests\Taurit.Toolkit.ProcessTodoistInbox.Common.Tests.csproj", "{77636582-2305-4274-B05F-3E68C9177D63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInbox.Function", "Taurit.Toolkit.ProcessTodoistInbox.Function\Taurit.Toolkit.ProcessTodoistInbox.Function.csproj", "{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Taurit.Toolkit.ProcessTodoistInbox.Function", "Taurit.Toolkit.ProcessTodoistInbox.Function\Taurit.Toolkit.ProcessTodoistInbox.Function.csproj", "{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}"
+EndProject
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Taurit.Toolkit.CountdownToSleep.Store", "Taurit.Toolkit.CountdownToSleep.Store\Taurit.Toolkit.CountdownToSleep.Store.wapproj", "{5F938B41-3526-4478-9765-06C62432EF22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -351,6 +353,30 @@ Global
 		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Release|x64.Build.0 = Release|Any CPU
 		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Release|x86.ActiveCfg = Release|Any CPU
 		{F76551C2-9AB8-44AA-BB4C-0346C1AFB56C}.Release|x86.Build.0 = Release|Any CPU
+		{5F938B41-3526-4478-9765-06C62432EF22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F938B41-3526-4478-9765-06C62432EF22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F938B41-3526-4478-9765-06C62432EF22}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5F938B41-3526-4478-9765-06C62432EF22}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{5F938B41-3526-4478-9765-06C62432EF22}.Debug|ARM.Build.0 = Debug|Any CPU
+		{5F938B41-3526-4478-9765-06C62432EF22}.Debug|ARM.Deploy.0 = Debug|Any CPU
+		{5F938B41-3526-4478-9765-06C62432EF22}.Debug|x64.ActiveCfg = Debug|x64
+		{5F938B41-3526-4478-9765-06C62432EF22}.Debug|x64.Build.0 = Debug|x64
+		{5F938B41-3526-4478-9765-06C62432EF22}.Debug|x64.Deploy.0 = Debug|x64
+		{5F938B41-3526-4478-9765-06C62432EF22}.Debug|x86.ActiveCfg = Debug|x86
+		{5F938B41-3526-4478-9765-06C62432EF22}.Debug|x86.Build.0 = Debug|x86
+		{5F938B41-3526-4478-9765-06C62432EF22}.Debug|x86.Deploy.0 = Debug|x86
+		{5F938B41-3526-4478-9765-06C62432EF22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F938B41-3526-4478-9765-06C62432EF22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F938B41-3526-4478-9765-06C62432EF22}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{5F938B41-3526-4478-9765-06C62432EF22}.Release|ARM.ActiveCfg = Release|Any CPU
+		{5F938B41-3526-4478-9765-06C62432EF22}.Release|ARM.Build.0 = Release|Any CPU
+		{5F938B41-3526-4478-9765-06C62432EF22}.Release|ARM.Deploy.0 = Release|Any CPU
+		{5F938B41-3526-4478-9765-06C62432EF22}.Release|x64.ActiveCfg = Release|x64
+		{5F938B41-3526-4478-9765-06C62432EF22}.Release|x64.Build.0 = Release|x64
+		{5F938B41-3526-4478-9765-06C62432EF22}.Release|x64.Deploy.0 = Release|x64
+		{5F938B41-3526-4478-9765-06C62432EF22}.Release|x86.ActiveCfg = Release|x86
+		{5F938B41-3526-4478-9765-06C62432EF22}.Release|x86.Build.0 = Release|x86
+		{5F938B41-3526-4478-9765-06C62432EF22}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
