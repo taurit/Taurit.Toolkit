@@ -15,5 +15,8 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models
 
         [JsonProperty]
         public List<String> ClassificationRulesConcise { get; set; }
+
+        [JsonProperty]
+        public String ApplicationInsightsKey { get; set; }
     }
 }

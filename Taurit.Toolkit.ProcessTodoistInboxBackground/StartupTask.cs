@@ -6,6 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Storage;
+using JetBrains.Annotations;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using Newtonsoft.Json;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Services;
@@ -18,23 +21,36 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 {
     public sealed class StartupTask : IBackgroundTask
     {
+        [NotNull]
         private ChangeExecutor _changeExecutor;
+        [NotNull]
         private FilteredTaskAccessor _filteredTaskAccessor;
+        [NotNull]
         private TodoistCommandService _todoistCommandService;
+        [NotNull]
         private TodoistQueryService _todoistQueryService;
 
 
         public void Run(IBackgroundTaskInstance taskInstance)
         {
-            SettingsFileModel settings = LoadSettings().Result;
+            SettingsFileModel settings = LoadSettings().Result ??
+                                         throw new InvalidOperationException("Settings could not be loaded");
             InitializeDependencies(settings);
+            var telemetryClient = new TelemetryClient();
 
             while (true)
             {
                 if (!IsCurrentHourSleepHour()) // no need to query API too much, eg. at night
-                    TryClassifyAllTasks(settings);
+                {
+                    telemetryClient.TrackTrace("Starting the classification");
+                    TryClassifyAllTasks(settings, telemetryClient);
+                } else
+                {
+                    telemetryClient.TrackTrace($"Skipping the classification due to night hours (it is {DateTime.Now})");
+                }
 
                 Thread.Sleep(TimeSpan.FromHours(1));
+                
             }
         }
 
@@ -44,7 +60,7 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             return currentHour > 22 || currentHour < 7;
         }
 
-        private void InitializeDependencies(SettingsFileModel settings)
+        private void InitializeDependencies([NotNull]SettingsFileModel settings)
         {
             _todoistQueryService = new TodoistQueryService(settings.TodoistApiKey);
             _todoistCommandService = new TodoistCommandService(settings.TodoistApiKey);
@@ -53,6 +69,8 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 
             // needed to avoid "'Cyrillic' is not a supported encoding name." error later in code where a trick is used to compare string in an accent-insensitive way 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            TelemetryConfiguration.Active.InstrumentationKey = settings.ApplicationInsightsKey;
         }
 
         private async Task<SettingsFileModel> LoadSettings()
@@ -64,15 +82,20 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             return settingsDeserialized;
         }
 
-        private void TryClassifyAllTasks(SettingsFileModel settings)
+        private void TryClassifyAllTasks([NotNull] SettingsFileModel settings, [NotNull] TelemetryClient telemetryClient)
         {
             var plannedActions = new List<TaskActionModel>();
             IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
             IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjects.ToLookup(x => x.id));
 
+            telemetryClient.TrackMetric("NumberOfTasks", allTasks.Count);
+            telemetryClient.TrackMetric("NumberOfLabels", allLabels.Count);
+            telemetryClient.TrackMetric("NumberOfProjects", allProjects.Count);
+
             IReadOnlyList<TodoTask> tasksThatNeedReview =
                 _filteredTaskAccessor.GetNotReviewedTasks(allTasks);
+            telemetryClient.TrackMetric("NumberOfTasksChosenForClassification", allProjects.Count);
 
             var taskClassifier = new TaskClassifier(
                 settings.ClassificationRules,
@@ -82,9 +105,13 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             );
             (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
                 taskClassifier.Classify(tasksThatNeedReview);
+            telemetryClient.TrackMetric("NumberOfActions", actions.Count);
+            telemetryClient.TrackMetric("NumberOfSkippedTasks", noActions.Count);
 
             foreach (TaskActionModel action in actions.OrderByDescending(x => x.Priority))
                 plannedActions.Add(action);
+
+            
 
             // Apply actions
             _changeExecutor.ApplyPlan(plannedActions);
