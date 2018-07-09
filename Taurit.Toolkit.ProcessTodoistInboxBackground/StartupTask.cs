@@ -90,6 +90,12 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjects.ToLookup(x => x.id));
 
             telemetryClient.TrackMetric("NumberOfTasks", allTasks.Count);
+            telemetryClient.TrackMetric("NumberOfHighPriorityTasks",
+                allTasks.Count(x => x.priority == 4));
+            telemetryClient.TrackMetric("NumberOfHighAndMediumPriorityTasks",
+                allTasks.Count(x => x.priority == 4 || x.priority == 3));
+            telemetryClient.TrackMetric("NumberOfHighMediumAndLowPriorityTasks",
+                allTasks.Count(x => x.priority == 4 || x.priority == 3 || x.priority == 2));
             telemetryClient.TrackMetric("NumberOfLabels", allLabels.Count);
             telemetryClient.TrackMetric("NumberOfProjects", allProjects.Count);
 
