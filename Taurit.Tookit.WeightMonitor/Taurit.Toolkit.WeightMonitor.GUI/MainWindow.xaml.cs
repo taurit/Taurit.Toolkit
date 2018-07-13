@@ -21,7 +21,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
 
         private void Button_Click(Object sender, RoutedEventArgs e)
         {
-            var chart = new LiveCharts.Wpf.CartesianChart
+            var chart = new CartesianChart
             {
                 DisableAnimations = true,
                 Width = 600,
@@ -30,7 +30,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
                 {
                     new LineSeries
                     {
-                        Values = new ChartValues<double> {1, 6, 7, 2, 9, 3, 6, 5}
+                        Values = new ChartValues<Double> {1, 6, 7, 2, 9, 3, 6, 5}
                     }
                 }
             };
@@ -42,8 +42,10 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             chart.Update(true, true); //force chart redraw
             viewbox.UpdateLayout();
 
-            SaveToPng(xchart, "d:\\chart.png");
+            var wallpaperFileName = "d:\\chart.png";
+            SaveToPng(xchart, wallpaperFileName);
             //png file was created at the root directory.
+            WallpaperSetter.Set(wallpaperFileName);
         }
 
         private void SaveToPng(FrameworkElement visual, String fileName)
