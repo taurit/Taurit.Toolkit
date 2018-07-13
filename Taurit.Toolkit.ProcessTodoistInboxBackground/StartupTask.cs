@@ -17,7 +17,7 @@ using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 // The Background Application template is documented at http://go.microsoft.com/fwlink/?LinkID=533884&clcid=0x409
 
-namespace Taurit.Toolkit.ProcessTodoistInboxBackground
+namespace Taurit.Toolkit.ProcessTodoistInbox.Background
 {
     public sealed class StartupTask : IBackgroundTask
     {

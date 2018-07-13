@@ -7,7 +7,7 @@
     <ProjectGuid>{3D9D4823-3671-46B8-953A-157A06461F58}</ProjectGuid>
     <OutputType>winmdobj</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Taurit.Toolkit.ProcessTodoistInboxBackground</RootNamespace>
+    <RootNamespace>Taurit.Toolkit.ProcessTodoistInbox.Background</RootNamespace>
     <AssemblyName>Taurit.Toolkit.ProcessTodoistInboxBackground</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
