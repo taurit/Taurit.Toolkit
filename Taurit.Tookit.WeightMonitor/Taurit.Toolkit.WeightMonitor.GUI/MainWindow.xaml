@@ -19,15 +19,7 @@
                 <wpf:Axis LabelFormatter="{Binding XFormatter}" />
             </wpf:CartesianChart.AxisX>
             <wpf:CartesianChart.Series>
-                <wpf:LineSeries>
-                    <wpf:LineSeries.Values>
-                        <xaml2009Workarounds:ChartValuesDateTimePoint>
-                            <defaults:DateTimePoint DateTime="2018-01-01" Value="5" />
-                            <defaults:DateTimePoint DateTime="2018-02-02" Value="6" />
-                        </xaml2009Workarounds:ChartValuesDateTimePoint>
-
-                    </wpf:LineSeries.Values>
-                </wpf:LineSeries>
+                <wpf:LineSeries Values="{Binding WeightData}" />
             </wpf:CartesianChart.Series>
         </wpf:CartesianChart>
     </DockPanel>

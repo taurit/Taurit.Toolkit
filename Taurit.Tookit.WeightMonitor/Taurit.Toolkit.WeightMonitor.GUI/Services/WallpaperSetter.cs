@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Taurit.Toolkit.WeightMonitor.GUI
+namespace Taurit.Toolkit.WeightMonitor.GUI.Services
 {
     public sealed class WallpaperSetter
     {

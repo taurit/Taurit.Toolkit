@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using LiveCharts;
-using LiveCharts.Wpf;
+using JetBrains.Annotations;
+using LiveCharts.Defaults;
+using Taurit.Toolkit.WeightMonitor.Common.Models;
+using Taurit.Toolkit.WeightMonitor.GUI.Services;
+using Taurit.Toolkit.WeightMonitor.GUI.Xaml2009Workarounds;
 
 namespace Taurit.Toolkit.WeightMonitor.GUI
 {
@@ -24,34 +26,20 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             return new DateTime((Int64) value).ToString("yyyy-MM-dd");
         };
 
-        private void Button_Click(Object sender, RoutedEventArgs e)
+        [NotNull]
+        public ChartValuesDateTimePoint WeightData { get; } = new ChartValuesDateTimePoint();
+
+        private async void Button_Click(Object sender, RoutedEventArgs e)
         {
-            var chart = new CartesianChart
-            {
-                DisableAnimations = true,
-                Width = 600,
-                Height = 200,
-                Series = new SeriesCollection
-                {
-                    new LineSeries
-                    {
-                        Values = new ChartValues<Double> {1, 6, 7, 2, 9, 3, 6, 5}
-                    }
-                }
-            };
+            var googleFitDataAccessor = new GoogleFitDataAccessor();
+            WeightInTime[] weights = await googleFitDataAccessor.GetWeightDataPoints(2*365);
 
-            var viewbox = new Viewbox();
-            viewbox.Child = chart;
-            viewbox.Measure(chart.RenderSize);
-            viewbox.Arrange(new Rect(new Point(0, 0), chart.RenderSize));
-            chart.Update(true, true); //force chart redraw
-            viewbox.UpdateLayout();
+            foreach (WeightInTime weight in weights)
+                WeightData.Add(new DateTimePoint(weight.Time.ToDateTimeUtc(), weight.Weight));
 
-
-            var wallpaperFileName = "d:\\chart.png";
-            SaveToPng(xchart, wallpaperFileName);
-            //png file was created at the root directory.
-            WallpaperSetter.Set(wallpaperFileName);
+            //var wallpaperFileName = "d:\\chart.png";
+            //SaveToPng(xchart, wallpaperFileName);
+            //WallpaperSetter.Set(wallpaperFileName);
         }
 
         private void SaveToPng(FrameworkElement visual, String fileName)
