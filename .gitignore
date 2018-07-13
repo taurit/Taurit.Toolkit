@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 Taurit.Toolkit.ProcessTodoistInbox.Function/Properties/PublishProfiles/
 Taurit.Toolkit.ProcessTodoistInbox.Function/configuration.private.json
+Taurit.Tookit.WeightMonitor/Taurit.Toolkit.WeightMonitor.Windows/client_id.json
