@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Taurit.Toolkit.WeightMonitor.GUI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
     </Application.Resources>
 </Application>

@@ -61,6 +61,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="WallpaperSetter.cs" />
+    <Compile Include="Xaml2009Workarounds\ChartValuesDateTimePoint.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -100,6 +101,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Taurit.Toolkit.WeightMonitor.Common\Taurit.Toolkit.WeightMonitor.Common.csproj">
+      <Project>{3df613c0-bc47-49f4-94b3-ca7265fca325}</Project>
+      <Name>Taurit.Toolkit.WeightMonitor.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

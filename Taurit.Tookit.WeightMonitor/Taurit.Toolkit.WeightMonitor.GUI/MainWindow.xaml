@@ -5,14 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Taurit.Toolkit.WeightMonitor.GUI"
         xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:xaml2009Workarounds="clr-namespace:Taurit.Toolkit.WeightMonitor.GUI.Xaml2009Workarounds"
+        xmlns:defaults="clr-namespace:LiveCharts.Defaults;assembly=LiveCharts"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <DockPanel LastChildFill="True">
-       
-        <Button DockPanel.Dock="Bottom" Click="Button_Click" >Save To file</Button>
-        <wpf:CartesianChart Name="xchart" Grid.Row="2" Margin="10, 0, 10, 20"  Hoverable="False" DataTooltip="{x:Null}" Background="White" Opacity="0.5">
+
+        <Button DockPanel.Dock="Bottom" Click="Button_Click">Save To file</Button>
+        <wpf:CartesianChart Name="xchart" Grid.Row="2" Margin="10, 0, 10, 20" Hoverable="False" DataTooltip="{x:Null}"
+                            Background="White" Opacity="1.0">
+            <wpf:CartesianChart.AxisX>
+                <wpf:Axis LabelFormatter="{Binding XFormatter}" />
+            </wpf:CartesianChart.AxisX>
             <wpf:CartesianChart.Series>
-                <wpf:ColumnSeries Values="5,9,8,6,1,5,7,3,6,3"/>
+                <wpf:LineSeries>
+                    <wpf:LineSeries.Values>
+                        <xaml2009Workarounds:ChartValuesDateTimePoint>
+                            <defaults:DateTimePoint DateTime="2018-01-01" Value="5" />
+                            <defaults:DateTimePoint DateTime="2018-02-02" Value="6" />
+                        </xaml2009Workarounds:ChartValuesDateTimePoint>
+
+                    </wpf:LineSeries.Values>
+                </wpf:LineSeries>
             </wpf:CartesianChart.Series>
         </wpf:CartesianChart>
     </DockPanel>

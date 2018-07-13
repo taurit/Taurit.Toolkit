@@ -19,6 +19,11 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             InitializeComponent();
         }
 
+        public Func<Double, String> XFormatter { get; } = value =>
+        {
+            return new DateTime((Int64) value).ToString("yyyy-MM-dd");
+        };
+
         private void Button_Click(Object sender, RoutedEventArgs e)
         {
             var chart = new CartesianChart
@@ -41,6 +46,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             viewbox.Arrange(new Rect(new Point(0, 0), chart.RenderSize));
             chart.Update(true, true); //force chart redraw
             viewbox.UpdateLayout();
+
 
             var wallpaperFileName = "d:\\chart.png";
             SaveToPng(xchart, wallpaperFileName);
