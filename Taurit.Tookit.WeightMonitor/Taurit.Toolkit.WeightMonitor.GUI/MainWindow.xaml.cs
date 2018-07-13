@@ -73,26 +73,42 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
         }
 
 
-
         private void GenerateAugmentedWallpaper(WallpaperConfiguration wallpaperSettings)
         {
             var originalWallpaper = new Bitmap(wallpaperSettings.BaseImagePath);
-            BitmapFrame chart = VisualToBitmapConverter.Convert(WeightChart);
+            BitmapFrame chart = VisualToBitmapConverter.Convert(ChartWrapper);
 
             // create overlay
             var finalImage = new Bitmap(1680, 1050);
             using (Graphics g = Graphics.FromImage(finalImage))
             {
                 g.DrawImage(originalWallpaper, new Rectangle(0, 0, 1680, 1050));
-                g.DrawImage(BitmapFromSource(chart),
-                    new Rectangle(wallpaperSettings.OffsetX, wallpaperSettings.OffsetY, 1680, 1050));
+                Bitmap chartBitmap = BitmapFromSource(chart);
+                g.DrawImage(chartBitmap,
+                    new Rectangle(wallpaperSettings.OffsetX, wallpaperSettings.OffsetY, chartBitmap.Width,
+                        chartBitmap.Height));
             }
 
             // save resulting file
-            using (FileStream stream = File.Create(wallpaperSettings.FinalImagePath))
+            ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
+            Encoder qualityEncoder = Encoder.Quality;
+            var myEncoderParameters = new EncoderParameters(1);
+            var myEncoderParameter = new EncoderParameter(qualityEncoder, 100L);
+            myEncoderParameters.Param[0] = myEncoderParameter;
+
+            finalImage.Save(wallpaperSettings.FinalImagePath, jgpEncoder, myEncoderParameters);
+        }
+
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
             {
-                finalImage.Save(stream, ImageFormat.Jpeg);
+                if (codec.FormatID == format.Guid)
+                    return codec;
             }
+
+            return null;
         }
 
         private Bitmap BitmapFromSource(BitmapSource bitmapsource)
@@ -110,13 +126,16 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             return bitmap;
         }
 
-        private async void MainWindow_OnLoaded(Object sender, RoutedEventArgs e)
+
+        private async void MainWindow_OnContentRendered(Object sender, EventArgs e)
         {
             await LoadChartData();
 
+            await Task.Delay(2000); // workaround for chart not yet rendered - I'm not sure why
             GenerateAugmentedWallpaper(_settings.WallpaperToSet);
 
             WallpaperSetter.Set(_settings.WallpaperToSet.FinalImagePath);
+            Application.Current.Shutdown();
         }
     }
 }

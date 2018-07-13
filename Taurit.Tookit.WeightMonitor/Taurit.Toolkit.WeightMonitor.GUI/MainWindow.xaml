@@ -7,18 +7,18 @@
         xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:defaults="clr-namespace:LiveCharts.Defaults;assembly=LiveCharts"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}" 
-        Loaded="MainWindow_OnLoaded" >
-    <DockPanel LastChildFill="True">
-        <wpf:CartesianChart Name="WeightChart" Grid.Row="2" Margin="10, 0, 10, 20" Hoverable="False" DataTooltip="{x:Null}"
-                            Background="White" Opacity="1.0">
-            <wpf:CartesianChart.AxisX>
-                <wpf:Axis LabelFormatter="{Binding XFormatter}" />
-            </wpf:CartesianChart.AxisX>
-            <wpf:CartesianChart.Series>
-                <wpf:LineSeries Values="{Binding WeightData}" />
-            </wpf:CartesianChart.Series>
-        </wpf:CartesianChart>
-    </DockPanel>
+        Title="MainWindow" Height="338" Width="559"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        ContentRendered="MainWindow_OnContentRendered">
+    <Grid x:Name="ChartWrapper" Background="White">
+    <wpf:CartesianChart Name="WeightChart" Margin="20, 20, 20, 20" Hoverable="False" DataTooltip="{x:Null}"
+                        Background="White">
+        <wpf:CartesianChart.AxisX>
+            <wpf:Axis LabelFormatter="{Binding XFormatter}" />
+        </wpf:CartesianChart.AxisX>
+        <wpf:CartesianChart.Series>
+            <wpf:LineSeries Values="{Binding WeightData}" />
+        </wpf:CartesianChart.Series>
+    </wpf:CartesianChart>
+    </Grid>
 </Window>
