@@ -118,7 +118,6 @@
     </ApplicationDefinition>
     <Compile Include="Services\GoogleFitDataAccessor.cs" />
     <Compile Include="Services\WallpaperSetter.cs" />
-    <Compile Include="Xaml2009Workarounds\ChartValuesDateTimePoint.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

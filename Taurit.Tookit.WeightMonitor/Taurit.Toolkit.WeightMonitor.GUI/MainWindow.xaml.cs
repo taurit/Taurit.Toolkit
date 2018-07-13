@@ -4,10 +4,12 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using JetBrains.Annotations;
+using LiveCharts;
 using LiveCharts.Defaults;
+using LiveCharts.Wpf;
+using Newtonsoft.Json;
 using Taurit.Toolkit.WeightMonitor.Common.Models;
 using Taurit.Toolkit.WeightMonitor.GUI.Services;
-using Taurit.Toolkit.WeightMonitor.GUI.Xaml2009Workarounds;
 
 namespace Taurit.Toolkit.WeightMonitor.GUI
 {
@@ -16,9 +18,14 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly WeightMonitorSettings _settings;
+
         public MainWindow()
         {
             InitializeComponent();
+            var settingsFilePath = "d:\\ProgramData\\ApplicationData\\TauritToolkit\\WeightMonitor.json";
+            String settingsAsJson = File.ReadAllText(settingsFilePath);
+            _settings = JsonConvert.DeserializeObject<WeightMonitorSettings>(settingsAsJson);
         }
 
         public Func<Double, String> XFormatter { get; } = value =>
@@ -27,19 +34,42 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
         };
 
         [NotNull]
-        public ChartValuesDateTimePoint WeightData { get; } = new ChartValuesDateTimePoint();
+        public ChartValues<DateTimePoint> WeightData { get; } = new ChartValues<DateTimePoint>();
 
-        private async void Button_Click(Object sender, RoutedEventArgs e)
+        private async void LoadRealData_Click(Object sender, RoutedEventArgs e)
         {
+            foreach (BulkingPeriod bulkingPeriod in _settings.BulkingPeriods)
+                AddReferenceLine(WeightChart, bulkingPeriod, Colors.LightSeaGreen);
+
+            foreach (CuttingPeriod cuttingPeriod in _settings.CuttingPeriods)
+                AddReferenceLine(WeightChart, cuttingPeriod, Colors.MediumVioletRed);
+
             var googleFitDataAccessor = new GoogleFitDataAccessor();
-            WeightInTime[] weights = await googleFitDataAccessor.GetWeightDataPoints(2*365);
+            WeightInTime[] weights = await googleFitDataAccessor.GetWeightDataPoints(_settings.NumPastDaysToShow);
 
             foreach (WeightInTime weight in weights)
                 WeightData.Add(new DateTimePoint(weight.Time.ToDateTimeUtc(), weight.Weight));
 
+
             //var wallpaperFileName = "d:\\chart.png";
-            //SaveToPng(xchart, wallpaperFileName);
+            //SaveToPng(WeightChart, wallpaperFileName);
             //WallpaperSetter.Set(wallpaperFileName);
+        }
+
+        private void AddReferenceLine(
+            [NotNull] CartesianChart chart,
+            [NotNull] TrainingPeriod trainingPeriod,
+            Color lineColor)
+        {
+            chart.Series.Add(new LineSeries
+            {
+                Values = new ChartValues<DateTimePoint>
+                {
+                    new DateTimePoint(trainingPeriod.Start, trainingPeriod.StartWeight),
+                    new DateTimePoint(trainingPeriod.End, trainingPeriod.ExpectedEndWeight)
+                },
+                Stroke = new SolidColorBrush(lineColor)
+            });
         }
 
         private void SaveToPng(FrameworkElement visual, String fileName)
