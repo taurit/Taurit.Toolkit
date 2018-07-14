@@ -11,9 +11,11 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using Newtonsoft.Json;
+using NodaTime;
 using Taurit.Toolkit.WeightMonitor.Common.Models;
 using Taurit.Toolkit.WeightMonitor.GUI.Services;
 using Color = System.Windows.Media.Color;
+using Duration = NodaTime.Duration;
 
 namespace Taurit.Toolkit.WeightMonitor.GUI
 {
@@ -44,10 +46,10 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
         private async Task LoadChartData()
         {
             foreach (BulkingPeriod bulkingPeriod in _settings.BulkingPeriods)
-                AddReferenceLine(WeightChart, bulkingPeriod, Colors.LightSeaGreen);
+                AddReferenceLine(WeightChart, bulkingPeriod, Colors.LightSeaGreen, _settings.NumFutureDaysToShow);
 
             foreach (CuttingPeriod cuttingPeriod in _settings.CuttingPeriods)
-                AddReferenceLine(WeightChart, cuttingPeriod, Colors.MediumVioletRed);
+                AddReferenceLine(WeightChart, cuttingPeriod, Colors.MediumVioletRed, _settings.NumFutureDaysToShow);
 
             var googleFitDataAccessor = new GoogleFitDataAccessor();
             WeightInTime[] weights = await googleFitDataAccessor.GetWeightDataPoints(_settings.NumPastDaysToShow);
@@ -59,14 +61,23 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
         private void AddReferenceLine(
             [NotNull] CartesianChart chart,
             [NotNull] TrainingPeriod trainingPeriod,
-            Color lineColor)
+            Color lineColor,
+            Int32 numFutureDaysToShow)
         {
+            // make sure that we don't draw beyond the max future date to display
+            Duration duration = Duration.FromDays(numFutureDaysToShow);
+            DateTime maxDate = SystemClock.Instance.GetCurrentInstant().Plus(duration).ToDateTimeUtc();
+
+            if (trainingPeriod.Start >= maxDate) return;
+
+            DateTime endDateToDraw = trainingPeriod.End >= maxDate ? maxDate : trainingPeriod.End;
+
             chart.Series.Add(new LineSeries
             {
                 Values = new ChartValues<DateTimePoint>
                 {
                     new DateTimePoint(trainingPeriod.Start, trainingPeriod.StartWeight),
-                    new DateTimePoint(trainingPeriod.End, trainingPeriod.ExpectedEndWeight)
+                    new DateTimePoint(endDateToDraw, trainingPeriod.ExpectedEndWeight)
                 },
                 Stroke = new SolidColorBrush(lineColor)
             });
