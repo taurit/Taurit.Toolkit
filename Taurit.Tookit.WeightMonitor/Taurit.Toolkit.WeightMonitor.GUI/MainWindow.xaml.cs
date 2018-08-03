@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -54,20 +56,22 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             var googleFitDataAccessor = new GoogleFitDataAccessor();
             WeightInTime[] weights = await googleFitDataAccessor.GetWeightDataPoints(_settings.NumPastDaysToShow);
 
-            var lastWeight = 0d;
+            var allWeights = new List<DateTimePoint>(weights.Length);
+            Double lastWeight = 0;
             foreach (WeightInTime weight in weights)
             {
                 // there seem to be a problem somewhere in Mi Weight or Mi Fit or Google Fit that
                 // makes the weight stored multiple times with usual intervals of 8h (failing retry mechanism?)
                 // this condition is to remove such wrong from the graph
                 if (weight.Weight != lastWeight)
-                {
-                    WeightData.Add(new DateTimePoint(weight.Time.ToDateTimeUtc(), weight.Weight));
-                }
-                
+                    allWeights.Add(new DateTimePoint(weight.Time.ToDateTimeUtc(), weight.Weight));
                 lastWeight = weight.Weight;
             }
-                
+
+
+            // in case there are many data point in a day, compute daily average
+            foreach (IGrouping<DateTime, DateTimePoint> weightsGroupedByDate in allWeights.GroupBy(x => x.DateTime.Date)
+            ) WeightData.Add(new DateTimePoint(weightsGroupedByDate.Key, weightsGroupedByDate.Average(y => y.Value)));
         }
 
         private void AddReferenceLine(
