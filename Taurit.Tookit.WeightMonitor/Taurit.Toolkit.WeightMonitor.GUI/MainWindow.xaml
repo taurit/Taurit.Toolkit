@@ -1,18 +1,25 @@
-﻿<Window x:Class="Taurit.Toolkit.WeightMonitor.GUI.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Taurit.Toolkit.WeightMonitor.GUI"
-        xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-        xmlns:defaults="clr-namespace:LiveCharts.Defaults;assembly=LiveCharts"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="393" Width="598"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        ContentRendered="MainWindow_OnContentRendered">
+﻿<Window
+    x:Class="Taurit.Toolkit.WeightMonitor.GUI.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:defaults="clr-namespace:LiveCharts.Defaults;assembly=LiveCharts"
+    xmlns:local="clr-namespace:Taurit.Toolkit.WeightMonitor.GUI"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+    Title="MainWindow"
+    Width="598"
+    Height="393"
+    ContentRendered="MainWindow_OnContentRendered"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}"
+    mc:Ignorable="d">
     <Grid x:Name="ChartWrapper" Background="White">
-        <wpf:CartesianChart Name="WeightChart" Margin="20, 20, 20, 20" Hoverable="False" DataTooltip="{x:Null}"
-                        Background="White">
+        <wpf:CartesianChart
+            Name="WeightChart"
+            Margin="20,20,20,20"
+            Background="White"
+            DataTooltip="{x:Null}"
+            Hoverable="False">
             <wpf:CartesianChart.AxisX>
                 <wpf:Axis LabelFormatter="{Binding XFormatter}" />
             </wpf:CartesianChart.AxisX>

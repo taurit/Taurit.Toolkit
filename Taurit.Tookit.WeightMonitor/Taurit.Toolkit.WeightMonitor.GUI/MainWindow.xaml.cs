@@ -54,8 +54,20 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             var googleFitDataAccessor = new GoogleFitDataAccessor();
             WeightInTime[] weights = await googleFitDataAccessor.GetWeightDataPoints(_settings.NumPastDaysToShow);
 
+            var lastWeight = 0d;
             foreach (WeightInTime weight in weights)
-                WeightData.Add(new DateTimePoint(weight.Time.ToDateTimeUtc(), weight.Weight));
+            {
+                // there seem to be a problem somewhere in Mi Weight or Mi Fit or Google Fit that
+                // makes the weight stored multiple times with usual intervals of 8h (failing retry mechanism?)
+                // this condition is to remove such wrong from the graph
+                if (weight.Weight != lastWeight)
+                {
+                    WeightData.Add(new DateTimePoint(weight.Time.ToDateTimeUtc(), weight.Weight));
+                }
+                
+                lastWeight = weight.Weight;
+            }
+                
         }
 
         private void AddReferenceLine(
