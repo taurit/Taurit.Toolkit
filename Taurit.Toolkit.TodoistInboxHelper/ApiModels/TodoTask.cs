@@ -44,8 +44,8 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         public Int32 is_deleted { get; set; }
 
         /// <summary>
-        ///     The date of the task, added in free form text, for example it can be <c>every day @ 10</c> (or <c>null</c> or an empty string if
-        ///     not set).
+        ///     The date of the task, added in free form text, for example it can be <c>every day @ 10</c> (or <c>null</c> or an
+        ///     empty string if not set).
         /// </summary>
         [JsonProperty]
         public String date_string { get; set; }

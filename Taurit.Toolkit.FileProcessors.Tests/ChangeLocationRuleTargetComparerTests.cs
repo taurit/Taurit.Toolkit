@@ -7,24 +7,6 @@ namespace Taurit.Toolkit.FileProcessors.Tests
     public class ChangeLocationRuleTargetComparerTests
     {
         [Fact]
-        public void WhenTargetLocationIsTheSame_OnlyOneRuleIsPreservedInASet()
-        {
-            // Arrange
-            var rules = new List<ChangeLocationRule>
-            {
-                new ChangeLocationRule("asdf", "c:\\"),
-                new ChangeLocationRule("sdfg", "c:\\")
-            };
-            var sut = new ChangeLocationRuleTargetComparer();
-
-            // Act
-            var uniqueRules = new HashSet<ChangeLocationRule>(rules, sut);
-
-            // Assert
-            Assert.Single(uniqueRules);
-        }
-
-        [Fact]
         public void WhenTargetLocationIsDifferent_AllRulesArePreservedInASet()
         {
             // Arrange
@@ -40,6 +22,24 @@ namespace Taurit.Toolkit.FileProcessors.Tests
 
             // Assert
             Assert.Equal(rules.Count, uniqueRules.Count);
+        }
+
+        [Fact]
+        public void WhenTargetLocationIsTheSame_OnlyOneRuleIsPreservedInASet()
+        {
+            // Arrange
+            var rules = new List<ChangeLocationRule>
+            {
+                new ChangeLocationRule("asdf", "c:\\"),
+                new ChangeLocationRule("sdfg", "c:\\")
+            };
+            var sut = new ChangeLocationRuleTargetComparer();
+
+            // Act
+            var uniqueRules = new HashSet<ChangeLocationRule>(rules, sut);
+
+            // Assert
+            Assert.Single(uniqueRules);
         }
     }
 }

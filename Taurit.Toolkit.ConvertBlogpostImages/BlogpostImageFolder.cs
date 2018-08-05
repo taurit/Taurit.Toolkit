@@ -66,7 +66,7 @@ namespace Taurit.Toolkit.ConvertBlogpostImages
 
                     // in case thumbnail is png, and not jpg
                     new ConvertToPngProcessor(@"\.600x600\.hq\.png$",
-                        new PngFileQuality(100), 
+                        new PngFileQuality(100),
                         new ReplaceEndStrategy(".hq.png", ".png"),
                         new EmptyConversionStrategy())
                 };

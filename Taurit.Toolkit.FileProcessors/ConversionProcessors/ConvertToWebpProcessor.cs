@@ -7,10 +7,10 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
 {
     public class ConvertToWebpProcessor : FileProcessorBase
     {
-        [NotNull] private readonly IConvertedFileNamingStrategy _convertedFileNamingStrategy;
         [NotNull] private readonly IConversionStrategy _conversionStrategy;
-        [NotNull] private readonly ILoggingStrategy _loggingStrategy;
+        [NotNull] private readonly IConvertedFileNamingStrategy _convertedFileNamingStrategy;
         [NotNull] private readonly Regex _fileMatchRegex;
+        [NotNull] private readonly ILoggingStrategy _loggingStrategy;
 
         /// <summary>
         ///     Safety mechanism. If result file is too small (0 bytes? 500 bytes?) it is likely that conversion went wrong or
@@ -23,7 +23,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
 
         public ConvertToWebpProcessor([NotNull] [RegexPattern] String pattern,
             [NotNull] WebpFileQuality quality,
-            Int32 preserveOriginalThresholdBytes, 
+            Int32 preserveOriginalThresholdBytes,
             [NotNull] IConvertedFileNamingStrategy convertedFileNamingStrategy,
             [NotNull] IConversionStrategy conversionStrategy,
             [NotNull] ILoggingStrategy loggingStrategy)
@@ -74,8 +74,8 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
                 }
             }
             else
-                _loggingStrategy.LogSuggestion($"Manual action required: ${webPPath} already exists, remove or rename source file");
-                
+                _loggingStrategy.LogSuggestion(
+                    $"Manual action required: ${webPPath} already exists, remove or rename source file");
         }
     }
 }

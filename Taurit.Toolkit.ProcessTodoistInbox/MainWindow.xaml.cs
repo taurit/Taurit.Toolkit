@@ -19,16 +19,15 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
     /// </summary>
     public partial class MainWindow : Window
     {
-        [NotNull]
-        private readonly ITodoistCommandService _todoistCommandService;
-        [NotNull]
-        private readonly ITodoistQueryService _todoistQueryService;
-        [NotNull]
-        private readonly FilteredTaskAccessor _filteredTaskAccessor;
-        [NotNull]
-        private readonly ChangeExecutor _changeExecutor;
+        [NotNull] private readonly ChangeExecutor _changeExecutor;
 
-        public MainWindow([NotNull]String settingsFilePath)
+        [NotNull] private readonly FilteredTaskAccessor _filteredTaskAccessor;
+
+        [NotNull] private readonly ITodoistCommandService _todoistCommandService;
+
+        [NotNull] private readonly ITodoistQueryService _todoistQueryService;
+
+        public MainWindow([NotNull] String settingsFilePath)
         {
             if (settingsFilePath == null) throw new ArgumentNullException(nameof(settingsFilePath));
 
@@ -67,8 +66,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
             IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjects.ToLookup(x => x.id));
             IReadOnlyList<TodoTask> tasksThatNeedReview = _filteredTaskAccessor.GetNotReviewedTasks(allTasks);
-            
-            var taskClassifier = new TaskClassifier(UserSettings.ClassificationRules, UserSettings.ClassificationRulesConcise, allLabels, allProjects);
+
+            var taskClassifier = new TaskClassifier(UserSettings.ClassificationRules,
+                UserSettings.ClassificationRulesConcise, allLabels, allProjects);
             (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
                 taskClassifier.Classify(tasksThatNeedReview);
 
@@ -78,13 +78,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
             foreach (TaskNoActionModel noAction in noActions)
                 SkippedTasks.Add(noAction);
         }
-        
+
         private void ProceedButton_Click(Object sender, RoutedEventArgs e)
         {
             _changeExecutor.ApplyPlan(PlannedActions);
             ProceedButton.IsEnabled = false;
         }
-
-       
     }
 }

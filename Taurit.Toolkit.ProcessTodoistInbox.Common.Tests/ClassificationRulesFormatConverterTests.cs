@@ -70,7 +70,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.If);
             Assert.IsNotNull(result.Then);
-            
+
             Assert.IsNull(result.If.project);
             Assert.IsNull(result.If.containsWord);
             Assert.IsNull(result.If.priority);
@@ -91,13 +91,14 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             var sut = new ClassificationRulesFormatConverter();
 
             // Act
-            ClassificationRule result = sut.Convert("if startsWith(anki|supermemo|angielski) and numLabelsIs(0) then setLabel(nauka)");
+            ClassificationRule result =
+                sut.Convert("if startsWith(anki|supermemo|angielski) and numLabelsIs(0) then setLabel(nauka)");
 
             // Assert
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.If);
             Assert.IsNotNull(result.Then);
-            
+
             Assert.IsNull(result.If.project);
             Assert.IsNull(result.If.containsWord);
             Assert.IsNull(result.If.priority);
@@ -128,11 +129,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.If);
             Assert.IsNotNull(result.Then);
-            
+
             Assert.IsNull(result.If.project);
             Assert.IsNull(result.If.startsWith);
             Assert.IsNull(result.If.priority);
-            Assert.IsNotNull(result.If.containsWord); 
+            Assert.IsNotNull(result.If.containsWord);
             Assert.AreEqual("anki", result.If.containsWord.Single());
             Assert.AreEqual(0, result.If.numLabels);
 
@@ -149,18 +150,19 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             var sut = new ClassificationRulesFormatConverter();
 
             // Act
-            ClassificationRule result = sut.Convert("if containsWord(anki|supermemo|angielski) and numLabelsIs(0) then setLabel(nauka)");
+            ClassificationRule result =
+                sut.Convert("if containsWord(anki|supermemo|angielski) and numLabelsIs(0) then setLabel(nauka)");
 
             // Assert
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.If);
             Assert.IsNotNull(result.Then);
-            
+
             Assert.IsNull(result.If.project);
             Assert.IsNull(result.If.startsWith);
             Assert.IsNull(result.If.priority);
-            
-            Assert.IsNotNull(result.If.containsWord); 
+
+            Assert.IsNotNull(result.If.containsWord);
             Assert.AreEqual(3, result.If.containsWord.Length);
             Assert.IsTrue(result.If.containsWord.Contains("anki"));
             Assert.IsTrue(result.If.containsWord.Contains("supermemo"));
@@ -187,7 +189,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.If);
             Assert.IsNotNull(result.Then);
-            
+
             Assert.IsNull(result.If.containsWord);
             Assert.IsNull(result.If.numLabels);
             Assert.IsNull(result.If.startsWith);
@@ -214,7 +216,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.If);
             Assert.IsNotNull(result.Then);
-            
+
             Assert.IsNull(result.If.project);
             Assert.IsNull(result.If.containsWord);
             Assert.IsNull(result.If.numLabels);
@@ -228,7 +230,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.AreEqual("nauka", result.Then.setLabel);
         }
 
-        
+
         [TestMethod]
         public void PriorityCanBeDefinedInNaturalLanguage()
         {
@@ -270,7 +272,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
 
             Assert.IsTrue(resultHighLowercase.If.priority.HasValue);
             Assert.AreEqual(4, resultHighLowercase.If.priority.Value);
-            
         }
 
         [TestMethod]
@@ -286,7 +287,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.If);
             Assert.IsNotNull(result.Then);
-            
+
             Assert.IsNull(result.If.project);
             Assert.IsNull(result.If.containsWord);
             Assert.IsNull(result.If.priority);
@@ -388,7 +389,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.IsNull(resultLowercase.Then.moveToProject);
             Assert.IsNotNull(resultLowercase.Then.setPriority);
             Assert.AreEqual(4, resultLowercase.Then.setPriority.Value);
-
         }
 
         [TestMethod]
@@ -398,7 +398,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             var sut = new ClassificationRulesFormatConverter();
 
             // Act
-            ClassificationRule result = sut.Convert("if numLabelsIs(0) then setPriority(4) and setLabel(home) and moveToProject(Nauka)");
+            ClassificationRule result =
+                sut.Convert("if numLabelsIs(0) then setPriority(4) and setLabel(home) and moveToProject(Nauka)");
 
             // Assert
             Assert.IsNotNull(result);
@@ -422,13 +423,15 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             var sut = new ClassificationRulesFormatConverter();
 
             // Act
-            ClassificationRule result = sut.Convert("if numLabelsIs(0) and projectIs(Inbox) and containsWord(aaa) and priorityIs(low) and startsWith(abc) then setPriority(4)");
+            ClassificationRule result =
+                sut.Convert(
+                    "if numLabelsIs(0) and projectIs(Inbox) and containsWord(aaa) and priorityIs(low) and startsWith(abc) then setPriority(4)");
 
             // Assert
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.If);
             Assert.IsNotNull(result.Then);
-            
+
             Assert.IsNotNull(result.If.project);
             Assert.IsNotNull(result.If.containsWord);
             Assert.IsNotNull(result.If.priority);
@@ -441,6 +444,5 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             Assert.AreEqual("abc", result.If.startsWith.Single());
             Assert.AreEqual(0, result.If.numLabels);
         }
-
     }
 }

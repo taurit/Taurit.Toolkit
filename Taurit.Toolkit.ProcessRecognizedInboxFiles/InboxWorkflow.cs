@@ -39,7 +39,7 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
                             new ChangeExtensionStrategy("webp"),
                             new EmptyConversionStrategy(),
                             new ConsoleLoggingStrategy(ConsoleLoggingStrategy.LogLevel.ActionsAndSuggestions)
-                            )
+                        )
                     });
                 inboxFolder.Process();
             }

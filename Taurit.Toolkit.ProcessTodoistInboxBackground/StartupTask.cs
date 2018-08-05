@@ -21,14 +21,13 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 {
     public sealed class StartupTask : IBackgroundTask
     {
-        [NotNull]
-        private ChangeExecutor _changeExecutor;
-        [NotNull]
-        private FilteredTaskAccessor _filteredTaskAccessor;
-        [NotNull]
-        private TodoistCommandService _todoistCommandService;
-        [NotNull]
-        private TodoistQueryService _todoistQueryService;
+        [NotNull] private ChangeExecutor _changeExecutor;
+
+        [NotNull] private FilteredTaskAccessor _filteredTaskAccessor;
+
+        [NotNull] private TodoistCommandService _todoistCommandService;
+
+        [NotNull] private TodoistQueryService _todoistQueryService;
 
 
         public void Run(IBackgroundTaskInstance taskInstance)
@@ -44,13 +43,12 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
                 {
                     telemetryClient.TrackTrace("Starting the classification");
                     TryClassifyAllTasks(settings, telemetryClient);
-                } else
-                {
-                    telemetryClient.TrackTrace($"Skipping the classification due to night hours (it is {DateTime.Now})");
                 }
+                else
+                    telemetryClient.TrackTrace(
+                        $"Skipping the classification due to night hours (it is {DateTime.Now})");
 
                 Thread.Sleep(TimeSpan.FromHours(1));
-                
             }
         }
 
@@ -60,7 +58,7 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             return currentHour > 22 || currentHour < 7;
         }
 
-        private void InitializeDependencies([NotNull]SettingsFileModel settings)
+        private void InitializeDependencies([NotNull] SettingsFileModel settings)
         {
             _todoistQueryService = new TodoistQueryService(settings.TodoistApiKey);
             _todoistCommandService = new TodoistCommandService(settings.TodoistApiKey);
@@ -82,7 +80,8 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             return settingsDeserialized;
         }
 
-        private void TryClassifyAllTasks([NotNull] SettingsFileModel settings, [NotNull] TelemetryClient telemetryClient)
+        private void TryClassifyAllTasks([NotNull] SettingsFileModel settings,
+            [NotNull] TelemetryClient telemetryClient)
         {
             var plannedActions = new List<TaskActionModel>();
             IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
@@ -99,15 +98,18 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
                 allTasks.Count(x => x.priority == 4 || x.priority == 3 || x.priority == 2));
 
             // new metrics: tasks without date => the ones that can be done today and for which Inbox Zero is expected
-            telemetryClient.TrackMetric("NumberOfHighPriorityTasksNoDate", allTasks.Count(x => !x.HasDate && x.priority == 4));
-            telemetryClient.TrackMetric("NumberOfMediumPriorityTasksNoDate", allTasks.Count(x => !x.HasDate && x.priority == 3));
-            telemetryClient.TrackMetric("NumberOfLowPriorityTasksNoDate", allTasks.Count(x => !x.HasDate && x.priority == 2));
-            telemetryClient.TrackMetric("NumberOfUndefinedPriorityTasksNoDate", allTasks.Count(x => !x.HasDate && x.priority == 4));
+            telemetryClient.TrackMetric("NumberOfHighPriorityTasksNoDate",
+                allTasks.Count(x => !x.HasDate && x.priority == 4));
+            telemetryClient.TrackMetric("NumberOfMediumPriorityTasksNoDate",
+                allTasks.Count(x => !x.HasDate && x.priority == 3));
+            telemetryClient.TrackMetric("NumberOfLowPriorityTasksNoDate",
+                allTasks.Count(x => !x.HasDate && x.priority == 2));
+            telemetryClient.TrackMetric("NumberOfUndefinedPriorityTasksNoDate",
+                allTasks.Count(x => !x.HasDate && x.priority == 4));
 
             // other metrics
             telemetryClient.TrackMetric("NumberOfLabels", allLabels.Count);
             telemetryClient.TrackMetric("NumberOfProjects", allProjects.Count);
-
 
 
             IReadOnlyList<TodoTask> tasksThatNeedReview =
@@ -128,7 +130,6 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             foreach (TaskActionModel action in actions.OrderByDescending(x => x.Priority))
                 plannedActions.Add(action);
 
-            
 
             // Apply actions
             _changeExecutor.ApplyPlan(plannedActions);

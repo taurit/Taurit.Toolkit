@@ -4,6 +4,8 @@ using System.Linq;
 using Taurit.Toolkit.TodoistInboxHelper;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
+#pragma warning disable 618
+
 namespace Taurit.Toolkit.ProcessTodoistInbox.Services
 {
     internal class TodoistFakeQueryService : ITodoistQueryService

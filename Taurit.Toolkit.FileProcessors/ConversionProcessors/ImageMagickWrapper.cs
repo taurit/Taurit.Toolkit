@@ -16,7 +16,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
 
             // this requires ImageMagick to be installed and added to windows path
             String additionalArguments = conversionStrategy.GetAdditionalImageMagickArguments();
-            
+
             // this requires ImageMagick to be installed and added to windows path
             var magickProcess = new Process();
             magickProcess.StartInfo.FileName = "magick";
@@ -63,7 +63,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
             magickProcess.StartInfo.FileName = "magick";
             magickProcess.StartInfo.Arguments =
                 $"convert \"{inputFile}\" {additionalArguments} -quality {quality.QualityNumeric}% \"{outputFile}\"";
-            
+
             magickProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             magickProcess.Start();
             magickProcess.WaitForExit();

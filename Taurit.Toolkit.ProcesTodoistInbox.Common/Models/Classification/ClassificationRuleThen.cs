@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+
 // ReSharper disable InconsistentNaming
 
 namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification

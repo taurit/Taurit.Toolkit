@@ -19,15 +19,15 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
                 throw new ArgumentException("conciseRule could not be split into 'if' and 'then' parts",
                     nameof(conciseRule));
             }
+
             if (ruleSplitToConditionAndActionPart[0] == "if")
                 throw new ArgumentException("'if' clause must not be empty", nameof(conciseRule));
             Debug.Assert(ruleSplitToConditionAndActionPart[1] != null);
 
             var ifPart = new IfPart(ruleSplitToConditionAndActionPart[0]);
             var thenPart = new ThenPart(ruleSplitToConditionAndActionPart[1]);
-            
+
             return new ClassificationRule(ifPart.ToClassificationRule(), thenPart.ToClassificationRule());
         }
-
     }
 }

@@ -58,7 +58,8 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             foreach (TodoTask task in response.Data.items)
                 task.project_name = allProjectsIndexedById[task.project_id].Single().name;
 
-            return response.Data.items.Where(x => x != null && x.is_deleted == 0 && x.@checked == 0 && x.is_archived == 0).ToList();
+            return response.Data.items
+                .Where(x => x != null && x.is_deleted == 0 && x.@checked == 0 && x.is_archived == 0).ToList();
         }
 
         public IReadOnlyList<TodoTask> GetTasks()

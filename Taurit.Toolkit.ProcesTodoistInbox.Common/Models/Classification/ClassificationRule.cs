@@ -14,8 +14,8 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
 
         public ClassificationRule([NotNull] ClassificationRuleIf ifPart, [NotNull] ClassificationRuleThen thenPart)
         {
-            this.If = ifPart;
-            this.Then = thenPart;
+            If = ifPart;
+            Then = thenPart;
         }
 
         [JsonProperty]

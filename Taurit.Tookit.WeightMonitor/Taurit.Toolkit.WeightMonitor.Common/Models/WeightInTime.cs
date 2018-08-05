@@ -7,7 +7,7 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Models
     {
         public WeightInTime(Int64 unixTimeNanoseconds, Double weight)
         {
-            Time = Instant.FromUnixTimeMilliseconds(unixTimeNanoseconds/1_000_000);
+            Time = Instant.FromUnixTimeMilliseconds(unixTimeNanoseconds / 1_000_000);
             Weight = weight;
         }
 

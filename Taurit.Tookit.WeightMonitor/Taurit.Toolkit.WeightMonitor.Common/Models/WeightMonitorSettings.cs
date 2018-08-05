@@ -9,6 +9,5 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Models
         public WallpaperConfiguration WallpaperToSet { get; set; }
         public BulkingPeriod[] BulkingPeriods { get; set; }
         public CuttingPeriod[] CuttingPeriods { get; set; }
-        
     }
 }

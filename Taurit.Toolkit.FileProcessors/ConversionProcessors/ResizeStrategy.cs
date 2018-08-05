@@ -5,8 +5,8 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
 {
     public class ResizeStrategy : IConversionStrategy
     {
-        private readonly Int32 _width;
         private readonly Int32 _height;
+        private readonly Int32 _width;
 
         public ResizeStrategy(Int32 width, Int32 height)
         {

@@ -10,7 +10,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Converters
             Object parameter, CultureInfo culture)
         {
             // Do the conversion from bool to visibility
-            switch ((value ?? "-1" ).ToString())
+            switch ((value ?? "-1").ToString())
             {
                 case "1": return "Not assigned";
                 case "2": return "Low";

@@ -35,6 +35,7 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models
 
         [CanBeNull]
         public Int32? Priority { get; set; }
+
         public Int64 TaskId { get; set; }
         public Int64 OldProjectId { get; set; }
     }
