@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
+#pragma warning disable 618 // I'm not using constructor for ClassificationRuleIf to make tests brief
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
 {
