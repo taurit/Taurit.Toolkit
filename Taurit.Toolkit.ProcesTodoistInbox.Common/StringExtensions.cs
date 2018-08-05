@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox
+namespace Taurit.Toolkit.ProcesTodoistInbox.Common
 {
     public static class StringExtensions
     {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using Taurit.Toolkit.ProcessTodoistInbox;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 // ReSharper disable InconsistentNaming
