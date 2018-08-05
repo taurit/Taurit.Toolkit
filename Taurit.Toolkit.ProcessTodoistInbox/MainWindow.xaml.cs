@@ -23,6 +23,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
 
         [NotNull] private readonly FilteredTaskAccessor _filteredTaskAccessor;
 
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         [NotNull] private readonly ITodoistCommandService _todoistCommandService;
 
         [NotNull] private readonly ITodoistQueryService _todoistQueryService;

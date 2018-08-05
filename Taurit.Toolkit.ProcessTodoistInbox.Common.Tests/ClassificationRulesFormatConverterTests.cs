@@ -18,7 +18,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            ClassificationRule result = sut.Convert(null);
+            sut.Convert(null);
+
+            // Assert
+            Assert.Fail("Exception should have been thrown before this line");
         }
 
         [TestMethod]
@@ -30,7 +33,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            ClassificationRule result = sut.Convert("yo dawg");
+            sut.Convert("yo dawg");
+
+            // Assert
+            Assert.Fail("Exception should have been thrown before this line");
         }
 
         [TestMethod]
@@ -42,7 +48,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            ClassificationRule result = sut.Convert("if then setLabel(nauka)");
+            sut.Convert("if then setLabel(nauka)");
+
+            // Assert
+            Assert.Fail("Exception should have been thrown before this line");
         }
 
         [TestMethod]
@@ -54,7 +63,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
 
             // Act
             // ReSharper disable once AssignNullToNotNullAttribute
-            ClassificationRule result = sut.Convert("if startsWith(anki) then ");
+            sut.Convert("if startsWith(anki) then ");
+
+            // Assert
+            Assert.Fail("Exception should have been thrown before this line");
         }
 
         [TestMethod]

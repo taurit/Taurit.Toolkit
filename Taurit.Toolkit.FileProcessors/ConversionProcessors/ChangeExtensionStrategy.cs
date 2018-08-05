@@ -14,8 +14,10 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
         }
 
         /// <inheritdoc />
-        public String GetConvertedFilePath(String originalPath)
+        public String GetConvertedFilePath([NotNull] String originalPath)
         {
+            if (originalPath == null) throw new ArgumentNullException(nameof(originalPath));
+
             var fileInfo = new FileInfo(originalPath);
             String extension = fileInfo.Extension.ToLowerInvariant();
             String pathWithoutExtension = originalPath.Substring(0, originalPath.Length - extension.Length);

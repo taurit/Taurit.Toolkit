@@ -66,7 +66,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Services
             };
         }
 
-        /// <param name="allProjects"></param>
         /// <inheritdoc />
         public IReadOnlyList<TodoTask> GetAllTasks(ILookup<Int64, Project> allProjectsIndexedById)
         {

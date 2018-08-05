@@ -8,6 +8,7 @@ namespace Taurit.Toolkit.ConvertBlogpostImages
 {
     internal class BlogpostImageFolder
     {
+        [NotNull]
         private readonly String _rootPath;
 
         public BlogpostImageFolder([NotNull] String rootPath)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace Taurit.Toolkit.FileProcessors.LocationProcessors
 {
@@ -10,8 +11,10 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
     {
         private readonly IList<ChangeLocationRule> _rules;
 
-        public ChangeLocationProcessor(IEnumerable<ChangeLocationRule> rules)
+        public ChangeLocationProcessor([NotNull]IEnumerable<ChangeLocationRule> rules)
         {
+            if (rules == null) throw new ArgumentNullException(nameof(rules));
+
             _rules = rules.ToList();
         }
 

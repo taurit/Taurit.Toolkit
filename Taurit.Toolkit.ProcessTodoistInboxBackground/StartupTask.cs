@@ -21,20 +21,33 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 {
     public sealed class StartupTask : IBackgroundTask
     {
-        [NotNull] private ChangeExecutor _changeExecutor;
+        [NotNull] private readonly SettingsFileModel _settings;
 
-        [NotNull] private FilteredTaskAccessor _filteredTaskAccessor;
+        [NotNull] private readonly ChangeExecutor _changeExecutor;
 
-        [NotNull] private TodoistCommandService _todoistCommandService;
+        [NotNull] private readonly FilteredTaskAccessor _filteredTaskAccessor;
 
-        [NotNull] private TodoistQueryService _todoistQueryService;
+        [NotNull] private readonly TodoistQueryService _todoistQueryService;
 
+        public StartupTask()
+        {
+            _settings = LoadSettings().Result;
+            if (_settings == null)
+                throw new InvalidOperationException("Settings could not be loaded");
+
+            _todoistQueryService = new TodoistQueryService(_settings.TodoistApiKey);
+            var todoistCommandService = new TodoistCommandService(_settings.TodoistApiKey);
+            _filteredTaskAccessor = new FilteredTaskAccessor();
+            _changeExecutor = new ChangeExecutor(todoistCommandService);
+
+            // needed to avoid "'Cyrillic' is not a supported encoding name." error later in code where a trick is used to compare string in an accent-insensitive way 
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            TelemetryConfiguration.Active.InstrumentationKey = _settings.ApplicationInsightsKey;
+        }
 
         public void Run(IBackgroundTaskInstance taskInstance)
         {
-            SettingsFileModel settings = LoadSettings().Result ??
-                                         throw new InvalidOperationException("Settings could not be loaded");
-            InitializeDependencies(settings);
             var telemetryClient = new TelemetryClient();
 
             while (true)
@@ -42,14 +55,17 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
                 if (!IsCurrentHourSleepHour()) // no need to query API too much, eg. at night
                 {
                     telemetryClient.TrackTrace("Starting the classification");
-                    TryClassifyAllTasks(settings, telemetryClient);
+                    TryClassifyAllTasks(_settings, telemetryClient);
                 }
                 else
+                {
                     telemetryClient.TrackTrace(
                         $"Skipping the classification due to night hours (it is {DateTime.Now})");
+                }
 
                 Thread.Sleep(TimeSpan.FromHours(1));
             }
+            // ReSharper disable once FunctionNeverReturns
         }
 
         private static Boolean IsCurrentHourSleepHour()
@@ -58,18 +74,6 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             return currentHour > 22 || currentHour < 7;
         }
 
-        private void InitializeDependencies([NotNull] SettingsFileModel settings)
-        {
-            _todoistQueryService = new TodoistQueryService(settings.TodoistApiKey);
-            _todoistCommandService = new TodoistCommandService(settings.TodoistApiKey);
-            _filteredTaskAccessor = new FilteredTaskAccessor();
-            _changeExecutor = new ChangeExecutor(_todoistCommandService);
-
-            // needed to avoid "'Cyrillic' is not a supported encoding name." error later in code where a trick is used to compare string in an accent-insensitive way 
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            TelemetryConfiguration.Active.InstrumentationKey = settings.ApplicationInsightsKey;
-        }
 
         private async Task<SettingsFileModel> LoadSettings()
         {

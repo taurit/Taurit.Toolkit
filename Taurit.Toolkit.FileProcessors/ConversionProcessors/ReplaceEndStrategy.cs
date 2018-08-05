@@ -16,8 +16,9 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
         }
 
         /// <inheritdoc />
-        public String GetConvertedFilePath(String originalPath)
+        public String GetConvertedFilePath([NotNull] String originalPath)
         {
+            if (originalPath == null) throw new ArgumentNullException(nameof(originalPath));
             if (!originalPath.EndsWith(_from))
                 throw new ArgumentException("Path doesn't end with provided string", nameof(originalPath));
 

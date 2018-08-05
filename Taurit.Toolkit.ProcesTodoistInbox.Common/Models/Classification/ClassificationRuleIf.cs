@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -99,6 +100,7 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
             if (startsWith == null) return true;
             String[] contentWords = SplitIntoWords(task.content);
 
+            Debug.Assert(startsWith != null, nameof(startsWith) + " != null");
             foreach (String keyword in startsWith)
             {
                 String keywordWithoutDiacritics = keyword.RemoveDiacritics();
@@ -115,6 +117,7 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
             if (containsWord == null) return true;
             String[] contentWords = SplitIntoWords(task.content);
 
+            Debug.Assert(containsWord != null, nameof(containsWord) + " != null");
             foreach (String keyword in containsWord)
             {
                 String keywordWithoutDiacritics = keyword.RemoveDiacritics();

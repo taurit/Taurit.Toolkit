@@ -15,9 +15,8 @@
     Initialized="Initialize"
     mc:Ignorable="d">
     <Window.Resources>
-        <converters:PriorityToTextConverter x:Key="PriorityToTextConverter" />
         <converters:PriorityToColorConverter x:Key="PriorityToColorConverter" />
-        <Style x:Key="local.HiddenGridViewHeader" TargetType="{x:Type GridViewColumnHeader}">
+        <Style x:Key="Local.HiddenGridViewHeader" TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="Visibility" Value="Collapsed" />
         </Style>
         <Style TargetType="{x:Type ListViewItem}">
@@ -27,8 +26,7 @@
             </Style.Resources>
         </Style>
     </Window.Resources>
-    <DockPanel d:DataContext="{d:DesignInstance designData:MainWindowDesignData, IsDesignTimeCreatable=True}"
-               LastChildFill="True">
+    <DockPanel d:DataContext="{d:DesignInstance designData:MainWindowDesignData, IsDesignTimeCreatable=True}" LastChildFill="True">
         <StackPanel
             HorizontalAlignment="Center"
             DockPanel.Dock="Bottom"
@@ -63,9 +61,7 @@
                             <GridViewColumn Width="500" Header="Name">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate DataType="models:TaskActionModel">
-                                        <TextBlock
-                                            Background="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}"
-                                            Text="{Binding Name}" />
+                                        <TextBlock Background="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}" Text="{Binding Name}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -87,8 +83,7 @@
                     HorizontalAlignment="Center"
                     FontSize="20">
                     <Run>Those tasks will</Run> <Bold>not</Bold>
-                    be changed:
-                </TextBlock>
+                    be changed:</TextBlock>
 
                 <ListView
                     BorderThickness="0"
@@ -96,7 +91,7 @@
                     ItemsSource="{Binding SkippedTasks}">
 
                     <ListView.View>
-                        <GridView ColumnHeaderContainerStyle="{StaticResource local.HiddenGridViewHeader}">
+                        <GridView ColumnHeaderContainerStyle="{StaticResource Local.HiddenGridViewHeader}">
                             <GridViewColumn
                                 Width="750"
                                 DisplayMemberBinding="{Binding Path=Name}"

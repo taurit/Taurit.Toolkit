@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using RestSharp;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
@@ -23,6 +24,9 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
             IRestResponse<TodoistSyncResponseLabels> response = client.Execute<TodoistSyncResponseLabels>(request);
 
+            Contract.Assume(response != null);
+            Contract.Assume(response.Data != null);
+            Contract.Assume(response.Data.labels != null);
             return response.Data.labels.Where(x => x.is_deleted == 0).ToList();
         }
 

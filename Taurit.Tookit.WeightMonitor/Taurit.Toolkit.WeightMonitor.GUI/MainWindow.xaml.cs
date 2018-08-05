@@ -63,6 +63,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
                 // there seem to be a problem somewhere in Mi Weight or Mi Fit or Google Fit that
                 // makes the weight stored multiple times with usual intervals of 8h (failing retry mechanism?)
                 // this condition is to remove such wrong from the graph
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
                 if (weight.Weight != lastWeight)
                     allWeights.Add(new DateTimePoint(weight.Time.ToDateTimeUtc(), weight.Weight));
                 lastWeight = weight.Weight;

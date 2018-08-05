@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -44,7 +45,13 @@ namespace Taurit.Toolkit.WeightMonitor.GUI.Services
                 .Execute();
 
             return weightPoints.Point.SelectMany(x =>
-                x.Value.Select(y => new WeightInTime(x.EndTimeNanos.Value, y.FpVal.Value))).ToArray();
+                x.Value.Select(y =>
+                {
+                    Debug.Assert(x.EndTimeNanos != null, "x.EndTimeNanos != null");
+                    Debug.Assert(y.FpVal != null, "y.FpVal != null");
+
+                    return new WeightInTime(x.EndTimeNanos.Value, y.FpVal.Value);
+                })).ToArray();
         }
     }
 }

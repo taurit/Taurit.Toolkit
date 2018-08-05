@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.IO;
+using JetBrains.Annotations;
 using Taurit.Toolkit.FileProcessors;
 using Taurit.Toolkit.FileProcessors.ConversionProcessors;
 
@@ -8,7 +9,7 @@ namespace Taurit.Toolkit.ConvertToWebP
 {
     internal class Program
     {
-        private static void Main(String[] args)
+        private static void Main([NotNull] String[] args)
         {
             if (args.Length != 2)
             {

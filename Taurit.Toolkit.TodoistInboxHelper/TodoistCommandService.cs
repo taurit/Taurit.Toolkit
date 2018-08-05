@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Text;
 using JetBrains.Annotations;
 using RestSharp;
@@ -9,7 +10,8 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 {
     public class TodoistCommandService : TodoistApiService, ITodoistCommandService
     {
-        private readonly List<String> commandsStrings = new List<String>();
+        [NotNull]
+        private readonly List<String> _commandsStrings = new List<String>();
 
         public TodoistCommandService(String apiKey) : base(apiKey)
         {
@@ -25,13 +27,14 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
             var commandsString = new StringBuilder();
             commandsString.Append("[");
-            commandsString.Append(String.Join(", ", commandsStrings));
+            commandsString.Append(String.Join(", ", _commandsStrings));
             commandsString.Append("]");
 
             request.AddParameter("commands", commandsString.ToString());
 
             IRestResponse<TodoistSyncResponseTasks> response = client.Execute<TodoistSyncResponseTasks>(request);
-            commandsStrings.Clear();
+            _commandsStrings.Clear();
+            Contract.Assume(response != null);
             String apiResponse = response.Content;
             return apiResponse;
         }
@@ -46,7 +49,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             String projectItems = $"{{\"{oldProjectId}\": [{taskId}]}}";
             String moveCommandString =
                 $"{{\"type\": \"item_move\", \"uuid\": \"{moveCommandId}\", \"args\": {{\"project_items\": {projectItems}, \"to_project\": {newProjectId.Value} }}}}";
-            commandsStrings.Add(moveCommandString);
+            _commandsStrings.Add(moveCommandString);
         }
 
         /// <inheritdoc />
@@ -60,7 +63,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             String commandString =
                 $"{{\"type\": \"item_update\", \"uuid\": \"{commandId}\", \"args\": {{\"id\": {taskId}, \"labels\": {labelsArrayString}}}}}";
 
-            commandsStrings.Add(commandString);
+            _commandsStrings.Add(commandString);
         }
 
         /// <inheritdoc />
@@ -72,7 +75,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             String commandString =
                 $"{{\"type\": \"item_update\", \"uuid\": \"{commandId}\", \"args\": {{\"id\": {taskId}, \"priority\": {newPriority.Value}}}}}";
 
-            commandsStrings.Add(commandString);
+            _commandsStrings.Add(commandString);
         }
     }
 }

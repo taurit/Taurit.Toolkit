@@ -29,6 +29,7 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
                 _todoistCommandService.AddUpdatePriorityCommand(taskId, newPriority);
             }
 
+            // ReSharper disable once UnusedVariable - useful for debugging
             String response = _todoistCommandService.ExecuteCommands();
         }
     }
