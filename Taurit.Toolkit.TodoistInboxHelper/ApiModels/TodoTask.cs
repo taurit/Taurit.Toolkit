@@ -9,10 +9,9 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
     /// </summary>
     public class TodoTask
     {
+        [JsonProperty] public Int32 is_archived;
+
         public String project_name;
-        
-        [JsonProperty]
-        public Int32 is_archived;
 
         [JsonProperty]
         public Int64 id { get; set; }
@@ -43,5 +42,14 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         /// </summary>
         [JsonProperty]
         public Int32 is_deleted { get; set; }
+
+        /// <summary>
+        ///     The date of the task, added in free form text, for example it can be <c>every day @ 10</c> (or <c>null</c> or an empty string if
+        ///     not set).
+        /// </summary>
+        [JsonProperty]
+        public String date_string { get; set; }
+
+        public Boolean HasDate => !String.IsNullOrWhiteSpace(date_string);
     }
 }

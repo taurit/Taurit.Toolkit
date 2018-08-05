@@ -89,6 +89,7 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
             IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjects.ToLookup(x => x.id));
 
+            // legacy metric: all tasks, categories combined
             telemetryClient.TrackMetric("NumberOfTasks", allTasks.Count);
             telemetryClient.TrackMetric("NumberOfHighPriorityTasks",
                 allTasks.Count(x => x.priority == 4));
@@ -96,8 +97,18 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
                 allTasks.Count(x => x.priority == 4 || x.priority == 3));
             telemetryClient.TrackMetric("NumberOfHighMediumAndLowPriorityTasks",
                 allTasks.Count(x => x.priority == 4 || x.priority == 3 || x.priority == 2));
+
+            // new metrics: tasks without date => the ones that can be done today and for which Inbox Zero is expected
+            telemetryClient.TrackMetric("NumberOfHighPriorityTasksNoDate", allTasks.Count(x => !x.HasDate && x.priority == 4));
+            telemetryClient.TrackMetric("NumberOfMediumPriorityTasksNoDate", allTasks.Count(x => !x.HasDate && x.priority == 3));
+            telemetryClient.TrackMetric("NumberOfLowPriorityTasksNoDate", allTasks.Count(x => !x.HasDate && x.priority == 2));
+            telemetryClient.TrackMetric("NumberOfUndefinedPriorityTasksNoDate", allTasks.Count(x => !x.HasDate && x.priority == 4));
+
+            // other metrics
             telemetryClient.TrackMetric("NumberOfLabels", allLabels.Count);
             telemetryClient.TrackMetric("NumberOfProjects", allProjects.Count);
+
+
 
             IReadOnlyList<TodoTask> tasksThatNeedReview =
                 _filteredTaskAccessor.GetNotReviewedTasks(allTasks);
