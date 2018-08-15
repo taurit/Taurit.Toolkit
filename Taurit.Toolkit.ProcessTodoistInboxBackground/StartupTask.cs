@@ -10,6 +10,7 @@ using JetBrains.Annotations;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using Newtonsoft.Json;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Services;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
@@ -21,11 +22,9 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 {
     public sealed class StartupTask : IBackgroundTask
     {
-        [NotNull] private readonly SettingsFileModel _settings;
-
         [NotNull] private readonly ChangeExecutor _changeExecutor;
-
         [NotNull] private readonly FilteredTaskAccessor _filteredTaskAccessor;
+        [NotNull] private readonly SettingsFileModel _settings;
 
         [NotNull] private readonly TodoistQueryService _todoistQueryService;
 
@@ -65,6 +64,7 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 
                 Thread.Sleep(TimeSpan.FromHours(1));
             }
+
             // ReSharper disable once FunctionNeverReturns
         }
 
@@ -114,6 +114,7 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             // other metrics
             telemetryClient.TrackMetric("NumberOfLabels", allLabels.Count);
             telemetryClient.TrackMetric("NumberOfProjects", allProjects.Count);
+            TrackPersonalScrumMetrics(telemetryClient, allTasks, allProjects);
 
 
             IReadOnlyList<TodoTask> tasksThatNeedReview =
@@ -137,6 +138,38 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 
             // Apply actions
             _changeExecutor.ApplyPlan(plannedActions);
+        }
+
+        private void TrackPersonalScrumMetrics([NotNull] TelemetryClient telemetryClient,
+            [NotNull] IReadOnlyList<TodoTask> allTasks,
+            [NotNull] IReadOnlyList<Project> allProjects)
+        {
+            if (telemetryClient == null) throw new ArgumentNullException(nameof(telemetryClient));
+            if (allTasks == null) throw new ArgumentNullException(nameof(allTasks));
+            if (allProjects == null) throw new ArgumentNullException(nameof(allProjects));
+
+            // convention: sprint projects are named like "Sprint yyyy-MM-dd (x h)"
+            // where "yyyy-MM-dd" is the sprint's end date
+            // and "x" is total time available in the sprint
+            Project currentSprintProject = allProjects
+                .Where(x => x.name.StartsWith("Sprint", StringComparison.InvariantCultureIgnoreCase))
+                .Where(x => x.is_archived == 0)
+                .Where(x => x.is_deleted == 0)
+                .OrderBy(x => x.name)
+                .FirstOrDefault();
+
+            if (currentSprintProject == null) return; // if I give up on this idea, this program should keep working
+
+            List<TodoTask> allTasksInSprint =
+                allTasks.Where(x => x.project_name == currentSprintProject.name).ToList();
+            var totalTimeInMinutes = 0;
+            foreach (TodoTask task in allTasksInSprint.Where(x => x.is_archived == 0 && x.is_deleted == 0))
+            {
+                Int32 taskTimeInMinutes = new EventLengthFinder(task.content).TotalMinutes;
+                totalTimeInMinutes += taskTimeInMinutes;
+            }
+
+            telemetryClient.TrackMetric("WorkLeftInTheCurrentSprintInMinutes", totalTimeInMinutes);
         }
     }
 }

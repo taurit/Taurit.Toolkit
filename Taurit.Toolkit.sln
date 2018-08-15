@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.CountdownToS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInbox.Background", "Taurit.Toolkit.ProcessTodoistInboxBackground\Taurit.Toolkit.ProcessTodoistInbox.Background.csproj", "{3D9D4823-3671-46B8-953A-157A06461F58}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Taurit.Toolkit.ProcesTodoistInbox.Common", "Taurit.Toolkit.ProcesTodoistInbox.Common\Taurit.Toolkit.ProcesTodoistInbox.Common.csproj", "{382CF559-6D20-465A-B8EF-B10852F40FF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Taurit.Toolkit.ProcessTodoistInbox.Common", "Taurit.Toolkit.ProcesTodoistInbox.Common\Taurit.Toolkit.ProcessTodoistInbox.Common.csproj", "{382CF559-6D20-465A-B8EF-B10852F40FF3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInbox.Common.Tests", "Taurit.Toolkit.ProcessTodoistInbox.Common.Tests\Taurit.Toolkit.ProcessTodoistInbox.Common.Tests.csproj", "{77636582-2305-4274-B05F-3E68C9177D63}"
 EndProject

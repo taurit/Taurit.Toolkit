@@ -104,9 +104,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Taurit.Toolkit.ProcesTodoistInbox.Common\Taurit.Toolkit.ProcesTodoistInbox.Common.csproj">
+    <ProjectReference Include="..\Taurit.Toolkit.ProcesTodoistInbox.Common\Taurit.Toolkit.ProcessTodoistInbox.Common.csproj">
       <Project>{382cf559-6d20-465a-b8ef-b10852f40ff3}</Project>
-      <Name>Taurit.Toolkit.ProcesTodoistInbox.Common</Name>
+      <Name>Taurit.Toolkit.ProcessTodoistInbox.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Taurit.Toolkit.TodoistInboxHelper\Taurit.Toolkit.TodoistInboxHelper.csproj">
       <Project>{7b2467ab-a5b7-4516-a2e4-36a09ee2a55d}</Project>
