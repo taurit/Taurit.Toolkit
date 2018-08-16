@@ -114,7 +114,8 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             // other metrics
             telemetryClient.TrackMetric("NumberOfLabels", allLabels.Count);
             telemetryClient.TrackMetric("NumberOfProjects", allProjects.Count);
-            TrackPersonalScrumMetrics(telemetryClient, allTasks, allProjects);
+            TrackSprintBurndown(telemetryClient, allTasks, allProjects);
+            TrackAllTasksBurndown(telemetryClient, allTasks, allProjects);
 
 
             IReadOnlyList<TodoTask> tasksThatNeedReview =
@@ -140,7 +141,30 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             _changeExecutor.ApplyPlan(plannedActions);
         }
 
-        private void TrackPersonalScrumMetrics([NotNull] TelemetryClient telemetryClient,
+        private void TrackAllTasksBurndown(
+            [NotNull] TelemetryClient telemetryClient,
+            [NotNull] IReadOnlyList<TodoTask> allTasks,
+            [NotNull] IReadOnlyList<Project> allProjects)
+        {
+            if (telemetryClient == null) throw new ArgumentNullException(nameof(telemetryClient));
+            if (allTasks == null) throw new ArgumentNullException(nameof(allTasks));
+            if (allProjects == null) throw new ArgumentNullException(nameof(allProjects));
+
+            var totalTimeInMinutes = 0;
+            foreach (TodoTask task in allTasks.Where(x => x.is_archived == 0 && x.is_deleted == 0 && !x.HasDate))
+            {
+                var eventLengthFinder = new EventLengthFinder(task.content);
+                Int32 taskTimeInMinutes = eventLengthFinder.PatternFound ? eventLengthFinder.TotalMinutes : 0;
+
+                totalTimeInMinutes += taskTimeInMinutes;
+            }
+
+            Double totalTimeInHours = totalTimeInMinutes / 60d;
+            telemetryClient.TrackMetric("WorkLeftInMinutes", totalTimeInMinutes);
+            telemetryClient.TrackMetric("WorkLeftInHours", totalTimeInHours);
+        }
+
+        private void TrackSprintBurndown([NotNull] TelemetryClient telemetryClient,
             [NotNull] IReadOnlyList<TodoTask> allTasks,
             [NotNull] IReadOnlyList<Project> allProjects)
         {
@@ -165,11 +189,14 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             var totalTimeInMinutes = 0;
             foreach (TodoTask task in allTasksInSprint.Where(x => x.is_archived == 0 && x.is_deleted == 0))
             {
-                Int32 taskTimeInMinutes = new EventLengthFinder(task.content).TotalMinutes;
+                var eventLengthFinder = new EventLengthFinder(task.content);
+                Int32 taskTimeInMinutes = eventLengthFinder.PatternFound ? eventLengthFinder.TotalMinutes : 0;
                 totalTimeInMinutes += taskTimeInMinutes;
             }
 
+            Double totalTimeInHours = totalTimeInMinutes / 60d;
             telemetryClient.TrackMetric("WorkLeftInTheCurrentSprintInMinutes", totalTimeInMinutes);
+            telemetryClient.TrackMetric("WorkLeftInTheCurrentSprintInHours", totalTimeInHours);
         }
     }
 }
