@@ -108,8 +108,8 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
                 allTasks.Count(x => !x.HasDate && x.priority == 3));
             telemetryClient.TrackMetric("NumberOfLowPriorityTasksNoDate",
                 allTasks.Count(x => !x.HasDate && x.priority == 2));
-            telemetryClient.TrackMetric("NumberOfUndefinedPriorityTasksNoDate",
-                allTasks.Count(x => !x.HasDate && x.priority == 4));
+            telemetryClient.TrackMetric("NumberOfUndefinedPriorityTasksNoDateFixed",
+                allTasks.Count(x => !x.HasDate && x.priority == 1));
 
             // other metrics
             telemetryClient.TrackMetric("NumberOfLabels", allLabels.Count);
