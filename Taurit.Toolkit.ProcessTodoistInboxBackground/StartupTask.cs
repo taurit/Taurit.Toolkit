@@ -151,17 +151,35 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             if (allProjects == null) throw new ArgumentNullException(nameof(allProjects));
 
             var totalTimeInMinutes = 0;
+            var totalTimeInMinutesHigh = 0;
+            var totalTimeInMinutesMedium = 0;
+            var totalTimeInMinutesLow = 0;
+            var totalTimeInMinutesUndefined = 0;
             foreach (TodoTask task in allTasks.Where(x => x.is_archived == 0 && x.is_deleted == 0 && !x.HasDate))
             {
                 var eventLengthFinder = new EventLengthFinder(task.content);
                 Int32 taskTimeInMinutes = eventLengthFinder.PatternFound ? eventLengthFinder.TotalMinutes : 0;
 
                 totalTimeInMinutes += taskTimeInMinutes;
+                totalTimeInMinutesHigh += (task.priority == 4 ? taskTimeInMinutes : 0);
+                totalTimeInMinutesMedium += (task.priority == 3 ? taskTimeInMinutes : 0);
+                totalTimeInMinutesLow += (task.priority == 2 ? taskTimeInMinutes : 0);
+                totalTimeInMinutesUndefined += (task.priority == 1 ? taskTimeInMinutes : 0);
             }
 
             Double totalTimeInHours = totalTimeInMinutes / 60d;
+            Double totalTimeInHoursHigh = totalTimeInMinutesHigh / 60d;
+            Double totalTimeInHoursMedium = totalTimeInMinutesMedium / 60d;
+            Double totalTimeInHoursLow = totalTimeInMinutesLow / 60d;
+            Double totalTimeInHoursUndefined = totalTimeInMinutesUndefined / 60d;
+
             telemetryClient.TrackMetric("WorkLeftInMinutes", totalTimeInMinutes);
             telemetryClient.TrackMetric("WorkLeftInHours", totalTimeInHours);
+            
+            telemetryClient.TrackMetric("WorkLeftInHoursHigh", totalTimeInHoursHigh);
+            telemetryClient.TrackMetric("WorkLeftInHoursMedium", totalTimeInHoursMedium);
+            telemetryClient.TrackMetric("WorkLeftInHoursLow", totalTimeInHoursLow);
+            telemetryClient.TrackMetric("WorkLeftInHoursUndefined", totalTimeInHoursUndefined);
         }
 
         private void TrackSprintBurndown([NotNull] TelemetryClient telemetryClient,
