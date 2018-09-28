@@ -50,20 +50,26 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             var telemetryClient = new TelemetryClient();
 
             while (true)
-            {
-                if (!IsCurrentHourSleepHour()) // no need to query API too much, eg. at night
+                try
                 {
-                    telemetryClient.TrackTrace("Starting the classification");
-                    TryClassifyAllTasks(_settings, telemetryClient);
-                }
-                else
-                {
-                    telemetryClient.TrackTrace(
-                        $"Skipping the classification due to night hours (it is {DateTime.Now})");
-                }
+                    if (!IsCurrentHourSleepHour()) // no need to query API too much, eg. at night
+                    {
+                        telemetryClient.TrackTrace("Starting the classification");
+                        TryClassifyAllTasks(_settings, telemetryClient);
+                    }
+                    else
+                    {
+                        telemetryClient.TrackTrace(
+                            $"Skipping the classification due to night hours (it is {DateTime.Now})");
+                    }
 
-                Thread.Sleep(TimeSpan.FromHours(1));
-            }
+                    Thread.Sleep(TimeSpan.FromHours(value: 1));
+                }
+                catch (Exception e)
+                {
+                    telemetryClient.TrackException(e);
+                    Thread.Sleep(TimeSpan.FromHours(value: 1));
+                }
 
             // ReSharper disable once FunctionNeverReturns
         }
@@ -161,10 +167,10 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
                 Int32 taskTimeInMinutes = eventLengthFinder.PatternFound ? eventLengthFinder.TotalMinutes : 0;
 
                 totalTimeInMinutes += taskTimeInMinutes;
-                totalTimeInMinutesHigh += (task.priority == 4 ? taskTimeInMinutes : 0);
-                totalTimeInMinutesMedium += (task.priority == 3 ? taskTimeInMinutes : 0);
-                totalTimeInMinutesLow += (task.priority == 2 ? taskTimeInMinutes : 0);
-                totalTimeInMinutesUndefined += (task.priority == 1 ? taskTimeInMinutes : 0);
+                totalTimeInMinutesHigh += task.priority == 4 ? taskTimeInMinutes : 0;
+                totalTimeInMinutesMedium += task.priority == 3 ? taskTimeInMinutes : 0;
+                totalTimeInMinutesLow += task.priority == 2 ? taskTimeInMinutes : 0;
+                totalTimeInMinutesUndefined += task.priority == 1 ? taskTimeInMinutes : 0;
             }
 
             Double totalTimeInHours = totalTimeInMinutes / 60d;
@@ -175,7 +181,7 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 
             telemetryClient.TrackMetric("WorkLeftInMinutes", totalTimeInMinutes);
             telemetryClient.TrackMetric("WorkLeftInHours", totalTimeInHours);
-            
+
             telemetryClient.TrackMetric("WorkLeftInHoursHigh", totalTimeInHoursHigh);
             telemetryClient.TrackMetric("WorkLeftInHoursMedium", totalTimeInHoursMedium);
             telemetryClient.TrackMetric("WorkLeftInHoursLow", totalTimeInHoursLow);
