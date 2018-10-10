@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using RestSharp;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
@@ -10,8 +11,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 {
     public class TodoistCommandService : TodoistApiService, ITodoistCommandService
     {
-        [NotNull]
-        private readonly List<String> _commandsStrings = new List<String>();
+        [NotNull] private readonly List<String> _commandsStrings = new List<String>();
 
         public TodoistCommandService(String apiKey) : base(apiKey)
         {
@@ -27,7 +27,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
             var commandsString = new StringBuilder();
             commandsString.Append("[");
-            commandsString.Append(String.Join(", ", _commandsStrings));
+            commandsString.Append(string.Join(", ", _commandsStrings));
             commandsString.Append("]");
 
             request.AddParameter("commands", commandsString.ToString());
@@ -59,7 +59,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
             Guid commandId = Guid.NewGuid();
             var labels = new List<Int64> {newLabelId.Value};
-            String labelsArrayString = "[" + String.Join(",", labels) + "]";
+            String labelsArrayString = "[" + string.Join(",", labels) + "]";
             String commandString =
                 $"{{\"type\": \"item_update\", \"uuid\": \"{commandId}\", \"args\": {{\"id\": {taskId}, \"labels\": {labelsArrayString}}}}}";
 
@@ -78,15 +78,25 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             _commandsStrings.Add(commandString);
         }
 
-        public void AddUpdateTextCommand(Int64 taskId, string newName)
+        public void AddUpdateTextCommand(Int64 taskId, String newName)
         {
             if (newName is null) return;
 
             Guid commandId = Guid.NewGuid();
-            String commandString =
-                $"{{\"type\": \"item_update\", \"uuid\": \"{commandId}\", \"args\": {{\"id\": {taskId}, \"content\": {newName}}}}}";
 
-            _commandsStrings.Add(commandString);
+            var commandStringAsObject = new
+            {
+                type = "item_update",
+                uuid = $"{commandId}",
+                args = new
+                {
+                    id = taskId,
+                    content = newName
+                }
+            };
+            String commandStringAsJson = JsonConvert.SerializeObject(commandStringAsObject);
+
+            _commandsStrings.Add(commandStringAsJson);
         }
     }
 }
