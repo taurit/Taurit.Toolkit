@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -9,8 +10,8 @@ using Windows.Storage;
 using JetBrains.Annotations;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
+using NaturalLanguageTimespanParser;
 using Newtonsoft.Json;
-using Taurit.Toolkit.ProcessTodoistInbox.Common.Services;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
@@ -27,6 +28,12 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
         [NotNull] private readonly SettingsFileModel _settings;
 
         [NotNull] private readonly TodoistQueryService _todoistQueryService;
+
+        [NotNull] private readonly MultiCultureTimespanParser _mctp = new MultiCultureTimespanParser(new[]
+        {
+            new CultureInfo("pl"),
+            new CultureInfo("en")
+        });
 
         public StartupTask()
         {
@@ -161,10 +168,11 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             var totalTimeInMinutesMedium = 0;
             var totalTimeInMinutesLow = 0;
             var totalTimeInMinutesUndefined = 0;
+            
             foreach (TodoTask task in allTasks.Where(x => x.is_archived == 0 && x.is_deleted == 0 && !x.HasDate))
             {
-                var eventLengthFinder = new EventLengthFinder(task.content);
-                Int32 taskTimeInMinutes = eventLengthFinder.PatternFound ? eventLengthFinder.TotalMinutes : 0;
+                var timespanParseResult = _mctp.Parse(task.content);
+                Int32 taskTimeInMinutes = timespanParseResult.Success ? (Int32)timespanParseResult.Duration.TotalMinutes : 0;
 
                 totalTimeInMinutes += taskTimeInMinutes;
                 totalTimeInMinutesHigh += task.priority == 4 ? taskTimeInMinutes : 0;
@@ -213,8 +221,8 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             var totalTimeInMinutes = 0;
             foreach (TodoTask task in allTasksInSprint.Where(x => x.is_archived == 0 && x.is_deleted == 0))
             {
-                var eventLengthFinder = new EventLengthFinder(task.content);
-                Int32 taskTimeInMinutes = eventLengthFinder.PatternFound ? eventLengthFinder.TotalMinutes : 0;
+                var timespanParseResult = _mctp.Parse(task.content);
+                Int32 taskTimeInMinutes = timespanParseResult.Success ? (Int32)timespanParseResult.Duration.TotalMinutes : 0;
                 totalTimeInMinutes += taskTimeInMinutes;
             }
 

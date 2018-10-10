@@ -138,6 +138,9 @@
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
       <Version>4.5.2</Version>
     </PackageReference>
+    <PackageReference Include="Taurit.Libraries.NaturalLanguageTimespanParser">
+      <Version>0.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Taurit.Toolkit.ProcesTodoistInbox.Common\Taurit.Toolkit.ProcessTodoistInbox.Common.csproj">
