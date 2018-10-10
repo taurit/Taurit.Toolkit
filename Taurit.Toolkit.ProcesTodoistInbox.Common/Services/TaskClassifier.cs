@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
+using NaturalLanguageTimespanParser;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
@@ -15,6 +17,12 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
         [NotNull] private readonly IReadOnlyList<Label> _labels;
 
         [NotNull] private readonly IReadOnlyList<Project> _projects;
+
+        [NotNull] private readonly MultiCultureTimespanParser _mctp = new MultiCultureTimespanParser(new[]
+        {
+            new CultureInfo("pl"),
+            new CultureInfo("en")
+        });
 
         public TaskClassifier([NotNull] IReadOnlyList<ClassificationRule> classificationRules,
             [NotNull] IReadOnlyList<String> classificationRulesInConciseFormat,
@@ -53,10 +61,12 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
                         x.name == matchingRule.Then.moveToProject && x.is_deleted == 0 && x.is_archived == 0);
                     Int32? priorityToSet = matchingRule.Then.setPriority;
 
-                    if (labelToSet != null || projectToSet != null || priorityToSet != null)
+                    string nameToSet = GetUpdatedName(task.content, matchingRule.Then._setDuration);
+
+                    if (labelToSet != null || projectToSet != null || priorityToSet != null || nameToSet != null)
                     {
                         var action = new TaskActionModel(task, labelToSet, matchingRule.Then.setPriority,
-                            projectToSet);
+                            projectToSet, nameToSet);
                         actions.Add(action);
                     }
                 }
@@ -67,6 +77,24 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
             }
 
             return (actions, noActions);
+        }
+
+        private String GetUpdatedName([NotNull] string originalName, [CanBeNull] String durationInNaturalLanguage)
+        {
+            if (durationInNaturalLanguage == null)
+                return null;
+
+            var durationToSet = _mctp.Parse(durationInNaturalLanguage);
+
+            if (!durationToSet.Success)
+                throw new ArgumentException("Configuration contains invalid (not parseable) duration string");
+
+            // if the task already has a duration set, do not set another one
+            var durationAlreadySet = _mctp.Parse(originalName);
+            if (durationAlreadySet.Success) return null;
+
+            // set duration
+            return originalName + $" ({(int) durationToSet.Duration.TotalMinutes} min)";
         }
 
         [NotNull]

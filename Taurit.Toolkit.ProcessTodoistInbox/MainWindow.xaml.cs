@@ -36,7 +36,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox
             UserSettings = JsonConvert.DeserializeObject<SettingsFileModel>(settingsFileContent) ??
                            throw new InvalidOperationException("Settings file as invalid contents");
 
-#if DEBUG
+#if !DEBUG
             _todoistQueryService = new TodoistFakeQueryService();
             _todoistCommandService = new TodoistFakeCommandService();
 #else

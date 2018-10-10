@@ -234,5 +234,64 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             // Assert
             Assert.IsFalse(match);
         }
+
+        [TestMethod]
+        public void RuleOfUndefinedDurationDoesNotMatchWithTaskWithDefinedDuration()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf {duration = "undefined"};
+            var task = new TodoTask {content = "buy milk (10 minutes)"};
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.IsFalse(match);
+        }
+
+        
+        [TestMethod]
+        public void RuleOfUndefinedDurationDoesMatchWithTaskWithUndefinedDuration()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf {duration = "undefined"};
+            var task = new TodoTask {content = "buy milk"};
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.IsTrue(match);
+        }
+
+        
+        [TestMethod]
+        public void RuleOfDefinedDurationDoesMatchWithTaskWithDefinedSameDuration()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf {duration = "about 5 minutes"};
+            var task = new TodoTask {content = "buy milk (5 min)"};
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.IsTrue(match);
+        }
+
+        
+        [TestMethod]
+        public void RuleOfDefinedDurationDoesNotMatchWithTaskWithDefinedDifferentDuration()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf {duration = "about 5 minutes"};
+            var task = new TodoTask {content = "buy milk (7 min)"};
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.IsFalse(match);
+        }
     }
 }

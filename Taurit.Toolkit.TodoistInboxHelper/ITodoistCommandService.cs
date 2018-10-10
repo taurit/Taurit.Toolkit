@@ -1,4 +1,5 @@
 ﻿using System;
+using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 namespace Taurit.Toolkit.TodoistInboxHelper
 {
@@ -8,5 +9,6 @@ namespace Taurit.Toolkit.TodoistInboxHelper
         void AddUpdateProjectCommand(Int64 taskId, Int64 oldProjectId, Int64? newProjectId);
         void AddUpdateLabelCommand(Int64 taskId, Int64? newLabelId);
         void AddUpdatePriorityCommand(Int64 taskId, Int32? newPriority);
+        void AddUpdateTextCommand(Int64 taskId, string newName);
     }
 }

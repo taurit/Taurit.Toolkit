@@ -26,12 +26,15 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
         private String Project => GetStringArgument("projectIs");
 
         [CanBeNull]
+        private String Duration => GetStringArgument("durationIs");
+
+        [CanBeNull]
         private Int32? Priority => GetPriorityArgument("priorityIs");
 
         [NotNull]
         public ClassificationRuleIf ToClassificationRule()
         {
-            return new ClassificationRuleIf(Contains, ContainsWord, StartsWith, Priority, Project, NumLabels);
+            return new ClassificationRuleIf(Contains, ContainsWord, StartsWith, Priority, Project, NumLabels, Duration);
         }
     }
 }

@@ -77,5 +77,16 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
             _commandsStrings.Add(commandString);
         }
+
+        public void AddUpdateTextCommand(Int64 taskId, string newName)
+        {
+            if (newName is null) return;
+
+            Guid commandId = Guid.NewGuid();
+            String commandString =
+                $"{{\"type\": \"item_update\", \"uuid\": \"{commandId}\", \"args\": {{\"id\": {taskId}, \"content\": {newName}}}}}";
+
+            _commandsStrings.Add(commandString);
+        }
     }
 }

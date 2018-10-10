@@ -23,10 +23,12 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
                 Int64? newLabelId = action.Label?.id;
                 Int64 oldProjectId = action.OldProjectId;
                 Int64? newProjectId = action.Project?.id;
+                var newName = action.NewName;
 
                 _todoistCommandService.AddUpdateProjectCommand(taskId, oldProjectId, newProjectId);
                 _todoistCommandService.AddUpdateLabelCommand(taskId, newLabelId);
                 _todoistCommandService.AddUpdatePriorityCommand(taskId, newPriority);
+                _todoistCommandService.AddUpdateTextCommand(taskId, newName);
             }
 
             // ReSharper disable once UnusedVariable - useful for debugging

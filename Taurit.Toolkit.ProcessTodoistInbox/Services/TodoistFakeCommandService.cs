@@ -1,5 +1,6 @@
 ﻿using System;
 using Taurit.Toolkit.TodoistInboxHelper;
+using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Services
 {
@@ -24,6 +25,12 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Services
         /// <inheritdoc />
         public void AddUpdatePriorityCommand(Int64 taskId, Int32? newPriority)
         {
+        }
+        
+        /// <inheritdoc />
+        public void AddUpdateTextCommand(Int64 taskId, String newName)
+        {
+            
         }
     }
 }

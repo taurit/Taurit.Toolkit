@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
 
-namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
 {
     public class ClassificationRuleThen
     {
@@ -13,8 +13,9 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
         {
         }
 
-        public ClassificationRuleThen(Int32? setPriority, String setLabel, String moveToProject)
+        public ClassificationRuleThen(Int32? setPriority, String setLabel, String moveToProject, String setDuration)
         {
+            _setDuration = setDuration;
             this.setPriority = setPriority;
             this.setLabel = setLabel;
             this.moveToProject = moveToProject;
@@ -28,5 +29,8 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
 
         [JsonProperty]
         public String moveToProject { get; set; }
+
+        [JsonProperty]
+        public String _setDuration { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification;
 
 namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
@@ -20,10 +21,14 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
         [CanBeNull]
         private Int32? SetPriority => GetPriorityArgument("setPriority");
 
+        [CanBeNull]
+        private String SetDuration => GetStringArgument("setDuration");
+
+
         [NotNull]
         public ClassificationRuleThen ToClassificationRule()
         {
-            return new ClassificationRuleThen(SetPriority, SetLabel, MoveToProject);
+            return new ClassificationRuleThen(SetPriority, SetLabel, MoveToProject, SetDuration);
         }
     }
 }
