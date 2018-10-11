@@ -110,6 +110,20 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
         }
 
         [TestMethod]
+        public void ContainsWordReturnsTrueEvenWhenMatchIsNotCaseSensitive()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf {containsWord = new[] {"ang"}};
+            var task = new TodoTask {content = "That means the machine can handle demanding, multi-threaded applications, like editing a 360-degree video or rendering 3D effects, as well as lightly threaded applications, like everyday office apps with equal dexterity. Ang (7 min)"};
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.IsTrue(match);
+        }
+
+        [TestMethod]
         public void ContainsWordReturnsFalseWhenWordIsNotFound()
         {
             // Arrange
