@@ -56,6 +56,7 @@
     <Compile Include="ConversionProcessors\ResizeStrategy.cs" />
     <Compile Include="ConversionProcessors\WebpFileQuality.cs" />
     <Compile Include="ConversionSourceFactory.cs" />
+    <Compile Include="Exceptions\InvalidConfigurationException.cs" />
     <Compile Include="FileProcessorBase.cs" />
     <Compile Include="IConversionSource.cs" />
     <Compile Include="ILoggingStrategy.cs" />

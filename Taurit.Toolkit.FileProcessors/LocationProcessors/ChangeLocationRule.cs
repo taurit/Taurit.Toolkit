@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
+using Taurit.Toolkit.FileProcessors.Exceptions;
 
 namespace Taurit.Toolkit.FileProcessors.LocationProcessors
 {
@@ -14,7 +16,7 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
             if (fileNamePattern == null) throw new ArgumentNullException(nameof(fileNamePattern));
 
             if (!Directory.Exists(targetLocation))
-                throw new ArgumentException("Target directory must exist", nameof(targetLocation));
+                throw new InvalidConfigurationException($"Target directory '{targetLocation}' doesn't exist");
 
             _fileNamePattern = new Regex(fileNamePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
             TargetLocation = targetLocation ?? throw new ArgumentNullException(nameof(targetLocation));

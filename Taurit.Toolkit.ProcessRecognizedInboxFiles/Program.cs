@@ -1,4 +1,5 @@
 ﻿using System;
+using Taurit.Toolkit.FileProcessors.Exceptions;
 using Taurit.Toolkit.ProcessRecognizedInboxFiles.Domain;
 
 namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
@@ -16,9 +17,16 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
         /// <param name="args">[0]: config file path (defaults to "config.json")</param>
         private static void Main(String[] args)
         {
-            var workflowConfiguration = new InboxConfiguration(args.Length > 0 ? args[0] : "config.json");
-            var inboxWorkflow = new InboxWorkflow(workflowConfiguration);
-            inboxWorkflow.Start();
+            try
+            {
+                var workflowConfiguration = new InboxConfiguration(args.Length > 0 ? args[0] : "config.json");
+                var inboxWorkflow = new InboxWorkflow(workflowConfiguration);
+                inboxWorkflow.Start();
+            }
+            catch (InvalidConfigurationException e)
+            {
+                Console.WriteLine($"Configuration file is invalid: {e.Message}");
+            }
 
             Console.WriteLine("Done.");
             Console.ReadLine();
