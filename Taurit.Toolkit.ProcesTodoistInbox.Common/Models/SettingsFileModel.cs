@@ -11,6 +11,9 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models
         public String TodoistApiKey { get; set; }
 
         [JsonProperty]
+        public String SnapshotsFolder { get; set; }
+
+        [JsonProperty]
         public List<ClassificationRule> ClassificationRules { get; set; }
 
         [JsonProperty]
