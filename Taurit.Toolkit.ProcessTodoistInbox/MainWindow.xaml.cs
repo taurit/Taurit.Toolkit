@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Services;
 using Taurit.Toolkit.ProcessTodoistInbox.UI.Services;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Services;
@@ -19,18 +20,23 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        [NotNull] private readonly BacklogSnapshotCreator _backlogSnapshotCreator;
         [NotNull] private readonly ChangeExecutor _changeExecutor;
 
         [NotNull] private readonly FilteredTaskAccessor _filteredTaskAccessor;
 
         [NotNull] private readonly ITodoistQueryService _todoistQueryService;
 
-        public MainWindow([NotNull] String settingsFilePath, [NotNull]String snapshotFilePath)
+        public MainWindow([NotNull] String settingsFilePath, [NotNull] String snapshotRootDirectory)
         {
             if (settingsFilePath == null) throw new ArgumentNullException(nameof(settingsFilePath));
-            if (snapshotFilePath == null) throw new ArgumentNullException(nameof(snapshotFilePath));
+            if (snapshotRootDirectory == null) throw new ArgumentNullException(nameof(snapshotRootDirectory));
 
             String settingsFileContent = File.ReadAllText(settingsFilePath);
+
+            _backlogSnapshotCreator = new BacklogSnapshotCreator();
+            String snapshotFilePath = _backlogSnapshotCreator.GetNewestSnapshot(snapshotRootDirectory);
+
             String tasksSnapshotFileContent = File.ReadAllText($"{snapshotFilePath}.tasks");
             String projectsSnapshotFileContent = File.ReadAllText($"{snapshotFilePath}.projects");
             String labelsSnapshotFileContent = File.ReadAllText($"{snapshotFilePath}.labels");
@@ -38,8 +44,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
             UserSettings = JsonConvert.DeserializeObject<SettingsFileModel>(settingsFileContent) ??
                            throw new InvalidOperationException("Settings file as invalid contents");
 
-            _todoistQueryService = new TodoistSnapshotQueryService(tasksSnapshotFileContent, projectsSnapshotFileContent, labelsSnapshotFileContent);
-            
+            _todoistQueryService = new TodoistSnapshotQueryService(tasksSnapshotFileContent,
+                projectsSnapshotFileContent, labelsSnapshotFileContent);
+
             _filteredTaskAccessor = new FilteredTaskAccessor();
             _changeExecutor = new ChangeExecutor(new TodoistFakeCommandService());
 

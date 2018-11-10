@@ -27,6 +27,7 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
     {
         [NotNull] private readonly ChangeExecutor _changeExecutor;
         [NotNull] private readonly FilteredTaskAccessor _filteredTaskAccessor;
+        [NotNull] private readonly BacklogSnapshotCreator _backlogSnapshotCreator;
         [NotNull] private readonly SettingsFileModel _settings;
 
         [NotNull] private readonly TodoistQueryService _todoistQueryService;
@@ -46,6 +47,7 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             _todoistQueryService = new TodoistQueryService(_settings.TodoistApiKey);
             var todoistCommandService = new TodoistCommandService(_settings.TodoistApiKey);
             _filteredTaskAccessor = new FilteredTaskAccessor();
+            _backlogSnapshotCreator = new BacklogSnapshotCreator();
             _changeExecutor = new ChangeExecutor(todoistCommandService);
 
             // needed to avoid "'Cyrillic' is not a supported encoding name." error later in code where a trick is used to compare string in an accent-insensitive way 
@@ -109,7 +111,7 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 
             // analysis: save for the future use
             var snapshotsFolder = Path.Combine(ApplicationData.Current.LocalFolder.Path, _settings.SnapshotsFolder);
-            BacklogSnapshotCreator.CreateSnapshot(snapshotsFolder, DateTime.UtcNow, allTasks, allProjects, allLabels);
+            _backlogSnapshotCreator.CreateSnapshot(snapshotsFolder, DateTime.UtcNow, allTasks, allProjects, allLabels);
 
             // legacy metric: all tasks, categories combined
             telemetryClient.TrackMetric("NumberOfTasks", allTasks.Count);

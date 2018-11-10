@@ -13,7 +13,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
         {
             if (e.Args.Length != 2)
             {
-                MessageBox.Show("Path to the settings file should be passed as an argument 1, and path to the analyzed snapshot as argument 2.");
+                MessageBox.Show("Path to the settings file should be passed as an argument 1, and path to the snapshots root directory as argument 2.");
                 return;
             }
 
@@ -24,9 +24,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
                 return;
             }
 
-            String snapshotFilePath = e.Args[1];
+            String snapshotsRootDirectory = e.Args[1];
 
-            var mainWindow = new MainWindow(settingsFilePath, snapshotFilePath);
+            var mainWindow = new MainWindow(settingsFilePath, snapshotsRootDirectory);
             mainWindow.Show();
         }
     }

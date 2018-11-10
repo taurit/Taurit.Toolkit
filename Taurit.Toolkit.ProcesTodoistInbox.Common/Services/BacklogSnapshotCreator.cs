@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
@@ -12,7 +13,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
     /// </summary>
     public class BacklogSnapshotCreator
     {
-        public static void CreateSnapshot(String snapshotsFolderPath, DateTime snapshotTime,
+        public void CreateSnapshot(String snapshotsFolderPath, DateTime snapshotTime,
             IReadOnlyList<TodoTask> allTasks, IReadOnlyList<Project> allProjects, IReadOnlyList<Label> allLabels)
         {
             String subfolderName = $"{snapshotTime:yyyy-MM-dd}";
@@ -31,6 +32,20 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
             File.WriteAllText(Path.Combine(subfolderPath, fileNameTasks), allTasksAsJson);
             File.WriteAllText(Path.Combine(subfolderPath, fileNameProjects), allProjectsAsJson);
             File.WriteAllText(Path.Combine(subfolderPath, fileNameLabels), allLabelsAsJson);
+        }
+
+        public String GetNewestSnapshot(String snapshotsRootDirectory)
+        {
+            IEnumerable<String> subfolders = Directory.EnumerateDirectories(snapshotsRootDirectory);
+            String newestSubfolder = subfolders.OrderByDescending(x => x).First();
+            IEnumerable<String> files = Directory.EnumerateFiles(newestSubfolder);
+            String newestFile = files.OrderByDescending(x => x).First();
+
+            // remove file extension
+            String newestFileWithoutExtension =
+                newestFile.Replace(".labels", "").Replace(".projects", "").Replace(".tasks", ""); // quick & dirty
+
+            return newestFileWithoutExtension;
         }
     }
 }
