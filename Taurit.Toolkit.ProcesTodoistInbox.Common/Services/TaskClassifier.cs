@@ -71,9 +71,13 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
                     }
                 }
 
-                // also, list tasks that seem like they need classification (they have the default priority, sit in inbox, or have no labels assigned)
-                if (!matchFound && (task.labels.Count == 0 || task.priority == 1 || task.project_name == "Inbox"))
-                    noActions.Add(new TaskNoActionModel(task));
+                // also, list tasks that seem like they need classification (they have the default priority, sit in inbox, or have no labels assigned, or have no estimated time assigned)
+                TimespanParseResult estimatedTimeParseResult = _mctp.Parse(task.content);
+
+                if (!matchFound &&
+                    (task.labels.Count == 0 || task.priority == 1 || task.project_name == "Inbox" || !estimatedTimeParseResult.Success)
+                    )
+                    noActions.Add(new TaskNoActionModel(task, estimatedTimeParseResult.Duration));
             }
 
             return (actions, noActions);

@@ -87,7 +87,7 @@
                     HorizontalAlignment="Center"
                     FontSize="20">
                     <Run>Those tasks will</Run> <Bold>not</Bold>
-                    be changed:</TextBlock>
+                    be changed. Can you think of any rules that would help?</TextBlock>
 
                 <ListView
                     BorderThickness="0"
@@ -100,6 +100,18 @@
                                 Width="750"
                                 DisplayMemberBinding="{Binding Path=Name}"
                                 Header="Name" />
+                            <GridViewColumn
+                                Width="50"
+                                DisplayMemberBinding="{Binding Path=Labels}"
+                                Header="Labels" />
+                            <GridViewColumn
+                                Width="150"
+                                DisplayMemberBinding="{Binding Path=Project}"
+                                Header="Project" />
+                            <GridViewColumn
+                                Width="150"
+                                DisplayMemberBinding="{Binding Path=EstimatedTime}"
+                                Header="Estimated time" />
                         </GridView>
                     </ListView.View>
                 </ListView>
