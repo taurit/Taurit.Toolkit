@@ -26,62 +26,49 @@
             </Style.Resources>
         </Style>
     </Window.Resources>
-    <DockPanel d:DataContext="{d:DesignInstance designData:MainWindowDesignData, IsDesignTimeCreatable=True}" LastChildFill="True">
-        <StackPanel
-            HorizontalAlignment="Center"
-            DockPanel.Dock="Bottom"
-            Orientation="Horizontal">
-            <Button
-                x:Name="ProceedButton"
-                Margin="5"
-                Padding="35,5,35,5"
-                Click="ProceedButton_Click"
-                IsDefault="True">
-                Looks good, proceed!
-            </Button>
+    <UniformGrid d:DataContext="{d:DesignInstance designData:MainWindowDesignData, IsDesignTimeCreatable=True}" Columns="1">
+        <StackPanel>
+            <TextBlock
+                Margin="10"
+                HorizontalAlignment="Center"
+                FontSize="20">
+                Those tasks will be classified
+            </TextBlock>
 
+            <ListView
+                BorderBrush="LightGray"
+                BorderThickness="1"
+                ItemsSource="{Binding PlannedActions}">
+                <ListView.View>
+
+
+                    <GridView>
+                        <GridViewColumn Width="500" Header="Name">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate DataType="models:TaskActionModel">
+                                    <TextBlock Background="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}" Text="{Binding Name}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn
+                            Width="50"
+                            DisplayMemberBinding="{Binding Path=Label.name}"
+                            Header="Label" />
+                        <GridViewColumn
+                            Width="150"
+                            DisplayMemberBinding="{Binding Path=Project.name}"
+                            Header="Project" />
+                        <GridViewColumn
+                            Width="150"
+                            DisplayMemberBinding="{Binding Path=NewName}"
+                            Header="New content" />
+                    </GridView>
+
+                </ListView.View>
+            </ListView>
         </StackPanel>
         <ScrollViewer>
             <StackPanel>
-                <TextBlock
-                    Margin="10"
-                    HorizontalAlignment="Center"
-                    FontSize="20">
-                    Those tasks will be classified
-                </TextBlock>
-
-                <ListView
-                    BorderBrush="LightGray"
-                    BorderThickness="1"
-                    ItemsSource="{Binding PlannedActions}">
-                    <ListView.View>
-
-
-                        <GridView>
-                            <GridViewColumn Width="500" Header="Name">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate DataType="models:TaskActionModel">
-                                        <TextBlock Background="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}" Text="{Binding Name}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn
-                                Width="50"
-                                DisplayMemberBinding="{Binding Path=Label.name}"
-                                Header="Label" />
-                            <GridViewColumn
-                                Width="150"
-                                DisplayMemberBinding="{Binding Path=Project.name}"
-                                Header="Project" />
-                            <GridViewColumn
-                                Width="150"
-                                DisplayMemberBinding="{Binding Path=NewName}"
-                                Header="New content" />
-                        </GridView>
-
-                    </ListView.View>
-                </ListView>
-
                 <TextBlock
                     Margin="10"
                     HorizontalAlignment="Center"
@@ -115,9 +102,8 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-
             </StackPanel>
         </ScrollViewer>
-    </DockPanel>
+    </UniformGrid>
 
 </Window>

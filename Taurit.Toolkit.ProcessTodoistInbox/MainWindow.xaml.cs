@@ -21,7 +21,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
     public partial class MainWindow : Window
     {
         [NotNull] private readonly BacklogSnapshotCreator _backlogSnapshotCreator;
-        [NotNull] private readonly ChangeExecutor _changeExecutor;
 
         [NotNull] private readonly FilteredTaskAccessor _filteredTaskAccessor;
 
@@ -48,8 +47,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
                 projectsSnapshotFileContent, labelsSnapshotFileContent);
 
             _filteredTaskAccessor = new FilteredTaskAccessor();
-            _changeExecutor = new ChangeExecutor(new TodoistFakeCommandService());
-
             InitializeComponent();
         }
 
@@ -81,12 +78,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
 
             foreach (TaskNoActionModel noAction in noActions)
                 SkippedTasks.Add(noAction);
-        }
-
-        private void ProceedButton_Click(Object sender, RoutedEventArgs e)
-        {
-            _changeExecutor.ApplyPlan(PlannedActions);
-            ProceedButton.IsEnabled = false;
         }
     }
 }
