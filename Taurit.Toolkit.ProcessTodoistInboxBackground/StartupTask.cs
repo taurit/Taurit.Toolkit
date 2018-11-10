@@ -109,7 +109,7 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 
             // analysis: save for the future use
             var snapshotsFolder = Path.Combine(ApplicationData.Current.LocalFolder.Path, _settings.SnapshotsFolder);
-            BacklogSnapshotCreator.CreateSnapshot(snapshotsFolder, allTasks, DateTime.UtcNow);
+            BacklogSnapshotCreator.CreateSnapshot(snapshotsFolder, DateTime.UtcNow, allTasks, allProjects, allLabels);
 
             // legacy metric: all tasks, categories combined
             telemetryClient.TrackMetric("NumberOfTasks", allTasks.Count);

@@ -12,19 +12,25 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
     /// </summary>
     public class BacklogSnapshotCreator
     {
-        public static void CreateSnapshot(String snapshotsFolderPath, IReadOnlyList<TodoTask> allTasks,
-            DateTime snapshotTime)
+        public static void CreateSnapshot(String snapshotsFolderPath, DateTime snapshotTime,
+            IReadOnlyList<TodoTask> allTasks, IReadOnlyList<Project> allProjects, IReadOnlyList<Label> allLabels)
         {
             String subfolderName = $"{snapshotTime:yyyy-MM-dd}";
             String subfolderPath = Path.Combine(snapshotsFolderPath, subfolderName);
             Directory.CreateDirectory(subfolderPath);
 
-            String fileName = $"snapshot-{snapshotTime:HH-mm-ss}.json";
-            String fullPath = Path.Combine(subfolderPath, fileName);
-
             String allTasksAsJson = JsonConvert.SerializeObject(allTasks);
+            String allProjectsAsJson = JsonConvert.SerializeObject(allProjects);
+            String allLabelsAsJson = JsonConvert.SerializeObject(allLabels);
 
-            File.WriteAllText(fullPath, allTasksAsJson);
+            String fileNameBase = $"snapshot-{snapshotTime:HH-mm-ss}";
+            String fileNameTasks = $"{fileNameBase}.tasks";
+            String fileNameProjects = $"{fileNameBase}.projects";
+            String fileNameLabels = $"{fileNameBase}.labels";
+
+            File.WriteAllText(Path.Combine(subfolderPath, fileNameTasks), allTasksAsJson);
+            File.WriteAllText(Path.Combine(subfolderPath, fileNameProjects), allProjectsAsJson);
+            File.WriteAllText(Path.Combine(subfolderPath, fileNameLabels), allLabelsAsJson);
         }
     }
 }

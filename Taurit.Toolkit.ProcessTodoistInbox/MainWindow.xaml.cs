@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using Taurit.Toolkit.ProcessTodoistInbox.UI.Services;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
@@ -22,29 +23,25 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
 
         [NotNull] private readonly FilteredTaskAccessor _filteredTaskAccessor;
 
-        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-        [NotNull] private readonly ITodoistCommandService _todoistCommandService;
-
         [NotNull] private readonly ITodoistQueryService _todoistQueryService;
 
-        public MainWindow([NotNull] String settingsFilePath)
+        public MainWindow([NotNull] String settingsFilePath, [NotNull]String snapshotFilePath)
         {
             if (settingsFilePath == null) throw new ArgumentNullException(nameof(settingsFilePath));
+            if (snapshotFilePath == null) throw new ArgumentNullException(nameof(snapshotFilePath));
 
             String settingsFileContent = File.ReadAllText(settingsFilePath);
+            String tasksSnapshotFileContent = File.ReadAllText($"{snapshotFilePath}.tasks");
+            String projectsSnapshotFileContent = File.ReadAllText($"{snapshotFilePath}.projects");
+            String labelsSnapshotFileContent = File.ReadAllText($"{snapshotFilePath}.labels");
+
             UserSettings = JsonConvert.DeserializeObject<SettingsFileModel>(settingsFileContent) ??
                            throw new InvalidOperationException("Settings file as invalid contents");
 
-#if !DEBUG
-            _todoistQueryService = new TodoistFakeQueryService();
-            _todoistCommandService = new TodoistFakeCommandService();
-#else
-            _todoistQueryService = new TodoistQueryService(UserSettings.TodoistApiKey);
-            _todoistCommandService = new TodoistCommandService(UserSettings.TodoistApiKey);
-#endif
-
+            _todoistQueryService = new TodoistSnapshotQueryService(tasksSnapshotFileContent, projectsSnapshotFileContent, labelsSnapshotFileContent);
+            
             _filteredTaskAccessor = new FilteredTaskAccessor();
-            _changeExecutor = new ChangeExecutor(_todoistCommandService);
+            _changeExecutor = new ChangeExecutor(new TodoistFakeCommandService());
 
             InitializeComponent();
         }
