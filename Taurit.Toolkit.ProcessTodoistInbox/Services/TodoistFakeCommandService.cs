@@ -1,8 +1,7 @@
 ﻿using System;
 using Taurit.Toolkit.TodoistInboxHelper;
-using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Services
+namespace Taurit.Toolkit.ProcessTodoistInbox.UI.Services
 {
     public class TodoistFakeCommandService : ITodoistCommandService
     {

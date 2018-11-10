@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Converters
+namespace Taurit.Toolkit.ProcessTodoistInbox.UI.Converters
 {
     public class PriorityToTextConverter : IValueConverter
     {

@@ -45,9 +45,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Taurit.Toolkit.ProcessTodoistInbox\Taurit.Toolkit.ProcessTodoistInbox.csproj">
+    <ProjectReference Include="..\Taurit.Toolkit.ProcessTodoistInbox\Taurit.Toolkit.ProcessTodoistInbox.UI.csproj">
       <Project>{e00546b3-6d43-4bdf-91bb-faea67c79ff4}</Project>
-      <Name>Taurit.Toolkit.ProcessTodoistInbox</Name>
+      <Name>Taurit.Toolkit.ProcessTodoistInbox.UI</Name>
     </ProjectReference>
     <ProjectReference Include="..\Taurit.Toolkit.TodoistInboxHelper\Taurit.Toolkit.TodoistInboxHelper.csproj">
       <Project>{7B2467AB-A5B7-4516-A2E4-36A09EE2A55D}</Project>

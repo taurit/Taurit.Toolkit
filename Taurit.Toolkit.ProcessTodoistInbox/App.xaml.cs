@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox
+namespace Taurit.Toolkit.ProcessTodoistInbox.UI
 {
     /// <summary>
     ///     Interaction logic for App.xaml

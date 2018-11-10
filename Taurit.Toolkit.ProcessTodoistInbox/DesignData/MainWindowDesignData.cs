@@ -4,7 +4,7 @@ using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 #pragma warning disable 618
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.DesignData
+namespace Taurit.Toolkit.ProcessTodoistInbox.UI.DesignData
 {
     public class MainWindowDesignData
     {

@@ -33,7 +33,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.FileProcesso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Taurit.Toolkit.TodoistInboxHelper", "Taurit.Toolkit.TodoistInboxHelper\Taurit.Toolkit.TodoistInboxHelper.csproj", "{7B2467AB-A5B7-4516-A2E4-36A09EE2A55D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInbox", "Taurit.Toolkit.ProcessTodoistInbox\Taurit.Toolkit.ProcessTodoistInbox.csproj", "{E00546B3-6D43-4BDF-91BB-FAEA67C79FF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInbox.UI", "Taurit.Toolkit.ProcessTodoistInbox\Taurit.Toolkit.ProcessTodoistInbox.UI.csproj", "{E00546B3-6D43-4BDF-91BB-FAEA67C79FF4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInbox.Tests", "Taurit.Toolkit.ProcessTodoistInbox.Tests\Taurit.Toolkit.ProcessTodoistInbox.Tests.csproj", "{17AAF849-79C6-4FC9-A771-3EE83A2E94BB}"
 EndProject

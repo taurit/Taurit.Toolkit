@@ -6,13 +6,12 @@ using System.Linq;
 using System.Windows;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using Taurit.Toolkit.ProcessTodoistInbox.Services;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcesTodoistInbox.Common.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox
+namespace Taurit.Toolkit.ProcessTodoistInbox.UI
 {
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
