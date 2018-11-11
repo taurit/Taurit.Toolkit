@@ -56,10 +56,10 @@
         <UniformGrid
             Grid.Row="0"
             Grid.Column="1"
-            Columns="2"
+            Columns="1"
             Rows="1">
 
-            <wpf:CartesianChart
+            <!--<wpf:CartesianChart
                 Background="White"
                 DataTooltip="{x:Null}"
                 Hoverable="True"
@@ -71,7 +71,7 @@
                 <wpf:CartesianChart.AxisX>
                     <wpf:Axis Title="Date" LabelFormatter="{Binding XFormatter}" />
                 </wpf:CartesianChart.AxisX>
-            </wpf:CartesianChart>
+            </wpf:CartesianChart>-->
 
             <wpf:CartesianChart
                 Background="White"
@@ -80,7 +80,10 @@
                 LegendLocation="None"
                 Series="{Binding EstimatedTimeOfTasks}">
                 <wpf:CartesianChart.AxisY>
-                    <wpf:Axis Title="Estimated time of tasks" MinValue="0" />
+                    <wpf:Axis
+                        Title="Estimated time of tasks (h)"
+                        LabelFormatter="{Binding YFormatter}"
+                        MinValue="0" />
                 </wpf:CartesianChart.AxisY>
                 <wpf:CartesianChart.AxisX>
                     <wpf:Axis Title="Date" LabelFormatter="{Binding XFormatter}" />

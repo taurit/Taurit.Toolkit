@@ -37,6 +37,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         }
 
         public Func<Double, String> XFormatter { get; } = value => new DateTime((Int64) value).ToString("yyyy-MM-dd");
+        public Func<Double, String> YFormatter { get; } = value => $"{(Int64) value/60d:0.00}";
 
         public SeriesCollection NumberOfTasks { get; set; } = new SeriesCollection();
         public SeriesCollection EstimatedTimeOfTasks { get; set; } = new SeriesCollection();
