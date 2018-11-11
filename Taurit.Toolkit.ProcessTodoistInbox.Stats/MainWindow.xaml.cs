@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,6 +9,7 @@ using JetBrains.Annotations;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using NaturalLanguageTimespanParser;
 using Taurit.Toolkit.ProcessTodoistInbox.Stats.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Stats.Services;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
@@ -21,6 +23,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
     {
         private readonly StatsAppSettings _settings;
         private readonly SnapshotReader _snapshotReader;
+        [NotNull] private readonly MultiCultureTimespanParser _mctp = new MultiCultureTimespanParser(new[]
+        {
+            new CultureInfo("pl"),
+            new CultureInfo("en")
+        });
 
         public MainWindow()
         {
@@ -32,14 +39,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         public Func<Double, String> XFormatter { get; } = value => new DateTime((Int64) value).ToString("yyyy-MM-dd");
 
         public SeriesCollection NumberOfTasks { get; set; } = new SeriesCollection();
-
-        [NotNull]
-        public ChartValues<DateTimePoint> NumberOfLowPriorityTasks { get; } = new ChartValues<DateTimePoint>();
-
+        public SeriesCollection EstimatedTimeOfTasks { get; set; } = new SeriesCollection();
+        
         private void RadioButtonSetupChanged([CanBeNull] Object sender, [CanBeNull] RoutedEventArgs e)
         {
             if (!IsInitialized) return;
-            NumberOfLowPriorityTasks.Clear();
+            NumberOfTasks.Clear();
+            EstimatedTimeOfTasks.Clear();
 
             TimeSpan selectedTimePeriod = GetSelectedTimePeriod();
             List<SnapshotOnTimeline> snapshotsInSelectedTimePeriod =
@@ -50,20 +56,64 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             var mediumPriorityTasks = new List<DateTimePoint>();
             var highPriorityTasks = new List<DateTimePoint>();
 
+            var etUndefinedPriorityTasks = new List<DateTimePoint>();
+            var etLowPriorityTasks = new List<DateTimePoint>();
+            var etMediumPriorityTasks = new List<DateTimePoint>();
+            var etHighPriorityTasks = new List<DateTimePoint>();
+
             foreach (SnapshotOnTimeline snapshot in snapshotsInSelectedTimePeriod)
             {
                 List<TodoTask> tasksWithNoDueDate = snapshot.AllTasks.Where(x => !x.HasDate).ToList();
-                Int32 numUndefinedPriorityTasks = tasksWithNoDueDate.Count(x => x.priority == 1);
-                Int32 numLowPriorityTasks = tasksWithNoDueDate.Count(x => x.priority == 2);
-                Int32 numMediumPriorityTasks = tasksWithNoDueDate.Count(x => x.priority == 3);
-                Int32 numHighPriorityTasks = tasksWithNoDueDate.Count(x => x.priority == 4);
+                IEnumerable<TodoTask> priority1Tasks = tasksWithNoDueDate.Where(x => x.priority == 1).ToList();
+                IEnumerable<TodoTask> priority2Tasks = tasksWithNoDueDate.Where(x => x.priority == 2).ToList();
+                IEnumerable<TodoTask> priority3Tasks = tasksWithNoDueDate.Where(x => x.priority == 3).ToList();
+                IEnumerable<TodoTask> priority4Tasks = tasksWithNoDueDate.Where(x => x.priority == 4).ToList();
+                
+                Int32 numUndefinedPriorityTasks = priority1Tasks.Count();
+                Int32 numLowPriorityTasks = priority2Tasks.Count();
+                Int32 numMediumPriorityTasks = priority3Tasks.Count();
+                Int32 numHighPriorityTasks = priority4Tasks.Count();
+
+                double estTimeUndefinedPriorityTasks = priority1Tasks.Sum(x => GetTimeInMinutes(x.content));
+                double estTimeLowPriorityTasks = priority2Tasks.Sum(x => GetTimeInMinutes(x.content));
+                double estTimeMediumPriorityTasks = priority3Tasks.Sum(x => GetTimeInMinutes(x.content));
+                double estTimeHighPriorityTasks = priority4Tasks.Sum(x => GetTimeInMinutes(x.content));
 
                 undefinedPriorityTasks.Add(new DateTimePoint(snapshot.Time, numUndefinedPriorityTasks));
                 lowPriorityTasks.Add(new DateTimePoint(snapshot.Time, numLowPriorityTasks));
                 mediumPriorityTasks.Add(new DateTimePoint(snapshot.Time, numMediumPriorityTasks));
                 highPriorityTasks.Add(new DateTimePoint(snapshot.Time, numHighPriorityTasks));
+
+                etUndefinedPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeUndefinedPriorityTasks));
+                etLowPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeLowPriorityTasks));
+                etMediumPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeMediumPriorityTasks));
+                etHighPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeHighPriorityTasks));
             }
 
+            StackedAreaSeries[] numberOfTasksSeries = GetStackedSeries(
+                highPriorityTasks,
+                mediumPriorityTasks,
+                lowPriorityTasks,
+                undefinedPriorityTasks);
+            NumberOfTasks.AddRange(numberOfTasksSeries);
+
+            StackedAreaSeries[] estimatedTimeOfTasksSeries = GetStackedSeries(
+                etHighPriorityTasks,
+                etMediumPriorityTasks,
+                etLowPriorityTasks,
+                etUndefinedPriorityTasks);
+            EstimatedTimeOfTasks.AddRange(estimatedTimeOfTasksSeries);
+        }
+
+        private double GetTimeInMinutes(String content)
+        {
+            var parseResult = _mctp.Parse(content);
+            return parseResult.Success ? parseResult.Duration.TotalMinutes : 0d;
+        }
+
+        private static StackedAreaSeries[] GetStackedSeries(List<DateTimePoint> highPriorityTasks, List<DateTimePoint> mediumPriorityTasks,
+            List<DateTimePoint> lowPriorityTasks, List<DateTimePoint> undefinedPriorityTasks)
+        {
             var series = new[]
             {
                 new StackedAreaSeries
@@ -99,7 +149,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                     //Fill = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
                 }
             };
-            NumberOfTasks.AddRange(series);
+            return series;
         }
 
         private TimeSpan GetSelectedTimePeriod()
