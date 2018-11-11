@@ -1,0 +1,9 @@
+﻿<Application x:Class="Taurit.Toolkit.ProcessTodoistInbox.Stats.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Taurit.Toolkit.ProcessTodoistInbox.Stats"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
