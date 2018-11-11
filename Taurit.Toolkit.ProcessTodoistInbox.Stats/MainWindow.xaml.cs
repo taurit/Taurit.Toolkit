@@ -38,24 +38,18 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
         public Func<Double, String> XFormatter { get; } = value => new DateTime((Int64) value).ToString("yyyy-MM-dd");
         public Func<Double, String> YFormatter { get; } = value => $"{(Int64) value/60d:0.00}";
-
-        public SeriesCollection NumberOfTasks { get; set; } = new SeriesCollection();
+        
         public SeriesCollection EstimatedTimeOfTasks { get; set; } = new SeriesCollection();
         
         private void RadioButtonSetupChanged([CanBeNull] Object sender, [CanBeNull] RoutedEventArgs e)
         {
             if (!IsInitialized) return;
-            NumberOfTasks.Clear();
             EstimatedTimeOfTasks.Clear();
 
             TimeSpan selectedTimePeriod = GetSelectedTimePeriod();
             List<SnapshotOnTimeline> snapshotsInSelectedTimePeriod =
                 _snapshotReader.Read(_settings.SnapshotsRootFolderPath, DateTime.UtcNow, selectedTimePeriod);
 
-            var undefinedPriorityTasks = new List<DateTimePoint>();
-            var lowPriorityTasks = new List<DateTimePoint>();
-            var mediumPriorityTasks = new List<DateTimePoint>();
-            var highPriorityTasks = new List<DateTimePoint>();
 
             var etUndefinedPriorityTasks = new List<DateTimePoint>();
             var etLowPriorityTasks = new List<DateTimePoint>();
@@ -70,33 +64,16 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 IEnumerable<TodoTask> priority3Tasks = tasksWithNoDueDate.Where(x => x.priority == 3).ToList();
                 IEnumerable<TodoTask> priority4Tasks = tasksWithNoDueDate.Where(x => x.priority == 4).ToList();
                 
-                Int32 numUndefinedPriorityTasks = priority1Tasks.Count();
-                Int32 numLowPriorityTasks = priority2Tasks.Count();
-                Int32 numMediumPriorityTasks = priority3Tasks.Count();
-                Int32 numHighPriorityTasks = priority4Tasks.Count();
-
                 double estTimeUndefinedPriorityTasks = priority1Tasks.Sum(x => GetTimeInMinutes(x.content));
                 double estTimeLowPriorityTasks = priority2Tasks.Sum(x => GetTimeInMinutes(x.content));
                 double estTimeMediumPriorityTasks = priority3Tasks.Sum(x => GetTimeInMinutes(x.content));
                 double estTimeHighPriorityTasks = priority4Tasks.Sum(x => GetTimeInMinutes(x.content));
-
-                undefinedPriorityTasks.Add(new DateTimePoint(snapshot.Time, numUndefinedPriorityTasks));
-                lowPriorityTasks.Add(new DateTimePoint(snapshot.Time, numLowPriorityTasks));
-                mediumPriorityTasks.Add(new DateTimePoint(snapshot.Time, numMediumPriorityTasks));
-                highPriorityTasks.Add(new DateTimePoint(snapshot.Time, numHighPriorityTasks));
-
+                
                 etUndefinedPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeUndefinedPriorityTasks));
                 etLowPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeLowPriorityTasks));
                 etMediumPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeMediumPriorityTasks));
                 etHighPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeHighPriorityTasks));
             }
-
-            StackedAreaSeries[] numberOfTasksSeries = GetStackedSeries(
-                highPriorityTasks,
-                mediumPriorityTasks,
-                lowPriorityTasks,
-                undefinedPriorityTasks);
-            NumberOfTasks.AddRange(numberOfTasksSeries);
 
             StackedAreaSeries[] estimatedTimeOfTasksSeries = GetStackedSeries(
                 etHighPriorityTasks,
@@ -123,7 +100,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                     Values = new ChartValues<DateTimePoint>(highPriorityTasks),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush(Color.FromRgb(224, 87, 85))
-                    //Fill = new SolidColorBrush(Color.FromRgb(252, 237, 237)),
                 },
                 new StackedAreaSeries
                 {
@@ -131,15 +107,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                     Values = new ChartValues<DateTimePoint>(mediumPriorityTasks),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush(Color.FromRgb(255, 198, 149))
-                    //Fill = new SolidColorBrush(Color.FromRgb(255, 246, 238)),
                 },
                 new StackedAreaSeries
                 {
                     Title = "Low priority",
                     Values = new ChartValues<DateTimePoint>(lowPriorityTasks),
                     LineSmoothness = 0,
-                    Fill = new SolidColorBrush(Color.FromRgb(255, 232, 174))
-                    //Fill = new SolidColorBrush(Color.FromRgb(255, 251, 241)),
+                    Fill = new SolidColorBrush(Color.FromRgb(227, 231, 231))
                 },
                 new StackedAreaSeries
                 {
@@ -147,7 +121,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                     Values = new ChartValues<DateTimePoint>(undefinedPriorityTasks),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush(Color.FromRgb(235, 235, 235))
-                    //Fill = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
                 }
             };
             return series;
