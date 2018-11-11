@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using JetBrains.Annotations;
 using LiveCharts;
 using LiveCharts.Defaults;
+using Taurit.Toolkit.ProcessTodoistInbox.Stats.Models;
+using Taurit.Toolkit.ProcessTodoistInbox.Stats.Services;
+using Taurit.Toolkit.TodoistInboxHelper;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 {
@@ -14,11 +18,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
     public partial class MainWindow : Window
     {
         private StatsAppSettings _settings;
+        private SnapshotReader _snapshotReader;
 
         public MainWindow()
         {
             InitializeComponent();
             _settings = new StatsAppSettings();
+            _snapshotReader = new SnapshotReader();
         }
 
         public Func<Double, String> XFormatter { get; } = value =>
@@ -35,11 +41,14 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             YData.Clear();
 
             TimeSpan selectedTimePeriod = GetSelectedTimePeriod();
+            List<SnapshotOnTimeline> snapshotsInSelectedTimePeriod =
+                _snapshotReader.Read(_settings.SnapshotsRootFolderPath, DateTime.UtcNow, selectedTimePeriod);
 
+            foreach (var snapshot in snapshotsInSelectedTimePeriod)
+            {
+                YData.Add(new DateTimePoint(snapshot.Time, snapshot.AllTasks.Count));
+            }
 
-            YData.Add(new DateTimePoint(DateTime.Now, 666));
-            YData.Add(new DateTimePoint(DateTime.Now.AddDays(1), 666));
-            YData.Add(new DateTimePoint(DateTime.Now.AddDays(3), 766));
         }
 
         private TimeSpan GetSelectedTimePeriod()
