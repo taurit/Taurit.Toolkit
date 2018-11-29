@@ -49,8 +49,6 @@
                     Tag="99999">
                     All time
                 </RadioButton>
-
-
             </StackPanel>
         </Border>
         <UniformGrid
@@ -59,24 +57,10 @@
             Columns="1"
             Rows="1">
 
-            <!--<wpf:CartesianChart
-                Background="White"
-                DataTooltip="{x:Null}"
-                Hoverable="True"
-                LegendLocation="None"
-                Series="{Binding NumberOfTasks}">
-                <wpf:CartesianChart.AxisY>
-                    <wpf:Axis Title="Number of tasks" MinValue="0" />
-                </wpf:CartesianChart.AxisY>
-                <wpf:CartesianChart.AxisX>
-                    <wpf:Axis Title="Date" LabelFormatter="{Binding XFormatter}" />
-                </wpf:CartesianChart.AxisX>
-            </wpf:CartesianChart>-->
-
             <wpf:CartesianChart
                 Background="White"
                 DataTooltip="{x:Null}"
-                Hoverable="True"
+                Hoverable="False"
                 LegendLocation="None"
                 Series="{Binding EstimatedTimeOfTasks}">
                 <wpf:CartesianChart.AxisY>

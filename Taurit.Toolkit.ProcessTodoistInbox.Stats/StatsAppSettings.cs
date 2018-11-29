@@ -6,6 +6,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
     internal class StatsAppSettings
     {
         public String SnapshotsRootFolderPath =>
-            @"\\192.168.0.122\c$\Data\Users\DefaultAccount\AppData\Local\Packages\Taurit.Toolkit.ProcessTodoistInboxBackground-uwp_yyw9gtkk70966\LocalState\BacklogSnapshots\";
+            @"f:\\Mirrors\\RaspberryPiWindows10\\"; // SSD path is much faster than network path to Raspberry Pi
+
+        /// <summary>
+        /// Only every N-th snapshot will be read, this property's value being N
+        /// </summary>
+        public static Int32 ReductionRatio => 8;
     }
 }
