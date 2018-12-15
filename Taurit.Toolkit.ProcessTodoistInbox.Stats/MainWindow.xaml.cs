@@ -91,14 +91,39 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             IReadOnlyList<Project> allProjects)
         {
             // project names are trimmed because for some reason a non-breaking space ("A0" character) appears sometimes in the production data at the end
-            var ignoredProjects = new HashSet<String>(_settings.ProjectsToIgnoreInStats.Select(x => x.Trim()),
+            var ignoredProjectsNames = new HashSet<String>(_settings.ProjectsToIgnoreInStats.Select(x => x.Trim()),
                 StringComparer.InvariantCultureIgnoreCase);
 
+            List<Project> ignoredProjects = allProjects
+                .Where(x => ignoredProjectsNames.Contains(x.name.Trim()))
+                .ToList();
+
+            
+            // also ignore sub-projects
+            var ignoredSubProjects = new List<Project>();
+            Int32 maxProjectOrder = allProjects.Max(x => x.item_order);
+            var projectsByItemOrder = allProjects.ToLookup(x => x.item_order);
+            foreach (Project ignoredProject in ignoredProjects)
+            {
+                Int32 ignoredProjectOrder = ignoredProject.item_order;
+                for (int i = ignoredProjectOrder + 1; i <= maxProjectOrder; i++)
+                {
+                    var project = projectsByItemOrder[i].Single();
+                    if (project.indent > ignoredProject.indent)
+                    {
+                        ignoredSubProjects.Add(project);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
             // list projects to ignore
-            ImmutableHashSet<Int64> ignoredProjectsIds = allProjects
-                .Where(x => ignoredProjects.Contains(x.name.Trim()))
-                .Select(x => x.id)
-                .ToImmutableHashSet();
+            ImmutableHashSet<Int64> ignoredProjectsIds = ignoredProjects.Select(x => x.id)
+                    .Union(ignoredSubProjects.Select(x => x.id))
+                    .ToImmutableHashSet();
 
             List<TodoTask> relevantTasks = allTasks
                 .Where(x => !x.HasDate)
