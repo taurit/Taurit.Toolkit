@@ -30,9 +30,15 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         public Int32 is_deleted { get; set; }
 
         [JsonProperty]
+        public Int32 is_favorite { get; set; }
+
+        [JsonProperty]
         public String name { get; set; }
 
         [JsonProperty]
         public Int32 item_order { get; set; }
+
+        [JsonProperty]
+        public Int32 color { get; set; }
     }
 }

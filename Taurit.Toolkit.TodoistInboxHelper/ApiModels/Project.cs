@@ -36,9 +36,30 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         public Int32 is_archived { get; set; }
 
         [JsonProperty]
+        public Int32 is_favorite { get; set; }
+
+        [JsonProperty]
         public String name { get; set; }
 
         [JsonProperty]
         public Int32 item_order { get; set; }
+
+        [JsonProperty]
+        public Int32 color { get; set; }
+
+        [JsonProperty]
+        public Int32 indent { get; set; }
+
+        [JsonProperty]
+        public Int32 collapsed { get; set; }
+
+        [JsonProperty]
+        public Int32 shared { get; set; }
+
+        [JsonProperty]
+        public bool inbox_project { get; set; }
+
+        [JsonProperty]
+        public bool team_inbox { get; set; }
     }
 }
