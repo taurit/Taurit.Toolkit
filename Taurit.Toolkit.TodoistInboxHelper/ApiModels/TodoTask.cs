@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 
@@ -8,6 +9,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
     /// <summary>
     ///     Field names as in: https://developer.todoist.com/#items
     /// </summary>
+    [DebuggerDisplay("Task `{content}`")]
     public class TodoTask
     {
         [JsonProperty] public Int32 is_archived;

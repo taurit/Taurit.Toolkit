@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 
@@ -7,6 +8,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
     /// <summary>
     ///     This class is returned to client-side code. Be cautious with name changes.
     /// </summary>
+    [DebuggerDisplay("Label `{name}`")]
     public class Label
     {
         [Obsolete("Should only be used for deserialization")]

@@ -1,16 +1,59 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
+using JetBrains.Annotations;
+using Newtonsoft.Json;
+using ArgumentNullException = System.ArgumentNullException;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 {
-    // todo move to some external configuration file
     internal class StatsAppSettings
     {
-        public String SnapshotsRootFolderPath =>
-            @"f:\\Mirrors\\RaspberryPiWindows10\\"; // SSD path is much faster than network path to Raspberry Pi
+        public StatsAppSettings([NotNull] String settingsFilePath)
+        {
+            if (settingsFilePath == null) throw new ArgumentNullException(nameof(settingsFilePath));
+            if (!File.Exists(settingsFilePath)) throw new ArgumentException("Settings file not found", nameof(settingsFilePath));
+
+            var settingsFileContent = File.ReadAllText(settingsFilePath);
+            var settingsFileModel = JsonConvert.DeserializeObject<SettingsFileModel>(settingsFileContent);
+
+            if (settingsFileModel == null) throw new ArgumentException("Settings file was not in a valid format");
+            if (!Directory.Exists(settingsFileModel.SnapshotsRootFolderPath)) throw new ArgumentException("Settings file contains invalid root folder path");
+            if (settingsFileModel.ProjectsToIgnoreInStats == null) throw new ArgumentException("Settings file contains invalid list of ignored projects");
+            if (settingsFileModel.ReductionRatio <= 0) throw new ArgumentException("Settings file contains invalid ReductionRatio");
+
+            ProjectsToIgnoreInStats = new HashSet<String>(settingsFileModel.ProjectsToIgnoreInStats);
+            SnapshotsRootFolderPath = settingsFileModel.SnapshotsRootFolderPath;
+            ReductionRatio = settingsFileModel.ReductionRatio;
+        }
 
         /// <summary>
-        /// Only every N-th snapshot will be read, this property's value being N
+        ///     Projects that should not be included when counting total estimated backlog time/size (eg. because items in those
+        ///     projects are not refined, not estimated accurately enough or are on hold).
         /// </summary>
-        public static Int32 ReductionRatio => 8;
+        [NotNull]
+        public HashSet<String> ProjectsToIgnoreInStats { get; }
+
+        [NotNull]
+        public String SnapshotsRootFolderPath { get; }
+
+        /// <summary>
+        ///     Only every N-th snapshot will be read, this property's value being N
+        /// </summary>
+        public Int32 ReductionRatio { get; }
+
+        [DataContract]
+        private class SettingsFileModel
+        {
+            [DataMember]
+            public List<String> ProjectsToIgnoreInStats { get; set; }
+
+            [DataMember]
+            public String SnapshotsRootFolderPath { get; set; }
+
+            [DataMember]
+            public Int32 ReductionRatio { get; set; }
+        }
     }
 }

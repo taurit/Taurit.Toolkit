@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 
@@ -16,6 +17,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
     //    "is_archived": 0,
     //    "is_favorite": 0
     //}
+    [DebuggerDisplay("Project `{name}`")]
     public class Project
     {
         [Obsolete("Should only be used for deserialization")]

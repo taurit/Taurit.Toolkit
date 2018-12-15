@@ -10,6 +10,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
 {
     internal class SnapshotReader
     {
+        private readonly StatsAppSettings _settings;
+
+        public SnapshotReader(StatsAppSettings settings)
+        {
+            _settings = settings;
+        }
+
         public List<SnapshotOnTimeline> Read(String snapshotsRootFolderPath, DateTime periodEnd,
             TimeSpan period)
         {
@@ -37,7 +44,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
                     Directory.EnumerateFiles(selectedDateSubfolder, "*.labels").ToList();
 
                 IEnumerable<String> selectedSnapshots =
-                    GetNth(snapshotsInSubfolder, StatsAppSettings.ReductionRatio);
+                    GetNth(snapshotsInSubfolder, _settings.ReductionRatio);
 
                 foreach (String snapshot in selectedSnapshots)
                 {
