@@ -65,6 +65,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Taurit.Toolkit.FileProcesso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInbox.Stats", "Taurit.Toolkit.ProcessTodoistInbox.Stats\Taurit.Toolkit.ProcessTodoistInbox.Stats.csproj", "{3D165C3C-1979-47CB-9CFE-1D8018AB7544}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.TodoistInboxHelper.Tests", "Taurit.Toolkit.TodoistInboxHelper.Tests\Taurit.Toolkit.TodoistInboxHelper.Tests.csproj", "{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -442,6 +444,22 @@ Global
 		{3D165C3C-1979-47CB-9CFE-1D8018AB7544}.Release|x64.Build.0 = Release|Any CPU
 		{3D165C3C-1979-47CB-9CFE-1D8018AB7544}.Release|x86.ActiveCfg = Release|Any CPU
 		{3D165C3C-1979-47CB-9CFE-1D8018AB7544}.Release|x86.Build.0 = Release|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Debug|ARM.Build.0 = Debug|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Debug|x64.Build.0 = Debug|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Debug|x86.Build.0 = Debug|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Release|ARM.ActiveCfg = Release|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Release|ARM.Build.0 = Release|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Release|x64.ActiveCfg = Release|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Release|x64.Build.0 = Release|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Release|x86.ActiveCfg = Release|Any CPU
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -469,6 +487,7 @@ Global
 		{FEC541BD-3459-4DF0-8BFF-0B2A738CA455} = {F7FEF359-F72A-4C44-BB9C-CE3F6C1B5C4C}
 		{EEC6948E-98F1-44F6-9D38-1C2821C77CC9} = {F7FEF359-F72A-4C44-BB9C-CE3F6C1B5C4C}
 		{3D165C3C-1979-47CB-9CFE-1D8018AB7544} = {76770423-D4DF-41CA-9FFC-53C25B9191CA}
+		{C452E2F3-7634-431D-B4E4-16A1BE7F0CC0} = {76770423-D4DF-41CA-9FFC-53C25B9191CA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1422CC07-49FB-48AA-9AFB-25077121E1E1}

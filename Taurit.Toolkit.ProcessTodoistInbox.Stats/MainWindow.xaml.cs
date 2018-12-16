@@ -13,6 +13,7 @@ using LiveCharts.Wpf;
 using NaturalLanguageTimespanParser;
 using Taurit.Toolkit.ProcessTodoistInbox.Stats.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Stats.Services;
+using Taurit.Toolkit.TodoistInboxHelper;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
@@ -30,6 +31,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
         private readonly StatsAppSettings _settings;
         private readonly SnapshotReader _snapshotReader;
+        private readonly TaskDateParser _taskDateParser;
+        private readonly DateTime _tomorrowDateUtc;
 
         public MainWindow([NotNull] String settingsFilePath)
         {
@@ -37,6 +40,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
             _settings = new StatsAppSettings(settingsFilePath);
             _snapshotReader = new SnapshotReader(_settings);
+            _taskDateParser = new TaskDateParser();
+            _tomorrowDateUtc = DateTime.UtcNow.Date.AddDays(1);
         }
 
         public Func<Double, String> XFormatter { get; } = value => new DateTime((Int64) value).ToString("yyyy-MM-dd");
@@ -126,11 +131,17 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                     .ToImmutableHashSet();
 
             List<TodoTask> relevantTasks = allTasks
-                .Where(x => !x.HasDate)
+                .Where(x => !x.HasDate || IsScheduledForTodayOrOverdue(x))
                 .Where(x => !ignoredProjectsIds.Contains(x.project_id))
                 .ToList();
 
             return relevantTasks;
+        }
+
+        private Boolean IsScheduledForTodayOrOverdue(TodoTask todoTask)
+        {
+            var taskDate = _taskDateParser.TryParse(todoTask.due_date_utc);
+            return taskDate.HasValue && taskDate < _tomorrowDateUtc;
         }
 
         private Double GetTimeInMinutes(String content)
