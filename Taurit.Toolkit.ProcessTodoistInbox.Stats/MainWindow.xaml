@@ -49,6 +49,10 @@
                     Tag="99999">
                     All time
                 </RadioButton>
+                <CheckBox
+                    Name="ShowFutureTasks"
+                    Checked="ToggleButton_OnChecked"
+                    Content="Show future tasks" />
             </StackPanel>
         </Border>
         <UniformGrid

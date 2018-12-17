@@ -52,6 +52,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         private void RadioButtonSetupChanged([CanBeNull] Object sender, [CanBeNull] RoutedEventArgs e)
         {
             if (!IsInitialized) return;
+            var showFutureTasks = ShowFutureTasks.IsChecked ?? false;
             EstimatedTimeOfTasks.Clear();
 
             TimeSpan selectedTimePeriod = GetSelectedTimePeriod();
@@ -62,6 +63,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             var etLowPriorityTasks = new List<DateTimePoint>();
             var etMediumPriorityTasks = new List<DateTimePoint>();
             var etHighPriorityTasks = new List<DateTimePoint>();
+            var etFutureTasks = new List<DateTimePoint>();
 
             foreach (SnapshotOnTimeline snapshot in snapshotsInSelectedTimePeriod)
             {
@@ -72,23 +74,29 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 IEnumerable<TodoTask> priority2Tasks = taskToCount.Where(x => x.priority == 2).ToList();
                 IEnumerable<TodoTask> priority3Tasks = taskToCount.Where(x => x.priority == 3).ToList();
                 IEnumerable<TodoTask> priority4Tasks = taskToCount.Where(x => x.priority == 4).ToList();
+                IEnumerable<TodoTask> futureTasks = taskToCount.Where(x => x.priority == 0).ToList();
 
                 Double estTimeUndefinedPriorityTasks = priority1Tasks.Sum(x => GetTimeInMinutes(x.content));
                 Double estTimeLowPriorityTasks = priority2Tasks.Sum(x => GetTimeInMinutes(x.content));
                 Double estTimeMediumPriorityTasks = priority3Tasks.Sum(x => GetTimeInMinutes(x.content));
                 Double estTimeHighPriorityTasks = priority4Tasks.Sum(x => GetTimeInMinutes(x.content));
+                Double estTimeFutureTasks = futureTasks.Sum(x => GetTimeInMinutes(x.content));
 
                 etUndefinedPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeUndefinedPriorityTasks));
                 etLowPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeLowPriorityTasks));
                 etMediumPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeMediumPriorityTasks));
                 etHighPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeHighPriorityTasks));
+                if (showFutureTasks) {
+                    etFutureTasks.Add(new DateTimePoint(snapshot.Time, estTimeFutureTasks));
+                }
             }
 
             StackedAreaSeries[] estimatedTimeOfTasksSeries = GetStackedSeries(
                 etHighPriorityTasks,
                 etMediumPriorityTasks,
                 etLowPriorityTasks,
-                etUndefinedPriorityTasks);
+                etUndefinedPriorityTasks,
+                etFutureTasks);
             EstimatedTimeOfTasks.AddRange(estimatedTimeOfTasksSeries);
         }
 
@@ -102,45 +110,50 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             List<Project> ignoredProjects = allProjects
                 .Where(x => ignoredProjectsNames.Contains(x.name.Trim()))
                 .ToList();
-
             
             // also ignore sub-projects
             var ignoredSubProjects = new List<Project>();
             Int32 maxProjectOrder = allProjects.Max(x => x.item_order);
-            var projectsByItemOrder = allProjects.ToLookup(x => x.item_order);
+            ILookup<Int32, Project> projectsByItemOrder = allProjects.ToLookup(x => x.item_order);
             foreach (Project ignoredProject in ignoredProjects)
             {
                 Int32 ignoredProjectOrder = ignoredProject.item_order;
-                for (int i = ignoredProjectOrder + 1; i <= maxProjectOrder; i++)
+                for (Int32 i = ignoredProjectOrder + 1; i <= maxProjectOrder; i++)
                 {
-                    var project = projectsByItemOrder[i].Single();
+                    Project project = projectsByItemOrder[i].Single();
                     if (project.indent > ignoredProject.indent)
-                    {
                         ignoredSubProjects.Add(project);
-                    }
                     else
-                    {
                         break;
-                    }
                 }
             }
 
             // list projects to ignore
             ImmutableHashSet<Int64> ignoredProjectsIds = ignoredProjects.Select(x => x.id)
-                    .Union(ignoredSubProjects.Select(x => x.id))
-                    .ToImmutableHashSet();
+                .Union(ignoredSubProjects.Select(x => x.id))
+                .ToImmutableHashSet();
+
+            // quick hack: mark future tasks as "priority 0"
+            foreach (TodoTask task in allTasks.Where(IsFutureTaskWithDefinedDueDate)) 
+                task.priority = 0;
 
             List<TodoTask> relevantTasks = allTasks
-                .Where(x => !x.HasDate || IsScheduledForTodayOrOverdue(x))
+                .Where(x => !x.HasDate || x.priority == 0 || IsScheduledForTodayOrOverdue(x))
                 .Where(x => !ignoredProjectsIds.Contains(x.project_id))
                 .ToList();
 
             return relevantTasks;
         }
 
+        private Boolean IsFutureTaskWithDefinedDueDate(TodoTask todoTask)
+        {
+            DateTime? taskDate = _taskDateParser.TryParse(todoTask.due_date_utc);
+            return taskDate.HasValue && taskDate >= _tomorrowDateUtc;
+        }
+
         private Boolean IsScheduledForTodayOrOverdue(TodoTask todoTask)
         {
-            var taskDate = _taskDateParser.TryParse(todoTask.due_date_utc);
+            DateTime? taskDate = _taskDateParser.TryParse(todoTask.due_date_utc);
             return taskDate.HasValue && taskDate < _tomorrowDateUtc;
         }
 
@@ -150,9 +163,12 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             return parseResult.Success ? parseResult.Duration.TotalMinutes : 0d;
         }
 
-        private static StackedAreaSeries[] GetStackedSeries(List<DateTimePoint> highPriorityTasks,
+        private static StackedAreaSeries[] GetStackedSeries(
+            List<DateTimePoint> highPriorityTasks,
             List<DateTimePoint> mediumPriorityTasks,
-            List<DateTimePoint> lowPriorityTasks, List<DateTimePoint> undefinedPriorityTasks)
+            List<DateTimePoint> lowPriorityTasks,
+            List<DateTimePoint> undefinedPriorityTasks,
+            List<DateTimePoint> futureTasks)
         {
             var series = new[]
             {
@@ -179,13 +195,20 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 },
                 new StackedAreaSeries
                 {
+                    Title = "Future",
+                    Values = new ChartValues<DateTimePoint>(futureTasks),
+                    LineSmoothness = 0,
+                    Fill = new SolidColorBrush(Color.FromRgb(255, 204, 255))
+                },
+                new StackedAreaSeries
+                {
                     Title = "Undefined priority",
                     Values = new ChartValues<DateTimePoint>(undefinedPriorityTasks),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush(Color.FromRgb(235, 235, 235))
                 }
             };
-            return series;
+            return series.Where(x => x.Values.Count > 0).ToArray();
         }
 
         private TimeSpan GetSelectedTimePeriod()
@@ -204,6 +227,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
 
         private void MainWindow_OnContentRendered(Object sender, EventArgs e)
+        {
+            RadioButtonSetupChanged(null, null);
+        }
+
+        private void ToggleButton_OnChecked(Object sender, RoutedEventArgs e)
         {
             RadioButtonSetupChanged(null, null);
         }
