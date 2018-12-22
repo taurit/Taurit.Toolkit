@@ -1,5 +1,6 @@
 ﻿using System;
 using Taurit.Toolkit.FileProcessors.Exceptions;
+using Taurit.Toolkit.FileProcessors.LocationProcessors;
 using Taurit.Toolkit.ProcessRecognizedInboxFiles.Domain;
 
 namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
@@ -20,7 +21,9 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
             try
             {
                 var workflowConfiguration = new InboxConfiguration(args.Length > 0 ? args[0] : "config.json");
-                var inboxWorkflow = new InboxWorkflow(workflowConfiguration);
+                var mergeInboxProcessor = new MergeInboxProcessor();
+
+                var inboxWorkflow = new InboxWorkflow(workflowConfiguration, mergeInboxProcessor);
                 inboxWorkflow.Start();
             }
             catch (InvalidConfigurationException e)

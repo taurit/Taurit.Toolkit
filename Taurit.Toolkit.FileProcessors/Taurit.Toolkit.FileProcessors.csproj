@@ -63,6 +63,8 @@
     <Compile Include="LocationProcessors\ChangeLocationProcessor.cs" />
     <Compile Include="LocationProcessors\ChangeLocationRule.cs" />
     <Compile Include="LocationProcessors\ChangeLocationRuleTargetComparer.cs" />
+    <Compile Include="LocationProcessors\IMergeInboxProcessor.cs" />
+    <Compile Include="LocationProcessors\MergeInboxProcessor.cs" />
     <Compile Include="NameProcessors\ChangeOfficeLensNameProcessor.cs" />
     <Compile Include="NameProcessors\NameFormatProviders\INameFormatProvider.cs" />
     <Compile Include="NameProcessors\NameFormatProviders\IsoDateNameFormatProvider.cs" />

@@ -11,9 +11,15 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles.Models
         public String InboxFolder { get; private set; }
 
         [DataMember]
+        public List<String> AlternativeInboxes { get; private set; }
+
+        [DataMember]
         public List<MoveToLocationRule> MoveToLocationRules { get; private set; }
 
         [DataMember]
-        public List<ConvertToWebpRule> ConvertToWebpRules { get; set; }
+        public List<ConvertToWebpRule> ConvertToWebpRules { get; private set; }
+
+        [DataMember]
+        public List<String> FilesToNeverMove { get; private set; }
     }
 }
