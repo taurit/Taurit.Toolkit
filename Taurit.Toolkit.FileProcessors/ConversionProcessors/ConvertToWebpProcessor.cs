@@ -36,7 +36,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
                                            throw new ArgumentNullException(nameof(convertedFileNamingStrategy));
             _conversionStrategy = conversionStrategy ?? throw new ArgumentNullException(nameof(conversionStrategy));
             _loggingStrategy = loggingStrategy;
-            _fileMatchRegex = new Regex(pattern, RegexOptions.Compiled);
+            _fileMatchRegex = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }
 
         /// <inheritdoc />
@@ -74,8 +74,10 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
                 }
             }
             else
+            {
                 _loggingStrategy.LogSuggestion(
                     $"Manual action required: ${webPPath} already exists, remove or rename source file");
+            }
         }
     }
 }
