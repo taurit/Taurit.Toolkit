@@ -52,7 +52,8 @@
                 <CheckBox
                     Name="ShowFutureTasks"
                     Checked="ToggleButton_OnChecked"
-                    Content="Show future tasks" />
+                    Content="Include future tasks planned for the quarter"
+                    IsChecked="True" />
             </StackPanel>
         </Border>
         <UniformGrid
