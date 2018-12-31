@@ -68,7 +68,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             foreach (SnapshotOnTimeline snapshot in snapshotsInSelectedTimePeriod)
             {
                 List<TodoTask> taskToCount =
-                    FilterOutTaskThatShouldNotBeCounted(snapshot.AllTasks, snapshot.AllProjects, snapshot.EndOfQuarter);
+                    FilterOutTaskThatShouldNotBeCounted(snapshot.AllTasks, snapshot.AllProjects, snapshot.Time, snapshot.EndOfQuarter);
 
                 IEnumerable<TodoTask> priority1Tasks = taskToCount.Where(x => x.priority == 1).ToList();
                 IEnumerable<TodoTask> priority2Tasks = taskToCount.Where(x => x.priority == 2).ToList();
@@ -101,7 +101,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         }
 
         private List<TodoTask> FilterOutTaskThatShouldNotBeCounted(IReadOnlyList<TodoTask> allTasks,
-            IReadOnlyList<Project> allProjects, DateTime endOfQuarter)
+            IReadOnlyList<Project> allProjects, DateTime snapshotTime, DateTime endOfQuarter)
         {
             // project names are trimmed because for some reason a non-breaking space ("A0" character) appears sometimes in the production data at the end
             var ignoredProjectsNames = new HashSet<String>(_settings.ProjectsToIgnoreInStats.Select(x => x.Trim()),
@@ -134,7 +134,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 .ToImmutableHashSet();
 
             // quick hack: mark future tasks as "priority 0"
-            foreach (TodoTask task in allTasks.Where(x => IsFutureTaskWithDefinedDueDate(x, endOfQuarter)))
+            foreach (TodoTask task in allTasks.Where(x => IsFutureTaskWithDefinedDueDate(x, snapshotTime, endOfQuarter)))
                 task.priority = 0;
 
             List<TodoTask> relevantTasks = allTasks
@@ -145,10 +145,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             return relevantTasks;
         }
 
-        private Boolean IsFutureTaskWithDefinedDueDate(TodoTask todoTask, DateTime endOfQuarter)
+        private Boolean IsFutureTaskWithDefinedDueDate(TodoTask todoTask, DateTime snapshotDate, DateTime endOfQuarter)
         {
             DateTime? taskDate = _taskDateParser.TryParse(todoTask.due_date_utc);
-            return taskDate.HasValue && taskDate >= _tomorrowDateUtc && taskDate <= endOfQuarter;
+            return taskDate.HasValue && taskDate >= snapshotDate && taskDate <= endOfQuarter;
         }
 
         private Boolean IsScheduledForTodayOrOverdue(TodoTask todoTask)
