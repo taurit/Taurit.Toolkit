@@ -10,6 +10,10 @@ namespace Taurit.Toolkit.FileProcessors.NameProcessors.NameFormatProviders
             Int32 monthParsed = Convert.ToInt32(month);
             Int32 dayParsed = Convert.ToInt32(day);
 
+            // workaround to also support "yy" format (and not "yyyy" which is found in most regex patterns)
+            if (yearParsed < 100) year = 2000 + year;
+
+
             String newFileName = $"{yearParsed}-{monthParsed:00}-{dayParsed:00} {description}";
             return newFileName;
         }

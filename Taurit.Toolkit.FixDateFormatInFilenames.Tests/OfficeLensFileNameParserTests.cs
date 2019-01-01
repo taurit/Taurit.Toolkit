@@ -48,5 +48,25 @@ namespace Taurit.Toolkit.FixDateFormatInFilenames.Tests
             Assert.Equal("01", match.Groups["day"].Value);
             Assert.Equal("dm pko bp 3.jpg", match.Groups["description"].Value);
         }
+
+        [Fact]
+        public void HpScanToolFilenameFormatIsRecognized()
+        {
+            // Arrange
+            IFileNameFormatProvider formatProviderMock = new Mock<IFileNameFormatProvider>().Object;
+            Debug.Assert(formatProviderMock != null);
+            var sut = new ChangeOfficeLensNameProcessor(formatProviderMock);
+
+            // Act
+            Match match = sut.GetMatch("514316-080118 BUW nauka Content Security Policy v2 features notatki 1.jpg");
+
+            // Assert
+            Assert.NotNull(match);
+            Assert.True(match.Success);
+            Assert.Equal("18", match.Groups["year"].Value);
+            Assert.Equal("01", match.Groups["month"].Value);
+            Assert.Equal("08", match.Groups["day"].Value);
+            Assert.Equal("BUW nauka Content Security Policy v2 features notatki 1.jpg", match.Groups["description"].Value);
+        }
     }
 }
