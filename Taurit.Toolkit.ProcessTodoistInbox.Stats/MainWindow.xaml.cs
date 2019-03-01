@@ -177,21 +177,21 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                     Title = "High priority",
                     Values = new ChartValues<DateTimePoint>(highPriorityTasks),
                     LineSmoothness = 0,
-                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FF95190c"))
+                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FFDE4C4A"))
                 },
                 new StackedAreaSeries
                 {
                     Title = "Medium priority",
                     Values = new ChartValues<DateTimePoint>(mediumPriorityTasks),
                     LineSmoothness = 0,
-                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FFe8bb68"))
+                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FFF49C18")),
                 },
                 new StackedAreaSeries
                 {
                     Title = "Low priority",
                     Values = new ChartValues<DateTimePoint>(lowPriorityTasks),
                     LineSmoothness = 0,
-                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FF7cb8b8"))
+                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FF4073D6"))
                 },
                 new StackedAreaSeries
                 {
