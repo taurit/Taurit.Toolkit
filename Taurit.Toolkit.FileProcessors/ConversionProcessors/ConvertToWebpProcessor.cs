@@ -47,6 +47,13 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
             var fileInfo = new FileInfo(filePath);
             Int64 originalFileSize = fileInfo.Length;
 
+            if (originalFileSize == 0)
+            {
+                _loggingStrategy.LogSuggestion(
+                    $"The following file has size '0' and could not be converted: {fileInfo.Name}");
+                return;
+            }
+
             String webPPath = _convertedFileNamingStrategy.GetConvertedFilePath(filePath);
 
             // do not replace existing converted files.
