@@ -14,6 +14,9 @@ using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
 {
+    /// <summary>
+    /// Represents part of the classification rule that defines the condition
+    /// </summary>
     public class ClassificationRuleIf
     {
         [NotNull] private static readonly MultiCultureTimespanParser mctp = new MultiCultureTimespanParser(new[]

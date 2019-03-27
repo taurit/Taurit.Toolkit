@@ -8,7 +8,6 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Services;
-using Taurit.Toolkit.ProcessTodoistInbox.UI.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
@@ -25,7 +24,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
 
         [NotNull] private readonly ITodoistQueryService _todoistQueryService;
 
-        public MainWindow([NotNull] String settingsFilePath, [NotNull] String snapshotRootDirectory)
+        public MainWindow(
+            [NotNull] String settingsFilePath,
+            [NotNull] String snapshotRootDirectory
+            )
         {
             if (settingsFilePath == null) throw new ArgumentNullException(nameof(settingsFilePath));
             if (snapshotRootDirectory == null) throw new ArgumentNullException(nameof(snapshotRootDirectory));
@@ -68,8 +70,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
             IReadOnlyList<TodoTask> tasksThatNeedReview = _filteredTaskAccessor.GetNotReviewedTasks(allTasks);
             var alternativeInboxes = UserSettings.AlternativeInboxes;
 
-            var taskClassifier = new TaskClassifier(UserSettings.ClassificationRules,
-                UserSettings.ClassificationRulesConcise, allLabels, allProjects, alternativeInboxes);
+            var taskClassifier = new TaskClassifier(UserSettings.ClassificationRulesConcise, allLabels, allProjects, alternativeInboxes);
             (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
                 taskClassifier.Classify(tasksThatNeedReview);
 

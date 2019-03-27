@@ -25,22 +25,20 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
 
         [NotNull] private readonly IReadOnlyList<Project> _projects;
 
-        public TaskClassifier([NotNull] IReadOnlyList<ClassificationRule> classificationRules,
+        public TaskClassifier(
             [NotNull] IReadOnlyList<String> classificationRulesInConciseFormat,
             [NotNull] IReadOnlyList<Label> labels,
             [NotNull] IReadOnlyList<Project> projects,
             [NotNull] List<String> alternativeInboxes)
         {
-            if (classificationRules == null) throw new ArgumentNullException(nameof(classificationRules));
             if (classificationRulesInConciseFormat == null)
                 throw new ArgumentNullException(nameof(classificationRulesInConciseFormat));
             if (alternativeInboxes == null) throw new ArgumentNullException(nameof(alternativeInboxes));
 
             IClassificationRulesFormatConverter formatConverter = new ClassificationRulesFormatConverter();
-            _classificationRules = classificationRules.ToList();
-            IEnumerable<ClassificationRule> convertedConciseRules =
-                classificationRulesInConciseFormat.Select(x => formatConverter.Convert(x));
-            _classificationRules.AddRange(convertedConciseRules);
+            
+            _classificationRules =
+                classificationRulesInConciseFormat.Select(x => formatConverter.Convert(x)).ToList();
 
             // support for alternative inboxes
             List<ClassificationRule> rulesForInbox = _classificationRules.Where(x => x.If.project == "Inbox").ToList();

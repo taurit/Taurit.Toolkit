@@ -5,6 +5,9 @@ using Newtonsoft.Json;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
 {
+    /// <summary>
+    /// Represents part of the classification rule that defines the action
+    /// </summary>
     public class ClassificationRuleThen
     {
         [JsonConstructor]

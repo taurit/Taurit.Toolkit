@@ -143,7 +143,6 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             telemetryClient.TrackMetric("NumberOfTasksChosenForClassification", allProjects.Count);
 
             var taskClassifier = new TaskClassifier(
-                settings.ClassificationRules,
                 settings.ClassificationRulesConcise,
                 allLabels,
                 allProjects,
@@ -156,7 +155,6 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 
             foreach (TaskActionModel action in actions.OrderByDescending(x => x.Priority))
                 plannedActions.Add(action);
-
 
             // Apply actions
             _changeExecutor.ApplyPlan(plannedActions);

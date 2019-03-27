@@ -17,9 +17,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models
         public List<String> AlternativeInboxes { get; set; }
 
         [JsonProperty]
-        public List<ClassificationRule> ClassificationRules { get; set; }
-
-        [JsonProperty]
         public List<String> ClassificationRulesConcise { get; set; }
 
         [JsonProperty]

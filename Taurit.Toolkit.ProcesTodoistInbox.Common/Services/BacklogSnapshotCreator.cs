@@ -42,8 +42,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
             String newestFile = files.OrderByDescending(x => x).First();
 
             // remove file extension
-            String newestFileWithoutExtension =
-                newestFile.Replace(".labels", "").Replace(".projects", "").Replace(".tasks", ""); // quick & dirty
+            String newestFileWithoutExtension = newestFile
+                    .Replace(".labels", "")
+                    .Replace(".projects", "")
+                    .Replace(".tasks", ""); // quick & dirty
 
             return newestFileWithoutExtension;
         }
