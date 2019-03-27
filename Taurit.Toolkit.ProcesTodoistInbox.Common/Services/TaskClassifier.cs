@@ -12,7 +12,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
 {
     public class TaskClassifier
     {
-        [NotNull] private readonly List<String> _alternativeInboxes;
         [NotNull] private readonly List<ClassificationRule> _classificationRules;
 
         [NotNull] private readonly IReadOnlyList<Label> _labels;
@@ -56,7 +55,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
 
             _labels = labels ?? throw new ArgumentNullException(nameof(labels));
             _projects = projects ?? throw new ArgumentNullException(nameof(projects));
-            _alternativeInboxes = alternativeInboxes;
         }
 
         public (IReadOnlyList<TaskActionModel>, IReadOnlyList<TaskNoActionModel>) Classify(

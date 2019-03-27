@@ -4,6 +4,19 @@ using JetBrains.Annotations;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
 {
+    /// <summary>
+    ///     Represents part of a rule string (in a concise format).
+    /// </summary>
+    /// <example>
+    ///     Full rule:
+    ///     * "if startsWith(anki|nauka|ang|learn|edu|experiment) and numLabelsIs(0) then setLabel(nauka)"
+    ///     ---
+    ///     The "if" part (<see cref="IfPart" />):
+    ///     * if startsWith(anki|nauka|ang|learn|edu|experiment) and numLabelsIs(0)
+    ///     ---
+    ///     The "then" part (<see cref="ThenPart" />):
+    ///     * setLabel(nauka)
+    /// </example>
     internal class QueryPart
     {
         private readonly String[] _arraySplitCharacter = {"|"};
@@ -13,7 +26,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
         {
             _userProvidedString = userProvidedString ?? throw new ArgumentNullException(nameof(userProvidedString));
         }
-
 
         [CanBeNull]
         protected String GetStringArgument([NotNull] String key)
