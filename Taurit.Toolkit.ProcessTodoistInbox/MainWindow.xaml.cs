@@ -67,9 +67,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
             IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjects.ToLookup(x => x.id));
             IReadOnlyList<TodoTask> tasksThatNeedReview = _filteredTaskAccessor.GetNotReviewedTasks(allTasks);
+            var alternativeInboxes = UserSettings.AlternativeInboxes;
 
             var taskClassifier = new TaskClassifier(UserSettings.ClassificationRules,
-                UserSettings.ClassificationRulesConcise, allLabels, allProjects);
+                UserSettings.ClassificationRulesConcise, allLabels, allProjects, alternativeInboxes);
             (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
                 taskClassifier.Classify(tasksThatNeedReview);
 

@@ -14,6 +14,9 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models
         public String SnapshotsFolder { get; set; }
 
         [JsonProperty]
+        public List<String> AlternativeInboxes { get; set; }
+
+        [JsonProperty]
         public List<ClassificationRule> ClassificationRules { get; set; }
 
         [JsonProperty]

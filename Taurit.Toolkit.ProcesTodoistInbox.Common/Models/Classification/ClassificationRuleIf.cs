@@ -16,6 +16,12 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
 {
     public class ClassificationRuleIf
     {
+        [NotNull] private static readonly MultiCultureTimespanParser mctp = new MultiCultureTimespanParser(new[]
+        {
+            new CultureInfo("pl"),
+            new CultureInfo("en")
+        });
+
         [JsonConstructor]
         [Obsolete("Use only if you are JSON deserializer")]
         public ClassificationRuleIf()
@@ -28,7 +34,7 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
             Int32? priority,
             String project,
             Int32? numLabels,
-            string duration)
+            String duration)
         {
             this.contains = contains;
             this.containsWord = containsWord;
@@ -38,7 +44,6 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
             this.numLabels = numLabels;
             this.duration = duration;
         }
-
 
         [CanBeNull]
         [JsonProperty]
@@ -68,6 +73,23 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
         [JsonProperty]
         public String duration { get; set; }
 
+        /// <summary>
+        ///     This method is to support the "Alternative inboxes" feature, where a rule targeting "Inbox" project in the "If"
+        ///     part will automatically be ran on "Alternative inboxes" as well
+        /// </summary>
+        public ClassificationRuleIf GetCopyWithChangedProjectName(String newProjectName)
+        {
+            return new ClassificationRuleIf(
+                contains,
+                containsWord,
+                startsWith,
+                priority,
+                newProjectName,
+                numLabels,
+                duration
+            );
+        }
+
 
         public Boolean Matches(TodoTask task)
         {
@@ -82,22 +104,17 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
 
             return match;
         }
-        [NotNull] private static MultiCultureTimespanParser mctp = new MultiCultureTimespanParser(new[]
-        {
-            new CultureInfo("pl"),
-            new CultureInfo("en")
-        });
 
         private Boolean DoesTaskDurationMatch(TodoTask task)
         {
             if (duration is null) return true;
 
-            var parseResultContent = mctp.Parse(task.content);
-            var parseResultRule = mctp.Parse(duration);
+            TimespanParseResult parseResultContent = mctp.Parse(task.content);
+            TimespanParseResult parseResultRule = mctp.Parse(duration);
 
             if (parseResultRule.Success == false && parseResultContent.Success == false) return true;
-            if (parseResultRule.Success == true && parseResultContent.Success == false) return false;
-            if (parseResultRule.Success == false && parseResultContent.Success == true) return false;
+            if (parseResultRule.Success && parseResultContent.Success == false) return false;
+            if (parseResultRule.Success == false && parseResultContent.Success) return false;
 
             return parseResultContent.Duration == parseResultRule.Duration;
         }
@@ -113,7 +130,7 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
         {
             if (project == null) return true;
 
-            return String.Equals(task.project_name, project, StringComparison.InvariantCultureIgnoreCase);
+            return string.Equals(task.project_name, project, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private Boolean DoesTaskPriorityMatch(TodoTask task)
@@ -133,7 +150,7 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
             {
                 String keywordWithoutDiacritics = keyword.RemoveDiacritics();
                 String firstWord = contentWords.First().RemoveDiacritics();
-                if (String.Equals(firstWord, keywordWithoutDiacritics, StringComparison.InvariantCultureIgnoreCase))
+                if (string.Equals(firstWord, keywordWithoutDiacritics, StringComparison.InvariantCultureIgnoreCase))
                     return true;
             }
 
@@ -149,7 +166,7 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
             foreach (String keyword in containsWord)
             {
                 String keywordWithoutDiacritics = keyword.RemoveDiacritics();
-                if (contentWords.Any(x => String.Equals(x.RemoveDiacritics(), keywordWithoutDiacritics,
+                if (contentWords.Any(x => string.Equals(x.RemoveDiacritics(), keywordWithoutDiacritics,
                     StringComparison.InvariantCultureIgnoreCase)))
                     return true;
             }
@@ -176,8 +193,8 @@ namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
 
         internal String[] SplitIntoWords(String phrase)
         {
-            phrase = phrase ?? String.Empty;
-            Char[] punctuation = phrase.Where(Char.IsPunctuation).Distinct().ToArray();
+            phrase = phrase ?? string.Empty;
+            Char[] punctuation = phrase.Where(char.IsPunctuation).Distinct().ToArray();
             IEnumerable<String> words = phrase.Split().Select(x => x.Trim(punctuation));
             return words.ToArray();
         }

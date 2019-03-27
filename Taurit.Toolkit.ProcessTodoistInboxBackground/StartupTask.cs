@@ -88,7 +88,7 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
         private static Boolean IsCurrentHourSleepHour()
         {
             Int32 currentHour = DateTime.Now.Hour;
-            return currentHour > 22 || currentHour < 7;
+            return currentHour > 23 || currentHour < 7;
         }
 
 
@@ -147,7 +147,8 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
                 settings.ClassificationRules,
                 settings.ClassificationRulesConcise,
                 allLabels,
-                allProjects
+                allProjects,
+                settings.AlternativeInboxes
             );
             (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
                 taskClassifier.Classify(tasksThatNeedReview);
