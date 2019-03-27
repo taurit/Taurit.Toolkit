@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 #pragma warning disable 618

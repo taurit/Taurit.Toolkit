@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification;
 
-namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models
 {
     public class SettingsFileModel
     {

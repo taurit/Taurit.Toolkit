@@ -12,7 +12,7 @@ using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 // ReSharper disable ReplaceWithSingleAssignment.True
 
-namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
 {
     public class ClassificationRuleIf
     {

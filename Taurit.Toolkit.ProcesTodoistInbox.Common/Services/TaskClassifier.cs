@@ -4,11 +4,11 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using NaturalLanguageTimespanParser;
-using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
-using Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
-namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
 {
     public class TaskClassifier
     {

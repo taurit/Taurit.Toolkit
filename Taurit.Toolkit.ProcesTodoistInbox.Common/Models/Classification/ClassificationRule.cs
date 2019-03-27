@@ -1,9 +1,8 @@
 ﻿using System;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification;
 
-namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models.Classification
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
 {
     public class ClassificationRule
     {

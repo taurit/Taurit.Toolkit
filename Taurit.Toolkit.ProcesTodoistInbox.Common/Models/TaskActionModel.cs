@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
-namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Models
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models
 {
     public class TaskActionModel
     {

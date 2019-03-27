@@ -3,7 +3,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
-namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
 {
     /// <summary>
     ///     Allows to access pre-filtered sets of Todoist tasks.

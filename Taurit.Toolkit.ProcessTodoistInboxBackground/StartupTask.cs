@@ -13,9 +13,8 @@ using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using NaturalLanguageTimespanParser;
 using Newtonsoft.Json;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Services;
-using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
-using Taurit.Toolkit.ProcesTodoistInbox.Common.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 

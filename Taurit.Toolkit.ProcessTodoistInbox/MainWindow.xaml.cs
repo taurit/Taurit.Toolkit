@@ -6,10 +6,9 @@ using System.Linq;
 using System.Windows;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Services;
 using Taurit.Toolkit.ProcessTodoistInbox.UI.Services;
-using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
-using Taurit.Toolkit.ProcesTodoistInbox.Common.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 

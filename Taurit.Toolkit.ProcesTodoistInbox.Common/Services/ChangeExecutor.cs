@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Taurit.Toolkit.ProcesTodoistInbox.Common.Models;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
 using Taurit.Toolkit.TodoistInboxHelper;
 
-namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
 {
     public sealed class ChangeExecutor
     {

@@ -7,7 +7,7 @@
     xmlns:designData="clr-namespace:Taurit.Toolkit.ProcessTodoistInbox.UI.DesignData"
     xmlns:local="clr-namespace:Taurit.Toolkit.ProcessTodoistInbox"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="clr-namespace:Taurit.Toolkit.ProcesTodoistInbox.Common.Models;assembly=Taurit.Toolkit.ProcessTodoistInbox.Common"
+    xmlns:models="clr-namespace:Taurit.Toolkit.ProcessTodoistInbox.Common.Models;assembly=Taurit.Toolkit.ProcessTodoistInbox.Common"
     Title="Process Todoist Inbox"
     Width="800"
     Height="450"

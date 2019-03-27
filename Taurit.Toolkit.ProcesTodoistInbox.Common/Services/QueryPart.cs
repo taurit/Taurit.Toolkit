@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 
-namespace Taurit.Toolkit.ProcesTodoistInbox.Common.Services
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
 {
     internal class QueryPart
     {
