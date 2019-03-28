@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 using JetBrains.Annotations;
 using LiveCharts;
 using LiveCharts.Defaults;
@@ -36,6 +38,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
         public MainWindow([NotNull] String settingsFilePath)
         {
+            WindowOpenedTime = DateTime.UtcNow;
             InitializeComponent();
 
             _settings = new StatsAppSettings(settingsFilePath);
@@ -49,10 +52,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
         public SeriesCollection EstimatedTimeOfTasks { get; set; } = new SeriesCollection();
 
+        public DateTime WindowOpenedTime { get; set; }
+        public DateTime RenderFinishedTime { get; set; }
+
         private void RadioButtonSetupChanged([CanBeNull] Object sender, [CanBeNull] RoutedEventArgs e)
         {
             if (!IsInitialized) return;
-            var showFutureTasks = ShowFutureTasks.IsChecked ?? false;
+            Boolean showFutureTasks = ShowFutureTasks.IsChecked ?? false;
             EstimatedTimeOfTasks.Clear();
 
             TimeSpan selectedTimePeriod = GetSelectedTimePeriod();
@@ -68,7 +74,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             foreach (SnapshotOnTimeline snapshot in snapshotsInSelectedTimePeriod)
             {
                 List<TodoTask> taskToCount =
-                    FilterOutTaskThatShouldNotBeCounted(snapshot.AllTasks, snapshot.AllProjects, snapshot.Time, snapshot.EndOfQuarter);
+                    FilterOutTaskThatShouldNotBeCounted(snapshot.AllTasks, snapshot.AllProjects, snapshot.Time,
+                        snapshot.EndOfQuarter);
 
                 IEnumerable<TodoTask> priority1Tasks = taskToCount.Where(x => x.priority == 1).ToList();
                 IEnumerable<TodoTask> priority2Tasks = taskToCount.Where(x => x.priority == 2).ToList();
@@ -86,9 +93,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 etLowPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeLowPriorityTasks));
                 etMediumPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeMediumPriorityTasks));
                 etHighPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeHighPriorityTasks));
-                if (showFutureTasks) {
-                    etFutureTasks.Add(new DateTimePoint(snapshot.Time, estTimeFutureTasks));
-                }
+                if (showFutureTasks) etFutureTasks.Add(new DateTimePoint(snapshot.Time, estTimeFutureTasks));
             }
 
             StackedAreaSeries[] estimatedTimeOfTasksSeries = GetStackedSeries(
@@ -110,7 +115,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             List<Project> ignoredProjects = allProjects
                 .Where(x => ignoredProjectsNames.Contains(x.name.Trim()))
                 .ToList();
-            
+
             // also ignore sub-projects
             var ignoredSubProjects = new List<Project>();
             Int32 maxProjectOrder = allProjects.Max(x => x.item_order);
@@ -134,7 +139,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 .ToImmutableHashSet();
 
             // quick hack: mark future tasks as "priority 0"
-            foreach (TodoTask task in allTasks.Where(x => IsFutureTaskWithDefinedDueDate(x, snapshotTime, endOfQuarter)))
+            foreach (TodoTask task in allTasks.Where(x => IsFutureTaskWithDefinedDueDate(x, snapshotTime, endOfQuarter))
+            )
                 task.priority = 0;
 
             List<TodoTask> relevantTasks = allTasks
@@ -184,7 +190,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                     Title = "Medium priority",
                     Values = new ChartValues<DateTimePoint>(mediumPriorityTasks),
                     LineSmoothness = 0,
-                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FFF49C18")),
+                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FFF49C18"))
                 },
                 new StackedAreaSeries
                 {
@@ -206,10 +212,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                     Values = new ChartValues<DateTimePoint>(undefinedPriorityTasks),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush(Color.FromRgb(235, 235, 235))
-                },
+                }
             };
             return series.Where(x => x.Values.Count > 0)
-                .ToArray(); 
+                .ToArray();
         }
 
         private TimeSpan GetSelectedTimePeriod()
@@ -235,6 +241,21 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         private void ToggleButton_OnChecked(Object sender, RoutedEventArgs e)
         {
             RadioButtonSetupChanged(null, null);
+        }
+
+        private void Window_Loaded(Object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                DateTime renderFinishedTime = DateTime.UtcNow;
+                RenderFinishedTime = renderFinishedTime;
+
+                // how long did it take to render the window completely?
+                TimeSpan timeDifference = RenderFinishedTime.Subtract(WindowOpenedTime);
+
+                RenderTimeString.Text = $"{timeDifference.TotalMilliseconds} ms";
+                Trace.WriteLine("DONE!", "Rendering");
+            }), DispatcherPriority.ContextIdle, null);
         }
     }
 }

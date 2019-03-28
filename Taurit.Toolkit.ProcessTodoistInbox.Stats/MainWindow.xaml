@@ -11,12 +11,17 @@
     Height="450"
     ContentRendered="MainWindow_OnContentRendered"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
+    Loaded="Window_Loaded"
     mc:Ignorable="d">
     <Grid x:Name="ChartWrapper" Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <Border Grid.RowSpan="2" Margin="10">
             <StackPanel>
                 <TextBlock Margin="0,0,0,3">Time period to analyze:</TextBlock>
@@ -80,5 +85,12 @@
                 </wpf:CartesianChart.AxisX>
             </wpf:CartesianChart>
         </UniformGrid>
+        <StatusBar
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2">
+            <TextBlock>
+                Window render time:<Run Name="RenderTimeString" Text=" loading..." /></TextBlock>
+        </StatusBar>
     </Grid>
 </Window>
