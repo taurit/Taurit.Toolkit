@@ -174,10 +174,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             {
                 new StackedAreaSeries
                 {
-                    Title = "High priority",
-                    Values = new ChartValues<DateTimePoint>(highPriorityTasks),
+                    Title = "Low priority",
+                    Values = new ChartValues<DateTimePoint>(lowPriorityTasks),
                     LineSmoothness = 0,
-                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FFDE4C4A"))
+                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FF4073D6"))
                 },
                 new StackedAreaSeries
                 {
@@ -188,10 +188,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 },
                 new StackedAreaSeries
                 {
-                    Title = "Low priority",
-                    Values = new ChartValues<DateTimePoint>(lowPriorityTasks),
+                    Title = "High priority",
+                    Values = new ChartValues<DateTimePoint>(highPriorityTasks),
                     LineSmoothness = 0,
-                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FF4073D6"))
+                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FFDE4C4A"))
                 },
                 new StackedAreaSeries
                 {
@@ -206,9 +206,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                     Values = new ChartValues<DateTimePoint>(undefinedPriorityTasks),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush(Color.FromRgb(235, 235, 235))
-                }
+                },
             };
-            return series.Where(x => x.Values.Count > 0).ToArray();
+            return series.Where(x => x.Values.Count > 0)
+                .ToArray(); 
         }
 
         private TimeSpan GetSelectedTimePeriod()

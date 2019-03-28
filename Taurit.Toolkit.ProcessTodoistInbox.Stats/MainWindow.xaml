@@ -53,7 +53,7 @@
                     Name="ShowFutureTasks"
                     Checked="ToggleButton_OnChecked"
                     Content="Include future tasks planned for the quarter"
-                    IsChecked="True"
+                    IsChecked="False"
                     Unchecked="ToggleButton_OnChecked" />
             </StackPanel>
         </Border>

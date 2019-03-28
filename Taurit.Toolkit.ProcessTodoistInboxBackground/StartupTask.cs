@@ -112,35 +112,8 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             var snapshotsFolder = Path.Combine(ApplicationData.Current.LocalFolder.Path, _settings.SnapshotsFolder);
             _backlogSnapshotCreator.CreateSnapshot(snapshotsFolder, DateTime.UtcNow, allTasks, allProjects, allLabels);
 
-            // legacy metric: all tasks, categories combined
-            telemetryClient.TrackMetric("NumberOfTasks", allTasks.Count);
-            telemetryClient.TrackMetric("NumberOfHighPriorityTasks",
-                allTasks.Count(x => x.priority == 4));
-            telemetryClient.TrackMetric("NumberOfHighAndMediumPriorityTasks",
-                allTasks.Count(x => x.priority == 4 || x.priority == 3));
-            telemetryClient.TrackMetric("NumberOfHighMediumAndLowPriorityTasks",
-                allTasks.Count(x => x.priority == 4 || x.priority == 3 || x.priority == 2));
-
-            // new metrics: tasks without date => the ones that can be done today and for which Inbox Zero is expected
-            telemetryClient.TrackMetric("NumberOfHighPriorityTasksNoDate",
-                allTasks.Count(x => !x.HasDate && x.priority == 4));
-            telemetryClient.TrackMetric("NumberOfMediumPriorityTasksNoDate",
-                allTasks.Count(x => !x.HasDate && x.priority == 3));
-            telemetryClient.TrackMetric("NumberOfLowPriorityTasksNoDate",
-                allTasks.Count(x => !x.HasDate && x.priority == 2));
-            telemetryClient.TrackMetric("NumberOfUndefinedPriorityTasksNoDateFixed",
-                allTasks.Count(x => !x.HasDate && x.priority == 1));
-
-            // other metrics
-            telemetryClient.TrackMetric("NumberOfLabels", allLabels.Count);
-            telemetryClient.TrackMetric("NumberOfProjects", allProjects.Count);
-            TrackSprintBurndown(telemetryClient, allTasks, allProjects);
-            TrackAllTasksBurndown(telemetryClient, allTasks, allProjects);
-
-
             IReadOnlyList<TodoTask> tasksThatNeedReview =
                 _filteredTaskAccessor.GetNotReviewedTasks(allTasks);
-            telemetryClient.TrackMetric("NumberOfTasksChosenForClassification", allProjects.Count);
 
             var taskClassifier = new TaskClassifier(
                 settings.ClassificationRulesConcise,
@@ -150,91 +123,12 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             );
             (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
                 taskClassifier.Classify(tasksThatNeedReview);
-            telemetryClient.TrackMetric("NumberOfActions", actions.Count);
-            telemetryClient.TrackMetric("NumberOfSkippedTasks", noActions.Count);
 
             foreach (TaskActionModel action in actions.OrderByDescending(x => x.Priority))
                 plannedActions.Add(action);
 
             // Apply actions
             _changeExecutor.ApplyPlan(plannedActions);
-        }
-
-        private void TrackAllTasksBurndown(
-            [NotNull] TelemetryClient telemetryClient,
-            [NotNull] IReadOnlyList<TodoTask> allTasks,
-            [NotNull] IReadOnlyList<Project> allProjects)
-        {
-            if (telemetryClient == null) throw new ArgumentNullException(nameof(telemetryClient));
-            if (allTasks == null) throw new ArgumentNullException(nameof(allTasks));
-            if (allProjects == null) throw new ArgumentNullException(nameof(allProjects));
-
-            var totalTimeInMinutes = 0;
-            var totalTimeInMinutesHigh = 0;
-            var totalTimeInMinutesMedium = 0;
-            var totalTimeInMinutesLow = 0;
-            var totalTimeInMinutesUndefined = 0;
-            
-            foreach (TodoTask task in allTasks.Where(x => x.is_archived == 0 && x.is_deleted == 0 && !x.HasDate))
-            {
-                var timespanParseResult = _mctp.Parse(task.content);
-                Int32 taskTimeInMinutes = timespanParseResult.Success ? (Int32)timespanParseResult.Duration.TotalMinutes : 0;
-
-                totalTimeInMinutes += taskTimeInMinutes;
-                totalTimeInMinutesHigh += task.priority == 4 ? taskTimeInMinutes : 0;
-                totalTimeInMinutesMedium += task.priority == 3 ? taskTimeInMinutes : 0;
-                totalTimeInMinutesLow += task.priority == 2 ? taskTimeInMinutes : 0;
-                totalTimeInMinutesUndefined += task.priority == 1 ? taskTimeInMinutes : 0;
-            }
-
-            Double totalTimeInHours = totalTimeInMinutes / 60d;
-            Double totalTimeInHoursHigh = totalTimeInMinutesHigh / 60d;
-            Double totalTimeInHoursMedium = totalTimeInMinutesMedium / 60d;
-            Double totalTimeInHoursLow = totalTimeInMinutesLow / 60d;
-            Double totalTimeInHoursUndefined = totalTimeInMinutesUndefined / 60d;
-
-            telemetryClient.TrackMetric("WorkLeftInMinutes", totalTimeInMinutes);
-            telemetryClient.TrackMetric("WorkLeftInHours", totalTimeInHours);
-
-            telemetryClient.TrackMetric("WorkLeftInHoursHigh", totalTimeInHoursHigh);
-            telemetryClient.TrackMetric("WorkLeftInHoursMedium", totalTimeInHoursMedium);
-            telemetryClient.TrackMetric("WorkLeftInHoursLow", totalTimeInHoursLow);
-            telemetryClient.TrackMetric("WorkLeftInHoursUndefined", totalTimeInHoursUndefined);
-        }
-
-        private void TrackSprintBurndown([NotNull] TelemetryClient telemetryClient,
-            [NotNull] IReadOnlyList<TodoTask> allTasks,
-            [NotNull] IReadOnlyList<Project> allProjects)
-        {
-            if (telemetryClient == null) throw new ArgumentNullException(nameof(telemetryClient));
-            if (allTasks == null) throw new ArgumentNullException(nameof(allTasks));
-            if (allProjects == null) throw new ArgumentNullException(nameof(allProjects));
-
-            // convention: sprint projects are named like "Sprint yyyy-MM-dd (x h)"
-            // where "yyyy-MM-dd" is the sprint's end date
-            // and "x" is total time available in the sprint
-            Project currentSprintProject = allProjects
-                .Where(x => x.name.StartsWith("Sprint", StringComparison.InvariantCultureIgnoreCase))
-                .Where(x => x.is_archived == 0)
-                .Where(x => x.is_deleted == 0)
-                .OrderBy(x => x.name)
-                .FirstOrDefault();
-
-            if (currentSprintProject == null) return; // if I give up on this idea, this program should keep working
-
-            List<TodoTask> allTasksInSprint =
-                allTasks.Where(x => x.project_name == currentSprintProject.name).ToList();
-            var totalTimeInMinutes = 0;
-            foreach (TodoTask task in allTasksInSprint.Where(x => x.is_archived == 0 && x.is_deleted == 0))
-            {
-                var timespanParseResult = _mctp.Parse(task.content);
-                Int32 taskTimeInMinutes = timespanParseResult.Success ? (Int32)timespanParseResult.Duration.TotalMinutes : 0;
-                totalTimeInMinutes += taskTimeInMinutes;
-            }
-
-            Double totalTimeInHours = totalTimeInMinutes / 60d;
-            telemetryClient.TrackMetric("WorkLeftInTheCurrentSprintInMinutes", totalTimeInMinutes);
-            telemetryClient.TrackMetric("WorkLeftInTheCurrentSprintInHours", totalTimeInHours);
         }
     }
 }
