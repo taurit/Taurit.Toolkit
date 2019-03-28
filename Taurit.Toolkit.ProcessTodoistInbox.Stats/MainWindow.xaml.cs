@@ -254,7 +254,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 TimeSpan timeDifference = RenderFinishedTime.Subtract(WindowOpenedTime);
 
                 RenderTimeString.Text = $"{timeDifference.TotalMilliseconds} ms";
-                Trace.WriteLine("DONE!", "Rendering");
             }), DispatcherPriority.ContextIdle, null);
         }
     }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28721.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.CompressVideo", "Taurit.Toolkit.CompressVideo\Taurit.Toolkit.CompressVideo.csproj", "{4324BE48-BDA6-4785-99A6-62A235EAB603}"
 EndProject

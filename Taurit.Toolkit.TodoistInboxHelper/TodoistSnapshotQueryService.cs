@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
-using Newtonsoft.Json;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
+using Utf8Json;
 
 namespace Taurit.Toolkit.TodoistInboxHelper
 {
@@ -20,9 +20,9 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             [NotNull]String projectsJson,
             [NotNull]String labelsJson)
         {
-            _allTasks = JsonConvert.DeserializeObject<List<TodoTask>>(tasksJson);
-            _allProjects = JsonConvert.DeserializeObject<List<Project>>(projectsJson);
-            _allLabels = JsonConvert.DeserializeObject<List<Label>>(labelsJson);
+            _allTasks = JsonSerializer.Deserialize<List<TodoTask>>(tasksJson);
+            _allProjects = JsonSerializer.Deserialize<List<Project>>(projectsJson);
+            _allLabels = JsonSerializer.Deserialize<List<Label>>(labelsJson);
         }
 
         private List<Project> ExtractProjects(List<TodoTask> allTasks)
