@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -17,8 +18,14 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
             _settings = settings;
         }
 
-        public List<SnapshotOnTimeline> Read(String snapshotsRootFolderPath, DateTime periodEnd,
-            TimeSpan period)
+        /// <param name="snapshotsToSkip">for those snapshots we just need a date, because the stats are already in the cache</param>
+        [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
+        public List<SnapshotOnTimeline> Read(
+            String snapshotsRootFolderPath,
+            DateTime periodEnd,
+            TimeSpan period,
+            ISet<DateTime> snapshotsToSkip
+            )
         {
             // get all available dates
             IEnumerable<String> subdirectories = Directory.EnumerateDirectories(snapshotsRootFolderPath);
@@ -51,6 +58,14 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
                     String timeStringPart = Path.GetFileNameWithoutExtension(snapshot).Replace("snapshot-", "");
                     DateTime exactSnapshotDate = DateTime.ParseExact($"{selectedDate:yyyy-MM-dd} {timeStringPart}",
                         "yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
+
+                    if (snapshotsToSkip.Contains(exactSnapshotDate))
+                    {
+                        // skip for performance - stats are already in the cache
+                        snapshots.Add(new SnapshotOnTimeline(exactSnapshotDate, null, null, null));
+                        continue;
+                    }
+
                     String snapshotPathWithoutExtension = snapshot.Replace(".labels", string.Empty);
 
                     String tasksSnapshotFileContent = File.ReadAllText($"{snapshotPathWithoutExtension}.tasks");
@@ -71,7 +86,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
                     snapshots.Add(snapshotOnTimeline);
                 }
             }
-            //
 
             return snapshots;
         }

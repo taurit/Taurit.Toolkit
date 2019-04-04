@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using NaturalLanguageTimespanParser;
+using Newtonsoft.Json;
 using Taurit.Toolkit.ProcessTodoistInbox.Stats.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Stats.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
@@ -62,41 +64,59 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             EstimatedTimeOfTasks.Clear();
 
             TimeSpan selectedTimePeriod = GetSelectedTimePeriod();
-
-            // todo: this kills performance. But it's enough to cache 5 doubles for past snapshots
-            // and all this deserialization and linq can be avoided.
-            List<SnapshotOnTimeline> snapshotsInSelectedTimePeriod =
-                _snapshotReader.Read(_settings.SnapshotsRootFolderPath, DateTime.UtcNow, selectedTimePeriod);
-
             var etUndefinedPriorityTasks = new List<DateTimePoint>();
             var etLowPriorityTasks = new List<DateTimePoint>();
             var etMediumPriorityTasks = new List<DateTimePoint>();
             var etHighPriorityTasks = new List<DateTimePoint>();
             var etFutureTasks = new List<DateTimePoint>();
 
+            var cacheFileName = "stats-cache.tmp.json";
+            Dictionary<DateTime, SnapshotCache> cache = File.Exists(cacheFileName)
+                ? JsonConvert.DeserializeObject<Dictionary<DateTime, SnapshotCache>>(File.ReadAllText(cacheFileName))
+                : new Dictionary<DateTime, SnapshotCache>();
+
+            List<SnapshotOnTimeline> snapshotsInSelectedTimePeriod =
+                _snapshotReader.Read(_settings.SnapshotsRootFolderPath, DateTime.UtcNow, selectedTimePeriod, cache.Select(x => x.Key).ToHashSet());
+
             foreach (SnapshotOnTimeline snapshot in snapshotsInSelectedTimePeriod)
             {
-                List<TodoTask> taskToCount =
-                    FilterOutTaskThatShouldNotBeCounted(snapshot.AllTasks, snapshot.AllProjects, snapshot.Time,
-                        snapshot.EndOfQuarter);
+                if (!cache.ContainsKey(snapshot.Time))
+                {
+                    List<TodoTask> taskToCount =
+                        FilterOutTaskThatShouldNotBeCounted(snapshot.AllTasks, snapshot.AllProjects, snapshot.Time,
+                            snapshot.EndOfQuarter);
 
-                IEnumerable<TodoTask> priority1Tasks = taskToCount.Where(x => x.priority == 1).ToList();
-                IEnumerable<TodoTask> priority2Tasks = taskToCount.Where(x => x.priority == 2).ToList();
-                IEnumerable<TodoTask> priority3Tasks = taskToCount.Where(x => x.priority == 3).ToList();
-                IEnumerable<TodoTask> priority4Tasks = taskToCount.Where(x => x.priority == 4).ToList();
-                IEnumerable<TodoTask> futureTasks = taskToCount.Where(x => x.priority == 0).ToList();
+                    IEnumerable<TodoTask> priority1Tasks = taskToCount.Where(x => x.priority == 1).ToList();
+                    IEnumerable<TodoTask> priority2Tasks = taskToCount.Where(x => x.priority == 2).ToList();
+                    IEnumerable<TodoTask> priority3Tasks = taskToCount.Where(x => x.priority == 3).ToList();
+                    IEnumerable<TodoTask> priority4Tasks = taskToCount.Where(x => x.priority == 4).ToList();
+                    IEnumerable<TodoTask> futureTasks = taskToCount.Where(x => x.priority == 0).ToList();
 
-                Double estTimeUndefinedPriorityTasks = priority1Tasks.Sum(x => GetTimeInMinutes(x.content));
-                Double estTimeLowPriorityTasks = priority2Tasks.Sum(x => GetTimeInMinutes(x.content));
-                Double estTimeMediumPriorityTasks = priority3Tasks.Sum(x => GetTimeInMinutes(x.content));
-                Double estTimeHighPriorityTasks = priority4Tasks.Sum(x => GetTimeInMinutes(x.content));
-                Double estTimeFutureTasks = futureTasks.Sum(x => GetTimeInMinutes(x.content));
+                    Double estTimeUndefinedPriorityTasks = priority1Tasks.Sum(x => GetTimeInMinutes(x.content));
+                    Double estTimeLowPriorityTasks = priority2Tasks.Sum(x => GetTimeInMinutes(x.content));
+                    Double estTimeMediumPriorityTasks = priority3Tasks.Sum(x => GetTimeInMinutes(x.content));
+                    Double estTimeHighPriorityTasks = priority4Tasks.Sum(x => GetTimeInMinutes(x.content));
+                    Double estTimeFutureTasks = futureTasks.Sum(x => GetTimeInMinutes(x.content));
 
-                etUndefinedPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeUndefinedPriorityTasks));
-                etLowPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeLowPriorityTasks));
-                etMediumPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeMediumPriorityTasks));
-                etHighPriorityTasks.Add(new DateTimePoint(snapshot.Time, estTimeHighPriorityTasks));
-                if (showFutureTasks) etFutureTasks.Add(new DateTimePoint(snapshot.Time, estTimeFutureTasks));
+                    cache.Add(
+                        snapshot.Time,
+                        new SnapshotCache(
+                            estTimeUndefinedPriorityTasks,
+                            estTimeLowPriorityTasks,
+                            estTimeMediumPriorityTasks,
+                            estTimeHighPriorityTasks,
+                            estTimeFutureTasks
+                        )
+                    );
+                }
+
+                SnapshotCache stats = cache[snapshot.Time];
+                
+                etUndefinedPriorityTasks.Add(new DateTimePoint(snapshot.Time, stats.EstTimeUndefinedPriorityTasks));
+                etLowPriorityTasks.Add(new DateTimePoint(snapshot.Time, stats.EstTimeLowPriorityTasks));
+                etMediumPriorityTasks.Add(new DateTimePoint(snapshot.Time, stats.EstTimeMediumPriorityTasks));
+                etHighPriorityTasks.Add(new DateTimePoint(snapshot.Time, stats.EstTimeHighPriorityTasks));
+                if (showFutureTasks) etFutureTasks.Add(new DateTimePoint(snapshot.Time, stats.EstTimeFutureTasks));
             }
 
             StackedAreaSeries[] estimatedTimeOfTasksSeries = GetStackedSeries(
@@ -106,6 +126,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 etUndefinedPriorityTasks,
                 etFutureTasks);
             EstimatedTimeOfTasks.AddRange(estimatedTimeOfTasksSeries);
+
+            File.WriteAllText(cacheFileName, JsonConvert.SerializeObject(cache));
         }
 
         private List<TodoTask> FilterOutTaskThatShouldNotBeCounted(IReadOnlyList<TodoTask> allTasks,
