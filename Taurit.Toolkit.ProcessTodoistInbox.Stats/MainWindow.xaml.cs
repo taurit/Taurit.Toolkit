@@ -62,6 +62,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             EstimatedTimeOfTasks.Clear();
 
             TimeSpan selectedTimePeriod = GetSelectedTimePeriod();
+
+            // todo: this kills performance. But it's enough to cache 5 doubles for past snapshots
+            // and all this deserialization and linq can be avoided.
             List<SnapshotOnTimeline> snapshotsInSelectedTimePeriod =
                 _snapshotReader.Read(_settings.SnapshotsRootFolderPath, DateTime.UtcNow, selectedTimePeriod);
 

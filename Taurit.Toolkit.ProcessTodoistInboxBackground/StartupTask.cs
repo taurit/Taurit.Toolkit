@@ -37,6 +37,8 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             new CultureInfo("en")
         });
 
+        private static readonly DateTime StartDateTime = DateTime.UtcNow;
+
         public StartupTask()
         {
             _settings = LoadSettings().Result;
@@ -58,6 +60,9 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
         public void Run(IBackgroundTaskInstance taskInstance)
         {
             var telemetryClient = new TelemetryClient();
+            telemetryClient.Context.User.AuthenticatedUserId = "buli";
+            telemetryClient.Context.User.UserAgent = "Taurit.Toolkit.ProcessTodoistInbox.Background";
+            telemetryClient.Context.Session.Id = $"{StartDateTime:yyyy-MM-dd-HH-mm-ss.fffffffzzz}";
 
             while (true)
                 try
