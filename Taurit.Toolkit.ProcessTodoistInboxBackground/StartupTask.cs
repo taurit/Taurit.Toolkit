@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -59,10 +60,14 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 
         public void Run(IBackgroundTaskInstance taskInstance)
         {
+            String telemetrySessionId = $"{StartDateTime:yyyy-MM-dd-HH-mm-ss.fffffffzzz}";
+
             var telemetryClient = new TelemetryClient();
             telemetryClient.Context.User.AuthenticatedUserId = "buli";
             telemetryClient.Context.User.UserAgent = "Taurit.Toolkit.ProcessTodoistInbox.Background";
-            telemetryClient.Context.Session.Id = $"{StartDateTime:yyyy-MM-dd-HH-mm-ss.fffffffzzz}";
+            telemetryClient.Context.Session.Id = telemetrySessionId;
+
+            telemetryClient.TrackTrace($"Starting the application. Session id = {telemetrySessionId}");
 
             while (true)
                 try
@@ -70,7 +75,12 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
                     if (!IsCurrentHourSleepHour()) // no need to query API too much, eg. at night
                     {
                         telemetryClient.TrackTrace("Starting the classification");
+                        Stopwatch stopwatch = Stopwatch.StartNew();
+                        
                         TryClassifyAllTasks(_settings, telemetryClient);
+                        
+                        stopwatch.Stop();
+                        telemetryClient.TrackMetric("TotalClassificationTimeMs", stopwatch.ElapsedMilliseconds);
                     }
                     else
                     {
@@ -109,13 +119,21 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             [NotNull] TelemetryClient telemetryClient)
         {
             var plannedActions = new List<TaskActionModel>();
+
+            Stopwatch dataRetrievalStopwatch = Stopwatch.StartNew();
             IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
             IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjects.ToLookup(x => x.id));
+            dataRetrievalStopwatch.Stop();
+            telemetryClient.TrackMetric("TotalDataRetrievalTimeMs", dataRetrievalStopwatch.ElapsedMilliseconds);
 
             // analysis: save for the future use
+
             var snapshotsFolder = Path.Combine(ApplicationData.Current.LocalFolder.Path, _settings.SnapshotsFolder);
+            Stopwatch snapshotCreatorStopwatch = Stopwatch.StartNew();
             _backlogSnapshotCreator.CreateSnapshot(snapshotsFolder, DateTime.UtcNow, allTasks, allProjects, allLabels);
+            snapshotCreatorStopwatch.Stop();
+            telemetryClient.TrackMetric("TotalSnapshotCreationTimeMs", snapshotCreatorStopwatch.ElapsedMilliseconds);
 
             IReadOnlyList<TodoTask> tasksThatNeedReview =
                 _filteredTaskAccessor.GetNotReviewedTasks(allTasks);
