@@ -20,6 +20,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
         private String[] StartsWith => GetStringArrayArgument("startsWith");
 
         [CanBeNull]
+        private String[] HasLabel => GetStringArrayArgument("hasLabel");
+
+        [CanBeNull]
         private Int32? NumLabels => GetIntArgument("numLabelsIs");
 
         [CanBeNull]
@@ -31,10 +34,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
         [CanBeNull]
         private Int32? Priority => GetPriorityArgument("priorityIs");
 
+        [CanBeNull]
+        
+
         [NotNull]
         public ClassificationRuleIf ToClassificationRule()
         {
-            return new ClassificationRuleIf(Contains, ContainsWord, StartsWith, Priority, Project, NumLabels, Duration);
+            return new ClassificationRuleIf(Contains, ContainsWord, StartsWith, Priority, Project, NumLabels, Duration, HasLabel);
         }
     }
 }

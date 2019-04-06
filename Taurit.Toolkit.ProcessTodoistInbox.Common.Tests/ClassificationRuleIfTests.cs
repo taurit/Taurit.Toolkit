@@ -208,6 +208,77 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
         }
 
         [TestMethod]
+        public void IfLabelNameDoesNotMatchThereIsNoMatch()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf {hasLabel = new[] {"home", "mobile"}};
+            var task = new TodoTask {labelsNames = new[] {"laptop"}};
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.IsFalse(match);
+        }
+
+        [TestMethod]
+        public void IfLabelNameMatchesFirstLabelThereIsAMatch()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf {hasLabel = new[] {"home", "mobile"}};
+            var task = new TodoTask {labelsNames = new[] {"home"}};
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.IsTrue(match);
+        }
+        
+        [TestMethod]
+        public void IfLabelNameMatchesNonFirstLabelInRuleThereIsAMatch()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf {hasLabel = new[] {"home", "mobile"}};
+            var task = new TodoTask {labelsNames = new[] {"mobile"}};
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.IsTrue(match);
+        }
+        
+        [TestMethod]
+        public void IfNonFirstLabelNameInRuleMatchesNonFirstLabelNameInTaskThereIsAMatch()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf {hasLabel = new[] {"mobile", "home"}};
+            var task = new TodoTask {labelsNames = new[] {"laptop", "home"}};
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.IsTrue(match);
+        }
+         
+        [TestMethod]
+        public void IfLabelNameDoesNotMatchAndProjectDoesNoMatchThereIsNoMatch()
+        {
+            // Arrange
+            var sut = new ClassificationRuleIf {hasLabel = new[] {"work"}, project = "Inbox"};
+            var task = new TodoTask {project_name = "Inbox", labelsNames = new String[]{} };
+
+            // Act
+            Boolean match = sut.Matches(task);
+
+            // Assert
+            Assert.IsFalse(match);
+        }
+
+
+        [TestMethod]
         public void ProjectCanBeMatchedByNameCaseInsensitive()
         {
             // Arrange

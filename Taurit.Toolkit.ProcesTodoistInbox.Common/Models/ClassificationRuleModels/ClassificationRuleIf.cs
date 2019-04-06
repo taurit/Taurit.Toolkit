@@ -37,7 +37,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
             Int32? priority,
             String project,
             Int32? numLabels,
-            String duration)
+            String duration,
+            String[] hasLabel)
         {
             this.contains = contains;
             this.containsWord = containsWord;
@@ -46,6 +47,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
             this.project = project;
             this.numLabels = numLabels;
             this.duration = duration;
+            this.hasLabel = hasLabel;
         }
 
         [CanBeNull]
@@ -74,6 +76,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
 
         [CanBeNull]
         [JsonProperty]
+        public String[] hasLabel { get; set; }
+
+        [CanBeNull]
+        [JsonProperty]
         public String duration { get; set; }
 
         /// <summary>
@@ -89,10 +95,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
                 priority,
                 newProjectName,
                 numLabels,
-                duration
+                duration,
+                hasLabel
             );
         }
-
 
         public Boolean Matches(TodoTask task)
         {
@@ -104,6 +110,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
             match &= DoesTaskProjectMatch(task);
             match &= DoesTaskLabelPresenceMatch(task);
             match &= DoesTaskDurationMatch(task);
+            match &= DoesTaskLabelNameMatch(task);
 
             return match;
         }
@@ -141,6 +148,15 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
             if (!priority.HasValue) return true;
 
             return task.priority == priority.Value;
+        }
+
+        private Boolean DoesTaskLabelNameMatch(TodoTask task)
+        {
+            if (hasLabel == null) return true;
+            String[] labelsNamesInTask = task.labelsNames;
+            Debug.Assert(labelsNamesInTask != null);
+
+            return hasLabel.Any(labelToCheck => labelsNamesInTask.Contains(labelToCheck));
         }
 
         private Boolean DoesTaskStartsWithWordMatch(TodoTask task)

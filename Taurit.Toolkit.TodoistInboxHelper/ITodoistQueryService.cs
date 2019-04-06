@@ -16,6 +16,9 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
         [NotNull]
         [ItemNotNull]
-        IReadOnlyList<TodoTask> GetAllTasks(ILookup<Int64, Project> allProjectsIndexedById);
+        IReadOnlyList<TodoTask> GetAllTasks(
+            ILookup<Int64, Project> allProjectsIndexedById,
+            ILookup<Int64, Label> allLabelsIndexedById
+        );
     }
 }

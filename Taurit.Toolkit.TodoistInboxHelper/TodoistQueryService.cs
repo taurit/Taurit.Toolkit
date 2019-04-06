@@ -48,7 +48,10 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             return response.Data.projects;
         }
 
-        public IReadOnlyList<TodoTask> GetAllTasks(ILookup<Int64, Project> allProjectsIndexedById)
+        public IReadOnlyList<TodoTask> GetAllTasks(
+            ILookup<Int64, Project> allProjectsIndexedById,
+            ILookup<Int64, Label> allLabelsIndexedById
+            )
         {
             var client = new RestClient(ApiUrl);
 
@@ -64,7 +67,10 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             AssertHttpRequestSucceeded(response, "list of tasks");
 
             foreach (TodoTask task in response.Data.items)
+            {
                 task.project_name = allProjectsIndexedById[task.project_id].Single().name;
+                task.labelsNames = task.labels.Select(x => allLabelsIndexedById[x].Single().name).ToArray();
+            }
 
             return response.Data.items
                 .Where(x => x != null && x.is_deleted == 0 && x.@checked == 0 && x.is_archived == 0).ToList();

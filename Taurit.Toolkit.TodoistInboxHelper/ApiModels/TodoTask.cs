@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
@@ -13,10 +14,16 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
     [DebuggerDisplay("Task `{content}`")]
     public class TodoTask
     {
-        [JsonProperty] public Int32 is_archived;
+        #region Those properties are not a part of data returned by the query! Must be filled by app logic if we want non-null.
+        [CanBeNull]
+        public String[] labelsNames { get; set; }
 
+        [CanBeNull]
         public String project_name;
+        #endregion
 
+        [JsonProperty] public Int32 is_archived;
+        
         [JsonProperty]
         public Int64 id { get; set; }
 
@@ -62,8 +69,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         /// </summary>
         [JsonProperty]
         public Int64 collapsed { get; set; }
-
-
+        
         /// <summary>
         ///     Whether the task is marked as completed (where 1 is true and 0 is false).
         /// </summary>

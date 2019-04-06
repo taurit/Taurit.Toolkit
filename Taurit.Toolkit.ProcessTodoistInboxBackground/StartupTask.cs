@@ -123,7 +123,10 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             Stopwatch dataRetrievalStopwatch = Stopwatch.StartNew();
             IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
-            IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjects.ToLookup(x => x.id));
+            IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(
+                allProjects.ToLookup(x => x.id),
+                allLabels.ToLookup(x => x.id)
+                );
             dataRetrievalStopwatch.Stop();
             telemetryClient.TrackMetric("TotalDataRetrievalTimeMs", dataRetrievalStopwatch.ElapsedMilliseconds);
 
