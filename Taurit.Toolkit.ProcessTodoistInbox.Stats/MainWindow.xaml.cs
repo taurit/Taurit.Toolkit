@@ -129,25 +129,24 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
             // draw the optimum trend
             DateTime lastKnownDate = etLowPriorityTasks.Max(x => x.DateTime);
-            var totalMinutes = etLowPriorityTasks.Single(x => x.DateTime == lastKnownDate).Value +
-                               etMediumPriorityTasks.Single(x => x.DateTime == lastKnownDate).Value +
-                               etHighPriorityTasks.Single(x => x.DateTime == lastKnownDate).Value;
+            Double totalMinutes = etLowPriorityTasks.Single(x => x.DateTime == lastKnownDate).Value +
+                                  etMediumPriorityTasks.Single(x => x.DateTime == lastKnownDate).Value +
+                                  etHighPriorityTasks.Single(x => x.DateTime == lastKnownDate).Value;
 
             DateTime lastDayOfQuarter = SnapshotOnTimeline.GetLastDayOfQuarter(lastKnownDate);
-            var howManyDaysToEndOfQuarter = lastDayOfQuarter.Subtract(lastKnownDate).Days;
+            Int32 howManyDaysToEndOfQuarter = lastDayOfQuarter.Subtract(lastKnownDate).Days;
 
             Double howManyMinutesNeedsToBeDoneInADayForCleanBacklog = totalMinutes / howManyDaysToEndOfQuarter;
             BurndownSpeed.Text = howManyMinutesNeedsToBeDoneInADayForCleanBacklog.ToString("0");
             Int32 howManyDaysToDraw = selectedTimePeriod.Days < 8 ? 3 : 7;
 
             var optimumTrendPoints = new ChartValues<DateTimePoint>();
-            var currentHours = totalMinutes;
-            var estimatedMinutes = currentHours;
+            Double currentHours = totalMinutes;
 
-            for (var day = 0; day < howManyDaysToDraw; day++)
+            for (Int32 day = -howManyDaysToDraw; day < howManyDaysToDraw; day++)
             {
+                Double estimatedMinutes = currentHours - day * howManyMinutesNeedsToBeDoneInADayForCleanBacklog;
                 optimumTrendPoints.Add(new DateTimePoint(lastKnownDate.AddDays(day), estimatedMinutes));
-                estimatedMinutes = estimatedMinutes - howManyMinutesNeedsToBeDoneInADayForCleanBacklog;
             }
 
             var lineSeries = new LineSeries
@@ -158,13 +157,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 StrokeDashArray = new DoubleCollection {2},
                 PointGeometry = DefaultGeometries.Cross,
                 StrokeThickness = 1
-                
             };
             EstimatedTimeOfTasks.Add(lineSeries);
 
             File.WriteAllText(cacheFileName, JsonConvert.SerializeObject(cache));
         }
-
 
 
         private List<TodoTask> FilterOutTaskThatShouldNotBeCounted(IReadOnlyList<TodoTask> allTasks,
