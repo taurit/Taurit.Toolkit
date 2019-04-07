@@ -66,7 +66,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
         {
             IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
-            IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjects.ToLookup(x => x.id));
+            IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjects.ToLookup(x => x.id), allLabels.ToLookup(x => x.id));
             IReadOnlyList<TodoTask> tasksThatNeedReview = _filteredTaskAccessor.GetNotReviewedTasks(allTasks);
             var alternativeInboxes = UserSettings.AlternativeInboxes;
 
