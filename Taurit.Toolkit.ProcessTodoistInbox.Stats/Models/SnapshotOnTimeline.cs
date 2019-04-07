@@ -30,7 +30,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Models
         /// </summary>
         /// <param name="originalDate"></param>
         /// <returns></returns>
-        private DateTime GetLastDayOfQuarter(DateTime originalDate)
+        internal static DateTime GetLastDayOfQuarter(DateTime originalDate) // todo: move to a separate class!
         {
             return AddQuarters(new DateTime(originalDate.Year, 1, 1), GetQuarter(originalDate)).AddDays(-1);
         }
@@ -40,7 +40,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Models
         /// </summary>
         /// <param name="fromDate"></param>
         /// <returns></returns>
-        private Int32 GetQuarter(DateTime fromDate)
+        private static Int32 GetQuarter(DateTime fromDate)
         {
             Int32 month = fromDate.Month - 1;
             Int32 month2 = Math.Abs(month / 3) + 1;
@@ -53,7 +53,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Models
         /// <param name="originalDate"></param>
         /// <param name="quarters"></param>
         /// <returns></returns>
-        private DateTime AddQuarters(DateTime originalDate, Int32 quarters)
+        private static DateTime AddQuarters(DateTime originalDate, Int32 quarters)
         {
             return originalDate.AddMonths(quarters * 3);
         }

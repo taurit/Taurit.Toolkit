@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -76,7 +75,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 : new Dictionary<DateTime, SnapshotCache>();
 
             List<SnapshotOnTimeline> snapshotsInSelectedTimePeriod =
-                _snapshotReader.Read(_settings.SnapshotsRootFolderPath, DateTime.UtcNow, selectedTimePeriod, cache.Select(x => x.Key).ToHashSet());
+                _snapshotReader.Read(_settings.SnapshotsRootFolderPath, DateTime.UtcNow, selectedTimePeriod,
+                    cache.Select(x => x.Key).ToHashSet());
 
             foreach (SnapshotOnTimeline snapshot in snapshotsInSelectedTimePeriod)
             {
@@ -111,7 +111,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 }
 
                 SnapshotCache stats = cache[snapshot.Time];
-                
+
                 etUndefinedPriorityTasks.Add(new DateTimePoint(snapshot.Time, stats.EstTimeUndefinedPriorityTasks));
                 etLowPriorityTasks.Add(new DateTimePoint(snapshot.Time, stats.EstTimeLowPriorityTasks));
                 etMediumPriorityTasks.Add(new DateTimePoint(snapshot.Time, stats.EstTimeMediumPriorityTasks));
@@ -127,8 +127,45 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 etFutureTasks);
             EstimatedTimeOfTasks.AddRange(estimatedTimeOfTasksSeries);
 
+            // draw the optimum trend
+            DateTime lastKnownDate = etLowPriorityTasks.Max(x => x.DateTime);
+            var totalMinutes = etLowPriorityTasks.Single(x => x.DateTime == lastKnownDate).Value +
+                               etMediumPriorityTasks.Single(x => x.DateTime == lastKnownDate).Value +
+                               etHighPriorityTasks.Single(x => x.DateTime == lastKnownDate).Value;
+
+            DateTime lastDayOfQuarter = SnapshotOnTimeline.GetLastDayOfQuarter(lastKnownDate);
+            var howManyDaysToEndOfQuarter = lastDayOfQuarter.Subtract(lastKnownDate).Days;
+
+            Double howManyMinutesNeedsToBeDoneInADayForCleanBacklog = totalMinutes / howManyDaysToEndOfQuarter;
+            BurndownSpeed.Text = howManyMinutesNeedsToBeDoneInADayForCleanBacklog.ToString("0");
+            Int32 howManyDaysToDraw = selectedTimePeriod.Days < 8 ? 3 : 7;
+
+            var optimumTrendPoints = new ChartValues<DateTimePoint>();
+            var currentHours = totalMinutes;
+            var estimatedMinutes = currentHours;
+
+            for (var day = 0; day < howManyDaysToDraw; day++)
+            {
+                optimumTrendPoints.Add(new DateTimePoint(lastKnownDate.AddDays(day), estimatedMinutes));
+                estimatedMinutes = estimatedMinutes - howManyMinutesNeedsToBeDoneInADayForCleanBacklog;
+            }
+
+            var lineSeries = new LineSeries
+            {
+                Values = optimumTrendPoints,
+                Fill = Brushes.Transparent,
+                Stroke = Brushes.Gray,
+                StrokeDashArray = new DoubleCollection {2},
+                PointGeometry = DefaultGeometries.Cross,
+                StrokeThickness = 1
+                
+            };
+            EstimatedTimeOfTasks.Add(lineSeries);
+
             File.WriteAllText(cacheFileName, JsonConvert.SerializeObject(cache));
         }
+
+
 
         private List<TodoTask> FilterOutTaskThatShouldNotBeCounted(IReadOnlyList<TodoTask> allTasks,
             IReadOnlyList<Project> allProjects, DateTime snapshotTime, DateTime endOfQuarter)

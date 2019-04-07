@@ -79,7 +79,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
 
                     var snapshotOnTimeline = new SnapshotOnTimeline(
                         exactSnapshotDate,
-                        queryService.GetAllTasks(null),
+                        queryService.GetAllTasks(null, null),
                         queryService.GetAllProjects(),
                         queryService.GetAllLabels()
                     );
