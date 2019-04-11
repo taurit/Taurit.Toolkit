@@ -129,24 +129,29 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
             // draw the optimum trend
             DateTime lastKnownDate = etLowPriorityTasks.Max(x => x.DateTime);
-            Double totalMinutes = etLowPriorityTasks.Single(x => x.DateTime == lastKnownDate).Value +
-                                  etMediumPriorityTasks.Single(x => x.DateTime == lastKnownDate).Value +
-                                  etHighPriorityTasks.Single(x => x.DateTime == lastKnownDate).Value;
+            var firstDayOfQuarter = SnapshotOnTimeline.GetLastDayOfQuarter(lastKnownDate).AddDays(1).AddMonths(-3);
+            var dayOfTheQuarterWhenPlanningShouldRatherBeDone = firstDayOfQuarter.AddDays(7);
+            DateTime trendStartDate = etLowPriorityTasks.OrderByDescending(x => x.DateTime)
+                .First(x => x.DateTime < dayOfTheQuarterWhenPlanningShouldRatherBeDone).DateTime;
 
-            DateTime lastDayOfQuarter = SnapshotOnTimeline.GetLastDayOfQuarter(lastKnownDate);
+            Double totalMinutesAtTrendStartDate = CountTotalMinutesAtDate(trendStartDate, etLowPriorityTasks, etMediumPriorityTasks, etHighPriorityTasks);
+            Double totalMinutesNow = CountTotalMinutesAtDate(lastKnownDate, etLowPriorityTasks, etMediumPriorityTasks, etHighPriorityTasks);
+
+            DateTime lastDayOfQuarter = SnapshotOnTimeline.GetLastDayOfQuarter(trendStartDate);
             Int32 howManyDaysToEndOfQuarter = lastDayOfQuarter.Subtract(lastKnownDate).Days;
 
-            Double howManyMinutesNeedsToBeDoneInADayForCleanBacklog = totalMinutes / howManyDaysToEndOfQuarter;
+            Double howManyMinutesNeedsToBeDoneInADayForCleanBacklog = totalMinutesNow / howManyDaysToEndOfQuarter;
+
             BurndownSpeed.Text = howManyMinutesNeedsToBeDoneInADayForCleanBacklog.ToString("0");
             Int32 howManyDaysToDraw = selectedTimePeriod.Days < 8 ? 3 : 7;
 
             var optimumTrendPoints = new ChartValues<DateTimePoint>();
-            Double currentHours = totalMinutes;
+            Double currentHours = totalMinutesAtTrendStartDate;
 
-            for (Int32 day = -howManyDaysToDraw; day < howManyDaysToDraw; day++)
+            for (Int32 day = 0; day < howManyDaysToDraw; day++)
             {
                 Double estimatedMinutes = currentHours - day * howManyMinutesNeedsToBeDoneInADayForCleanBacklog;
-                optimumTrendPoints.Add(new DateTimePoint(lastKnownDate.AddDays(day), estimatedMinutes));
+                optimumTrendPoints.Add(new DateTimePoint(trendStartDate.AddDays(day), estimatedMinutes));
             }
 
             var lineSeries = new LineSeries
@@ -163,6 +168,12 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             File.WriteAllText(cacheFileName, JsonConvert.SerializeObject(cache));
         }
 
+        private static Double CountTotalMinutesAtDate(DateTime date, List<DateTimePoint> etLowPriorityTasks, List<DateTimePoint> etMediumPriorityTasks, List<DateTimePoint> etHighPriorityTasks)
+        {
+            return etLowPriorityTasks.Single(x => x.DateTime == date).Value +
+                   etMediumPriorityTasks.Single(x => x.DateTime == date).Value +
+                   etHighPriorityTasks.Single(x => x.DateTime == date).Value;
+        }
 
         private List<TodoTask> FilterOutTaskThatShouldNotBeCounted(IReadOnlyList<TodoTask> allTasks,
             IReadOnlyList<Project> allProjects, DateTime snapshotTime, DateTime endOfQuarter)

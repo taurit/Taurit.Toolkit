@@ -93,7 +93,7 @@
             <TextBlock>
                 Window render time:<Run Name="RenderTimeString" Text=" loading..." /></TextBlock>
                 <TextBlock Margin="10 0 0 0">
-                    Work needed for inbox zero at the end of the quarter: <Run Name="BurndownSpeed" Text="..." Foreground="Red" FontWeight="Bold" /> minutes/day</TextBlock>
+                    Avg work needed for inbox zero at the end of the quarter: <Run Name="BurndownSpeed" Text="..." Foreground="Red" FontWeight="Bold" /> minutes/day</TextBlock>
             </WrapPanel>
         </StatusBar>
     </Grid>
