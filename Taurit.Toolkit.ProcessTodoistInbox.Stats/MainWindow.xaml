@@ -60,6 +60,8 @@
                     Content="Include future tasks planned for the quarter"
                     IsChecked="False"
                     Unchecked="ToggleButton_OnChecked" />
+                <TextBlock Margin="0 15 0 0 ">
+                    Window render time: <Run Name="RenderTimeString" Text="..." /></TextBlock>
             </StackPanel>
         </Border>
         <UniformGrid
@@ -89,11 +91,11 @@
             Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="2">
-            <WrapPanel>
-            <TextBlock>
-                Window render time:<Run Name="RenderTimeString" Text=" loading..." /></TextBlock>
-                <TextBlock Margin="10 0 0 0">
-                    Avg work needed for inbox zero at the end of the quarter: <Run Name="BurndownSpeed" Text="..." Foreground="Red" FontWeight="Bold" /> minutes/day</TextBlock>
+            <WrapPanel DockPanel.Dock="Left">
+                <TextBlock Margin="10 0 0 0" ToolTip="Avg daily work needed for inbox zero at the end of the quarter">
+                    Avg time of work <Run Text="on the planned tasks" FontWeight="Bold"/> needed: <Run Name="BurndownSpeed" Text="..." Foreground="Red" FontWeight="Bold" /> <Run Text="minutes/day" Foreground="Red" FontWeight="Bold" />. 
+                    As of <Run Name="MostRecentSnapshotTime" Text="..." Foreground="MediumSeaGreen" FontWeight="Bold" />, 
+                    you are <Run Name="HowFarBehindThePlan" Text="..." Foreground="IndianRed" FontWeight="Bold" /> <Run Text="minutes " Foreground="IndianRed" FontWeight="Bold" /> behind the plan.</TextBlock>
             </WrapPanel>
         </StatusBar>
     </Grid>

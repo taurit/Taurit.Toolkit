@@ -133,14 +133,22 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             var dayOfTheQuarterWhenPlanningShouldRatherBeDone = firstDayOfQuarter.AddDays(7);
             DateTime trendStartDate = etLowPriorityTasks.OrderByDescending(x => x.DateTime)
                 .First(x => x.DateTime < dayOfTheQuarterWhenPlanningShouldRatherBeDone).DateTime;
+            var daysSinceTrendStart = (lastKnownDate - trendStartDate).Days;
 
             Double totalMinutesAtTrendStartDate = CountTotalMinutesAtDate(trendStartDate, etLowPriorityTasks, etMediumPriorityTasks, etHighPriorityTasks);
             Double totalMinutesNow = CountTotalMinutesAtDate(lastKnownDate, etLowPriorityTasks, etMediumPriorityTasks, etHighPriorityTasks);
+            
 
             DateTime lastDayOfQuarter = SnapshotOnTimeline.GetLastDayOfQuarter(trendStartDate);
             Int32 howManyDaysToEndOfQuarter = lastDayOfQuarter.Subtract(lastKnownDate).Days;
 
             Double howManyMinutesNeedsToBeDoneInADayForCleanBacklog = totalMinutesNow / howManyDaysToEndOfQuarter;
+            Double totalMinutesNowIfIStuckToThePlan = totalMinutesAtTrendStartDate -
+                                                      daysSinceTrendStart *
+                                                      howManyMinutesNeedsToBeDoneInADayForCleanBacklog;
+            Double howFarBehindThePlan = totalMinutesNow - totalMinutesNowIfIStuckToThePlan;
+            MostRecentSnapshotTime.Text = lastKnownDate.ToString("yyyy-MM-dd HH:mm");
+            HowFarBehindThePlan.Text = howFarBehindThePlan.ToString("0");
 
             BurndownSpeed.Text = howManyMinutesNeedsToBeDoneInADayForCleanBacklog.ToString("0");
             Int32 howManyDaysToDraw = selectedTimePeriod.Days < 8 ? 3 : 7;
