@@ -43,6 +43,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
             List<DateTime> selectedDates = dates.Where(x => x >= periodStart && x <= periodEnd).ToList();
 
             // list all the snapshots in those dates
+            DateTime detailedSnapshotsPeriodStart = periodEnd.AddDays(-3);
             var snapshots = new List<SnapshotOnTimeline>();
             foreach (DateTime selectedDate in selectedDates)
             {
@@ -51,7 +52,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
                     Directory.EnumerateFiles(selectedDateSubfolder, "*.labels").ToList();
 
                 IEnumerable<String> selectedSnapshots =
-                    GetNth(snapshotsInSubfolder, _settings.ReductionRatio);
+                    selectedDate < detailedSnapshotsPeriodStart
+                        ? GetNth(snapshotsInSubfolder, _settings.ReductionRatio)
+                        : snapshotsInSubfolder; // show with maximum granularity of 1h for the last days, because this is data I'm most interested in
 
                 foreach (String snapshot in selectedSnapshots)
                 {

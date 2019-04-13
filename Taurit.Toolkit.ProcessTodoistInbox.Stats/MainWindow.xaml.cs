@@ -127,56 +127,94 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 etFutureTasks);
             EstimatedTimeOfTasks.AddRange(estimatedTimeOfTasksSeries);
 
-            // draw the optimum trend
             DateTime lastKnownDate = etLowPriorityTasks.Max(x => x.DateTime);
-            var firstDayOfQuarter = SnapshotOnTimeline.GetLastDayOfQuarter(lastKnownDate).AddDays(1).AddMonths(-3);
-            var dayOfTheQuarterWhenPlanningShouldRatherBeDone = firstDayOfQuarter.AddDays(7);
-            DateTime trendStartDate = etLowPriorityTasks.OrderByDescending(x => x.DateTime)
-                .First(x => x.DateTime < dayOfTheQuarterWhenPlanningShouldRatherBeDone).DateTime;
-            var daysSinceTrendStart = (lastKnownDate - trendStartDate).Days;
+            DateTime firstDayOfQuarter = SnapshotOnTimeline.GetLastDayOfQuarter(lastKnownDate).AddDays(1).AddMonths(-3);
+            DateTime
+                dayWhenThePlanningIsDone =
+                    firstDayOfQuarter
+                        .AddDays(7); // at this day planning should be done and we can assume that time estimates for tasks are ready
 
-            Double totalMinutesAtTrendStartDate = CountTotalMinutesAtDate(trendStartDate, etLowPriorityTasks, etMediumPriorityTasks, etHighPriorityTasks);
-            Double totalMinutesNow = CountTotalMinutesAtDate(lastKnownDate, etLowPriorityTasks, etMediumPriorityTasks, etHighPriorityTasks);
-            
+            DateTime snapshotTimeClosestToWhenThePlanningIsDone =
+                etLowPriorityTasks
+                    .OrderByDescending(x => x.DateTime)
+                    .First(x => x.DateTime < dayWhenThePlanningIsDone).DateTime;
 
-            DateTime lastDayOfQuarter = SnapshotOnTimeline.GetLastDayOfQuarter(trendStartDate);
+            Int32 daysSinceWorkStarted = (lastKnownDate - snapshotTimeClosestToWhenThePlanningIsDone).Days;
+
+            // what would be the ideal trend from the day work started to inbox zero at the end of the quarter?
+            Double totalMinutesAtDateWhenWorkStarted = CountTotalMinutesAtDate(
+                snapshotTimeClosestToWhenThePlanningIsDone, etLowPriorityTasks, etMediumPriorityTasks,
+                etHighPriorityTasks);
+            DateTime lastDayOfQuarter =
+                SnapshotOnTimeline.GetLastDayOfQuarter(snapshotTimeClosestToWhenThePlanningIsDone);
+            Int32 howManyDaysFromWorkStartToEndOfQuarter = lastDayOfQuarter.Subtract(snapshotTimeClosestToWhenThePlanningIsDone).Days + 1;
+            Double ideallyHowMinutesWouldNeedToBeDoneInADayForCleanBacklog =
+                totalMinutesAtDateWhenWorkStarted / howManyDaysFromWorkStartToEndOfQuarter;
+            DrawTheOptimumTrendLine(totalMinutesAtDateWhenWorkStarted,
+                ideallyHowMinutesWouldNeedToBeDoneInADayForCleanBacklog,
+                snapshotTimeClosestToWhenThePlanningIsDone,
+                daysSinceWorkStarted);
+
+            // at what speed do I need to work NOW to achieve inbox zero at the end of quarter?
             Int32 howManyDaysToEndOfQuarter = lastDayOfQuarter.Subtract(lastKnownDate).Days;
-
+            Double totalMinutesNow = CountTotalMinutesAtDate(lastKnownDate, etLowPriorityTasks, etMediumPriorityTasks,
+                etHighPriorityTasks);
             Double howManyMinutesNeedsToBeDoneInADayForCleanBacklog = totalMinutesNow / howManyDaysToEndOfQuarter;
-            Double totalMinutesNowIfIStuckToThePlan = totalMinutesAtTrendStartDate -
-                                                      daysSinceTrendStart *
+            Double totalMinutesNowIfIStuckToThePlan = totalMinutesAtDateWhenWorkStarted -
+                                                      daysSinceWorkStarted *
                                                       howManyMinutesNeedsToBeDoneInADayForCleanBacklog;
             Double howFarBehindThePlan = totalMinutesNow - totalMinutesNowIfIStuckToThePlan;
-            MostRecentSnapshotTime.Text = lastKnownDate.ToString("yyyy-MM-dd HH:mm");
-            HowFarBehindThePlan.Text = howFarBehindThePlan.ToString("0");
+            UpdateLabelsValues(totalMinutesNow, lastKnownDate, howFarBehindThePlan,
+                howManyMinutesNeedsToBeDoneInADayForCleanBacklog);
 
-            BurndownSpeed.Text = howManyMinutesNeedsToBeDoneInADayForCleanBacklog.ToString("0");
-            Int32 howManyDaysToDraw = selectedTimePeriod.Days < 8 ? 3 : 7;
+            // update the cache
+            File.WriteAllText(cacheFileName, JsonConvert.SerializeObject(cache));
+        }
 
+        private void DrawTheOptimumTrendLine(
+            Double totalMinutesAtDateWhenWorkStarted,
+            Double ideallyHowMinutesWouldNeedToBeDoneInADayForCleanBacklog,
+            DateTime snapshotTimeClosestToWhenThePlanningIsDone,
+            Int32 daysSinceWorkStarted
+        )
+        {
             var optimumTrendPoints = new ChartValues<DateTimePoint>();
-            Double currentHours = totalMinutesAtTrendStartDate;
-
-            for (Int32 day = 0; day < howManyDaysToDraw; day++)
+            for (var day = daysSinceWorkStarted - 4; day <= daysSinceWorkStarted + 4; day++)
             {
-                Double estimatedMinutes = currentHours - day * howManyMinutesNeedsToBeDoneInADayForCleanBacklog;
-                optimumTrendPoints.Add(new DateTimePoint(trendStartDate.AddDays(day), estimatedMinutes));
+                Double estimatedMinutes = totalMinutesAtDateWhenWorkStarted -
+                                          day * ideallyHowMinutesWouldNeedToBeDoneInADayForCleanBacklog;
+                optimumTrendPoints.Add(new DateTimePoint(snapshotTimeClosestToWhenThePlanningIsDone.AddDays(day),
+                    estimatedMinutes));
             }
 
             var lineSeries = new LineSeries
             {
                 Values = optimumTrendPoints,
                 Fill = Brushes.Transparent,
-                Stroke = Brushes.Gray,
+                Stroke = Brushes.Black,
                 StrokeDashArray = new DoubleCollection {2},
                 PointGeometry = DefaultGeometries.Cross,
                 StrokeThickness = 1
             };
+            Panel.SetZIndex(lineSeries, 100); // draw the trend line in front of other charts
             EstimatedTimeOfTasks.Add(lineSeries);
-
-            File.WriteAllText(cacheFileName, JsonConvert.SerializeObject(cache));
         }
 
-        private static Double CountTotalMinutesAtDate(DateTime date, List<DateTimePoint> etLowPriorityTasks, List<DateTimePoint> etMediumPriorityTasks, List<DateTimePoint> etHighPriorityTasks)
+        private void UpdateLabelsValues(
+            Double mostRecentTotalBacklogTimeEstimateInMinutes,
+            DateTime lastKnownDate,
+            Double howManyMinutesBehindThePlanIAm,
+            Double howManyMinutesNeedsToBeDoneInADayForCleanBacklog
+        )
+        {
+            TotalWorkLeft.Text = mostRecentTotalBacklogTimeEstimateInMinutes.ToString("0");
+            MostRecentSnapshotTime.Text = lastKnownDate.ToString("yyyy-MM-dd HH:mm");
+            HowFarBehindThePlan.Text = howManyMinutesBehindThePlanIAm.ToString("0");
+            BurndownSpeed.Text = howManyMinutesNeedsToBeDoneInADayForCleanBacklog.ToString("0");
+        }
+
+        private static Double CountTotalMinutesAtDate(DateTime date, List<DateTimePoint> etLowPriorityTasks,
+            List<DateTimePoint> etMediumPriorityTasks, List<DateTimePoint> etHighPriorityTasks)
         {
             return etLowPriorityTasks.Single(x => x.DateTime == date).Value +
                    etMediumPriorityTasks.Single(x => x.DateTime == date).Value +

@@ -60,8 +60,14 @@
                     Content="Include future tasks planned for the quarter"
                     IsChecked="False"
                     Unchecked="ToggleButton_OnChecked" />
-                <TextBlock Margin="0 15 0 0 ">
-                    Window render time: <Run Name="RenderTimeString" Text="..." /></TextBlock>
+
+                <TextBlock Margin="0,15,0,0" xml:space="preserve">Total work left: <Run
+                        Name="TotalWorkLeft"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Foreground="DodgerBlue"
+                        Text="..." /> minutes</TextBlock>
+                <TextBlock xml:space="preserve">Window render time: <Run Name="RenderTimeString" Text="..." /></TextBlock>
             </StackPanel>
         </Border>
         <UniformGrid
@@ -69,7 +75,6 @@
             Grid.Column="1"
             Columns="1"
             Rows="1">
-
             <wpf:CartesianChart
                 Background="White"
                 DataTooltip="{x:Null}"
@@ -92,10 +97,28 @@
             Grid.Column="0"
             Grid.ColumnSpan="2">
             <WrapPanel DockPanel.Dock="Left">
-                <TextBlock Margin="10 0 0 0" ToolTip="Avg daily work needed for inbox zero at the end of the quarter">
-                    Avg time of work <Run Text="on the planned tasks" FontWeight="Bold"/> needed: <Run Name="BurndownSpeed" Text="..." Foreground="Red" FontWeight="Bold" /> <Run Text="minutes/day" Foreground="Red" FontWeight="Bold" />. 
-                    As of <Run Name="MostRecentSnapshotTime" Text="..." Foreground="MediumSeaGreen" FontWeight="Bold" />, 
-                    you are <Run Name="HowFarBehindThePlan" Text="..." Foreground="IndianRed" FontWeight="Bold" /> <Run Text="minutes " Foreground="IndianRed" FontWeight="Bold" /> behind the plan.</TextBlock>
+                <TextBlock
+                    Margin="10,0,0,0"
+                    xml:space="preserve"
+                    ToolTip="Avg daily work needed for inbox zero at the end of the quarter">Avg time of work on the planned tasks needed: <Run
+                        Name="BurndownSpeed"
+                        FontWeight="Bold"
+                        Foreground="Red"
+                        Text="..." /> <Run
+                        FontWeight="Bold"
+                        Foreground="Red"
+                        Text="minutes/day" />. As of <Run
+                        Name="MostRecentSnapshotTime"
+                        FontWeight="Bold"
+                        Foreground="MediumSeaGreen"
+                        Text="..." />, you are <Run
+                        Name="HowFarBehindThePlan"
+                        FontWeight="Bold"
+                        Foreground="IndianRed"
+                        Text="..." /> <Run
+                        FontWeight="Bold"
+                        Foreground="IndianRed"
+                        Text="minutes" /> behind the plan.</TextBlock>
             </WrapPanel>
         </StatusBar>
     </Grid>
