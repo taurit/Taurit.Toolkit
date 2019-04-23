@@ -6,8 +6,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            Console.WriteLine("Yo dawg");
+            Console.WriteLine("Yo dawg from net core 3");
             Console.ReadLine();
         }
     }
