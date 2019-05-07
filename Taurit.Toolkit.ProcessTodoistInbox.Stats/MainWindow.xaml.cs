@@ -345,7 +345,12 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             };
             RadioButton selectedTimeCheckbox = timePeriodCheckboxes.Single(x => x.IsChecked == true);
             Int32 timeInDays = Convert.ToInt32((String) selectedTimeCheckbox.Tag);
-            return TimeSpan.FromDays(timeInDays);
+            return TimeSpan.FromDays(
+                    Math.Max(
+                        timeInDays, // to limit what's needed for performance
+                        3*31 // to guarantee we have data from the beginning of the quarter to estimate optimum trend
+                    )
+                );
         }
 
 
