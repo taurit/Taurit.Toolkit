@@ -14,6 +14,7 @@ using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using NaturalLanguageTimespanParser;
 using Newtonsoft.Json;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Stats.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Stats.Services;
 using Taurit.Toolkit.TodoistInboxHelper;

@@ -134,6 +134,7 @@
   </ItemGroup>
 
 <ItemGroup>
+  <ProjectReference Include="..\Taurit.Toolkit.ProcesTodoistInbox.Common\Taurit.Toolkit.ProcessTodoistInbox.Common.csproj" />
   <ProjectReference Include="..\Taurit.Toolkit.TodoistInboxHelper\Taurit.Toolkit.TodoistInboxHelper.csproj" />
 </ItemGroup>
   <ItemGroup>

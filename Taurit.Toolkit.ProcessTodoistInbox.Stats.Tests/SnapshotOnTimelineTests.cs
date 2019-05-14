@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Stats.Models;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Tests

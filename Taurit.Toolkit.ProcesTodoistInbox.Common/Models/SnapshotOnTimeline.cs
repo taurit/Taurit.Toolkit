@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Models
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models
 {
-    internal class SnapshotOnTimeline
+    public class SnapshotOnTimeline
     {
         public SnapshotOnTimeline(
             DateTime time,
@@ -30,7 +30,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Models
         /// </summary>
         /// <param name="originalDate"></param>
         /// <returns></returns>
-        internal static DateTime GetLastDayOfQuarter(DateTime originalDate) // todo: move to a separate class!
+        public static DateTime GetLastDayOfQuarter(DateTime originalDate) // todo: move to a separate class!
         {
             return AddQuarters(new DateTime(originalDate.Year, 1, 1), GetQuarter(originalDate)).AddDays(-1);
         }
