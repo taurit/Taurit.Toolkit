@@ -65,8 +65,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Correlation
 
                 var estimatedTime = _timespanParser.Parse(taskAtMostRecentPointInTime.Task.content);
                 var estimateInMinutes = estimatedTime.Success ? estimatedTime.Duration.TotalMinutes : (double?) null;
+                var priority = taskAtMostRecentPointInTime.Task.priority;
 
-                var taskStats = new TaskStats(taskId, taskLifetimeDays, estimateInMinutes, taskDescription);
+                var taskStats = new TaskStats(taskId, taskLifetimeDays, estimateInMinutes, taskDescription, priority);
                 stats.Add(taskStats);
             }
 
@@ -93,6 +94,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Correlation
                     .Where(x => x.HasDate == false)
                     .Where(x => x.is_archived == 0)
                     .Where(x => x.project_name != "Someday/Maybe")
+                    .Where(x => x.project_name != "Edukacja")
                     .Where(x => !tasksStillNotCompletedInMostRecentSnapshot.Contains(x.id))
                     .Select(x => new TaskWithSnapshotDate(snapshot.Time, x));
                 allTasks.AddRange(taskWithSnapshotDates);
