@@ -19,6 +19,7 @@ using Taurit.Toolkit.ProcessTodoistInbox.Stats.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Stats.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
+using Humanizer;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 {
@@ -161,12 +162,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             Double totalMinutesNow = CountTotalMinutesAtDate(lastKnownDate, etLowPriorityTasks, etMediumPriorityTasks,
                 etHighPriorityTasks);
             Double howManyMinutesNeedsToBeDoneInADayForCleanBacklog = totalMinutesNow / howManyDaysToEndOfQuarter;
-            Double totalMinutesNowIfIStuckToThePlan = totalMinutesAtDateWhenWorkStarted -
-                                                      daysSinceWorkStarted *
-                                                      howManyMinutesNeedsToBeDoneInADayForCleanBacklog;
-            Double howFarBehindThePlan = totalMinutesNow - totalMinutesNowIfIStuckToThePlan;
-            UpdateLabelsValues(totalMinutesNow, lastKnownDate, howFarBehindThePlan,
-                howManyMinutesNeedsToBeDoneInADayForCleanBacklog);
+          
+            UpdateLabelsValues(totalMinutesNow, lastKnownDate, howManyMinutesNeedsToBeDoneInADayForCleanBacklog);
 
             // update the cache
             File.WriteAllText(cacheFileName, JsonConvert.SerializeObject(cache));
@@ -204,14 +201,12 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         private void UpdateLabelsValues(
             Double mostRecentTotalBacklogTimeEstimateInMinutes,
             DateTime lastKnownDate,
-            Double howManyMinutesBehindThePlanIAm,
             Double howManyMinutesNeedsToBeDoneInADayForCleanBacklog
         )
         {
-            TotalWorkLeft.Text = mostRecentTotalBacklogTimeEstimateInMinutes.ToString("0");
+            TotalWorkLeft.Text = TimeSpan.FromMinutes(mostRecentTotalBacklogTimeEstimateInMinutes).Humanize(2, countEmptyUnits: false);
             MostRecentSnapshotTime.Text = lastKnownDate.ToString("yyyy-MM-dd HH:mm");
-            HowFarBehindThePlan.Text = howManyMinutesBehindThePlanIAm.ToString("0");
-            BurndownSpeed.Text = howManyMinutesNeedsToBeDoneInADayForCleanBacklog.ToString("0");
+            BurndownSpeed.Text = TimeSpan.FromMinutes(howManyMinutesNeedsToBeDoneInADayForCleanBacklog).Humanize(2, countEmptyUnits: false);
         }
 
         private static Double CountTotalMinutesAtDate(DateTime date, List<DateTimePoint> etLowPriorityTasks,
@@ -340,9 +335,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             RadioButton[] timePeriodCheckboxes =
             {
                 Time_AllTime,
-                Time_LastMonth,
-                Time_LastWeek,
-                Time_LastYear
+                Time_LastQuarter,
             };
             RadioButton selectedTimeCheckbox = timePeriodCheckboxes.Single(x => x.IsChecked == true);
             Int32 timeInDays = Convert.ToInt32((String) selectedTimeCheckbox.Tag);
@@ -375,7 +368,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 // how long did it take to render the window completely?
                 TimeSpan timeDifference = RenderFinishedTime.Subtract(WindowOpenedTime);
 
-                RenderTimeString.Text = $"{timeDifference.TotalMilliseconds} ms";
+                this.Title += $" [Render time = {timeDifference.Humanize(2)}]";
             }), DispatcherPriority.ContextIdle, null);
         }
     }

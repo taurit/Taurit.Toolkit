@@ -8,6 +8,7 @@
   </PropertyGroup>
 
 <ItemGroup>
+    <PackageReference Include="Humanizer.Core.pl" Version="2.6.2" />
     <PackageReference Include="JetBrains.Annotations">
       <Version>2019.1.1</Version>
     </PackageReference>
