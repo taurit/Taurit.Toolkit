@@ -161,6 +161,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             Int32 howManyDaysToEndOfQuarter = lastDayOfQuarter.Subtract(lastKnownDate).Days;
             Double totalMinutesNow = CountTotalMinutesAtDate(lastKnownDate, etLowPriorityTasks, etMediumPriorityTasks,
                 etHighPriorityTasks);
+
+            if (howManyDaysToEndOfQuarter == 0)
+            {
+                // fix division by zero on the last day of a quarter
+                howManyDaysToEndOfQuarter = 1;
+            }
+
             Double howManyMinutesNeedsToBeDoneInADayForCleanBacklog = totalMinutesNow / howManyDaysToEndOfQuarter;
           
             UpdateLabelsValues(totalMinutesNow, lastKnownDate, howManyMinutesNeedsToBeDoneInADayForCleanBacklog);
