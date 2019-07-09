@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -19,7 +20,7 @@ using Taurit.Toolkit.ProcessTodoistInbox.Stats.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Stats.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
-using Humanizer;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Services;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 {
@@ -38,6 +39,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         private readonly SnapshotReader _snapshotReader;
         private readonly TaskDateParser _taskDateParser;
         private readonly DateTime _tomorrowDateUtc;
+        private readonly ITimeConverter _timeConverter;
 
         public MainWindow([NotNull] String settingsFilePath)
         {
@@ -48,6 +50,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             _snapshotReader = new SnapshotReader(_settings);
             _taskDateParser = new TaskDateParser();
             _tomorrowDateUtc = DateTime.UtcNow.Date.AddDays(1);
+            _timeConverter = new TimeConverter();
         }
 
         public Func<Double, String> XFormatter { get; } = value => new DateTime((Int64) value).ToString("yyyy-MM-dd");
@@ -184,7 +187,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         )
         {
             var optimumTrendPoints = new ChartValues<DateTimePoint>();
-            for (var day = daysSinceWorkStarted - 4; day <= daysSinceWorkStarted + 4; day++)
+            for (Int32 day = daysSinceWorkStarted - 4; day <= daysSinceWorkStarted + 4; day++)
             {
                 Double estimatedMinutes = totalMinutesAtDateWhenWorkStarted -
                                           day * ideallyHowMinutesWouldNeedToBeDoneInADayForCleanBacklog;
@@ -211,9 +214,12 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             Double howManyMinutesNeedsToBeDoneInADayForCleanBacklog
         )
         {
-            TotalWorkLeft.Text = TimeSpan.FromMinutes(mostRecentTotalBacklogTimeEstimateInMinutes).Humanize(2, countEmptyUnits: false);
+            TimeSpan totalWorkLeft = TimeSpan.FromMinutes(mostRecentTotalBacklogTimeEstimateInMinutes);
+            TimeSpan dailyWorkNeededToCleanBacklogThisQuarter = TimeSpan.FromMinutes(howManyMinutesNeedsToBeDoneInADayForCleanBacklog);
+
+            TotalWorkLeft.Text = _timeConverter.ConvertToUnitsOfWork(totalWorkLeft).ToString() + " ZG";
             MostRecentSnapshotTime.Text = lastKnownDate.ToString("yyyy-MM-dd HH:mm");
-            BurndownSpeed.Text = TimeSpan.FromMinutes(howManyMinutesNeedsToBeDoneInADayForCleanBacklog).Humanize(2, countEmptyUnits: false);
+            BurndownSpeed.Text = _timeConverter.ConvertToUnitsOfWork(dailyWorkNeededToCleanBacklogThisQuarter).ToString();
         }
 
         private static Double CountTotalMinutesAtDate(DateTime date, List<DateTimePoint> etLowPriorityTasks,
@@ -288,6 +294,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             return parseResult.Success ? parseResult.Duration.TotalMinutes : 0d;
         }
 
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private static StackedAreaSeries[] GetStackedSeries(
             List<DateTimePoint> highPriorityTasks,
             List<DateTimePoint> mediumPriorityTasks,
@@ -375,7 +382,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 // how long did it take to render the window completely?
                 TimeSpan timeDifference = RenderFinishedTime.Subtract(WindowOpenedTime);
 
-                this.Title += $" [Render time = {timeDifference.Humanize(2)}]";
+                this.Title += $" [Render time = {timeDifference.TotalMilliseconds} ms]";
             }), DispatcherPriority.ContextIdle, null);
         }
     }

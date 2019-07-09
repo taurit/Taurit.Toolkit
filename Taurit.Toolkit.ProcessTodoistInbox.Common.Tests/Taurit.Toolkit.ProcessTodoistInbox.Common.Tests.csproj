@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ClassificationRuleIfTests.cs" />
     <Compile Include="ClassificationRulesFormatConverterTests.cs" />
+    <Compile Include="ITimeConverterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

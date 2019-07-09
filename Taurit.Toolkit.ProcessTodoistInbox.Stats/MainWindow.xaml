@@ -85,7 +85,7 @@
                             Text="..." /> <Run
                             FontWeight="Bold"
                             Foreground="Red"
-                            Text="/day" /> to succeed with the quarterly plan. Total work left: <Run
+                            Text="ZG/day" /> to succeed with the quarterly plan. Total work left: <Run
                             Name="TotalWorkLeft"
                             FontWeight="Bold"
                             Foreground="DodgerBlue"
