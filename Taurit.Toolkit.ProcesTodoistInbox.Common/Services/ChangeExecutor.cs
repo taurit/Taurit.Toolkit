@@ -14,10 +14,12 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
             _todoistCommandService = todoistCommandService;
         }
 
-        public void ApplyPlan(ICollection<TaskActionModel> plannedActions)
+        public List<String> ApplyPlan(ICollection<TaskActionModel> plannedActions)
         {
+            List<string> logs = new List<String>(plannedActions.Count + 1);
             foreach (TaskActionModel action in plannedActions)
             {
+                logs.Add($"Scheduling action for task {action.NewName}: set @{action.Label}, #{action.Project}, p{action.Priority}");
                 Int64 taskId = action.TaskId;
                 Int32? newPriority = action.Priority;
                 Int64? newLabelId = action.Label?.id;
@@ -33,6 +35,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
 
             // ReSharper disable once UnusedVariable - useful for debugging
             String response = _todoistCommandService.ExecuteCommands();
+            logs.Add($"API response: {response}");
+
+            return logs;
         }
     }
 }

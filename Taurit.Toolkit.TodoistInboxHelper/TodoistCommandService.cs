@@ -36,7 +36,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             _commandsStrings.Clear();
             Contract.Assume(response != null);
             String apiResponse = response.Content;
-            return apiResponse;
+            return $"StatusCode {response.StatusCode}, {response.ErrorException}, {response.ErrorMessage}, response: {apiResponse}";
         }
 
         /// <inheritdoc />

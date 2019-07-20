@@ -66,6 +66,8 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             telemetryClient.Context.Session.Id = telemetrySessionId;
 
             TrackAndWriteToConsole(telemetryClient, $"Starting the application. Session id = {telemetrySessionId}");
+            WriteToConsole($"There are {_settings.ClassificationRulesConcise.Count} rules defined in settings");
+            WriteToConsole($"Projects treated as inboxes: {String.Join(", ", _settings.AlternativeInboxes.Select(x => $"'{x}'"))}");
 
             while (true)
                 try
@@ -118,19 +120,23 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
                 allLabels.ToLookup(x => x.id)
                 );
             dataRetrievalStopwatch.Stop();
+            WriteToConsole($"Retrieved {allProjects.Count} projects, {allLabels.Count} labels and {allTasks.Count} tasks");
             TrackAndWriteToConsole(telemetryClient, "TotalDataRetrievalTimeMs", dataRetrievalStopwatch.ElapsedMilliseconds);
 
             // analysis: save for the future use
 
             var snapshotsFolder = Path.Combine(outputDirectory, _settings.SnapshotsFolder);
             Stopwatch snapshotCreatorStopwatch = Stopwatch.StartNew();
-            _backlogSnapshotCreator.CreateSnapshot(snapshotsFolder, DateTime.UtcNow, allTasks, allProjects, allLabels);
+            var snapshotOutputFolder = _backlogSnapshotCreator.CreateSnapshot(snapshotsFolder, DateTime.UtcNow, allTasks, allProjects, allLabels);
             snapshotCreatorStopwatch.Stop();
+            WriteToConsole($"Snapshot created in the folder '{snapshotOutputFolder}'");
             TrackAndWriteToConsole(telemetryClient, "TotalSnapshotCreationTimeMs", snapshotCreatorStopwatch.ElapsedMilliseconds);
 
             IReadOnlyList<TodoTask> tasksThatNeedReview =
                 _filteredTaskAccessor.GetNotReviewedTasks(allTasks);
-
+            
+            WriteToConsole($"There are {tasksThatNeedReview.Count} tasks that need review");
+            WriteToConsole($"Performing the classification...");
             var taskClassifier = new TaskClassifier(
                 settings.ClassificationRulesConcise,
                 allLabels,
@@ -144,7 +150,16 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
                 plannedActions.Add(action);
 
             // Apply actions
-            _changeExecutor.ApplyPlan(plannedActions);
+            List<String> logs = _changeExecutor.ApplyPlan(plannedActions);
+            foreach (String log in logs)
+            {
+                WriteToConsole(log);
+            }
+        }
+
+        private void WriteToConsole(string message)
+        {
+            Console.WriteLine($"{DateTime.Now} {message}");
         }
 
         private void TrackAndWriteToConsole(TelemetryClient telemetryClient, string message)

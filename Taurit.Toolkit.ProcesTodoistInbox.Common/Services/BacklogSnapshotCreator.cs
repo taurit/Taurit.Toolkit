@@ -13,7 +13,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
     /// </summary>
     public class BacklogSnapshotCreator
     {
-        public void CreateSnapshot(String snapshotsFolderPath, DateTime snapshotTime,
+        public String CreateSnapshot(String snapshotsFolderPath, DateTime snapshotTime,
             IReadOnlyList<TodoTask> allTasks, IReadOnlyList<Project> allProjects, IReadOnlyList<Label> allLabels)
         {
             String subfolderName = $"{snapshotTime:yyyy-MM-dd}";
@@ -32,6 +32,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
             File.WriteAllText(Path.Combine(subfolderPath, fileNameTasks), allTasksAsJson);
             File.WriteAllText(Path.Combine(subfolderPath, fileNameProjects), allProjectsAsJson);
             File.WriteAllText(Path.Combine(subfolderPath, fileNameLabels), allLabelsAsJson);
+
+            return subfolderPath;
         }
 
         public String GetNewestSnapshot(String snapshotsRootDirectory)

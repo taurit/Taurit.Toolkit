@@ -61,5 +61,10 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
 
         [JsonProperty]
         public bool team_inbox { get; set; }
+
+        public override String ToString()
+        {
+            return name;
+        }
     }
 }

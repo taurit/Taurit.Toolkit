@@ -40,5 +40,10 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
 
         [JsonProperty]
         public Int32 color { get; set; }
+
+        public override String ToString()
+        {
+            return name;
+        }
     }
 }
