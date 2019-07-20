@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
 using JetBrains.Annotations;
+using MoreLinq.Extensions;
 using Newtonsoft.Json;
 using RestSharp;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
@@ -11,7 +12,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 {
     public class TodoistCommandService : TodoistApiService, ITodoistCommandService
     {
-        [NotNull] private readonly List<String> _commandsStrings = new List<String>();
+        [NotNull] private readonly List<String> _commandsStrings = new List<String>(100);
 
         public TodoistCommandService(String apiKey) : base(apiKey)
         {
@@ -20,23 +21,46 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
         public String ExecuteCommands()
         {
+            var resultMessages = new List<String>(1); // typically we fit in one batch
             var client = new RestClient(ApiUrl);
 
-            var request = new RestRequest("sync", Method.POST);
-            request.AddParameter("token", AuthToken);
+            // There is a limit of 100 commands when syncing. When exceeded, the whole request fails.
+            // I keep the limit lower for a safe margin in case of future changes.
+            var maxCommandsSentInOneApiRequests = 50;
+            IEnumerable<IEnumerable<String>> commandsBatched = _commandsStrings.Batch(maxCommandsSentInOneApiRequests);
 
-            var commandsString = new StringBuilder();
-            commandsString.Append("[");
-            commandsString.Append(string.Join(", ", _commandsStrings));
-            commandsString.Append("]");
+            var batchNumber = 1;
+            foreach (IEnumerable<String> batch in commandsBatched)
+            {
+                var request = new RestRequest("sync", Method.POST);
+                request.AddParameter("token", AuthToken);
 
-            request.AddParameter("commands", commandsString.ToString());
+                var commandsString = new StringBuilder();
+                commandsString.Append("[");
+                commandsString.Append(string.Join(", ", batch));
+                commandsString.Append("]");
 
-            IRestResponse<TodoistSyncResponseTasks> response = client.Execute<TodoistSyncResponseTasks>(request);
+                request.AddParameter("commands", commandsString.ToString());
+
+                IRestResponse<TodoistSyncResponseTasks> response = client.Execute<TodoistSyncResponseTasks>(request);
+                String apiResponse = response.Content;
+                String resultMessage =
+                    $"Batch #{batchNumber} result: StatusCode {response.StatusCode}";
+                resultMessages.Add(resultMessage);
+
+                if (!response.IsSuccessful)
+                {
+                    // dont write the response in case of success because it's a big json with task guids, no value and lots of clutter
+                    resultMessages.Add($"Details: {response.ErrorMessage} {response.ErrorException} {apiResponse}");
+                }
+
+                batchNumber++;
+            }
             _commandsStrings.Clear();
-            Contract.Assume(response != null);
-            String apiResponse = response.Content;
-            return $"StatusCode {response.StatusCode}, {response.ErrorException}, {response.ErrorMessage}, response: {apiResponse}";
+
+            return resultMessages.Count == 0
+                ? "there was nothing to send"
+                : String.Join(Environment.NewLine, resultMessages);
         }
 
         /// <inheritdoc />
