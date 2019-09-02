@@ -27,7 +27,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models
             Project = newProject;
             Priority = newPriority;
             TaskId = task.id;
-            OldProjectId = task.project_id;
         }
 
         public String Name { get; set; }
@@ -45,6 +44,5 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models
         public Int32? Priority { get; set; }
 
         public Int64 TaskId { get; set; }
-        public Int64 OldProjectId { get; set; }
     }
 }

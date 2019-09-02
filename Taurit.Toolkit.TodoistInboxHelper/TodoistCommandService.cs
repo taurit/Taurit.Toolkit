@@ -64,15 +64,14 @@ namespace Taurit.Toolkit.TodoistInboxHelper
         }
 
         /// <inheritdoc />
-        public void AddUpdateProjectCommand(Int64 taskId, Int64 oldProjectId, [CanBeNull] Int64? newProjectId)
+        public void AddUpdateProjectCommand(Int64 taskId, [CanBeNull] Int64? newProjectId)
         {
             if (!newProjectId.HasValue) return;
 
             // move task to another project
             Guid moveCommandId = Guid.NewGuid();
-            String projectItems = $"{{\"{oldProjectId}\": [{taskId}]}}";
             String moveCommandString =
-                $"{{\"type\": \"item_move\", \"uuid\": \"{moveCommandId}\", \"args\": {{\"project_items\": {projectItems}, \"to_project\": {newProjectId.Value} }}}}";
+                $"{{\"type\": \"item_move\", \"uuid\": \"{moveCommandId}\", \"args\": {{\"id\": {taskId}, \"project_id\": {newProjectId.Value} }}}}";
             _commandsStrings.Add(moveCommandString);
         }
 

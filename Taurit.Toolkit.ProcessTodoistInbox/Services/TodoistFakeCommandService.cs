@@ -12,7 +12,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI.Services
         }
 
         /// <inheritdoc />
-        public void AddUpdateProjectCommand(Int64 taskId, Int64 oldProjectId, Int64? newProjectId)
+        public void AddUpdateProjectCommand(Int64 taskId, Int64? newProjectId)
         {
         }
 
