@@ -68,6 +68,7 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             TrackAndWriteToConsole(telemetryClient, $"Starting the application. Session id = {telemetrySessionId}");
             WriteToConsole($"There are {_settings.ClassificationRulesConcise.Count} rules defined in settings");
             WriteToConsole($"Projects treated as inboxes: {String.Join(", ", _settings.AlternativeInboxes.Select(x => $"'{x}'"))}");
+            WriteToConsole($"API url used: {TodoistApiService.ApiUrl}");
 
             while (true)
                 try

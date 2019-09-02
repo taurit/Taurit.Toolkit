@@ -29,7 +29,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
     /// </summary>
     public partial class MainWindow : Window
     {
-        [NotNull] private readonly MultiCultureTimespanParser _mctp = new MultiCultureTimespanParser(new[]
+        [JetBrains.Annotations.NotNull] private readonly MultiCultureTimespanParser _mctp = new MultiCultureTimespanParser(new[]
         {
             new CultureInfo("pl"),
             new CultureInfo("en")
@@ -41,7 +41,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         private readonly DateTime _tomorrowDateUtc;
         private readonly ITimeConverter _timeConverter;
 
-        public MainWindow([NotNull] String settingsFilePath)
+        public MainWindow([JetBrains.Annotations.NotNull] String settingsFilePath)
         {
             WindowOpenedTime = DateTime.UtcNow;
             InitializeComponent();
