@@ -19,10 +19,17 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             // Mon 07 Aug 2006 12:34:56 +0000
             try
             {
-                // timezone part is for now ignored, it is always +0000 in API results (the time is in UTC) and there seems to be no standard formatter for this
-                DateTime date = DateTime.ParseExact(dateString.Substring(0, 24),
-                    "ddd d MMM yyyy HH:mm:ss", CultureInfo.InvariantCulture);
-                return date;
+                if (dateString.Length >= 24)
+                {
+                    // timezone part is for now ignored, it is always +0000 in API results (the time is in UTC) and there seems to be no standard formatter for this
+                    DateTime date = DateTime.ParseExact(dateString.Substring(0, 24),
+                        "ddd d MMM yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                    return date;
+                }
+                else
+                {
+                    return DateTime.Parse(dateString);
+                }
             }
             catch (FormatException)
             {

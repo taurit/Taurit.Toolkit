@@ -278,7 +278,15 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
         private Boolean IsFutureTaskWithDefinedDueDate(TodoTask todoTask, DateTime snapshotDate, DateTime endOfQuarter)
         {
+            // for tasks up to API v7
             DateTime? taskDate = _taskDateParser.TryParse(todoTask.due_date_utc);
+
+            if (taskDate == null)
+            {
+                // for tasks since API v8 - now the date is stored in Due object
+                taskDate = _taskDateParser.TryParse(todoTask.due?.date);
+            }
+
             return taskDate.HasValue && taskDate >= snapshotDate && taskDate <= endOfQuarter;
         }
 

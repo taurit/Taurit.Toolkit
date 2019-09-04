@@ -14,16 +14,8 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
     [DebuggerDisplay("Task `{content}`")]
     public class TodoTask
     {
-        #region Those properties are not a part of data returned by the query! Must be filled by app logic if we want non-null.
-        [CanBeNull]
-        public String[] labelsNames { get; set; }
-
-        [CanBeNull]
-        public String project_name;
-        #endregion
-
         [JsonProperty] public Int32 is_archived;
-        
+
         [JsonProperty]
         public Int64 id { get; set; }
 
@@ -69,7 +61,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         /// </summary>
         [JsonProperty]
         public Int64 collapsed { get; set; }
-        
+
         /// <summary>
         ///     Whether the task is marked as completed (where 1 is true and 0 is false).
         /// </summary>
@@ -94,12 +86,14 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         ///     empty string if not set).
         /// </summary>
         [JsonProperty]
+        [Obsolete("No longer sent since API v8. See 'due' object instead.")]
         public String date_string { get; set; }
 
         /// <summary>
         ///     The language of the date_string (valid languages are: en, da, pl, zh, ko, de, pt, ja, it, fr, sv, ru, es, nl).
         /// </summary>
         [JsonProperty]
+        [Obsolete("No longer sent since API v8. See 'due' object instead.")]
         public String date_lang { get; set; }
 
         /// <summary>
@@ -107,7 +101,11 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         ///     due “Today”), the time part will be set as xx:xx:59.
         /// </summary>
         [JsonProperty]
+        [Obsolete("No longer sent since API v8. See 'due' object instead.")]
         public String due_date_utc { get; set; }
+
+        [JsonProperty]
+        public Due due { get; set; }
 
         /// <summary>
         ///     The date when the task was created.
@@ -115,6 +113,42 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         [JsonProperty]
         public String date_added { get; set; }
 
-        public Boolean HasDate => !string.IsNullOrWhiteSpace(date_string);
+        public Boolean HasDate => !string.IsNullOrWhiteSpace(date_string) || (due?.@string != null);
+
+        #region Those properties are not a part of data returned by the query! Must be filled by app logic if we want non-null.
+
+        [CanBeNull]
+        public String[] labelsNames { get; set; }
+
+        [CanBeNull] public String project_name;
+
+        #endregion
+    }
+
+    /// <example>
+    ///     {
+    ///     "date": "2016-12-0T12:00:00",
+    ///     "timezone": null,
+    ///     "string": "every day at 12",
+    ///     "lang": "en",
+    ///     "is_recurring": true
+    ///     }
+    /// </example>
+    public class Due
+    {
+        [JsonProperty]
+        public String date { get; set; }
+
+        [JsonProperty]
+        public String timezone { get; set; }
+
+        [JsonProperty]
+        public String @string { get; set; }
+
+        [JsonProperty]
+        public String lang { get; set; }
+
+        [JsonProperty]
+        public String is_recurring { get; set; }
     }
 }
