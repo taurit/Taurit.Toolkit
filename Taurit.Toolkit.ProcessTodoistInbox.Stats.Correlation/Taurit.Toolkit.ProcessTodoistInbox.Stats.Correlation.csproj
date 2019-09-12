@@ -7,11 +7,9 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="12.1.2" />
-    <PackageReference Include="Taurit.Libraries.NaturalLanguageTimespanParser" Version="0.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Taurit.Libraries.NaturalLanguageTimespanParser\NaturalLanguageTimespanParser\NaturalLanguageTimespanParser\NaturalLanguageTimespanParser.csproj" />
     <ProjectReference Include="..\Taurit.Toolkit.ProcesTodoistInbox.Common\Taurit.Toolkit.ProcessTodoistInbox.Common.csproj" />
     <ProjectReference Include="..\Taurit.Toolkit.TodoistInboxHelper\Taurit.Toolkit.TodoistInboxHelper.csproj" />
   </ItemGroup>
