@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -12,7 +13,7 @@ namespace Taurit.Toolkit.CompressVideo
     // draft of video converter wrapper for easy use in totalcmd
     internal class CompressVideo
     {
-        private static void Main([NotNull]String[] args)
+        private static void Main([NotNull] String[] args)
         {
             if (args.Length < 1) throw new ArgumentException("inputFileOrDirectory should be passed as an argument");
             String inputFileOrDirectory = args[0];
@@ -58,12 +59,20 @@ namespace Taurit.Toolkit.CompressVideo
             Contract.Assert(!Directory.Exists(inputFile));
 
             var ffmpegProcess = new Process();
-            ffmpegProcess.StartInfo.FileName = "ffmpeg";
+            ffmpegProcess.StartInfo.FileName = "d:\\ProgramData\\Tools\\ffmpeg\\bin\\ffmpeg.exe";
             ffmpegProcess.StartInfo.Arguments =
                 $"-hide_banner -vcodec {vcodec} -acodec {acodec} -crf {crf} \"{outputFile}\" -i \"{inputFile}\"";
             ffmpegProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
-            ffmpegProcess.Start();
-            ffmpegProcess.WaitForExit();
+            try
+            {
+                ffmpegProcess.Start();
+                ffmpegProcess.WaitForExit();
+            }
+            catch (Win32Exception e)
+            {
+                Console.WriteLine($"Could not run ffmpeg: {e.Message}");
+                Console.ReadLine();
+            }
         }
     }
 }
