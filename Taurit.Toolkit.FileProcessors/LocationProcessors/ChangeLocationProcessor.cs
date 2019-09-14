@@ -11,7 +11,7 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
     {
         private readonly IList<ChangeLocationRule> _rules;
 
-        public ChangeLocationProcessor([NotNull]IEnumerable<ChangeLocationRule> rules)
+        public ChangeLocationProcessor([NotNull] IEnumerable<ChangeLocationRule> rules)
         {
             if (rules == null) throw new ArgumentNullException(nameof(rules));
 
@@ -38,8 +38,14 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
                 ChangeLocationRule ruleToApply = uniqueRules.Single();
 
                 String targetFilePath = Path.Combine(ruleToApply.TargetLocation, fileName);
-                Console.WriteLine($"Moving {fileName} to {targetFilePath}");
-                File.Move(filePath, targetFilePath);
+                if (File.Exists(targetFilePath))
+                    Console.WriteLine(
+                        $"Manual action required: target file `{targetFilePath}` already exists. Skipping.");
+                else
+                {
+                    Console.WriteLine($"Moving {fileName} to {targetFilePath}");
+                    File.Move(filePath, targetFilePath);
+                }
             }
         }
     }

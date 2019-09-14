@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using JetBrains.Annotations;
@@ -24,8 +25,16 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
                 $"convert \"{inputFile}\" {additionalArguments} -quality {quality.QualityNumeric} -define webp:lossless=false \"{outputFile}\"";
 
             magickProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            magickProcess.Start();
-            magickProcess.WaitForExit();
+            try
+            {
+                magickProcess.Start();
+                magickProcess.WaitForExit();
+            }
+            catch (Win32Exception e)
+            {
+                Console.WriteLine($"Could not start ImageMagick process: {e.Message}");
+                throw;
+            }
         }
 
         public static void ConvertToJpeg([NotNull] String inputFile, [NotNull] String outputFile,

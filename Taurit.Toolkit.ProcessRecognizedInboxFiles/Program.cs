@@ -2,6 +2,7 @@
 using Taurit.Toolkit.FileProcessors.Exceptions;
 using Taurit.Toolkit.FileProcessors.LocationProcessors;
 using Taurit.Toolkit.ProcessRecognizedInboxFiles.Domain;
+using Taurit.Toolkit.ProcessRecognizedInboxFiles.Services;
 
 namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
 {
@@ -18,17 +19,25 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
         /// <param name="args">[0]: config file path (defaults to "config.json")</param>
         private static void Main(String[] args)
         {
-            try
+            if (args.Length != 1)
             {
-                var workflowConfiguration = new InboxConfiguration(args.Length > 0 ? args[0] : "config.json");
-                var mergeInboxProcessor = new MergeInboxProcessor();
-
-                var inboxWorkflow = new InboxWorkflow(workflowConfiguration, mergeInboxProcessor);
-                inboxWorkflow.Start();
+                Console.WriteLine("You need to pass a path to the configuration file as an argument.");
             }
-            catch (InvalidConfigurationException e)
+            else
             {
-                Console.WriteLine($"Configuration file is invalid: {e.Message}");
+                try
+                {
+                    var pathPlaceholderResolver = new PathPlaceholderResolver();
+                    var workflowConfiguration = new InboxConfiguration(pathPlaceholderResolver, args[0]);
+                    var mergeInboxProcessor = new MergeInboxProcessor();
+
+                    var inboxWorkflow = new InboxWorkflow(workflowConfiguration, mergeInboxProcessor);
+                    inboxWorkflow.Start();
+                }
+                catch (InvalidConfigurationException e)
+                {
+                    Console.WriteLine($"Configuration file is invalid: {e.Message}");
+                }
             }
 
             Console.WriteLine("Done.");

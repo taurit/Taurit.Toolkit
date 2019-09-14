@@ -83,7 +83,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
             else
             {
                 _loggingStrategy.LogSuggestion(
-                    $"Manual action required: ${webPPath} already exists, remove or rename source file");
+                    $"Manual action required: `{webPPath}` already exists, remove or rename source file");
             }
         }
     }
