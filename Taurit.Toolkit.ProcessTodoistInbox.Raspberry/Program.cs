@@ -11,8 +11,27 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
     {
         private static async Task Main(String[] args)
         {
-            var programDataDirectory = "/home/pi/ProcessTodoistInboxData";
+            if (args.Length != 1)
+            {
+                Console.WriteLine("invalid number of arguments. Expected:");
+                Console.WriteLine("[0] path to a data directory that contains ProcessTodoistInboxSettings.json");
+                return;
+            }
+
+            String programDataDirectory = args[0];
+            if (!Directory.Exists(programDataDirectory))
+            {
+                Console.WriteLine($"The `{programDataDirectory}` directory does not exist!");
+                return;
+            }
+
             String configurationFileName = $"{programDataDirectory}/ProcessTodoistInboxSettings.json";
+            if (!File.Exists(configurationFileName))
+            {
+                Console.WriteLine(
+                    $"The configuration file `{configurationFileName}` was not found in the `{programDataDirectory}` directory");
+                return;
+            }
 
             SettingsFileModel settings = await LoadSettings(configurationFileName);
             var startupTask = new StartupTask(settings);
