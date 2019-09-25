@@ -102,8 +102,8 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 
         private static Boolean IsCurrentHourSleepHour()
         {
-            Int32 currentHour = DateTime.Now.Hour;
-            return currentHour > 23 || currentHour < 7;
+            Int32 currentHour = DateTime.UtcNow.Hour;
+            return currentHour > 20 || currentHour < 5; // 20:00-5:00 utc == 22:00-7:00 CEST (good enough for winter as well)
         }
 
         private void TryClassifyAllTasks([NotNull] SettingsFileModel settings,
