@@ -75,7 +75,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
                         x.name == matchingRule.Then.moveToProject && x.is_deleted == 0 && x.is_archived == 0);
                     Int32? priorityToSet = matchingRule.Then.setPriority;
 
-                    String nameToSet = GetUpdatedName(task.content, matchingRule.Then._setDuration);
+                    String nameToSet = GetUpdatedName(task.content, matchingRule.Then.setDuration);
 
                     if (labelToSet != null || projectToSet != null || priorityToSet != null || nameToSet != null)
                     {

@@ -112,10 +112,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Google.Apis.Auth">
-      <Version>1.40.3</Version>
+      <Version>1.41.1</Version>
     </PackageReference>
     <PackageReference Include="Google.Apis.Fitness.v1">
-      <Version>1.40.3.1694</Version>
+      <Version>1.41.1.1736</Version>
     </PackageReference>
     <PackageReference Include="JetBrains.Annotations">
       <Version>2019.1.3</Version>
@@ -127,7 +127,7 @@
       <Version>12.0.2</Version>
     </PackageReference>
     <PackageReference Include="NodaTime">
-      <Version>2.4.6</Version>
+      <Version>2.4.7</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

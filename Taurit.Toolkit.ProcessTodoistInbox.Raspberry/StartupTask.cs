@@ -26,6 +26,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
         [NotNull] private readonly SettingsFileModel _settings;
 
         [NotNull] private readonly TodoistQueryService _todoistQueryService;
+        [NotNull] private readonly String _applicationInsightsKey;
 
         public StartupTask(SettingsFileModel settings)
         {
@@ -42,14 +43,15 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
             // needed to avoid "'Cyrillic' is not a supported encoding name." error later in code where a trick is used to compare string in an accent-insensitive way 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            TelemetryConfiguration.Active.InstrumentationKey = _settings.ApplicationInsightsKey;
+            _applicationInsightsKey = _settings.ApplicationInsightsKey;
         }
 
         public void Run(String outputDirectory)
         {
             String telemetrySessionId = $"{StartDateTime:yyyy-MM-dd-HH-mm-ss.fffffffzzz}";
 
-            var telemetryClient = new TelemetryClient();
+            var telemetryClient = new TelemetryClient(new TelemetryConfiguration(_applicationInsightsKey));
+            
             telemetryClient.Context.User.AuthenticatedUserId = "buli";
             telemetryClient.Context.User.UserAgent = "Taurit.Toolkit.ProcessTodoistInbox.Raspberry";
             telemetryClient.Context.Session.Id = telemetrySessionId;
