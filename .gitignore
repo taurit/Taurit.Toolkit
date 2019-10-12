@@ -263,3 +263,4 @@ Taurit.Toolkit.ProcessTodoistInbox.Function/Properties/PublishProfiles/
 Taurit.Toolkit.ProcessTodoistInbox.Function/configuration.private.json
 Taurit.Tookit.WeightMonitor/Taurit.Toolkit.WeightMonitor.Windows/client_id.json
 Taurit.Tookit.WeightMonitor/Taurit.Toolkit.WeightMonitor.GUI/client_id.json
+Taurit.Toolkit.ProcessTodoistInbox.RemoveArchivedItems/Properties/launchSettings.json

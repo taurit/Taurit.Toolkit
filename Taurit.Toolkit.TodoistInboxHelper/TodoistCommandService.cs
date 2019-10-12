@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
 using MoreLinq.Extensions;
@@ -47,9 +48,10 @@ namespace Taurit.Toolkit.TodoistInboxHelper
                     $"Batch #{batchNumber} result: StatusCode {response.StatusCode}";
                 resultMessages.Add(resultMessage);
 
-                if (!response.IsSuccessful)
+                Boolean responseSeemsToIndicateError = response.Content?.Contains("error_code") ?? false;
+                if (!response.IsSuccessful || responseSeemsToIndicateError)
                 {
-                    // dont write the response in case of success because it's a big json with task guids, no value and lots of clutter
+                    // don't write the response in case of success because it's a big json with task guids, no value and lots of clutter
                     resultMessages.Add($"Details: {response.ErrorMessage} {response.ErrorException} {apiResponse}");
                 }
 
@@ -120,6 +122,59 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             String commandStringAsJson = JsonConvert.SerializeObject(commandStringAsObject);
 
             _commandsStrings.Add(commandStringAsJson);
+        }
+
+        public void AddRemoveTasksCommands([NotNull] IReadOnlyList<TodoTask> completedTasks)
+        {
+            if (completedTasks == null) throw new ArgumentNullException(nameof(completedTasks));
+            List<Int64> idsOfTasksToRemove = completedTasks.Select(x => x.id).ToList();
+
+            foreach (Int64 idOfTaskToRemove in idsOfTasksToRemove)
+            {
+                // first we need to uncomplete the item (at least in API v8). Otherwise delete returns ok but does not work
+                String uncompleteCommand = CreateCommandForUncompleteItem(idOfTaskToRemove);
+                _commandsStrings.Add(uncompleteCommand);
+
+                // then we can delete
+                String deleteCommand = CreateCommandForDeleteItem(idOfTaskToRemove);
+                _commandsStrings.Add(deleteCommand);
+            }
+        }
+
+        private static String CreateCommandForUncompleteItem(Int64 idOfTask)
+        {
+            Guid commandId = Guid.NewGuid();
+
+            var commandStringAsObject = new
+            {
+                type = "item_uncomplete",
+                uuid = $"{commandId}",
+                args = new
+                {
+                    // used to be 'ids', but since API v8 we can't pass more than one id in a request
+                    id = idOfTask
+                }
+            };
+            String commandStringAsJson = JsonConvert.SerializeObject(commandStringAsObject);
+            return commandStringAsJson;
+        }
+
+        private static String CreateCommandForDeleteItem(Int64 idOfTaskToRemove)
+        {
+            Guid commandId = Guid.NewGuid();
+
+            var commandStringAsObject = new
+            {
+                type = "item_delete",
+                uuid = $"{commandId}",
+                args = new
+                {
+                    // used to be 'ids', but since API v8 we can't pass more than one id in a request
+                    id = idOfTaskToRemove
+                }
+            };
+            String commandStringAsJson = JsonConvert.SerializeObject(commandStringAsObject);
+            return commandStringAsJson;
         }
     }
 }

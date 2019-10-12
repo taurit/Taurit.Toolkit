@@ -75,7 +75,20 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             return response.Data.items
                 .Where(x => x != null && x.is_deleted == 0 && x.@checked == 0 && x.is_archived == 0).ToList();
         }
-        
+
+        public IReadOnlyList<TodoTask> GetAllCompletedTasks()
+        {
+            var client = new RestClient(ApiUrl);
+            var request = new RestRequest("completed/get_all", Method.GET);
+            request.AddParameter("token", AuthToken);
+
+            IRestResponse<TodoistGetCompletedItemsResponse> response =
+                client.Execute<TodoistGetCompletedItemsResponse>(request);
+            AssertHttpRequestSucceeded(response, "list of tasks");
+
+            return response.Data.items.ToList();
+        }
+
         private void AssertHttpRequestSucceeded<T>(IRestResponse<T> response, String typeOfResourceDisplayString, [CallerMemberName] String caller = null)
         {
             if (!response.IsSuccessful)
