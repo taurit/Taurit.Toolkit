@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
@@ -12,11 +13,12 @@ using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 // ReSharper disable ReplaceWithSingleAssignment.True
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleModels
 {
     /// <summary>
     /// Represents part of the classification rule that defines the condition
     /// </summary>
+    [SuppressMessage("Microsoft.Design", "IDE1006", Justification = "Names are aligned with JSON property names")]
     public class ClassificationRuleIf
     {
         [NotNull] private static readonly MultiCultureTimespanParser mctp = new MultiCultureTimespanParser(new[]

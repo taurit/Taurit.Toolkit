@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models
 {

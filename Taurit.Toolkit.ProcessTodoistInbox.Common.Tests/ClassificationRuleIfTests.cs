@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleModels;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 #pragma warning disable 618 // I'm not using constructor for ClassificationRuleIf to make tests brief

@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
-using Taurit.Toolkit.ProcessTodoistInboxBackground;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
 {

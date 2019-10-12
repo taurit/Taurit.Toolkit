@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -12,7 +13,7 @@ namespace Taurit.Toolkit.CountdownToSleep
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public sealed partial class MainWindow : Window, INotifyPropertyChanged
+    public sealed partial class MainWindow : INotifyPropertyChanged
     {
         private static readonly TimeSpan TimerInterval = TimeSpan.FromSeconds(1);
         private readonly DispatcherTimer _countdownTimer;
@@ -24,7 +25,9 @@ namespace Taurit.Toolkit.CountdownToSleep
             InitializeComponent();
             SetLocationToRightBottomCorner();
 
-            _countdownTimer = new DispatcherTimer(DispatcherPriority.Normal, Application.Current.Dispatcher);
+            Dispatcher currentDispatcher = Application.Current.Dispatcher;
+            Contract.Assume(currentDispatcher != null);
+            _countdownTimer = new DispatcherTimer(DispatcherPriority.Normal, currentDispatcher);
             _countdownTimer.Tick += CountdownTimerOnTick;
             _countdownTimer.Interval = new TimeSpan(0, 0, 1);
             _countdownTimer.Start();
@@ -67,7 +70,8 @@ namespace Taurit.Toolkit.CountdownToSleep
         }
 
         [DllImport("Powrprof.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        public static extern Boolean SetSuspendState(Boolean hiberate, Boolean forceCritical, Boolean disableWakeEvent);
+        private static extern Boolean
+            SetSuspendState(Boolean hiberate, Boolean forceCritical, Boolean disableWakeEvent);
 
         private void MainWindow_OnMouseDown(Object sender, MouseButtonEventArgs e)
         {

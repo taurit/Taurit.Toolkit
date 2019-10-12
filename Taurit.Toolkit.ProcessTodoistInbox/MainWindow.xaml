@@ -5,7 +5,6 @@
     xmlns:converters="clr-namespace:Taurit.Toolkit.ProcessTodoistInbox.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:designData="clr-namespace:Taurit.Toolkit.ProcessTodoistInbox.UI.DesignData"
-    xmlns:local="clr-namespace:Taurit.Toolkit.ProcessTodoistInbox"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Taurit.Toolkit.ProcessTodoistInbox.Common.Models;assembly=Taurit.Toolkit.ProcessTodoistInbox.Common"
     Title="Process Todoist Inbox"

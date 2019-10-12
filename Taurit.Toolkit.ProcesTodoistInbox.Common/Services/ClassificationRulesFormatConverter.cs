@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using JetBrains.Annotations;
-using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleModels;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ConciseClassificationRuleModel;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
 {

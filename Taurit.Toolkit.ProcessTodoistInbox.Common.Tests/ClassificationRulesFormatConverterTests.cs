@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleModels;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Services;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests

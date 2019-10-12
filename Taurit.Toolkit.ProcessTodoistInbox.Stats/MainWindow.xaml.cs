@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
@@ -16,30 +17,31 @@ using LiveCharts.Wpf;
 using NaturalLanguageTimespanParser;
 using Newtonsoft.Json;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Services;
 using Taurit.Toolkit.ProcessTodoistInbox.Stats.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Stats.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
-using Taurit.Toolkit.ProcessTodoistInbox.Common.Services;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 {
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
-        [JetBrains.Annotations.NotNull] private readonly MultiCultureTimespanParser _mctp = new MultiCultureTimespanParser(new[]
-        {
-            new CultureInfo("pl"),
-            new CultureInfo("en")
-        });
+        [JetBrains.Annotations.NotNull] private readonly MultiCultureTimespanParser _mctp =
+            new MultiCultureTimespanParser(new[]
+            {
+                new CultureInfo("pl"),
+                new CultureInfo("en")
+            });
 
         private readonly StatsAppSettings _settings;
         private readonly SnapshotReader _snapshotReader;
         private readonly TaskDateParser _taskDateParser;
-        private readonly DateTime _tomorrowDateUtc;
         private readonly ITimeConverter _timeConverter;
+        private readonly DateTime _tomorrowDateUtc;
 
         public MainWindow([JetBrains.Annotations.NotNull] String settingsFilePath)
         {
@@ -152,7 +154,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 etHighPriorityTasks);
             DateTime lastDayOfQuarter =
                 SnapshotOnTimeline.GetLastDayOfQuarter(snapshotTimeClosestToWhenThePlanningIsDone);
-            Int32 howManyDaysFromWorkStartToEndOfQuarter = lastDayOfQuarter.Subtract(snapshotTimeClosestToWhenThePlanningIsDone).Days + 1;
+            Int32 howManyDaysFromWorkStartToEndOfQuarter =
+                lastDayOfQuarter.Subtract(snapshotTimeClosestToWhenThePlanningIsDone).Days + 1;
             Double ideallyHowMinutesWouldNeedToBeDoneInADayForCleanBacklog =
                 totalMinutesAtDateWhenWorkStarted / howManyDaysFromWorkStartToEndOfQuarter;
             DrawTheOptimumTrendLine(totalMinutesAtDateWhenWorkStarted,
@@ -172,7 +175,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             }
 
             Double howManyMinutesNeedsToBeDoneInADayForCleanBacklog = totalMinutesNow / howManyDaysToEndOfQuarter;
-          
+
             UpdateLabelsValues(totalMinutesNow, lastKnownDate, howManyMinutesNeedsToBeDoneInADayForCleanBacklog);
 
             // update the cache
@@ -215,11 +218,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         )
         {
             TimeSpan totalWorkLeft = TimeSpan.FromMinutes(mostRecentTotalBacklogTimeEstimateInMinutes);
-            TimeSpan dailyWorkNeededToCleanBacklogThisQuarter = TimeSpan.FromMinutes(howManyMinutesNeedsToBeDoneInADayForCleanBacklog);
+            TimeSpan dailyWorkNeededToCleanBacklogThisQuarter =
+                TimeSpan.FromMinutes(howManyMinutesNeedsToBeDoneInADayForCleanBacklog);
 
-            TotalWorkLeft.Text = _timeConverter.ConvertToUnitsOfWork(totalWorkLeft).ToString() + " ZG";
+            TotalWorkLeft.Text = _timeConverter.ConvertToUnitsOfWork(totalWorkLeft) + " ZG";
             MostRecentSnapshotTime.Text = lastKnownDate.ToString("yyyy-MM-dd HH:mm");
-            BurndownSpeed.Text = _timeConverter.ConvertToUnitsOfWork(dailyWorkNeededToCleanBacklogThisQuarter).ToString();
+            BurndownSpeed.Text =
+                _timeConverter.ConvertToUnitsOfWork(dailyWorkNeededToCleanBacklogThisQuarter).ToString();
         }
 
         private static Double CountTotalMinutesAtDate(DateTime date, List<DateTimePoint> etLowPriorityTasks,
@@ -278,8 +283,16 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
         private Boolean IsFutureTaskWithDefinedDueDate(TodoTask todoTask, DateTime snapshotDate, DateTime endOfQuarter)
         {
+            DateTime? taskDate = GetTaskDate(todoTask);
+            return taskDate.HasValue && taskDate >= snapshotDate && taskDate <= endOfQuarter;
+        }
+
+        private DateTime? GetTaskDate(TodoTask todoTask)
+        {
             // for tasks up to API v7
+#pragma warning disable 618
             DateTime? taskDate = _taskDateParser.TryParse(todoTask.due_date_utc);
+#pragma warning restore 618
 
             if (taskDate == null)
             {
@@ -287,12 +300,12 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 taskDate = _taskDateParser.TryParse(todoTask.due?.date);
             }
 
-            return taskDate.HasValue && taskDate >= snapshotDate && taskDate <= endOfQuarter;
+            return taskDate;
         }
 
         private Boolean IsScheduledForTodayOrOverdue(TodoTask todoTask)
         {
-            DateTime? taskDate = _taskDateParser.TryParse(todoTask.due_date_utc);
+            DateTime? taskDate = GetTaskDate(todoTask);
             return taskDate.HasValue && taskDate < _tomorrowDateUtc;
         }
 
@@ -356,17 +369,17 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         {
             RadioButton[] timePeriodCheckboxes =
             {
-                Time_AllTime,
-                Time_LastQuarter,
+                TimeAllTime,
+                TimeLastQuarter
             };
             RadioButton selectedTimeCheckbox = timePeriodCheckboxes.Single(x => x.IsChecked == true);
             Int32 timeInDays = Convert.ToInt32((String) selectedTimeCheckbox.Tag);
             return TimeSpan.FromDays(
-                    Math.Max(
-                        timeInDays, // to limit what's needed for performance
-                        3*31 // to guarantee we have data from the beginning of the quarter to estimate optimum trend
-                    )
-                );
+                Math.Max(
+                    timeInDays, // to limit what's needed for performance
+                    3 * 31 // to guarantee we have data from the beginning of the quarter to estimate optimum trend
+                )
+            );
         }
 
 
@@ -382,6 +395,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
         private void Window_Loaded(Object sender, RoutedEventArgs e)
         {
+            Debug.Assert(Dispatcher != null, nameof(Dispatcher) + " != null");
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 DateTime renderFinishedTime = DateTime.UtcNow;
@@ -390,7 +404,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 // how long did it take to render the window completely?
                 TimeSpan timeDifference = RenderFinishedTime.Subtract(WindowOpenedTime);
 
-                this.Title += $" [Render time = {timeDifference.TotalMilliseconds} ms]";
+                Title += $" [Render time = {timeDifference.TotalMilliseconds} ms]";
             }), DispatcherPriority.ContextIdle, null);
         }
     }

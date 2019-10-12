@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using JetBrains.Annotations;
 
 namespace Taurit.Toolkit.FileProcessors.LocationProcessors
 {
     public class MergeInboxProcessor : IMergeInboxProcessor
     {
-        public void MergeInbox([NotNull] String targetInboxPath, 
-            [NotNull] IEnumerable<String> alternativeInboxPaths,
-            [NotNull] ISet<String> filesToNeverMove)
+        public void MergeInbox(String targetInboxPath,
+            IEnumerable<String> alternativeInboxPaths,
+            ISet<String> filesToNeverMove)
         {
             if (targetInboxPath == null) throw new ArgumentNullException(nameof(targetInboxPath));
             if (alternativeInboxPaths == null) throw new ArgumentNullException(nameof(alternativeInboxPaths));

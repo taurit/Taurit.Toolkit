@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
@@ -16,7 +15,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         [NotNull] private readonly BacklogSnapshotCreator _backlogSnapshotCreator;
 
@@ -27,7 +26,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
         public MainWindow(
             [NotNull] String settingsFilePath,
             [NotNull] String snapshotRootDirectory
-            )
+        )
         {
             if (settingsFilePath == null) throw new ArgumentNullException(nameof(settingsFilePath));
             if (snapshotRootDirectory == null) throw new ArgumentNullException(nameof(snapshotRootDirectory));
@@ -66,11 +65,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.UI
         {
             IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
-            IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(allProjects.ToLookup(x => x.id), allLabels.ToLookup(x => x.id));
+            IReadOnlyList<TodoTask> allTasks =
+                _todoistQueryService.GetAllTasks(allProjects.ToLookup(x => x.id), allLabels.ToLookup(x => x.id));
             IReadOnlyList<TodoTask> tasksThatNeedReview = _filteredTaskAccessor.GetNotReviewedTasks(allTasks);
-            var alternativeInboxes = UserSettings.AlternativeInboxes;
+            List<String> alternativeInboxes = UserSettings.AlternativeInboxes;
 
-            var taskClassifier = new TaskClassifier(UserSettings.ClassificationRulesConcise, allLabels, allProjects, alternativeInboxes);
+            var taskClassifier = new TaskClassifier(UserSettings.ClassificationRulesConcise, allLabels, allProjects,
+                alternativeInboxes);
             (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
                 taskClassifier.Classify(tasksThatNeedReview);
 

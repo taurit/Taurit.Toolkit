@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Text;
 using JetBrains.Annotations;
 using MoreLinq.Extensions;
@@ -56,11 +55,12 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
                 batchNumber++;
             }
+
             _commandsStrings.Clear();
 
             return resultMessages.Count == 0
                 ? "there was nothing to send"
-                : String.Join(Environment.NewLine, resultMessages);
+                : string.Join(Environment.NewLine, resultMessages);
         }
 
         /// <inheritdoc />

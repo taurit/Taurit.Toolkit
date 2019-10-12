@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleModels
 {
     public class ClassificationRule
     {

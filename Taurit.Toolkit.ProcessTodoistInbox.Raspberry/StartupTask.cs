@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
-using NaturalLanguageTimespanParser;
-using Newtonsoft.Json;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Services;
 using Taurit.Toolkit.TodoistInboxHelper;
@@ -19,24 +15,17 @@ using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 // The Background Application template is documented at http://go.microsoft.com/fwlink/?LinkID=533884&clcid=0x409
 
-namespace Taurit.Toolkit.ProcessTodoistInboxBackground
+namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
 {
     public sealed class StartupTask
     {
+        private static readonly DateTime StartDateTime = DateTime.UtcNow;
+        [NotNull] private readonly BacklogSnapshotCreator _backlogSnapshotCreator;
         [NotNull] private readonly ChangeExecutor _changeExecutor;
         [NotNull] private readonly FilteredTaskAccessor _filteredTaskAccessor;
-        [NotNull] private readonly BacklogSnapshotCreator _backlogSnapshotCreator;
         [NotNull] private readonly SettingsFileModel _settings;
 
         [NotNull] private readonly TodoistQueryService _todoistQueryService;
-
-        [NotNull] private readonly MultiCultureTimespanParser _mctp = new MultiCultureTimespanParser(new[]
-        {
-            new CultureInfo("pl"),
-            new CultureInfo("en")
-        });
-
-        private static readonly DateTime StartDateTime = DateTime.UtcNow;
 
         public StartupTask(SettingsFileModel settings)
         {
@@ -67,7 +56,8 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 
             TrackAndWriteToConsole(telemetryClient, $"Starting the application. Session id = {telemetrySessionId}");
             WriteToConsole($"There are {_settings.ClassificationRulesConcise.Count} rules defined in settings");
-            WriteToConsole($"Projects treated as inboxes: {String.Join(", ", _settings.AlternativeInboxes.Select(x => $"'{x}'"))}");
+            WriteToConsole(
+                $"Projects treated as inboxes: {string.Join(", ", _settings.AlternativeInboxes.Select(x => $"'{x}'"))}");
             WriteToConsole($"API url used: {TodoistApiService.ApiUrl}");
 
             while (true)
@@ -77,11 +67,12 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
                     {
                         TrackAndWriteToConsole(telemetryClient, "Starting the classification");
                         Stopwatch stopwatch = Stopwatch.StartNew();
-                        
+
                         TryClassifyAllTasks(_settings, telemetryClient, outputDirectory);
-                        
+
                         stopwatch.Stop();
-                        TrackAndWriteToConsole(telemetryClient, "TotalClassificationTimeMs", stopwatch.ElapsedMilliseconds);
+                        TrackAndWriteToConsole(telemetryClient, "TotalClassificationTimeMs",
+                            stopwatch.ElapsedMilliseconds);
                     }
                     else
                     {
@@ -89,12 +80,12 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
                             $"Skipping the classification due to night hours (it is {DateTime.Now})");
                     }
 
-                    Thread.Sleep(TimeSpan.FromHours(value: 1));
+                    Thread.Sleep(TimeSpan.FromHours(1));
                 }
                 catch (Exception e)
                 {
                     TrackAndWriteToConsole(telemetryClient, e);
-                    Thread.Sleep(TimeSpan.FromHours(value: 1));
+                    Thread.Sleep(TimeSpan.FromHours(1));
                 }
 
             // ReSharper disable once FunctionNeverReturns
@@ -103,7 +94,9 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
         private static Boolean IsCurrentHourSleepHour()
         {
             Int32 currentHour = DateTime.UtcNow.Hour;
-            return currentHour > 20 || currentHour < 5; // 20:00-5:00 utc == 22:00-7:00 CEST (good enough for winter as well)
+            return
+                currentHour > 20 ||
+                currentHour < 5; // 20:00-5:00 utc == 22:00-7:00 CEST (good enough for winter as well)
         }
 
         private void TryClassifyAllTasks([NotNull] SettingsFileModel settings,
@@ -119,32 +112,36 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
             IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(
                 allProjects.ToLookup(x => x.id),
                 allLabels.ToLookup(x => x.id)
-                );
+            );
             dataRetrievalStopwatch.Stop();
-            WriteToConsole($"Retrieved {allProjects.Count} projects, {allLabels.Count} labels and {allTasks.Count} tasks");
-            TrackAndWriteToConsole(telemetryClient, "TotalDataRetrievalTimeMs", dataRetrievalStopwatch.ElapsedMilliseconds);
+            WriteToConsole(
+                $"Retrieved {allProjects.Count} projects, {allLabels.Count} labels and {allTasks.Count} tasks");
+            TrackAndWriteToConsole(telemetryClient, "TotalDataRetrievalTimeMs",
+                dataRetrievalStopwatch.ElapsedMilliseconds);
 
             // analysis: save for the future use
 
-            var snapshotsFolder = Path.Combine(outputDirectory, _settings.SnapshotsFolder);
+            String snapshotsFolder = Path.Combine(outputDirectory, _settings.SnapshotsFolder);
             Stopwatch snapshotCreatorStopwatch = Stopwatch.StartNew();
-            var snapshotOutputFolder = _backlogSnapshotCreator.CreateSnapshot(snapshotsFolder, DateTime.UtcNow, allTasks, allProjects, allLabels);
+            String snapshotOutputFolder = _backlogSnapshotCreator.CreateSnapshot(snapshotsFolder, DateTime.UtcNow,
+                allTasks, allProjects, allLabels);
             snapshotCreatorStopwatch.Stop();
             WriteToConsole($"Snapshot created in the folder '{snapshotOutputFolder}'");
-            TrackAndWriteToConsole(telemetryClient, "TotalSnapshotCreationTimeMs", snapshotCreatorStopwatch.ElapsedMilliseconds);
+            TrackAndWriteToConsole(telemetryClient, "TotalSnapshotCreationTimeMs",
+                snapshotCreatorStopwatch.ElapsedMilliseconds);
 
             IReadOnlyList<TodoTask> tasksThatNeedReview =
                 _filteredTaskAccessor.GetNotReviewedTasks(allTasks);
-            
+
             WriteToConsole($"There are {tasksThatNeedReview.Count} tasks that need review");
-            WriteToConsole($"Performing the classification...");
+            WriteToConsole("Performing the classification...");
             var taskClassifier = new TaskClassifier(
                 settings.ClassificationRulesConcise,
                 allLabels,
                 allProjects,
                 settings.AlternativeInboxes
             );
-            (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> noActions) =
+            (IReadOnlyList<TaskActionModel> actions, IReadOnlyList<TaskNoActionModel> _) =
                 taskClassifier.Classify(tasksThatNeedReview);
 
             foreach (TaskActionModel action in actions.OrderByDescending(x => x.Priority))
@@ -152,24 +149,21 @@ namespace Taurit.Toolkit.ProcessTodoistInboxBackground
 
             // Apply actions
             List<String> logs = _changeExecutor.ApplyPlan(plannedActions);
-            foreach (String log in logs)
-            {
-                WriteToConsole(log);
-            }
+            foreach (String log in logs) WriteToConsole(log);
         }
 
-        private void WriteToConsole(string message)
+        private void WriteToConsole(String message)
         {
             Console.WriteLine($"{DateTime.Now} {message}");
         }
 
-        private void TrackAndWriteToConsole(TelemetryClient telemetryClient, string message)
+        private void TrackAndWriteToConsole(TelemetryClient telemetryClient, String message)
         {
             telemetryClient.TrackTrace(message);
             Console.WriteLine($"{DateTime.Now} {message}");
         }
 
-        private void TrackAndWriteToConsole(TelemetryClient telemetryClient, string key, long metric)
+        private void TrackAndWriteToConsole(TelemetryClient telemetryClient, String key, Int64 metric)
         {
             telemetryClient.TrackMetric(key, metric);
             Console.WriteLine($"{DateTime.Now} {key}={metric}");

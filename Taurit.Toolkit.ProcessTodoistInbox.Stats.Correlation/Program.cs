@@ -8,7 +8,6 @@ using CsvHelper;
 using JetBrains.Annotations;
 using NaturalLanguageTimespanParser;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
-using Taurit.Toolkit.ProcessTodoistInbox.Stats.Services;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Correlation
 {
@@ -24,7 +23,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Correlation
         ///     In order to generate meaningful charts in Excel I want output in the following CSV file:
         ///     [ Task id ] [ Estimated time (minutes) ] [ Time between task creation and completion (minutes) ]
         /// </summary>
-        private static void Main(String[] args)
+        private static void Main()
         {
             var program = new Program();
             List<SnapshotOnTimeline> snapshots = program.LoadSnapshots();
@@ -37,11 +36,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Correlation
 
         private void ExportToCsv(String fileName, List<TaskStats> stats)
         {
-            using (var writer = new StreamWriter(fileName))
-            using (var csv = new CsvWriter(writer))
-            {
-                csv.WriteRecords(stats);
-            }
+            using var writer = new StreamWriter(fileName);
+            using var csv = new CsvWriter(writer);
+            csv.WriteRecords(stats);
         }
 
         private List<TaskStats> ComputeStatsForTasks(ILookup<Int64, TaskWithSnapshotDate> allTasksGroupedById)
@@ -50,7 +47,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Correlation
             foreach (IGrouping<Int64, TaskWithSnapshotDate> taskInTime in allTasksGroupedById)
             {
                 Int64 taskId = taskInTime.Key;
-                TaskWithSnapshotDate taskAtMostRecentPointInTime = taskInTime.OrderByDescending(x => x.SnapshotDate).First();
+                TaskWithSnapshotDate taskAtMostRecentPointInTime =
+                    taskInTime.OrderByDescending(x => x.SnapshotDate).First();
                 String dateAdded = taskAtMostRecentPointInTime.Task.date_added; // creation date
                 if (dateAdded == null) continue; // i didn't collect it before some point in time
                 String taskDescription = taskAtMostRecentPointInTime.Task.content;
@@ -59,13 +57,14 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Correlation
                 DateTime lastDateTaskWasSeen = taskInTime.Max(x => x.SnapshotDate);
 
                 Double taskLifetimeDays = lastDateTaskWasSeen.Subtract(dateAddedAsDateTime).TotalDays;
-                
+
                 if (taskLifetimeDays < 0) continue; // at least before i deal with the timezone differences
                 Debug.Assert(taskLifetimeDays >= 0);
 
-                var estimatedTime = _timespanParser.Parse(taskAtMostRecentPointInTime.Task.content);
-                var estimateInMinutes = estimatedTime.Success ? estimatedTime.Duration.TotalMinutes : (double?) null;
-                var priority = taskAtMostRecentPointInTime.Task.priority;
+                TimespanParseResult estimatedTime = _timespanParser.Parse(taskAtMostRecentPointInTime.Task.content);
+                Double? estimateInMinutes =
+                    estimatedTime.Success ? estimatedTime.Duration.TotalMinutes : (Double?) null;
+                Int32 priority = taskAtMostRecentPointInTime.Task.priority;
 
                 var taskStats = new TaskStats(taskId, taskLifetimeDays, estimateInMinutes, taskDescription, priority);
                 stats.Add(taskStats);

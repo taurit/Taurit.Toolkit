@@ -35,5 +35,18 @@ namespace Taurit.Toolkit.FixDateFormatInFilenames.Tests
             Assert.Equal("2000-01-11 Test", isoName1);
             Assert.Equal("2000-02-11 Test", isoName2);
         }
+
+        [Fact]
+        public void TwoDigitYear_ShouldBeAssumedToBelongTo21thCentury()
+        {
+            // Arrange
+            var sut = new IsoDateFileNameFormatProvider();
+
+            // Act
+            String isoName1 = sut.FormatFileName("19", "01", "11", "Test");
+
+            // Assert
+            Assert.Equal("2019-01-11 Test", isoName1);
+        }
     }
 }

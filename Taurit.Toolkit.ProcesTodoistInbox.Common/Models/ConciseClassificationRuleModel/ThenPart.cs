@@ -1,8 +1,8 @@
 ﻿using System;
 using JetBrains.Annotations;
-using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleModels;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ConciseClassificationRuleModel
 {
     internal class ThenPart : QueryPart
     {

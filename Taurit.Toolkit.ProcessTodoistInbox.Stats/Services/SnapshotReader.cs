@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
-using Taurit.Toolkit.ProcessTodoistInbox.Stats.Models;
 using Taurit.Toolkit.TodoistInboxHelper;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
@@ -26,7 +25,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
             DateTime periodEnd,
             TimeSpan period,
             ISet<DateTime> snapshotsToSkip
-            )
+        )
         {
             // get all available dates
             IEnumerable<String> subdirectories = Directory.EnumerateDirectories(snapshotsRootFolderPath);

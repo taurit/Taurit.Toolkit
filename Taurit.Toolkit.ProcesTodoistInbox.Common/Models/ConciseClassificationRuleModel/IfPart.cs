@@ -1,8 +1,8 @@
 ﻿using System;
 using JetBrains.Annotations;
-using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleModels;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ConciseClassificationRuleModel
 {
     internal class IfPart : QueryPart
     {
@@ -34,13 +34,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
         [CanBeNull]
         private Int32? Priority => GetPriorityArgument("priorityIs");
 
-        [CanBeNull]
-        
-
         [NotNull]
         public ClassificationRuleIf ToClassificationRule()
         {
-            return new ClassificationRuleIf(Contains, ContainsWord, StartsWith, Priority, Project, NumLabels, Duration, HasLabel);
+            return new ClassificationRuleIf(Contains, ContainsWord, StartsWith, Priority, Project, NumLabels, Duration,
+                HasLabel);
         }
     }
 }

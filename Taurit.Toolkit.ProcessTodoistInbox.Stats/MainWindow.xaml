@@ -15,7 +15,7 @@
     <DockPanel LastChildFill="True">
         <WrapPanel DockPanel.Dock="Top">
             <RadioButton
-                Name="Time_LastQuarter"
+                Name="TimeLastQuarter"
                 Margin="0,0,10,0"
                 Checked="RadioButtonSetupChanged"
                 GroupName="TimePeriod"
@@ -24,7 +24,7 @@
                 Last quarter
             </RadioButton>
             <RadioButton
-                Name="Time_AllTime"
+                Name="TimeAllTime"
                 Margin="0,0,10,0"
                 Checked="RadioButtonSetupChanged"
                 GroupName="TimePeriod"

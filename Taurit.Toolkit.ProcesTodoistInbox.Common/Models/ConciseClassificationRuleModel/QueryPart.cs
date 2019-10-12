@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ConciseClassificationRuleModel
 {
     /// <summary>
     ///     Represents part of a rule string (in a concise format).

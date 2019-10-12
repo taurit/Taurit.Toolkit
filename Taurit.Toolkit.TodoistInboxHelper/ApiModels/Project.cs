@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 
@@ -17,14 +18,14 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
     //    "is_archived": 0,
     //    "is_favorite": 0
     //}
-    [DebuggerDisplay("Project `{name}`")]
+    [DebuggerDisplay("Project `{" + nameof(name) + "}`")]
+    [SuppressMessage("Microsoft.Design", "IDE1006", Justification = "Names are aligned with JSON property names")]
     public class Project
     {
         [Obsolete("Should only be used for deserialization")]
         public Project()
         {
         }
-
 
         [JsonProperty]
         public Int64 id { get; set; }
@@ -57,10 +58,10 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         public Int32 shared { get; set; }
 
         [JsonProperty]
-        public bool inbox_project { get; set; }
+        public Boolean inbox_project { get; set; }
 
         [JsonProperty]
-        public bool team_inbox { get; set; }
+        public Boolean team_inbox { get; set; }
 
         public override String ToString()
         {

@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
-
+#pragma warning disable IDE1006 // Naming Styles
 namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
 {
     /// <summary>
@@ -17,7 +17,9 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         [JsonProperty] public Int32 is_archived;
 
         [JsonProperty]
+
         public Int64 id { get; set; }
+
 
         [JsonProperty]
         public Int64 user_id { get; set; }
@@ -113,7 +115,9 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         [JsonProperty]
         public String date_added { get; set; }
 
+#pragma warning disable 618
         public Boolean HasDate => !string.IsNullOrWhiteSpace(date_string) || (due?.@string != null);
+#pragma warning restore 618
 
         #region Those properties are not a part of data returned by the query! Must be filled by app logic if we want non-null.
 
@@ -152,3 +156,4 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         public String is_recurring { get; set; }
     }
 }
+#pragma warning restore IDE1006 // Naming Styles

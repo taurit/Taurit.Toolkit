@@ -6,7 +6,7 @@ using System.Linq;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
 using Taurit.Toolkit.TodoistInboxHelper;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
+namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Correlation
 {
     /// <summary>
     ///     Non-optimized version of snapshot reader for slow but reliable results while keeping the implementation super
@@ -40,11 +40,16 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
                 foreach (String snapshot in selectedSnapshots)
                 {
                     String timeStringPart = Path.GetFileNameWithoutExtension(snapshot).Replace("snapshot-", "");
-                    DateTime exactSnapshotDateLocalTime = DateTime.ParseExact($"{selectedDate:yyyy-MM-dd} {timeStringPart}",
+                    DateTime exactSnapshotDateLocalTime = DateTime.ParseExact(
+                        $"{selectedDate:yyyy-MM-dd} {timeStringPart}",
                         "yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
-                    
+
                     // fix the datetime - it's in local time, but it's more useful in UTC time for analysis
-                    var exactSnapshotDate = exactSnapshotDateLocalTime.AddHours(1); // bad idea... todo do this correctly, this can be 1h off depending on dst probably
+                    DateTime
+                        exactSnapshotDate =
+                            exactSnapshotDateLocalTime
+                                .AddHours(
+                                    1); // bad idea... todo do this correctly, this can be 1h off depending on dst probably
 
                     String snapshotPathWithoutExtension = snapshot.Replace(".labels", string.Empty);
                     String tasksSnapshotFileContent = File.ReadAllText($"{snapshotPathWithoutExtension}.tasks");

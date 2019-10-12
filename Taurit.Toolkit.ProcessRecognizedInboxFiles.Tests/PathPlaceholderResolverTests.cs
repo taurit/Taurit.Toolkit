@@ -19,7 +19,7 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles.Tests
             // Arrange
 
             // Act
-            String resolvedPath = _sut.Resolve(null);
+            _sut.Resolve(null);
 
             // Assert
         }

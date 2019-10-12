@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
+namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleModels
 {
     /// <summary>
     /// Represents part of the classification rule that defines the action
     /// </summary>
+    [SuppressMessage("Microsoft.Design", "IDE1006", Justification = "Names are aligned with JSON property names")]
     public class ClassificationRuleThen
     {
         [JsonConstructor]
@@ -18,7 +20,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
 
         public ClassificationRuleThen(Int32? setPriority, String setLabel, String moveToProject, String setDuration)
         {
-            _setDuration = setDuration;
+            this.setDuration = setDuration;
             this.setPriority = setPriority;
             this.setLabel = setLabel;
             this.moveToProject = moveToProject;
@@ -34,6 +36,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification
         public String moveToProject { get; set; }
 
         [JsonProperty]
-        public String _setDuration { get; set; }
+        public String setDuration { get; set; }
     }
 }

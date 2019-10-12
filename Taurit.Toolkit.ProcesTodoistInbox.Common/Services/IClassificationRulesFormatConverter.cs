@@ -1,5 +1,5 @@
 ﻿using System;
-using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.Classification;
+using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleModels;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
 {

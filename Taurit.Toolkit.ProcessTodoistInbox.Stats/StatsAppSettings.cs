@@ -4,7 +4,6 @@ using System.IO;
 using System.Runtime.Serialization;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using ArgumentNullException = System.ArgumentNullException;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 {
@@ -13,15 +12,19 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         public StatsAppSettings([NotNull] String settingsFilePath)
         {
             if (settingsFilePath == null) throw new ArgumentNullException(nameof(settingsFilePath));
-            if (!File.Exists(settingsFilePath)) throw new ArgumentException("Settings file not found", nameof(settingsFilePath));
+            if (!File.Exists(settingsFilePath))
+                throw new ArgumentException("Settings file not found", nameof(settingsFilePath));
 
-            var settingsFileContent = File.ReadAllText(settingsFilePath);
+            String settingsFileContent = File.ReadAllText(settingsFilePath);
             var settingsFileModel = JsonConvert.DeserializeObject<SettingsFileModel>(settingsFileContent);
 
             if (settingsFileModel == null) throw new ArgumentException("Settings file was not in a valid format");
-            if (!Directory.Exists(settingsFileModel.SnapshotsRootFolderPath)) throw new ArgumentException("Settings file contains invalid root folder path");
-            if (settingsFileModel.ProjectsToIgnoreInStats == null) throw new ArgumentException("Settings file contains invalid list of ignored projects");
-            if (settingsFileModel.ReductionRatio <= 0) throw new ArgumentException("Settings file contains invalid ReductionRatio");
+            if (!Directory.Exists(settingsFileModel.SnapshotsRootFolderPath))
+                throw new ArgumentException("Settings file contains invalid root folder path");
+            if (settingsFileModel.ProjectsToIgnoreInStats == null)
+                throw new ArgumentException("Settings file contains invalid list of ignored projects");
+            if (settingsFileModel.ReductionRatio <= 0)
+                throw new ArgumentException("Settings file contains invalid ReductionRatio");
 
             ProjectsToIgnoreInStats = new HashSet<String>(settingsFileModel.ProjectsToIgnoreInStats);
             SnapshotsRootFolderPath = settingsFileModel.SnapshotsRootFolderPath;

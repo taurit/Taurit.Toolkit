@@ -16,18 +16,18 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
 
         public List<String> ApplyPlan(ICollection<TaskActionModel> plannedActions)
         {
-            List<string> logs = new List<String>(plannedActions.Count + 1);
+            var logs = new List<String>(plannedActions.Count + 1);
             foreach (TaskActionModel action in plannedActions)
             {
-
-                var taskName = String.IsNullOrEmpty(action.NewName) ? action.Name : action.NewName;
-                logs.Add($"Scheduling action for task #{action.TaskId} '{taskName}': set @{action.Label}, #{action.Project}, p{action.Priority}");
+                String taskName = string.IsNullOrEmpty(action.NewName) ? action.Name : action.NewName;
+                logs.Add(
+                    $"Scheduling action for task #{action.TaskId} '{taskName}': set @{action.Label}, #{action.Project}, p{action.Priority}");
 
                 Int64 taskId = action.TaskId;
                 Int32? newPriority = action.Priority;
                 Int64? newLabelId = action.Label?.id;
                 Int64? newProjectId = action.Project?.id;
-                var newName = action.NewName;
+                String newName = action.NewName;
 
                 _todoistCommandService.AddUpdateProjectCommand(taskId, newProjectId);
                 _todoistCommandService.AddUpdateLabelCommand(taskId, newLabelId);
