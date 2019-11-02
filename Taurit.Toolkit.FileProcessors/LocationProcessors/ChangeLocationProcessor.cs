@@ -26,7 +26,7 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
 
             List<ChangeLocationRule> applicableRules = _rules.Where(rule => rule.CanBeAppliedTo(fileName)).ToList();
             var comparer = new ChangeLocationRuleTargetComparer();
-            List<ChangeLocationRule> uniqueRules = applicableRules.ToHashSet(comparer).ToList();
+            List<ChangeLocationRule> uniqueRules = new HashSet<ChangeLocationRule>(applicableRules, comparer).ToList();
             if (uniqueRules.Count > 1)
             {
                 Console.WriteLine($"Manual action required: conflicting rules were found for file {fileName}");

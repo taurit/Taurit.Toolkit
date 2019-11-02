@@ -83,12 +83,6 @@
     <Content Include="arrow_right.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Taurit.Toolkit.FileProcessors\Taurit.Toolkit.FileProcessors.csproj">
-      <Project>{A5C88488-5F85-443B-AF34-BF392351913D}</Project>
-      <Name>Taurit.Toolkit.FileProcessors</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations">
       <Version>2019.1.3</Version>
     </PackageReference>
@@ -107,6 +101,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Taurit.Toolkit.FileProcessors\Taurit.Toolkit.FileProcessors.csproj">
+      <Project>{f8a1b4fe-53ba-47d1-ab59-ee50ed40fd0f}</Project>
+      <Name>Taurit.Toolkit.FileProcessors</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

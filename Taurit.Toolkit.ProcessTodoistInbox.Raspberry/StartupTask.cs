@@ -40,9 +40,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
             _backlogSnapshotCreator = new BacklogSnapshotCreator();
             _changeExecutor = new ChangeExecutor(todoistCommandService);
 
-            // needed to avoid "'Cyrillic' is not a supported encoding name." error later in code where a trick is used to compare string in an accent-insensitive way 
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
             _applicationInsightsKey = _settings.ApplicationInsightsKey;
         }
 

@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Taurit.Toolkit.FileProcessors.LocationProcessors;
-using Xunit;
 
 namespace Taurit.Toolkit.FileProcessors.Tests
 {
+    [TestClass]
     public class ChangeLocationRuleTargetComparerTests
     {
-        [Fact]
+        [TestMethod]
         public void WhenTargetLocationIsDifferent_AllRulesArePreservedInASet()
         {
             // Arrange
@@ -21,10 +22,10 @@ namespace Taurit.Toolkit.FileProcessors.Tests
             var uniqueRules = new HashSet<ChangeLocationRule>(rules, sut);
 
             // Assert
-            Assert.Equal(rules.Count, uniqueRules.Count);
+            Assert.AreEqual(rules.Count, uniqueRules.Count);
         }
 
-        [Fact]
+        [TestMethod]
         public void WhenTargetLocationIsTheSame_OnlyOneRuleIsPreservedInASet()
         {
             // Arrange
@@ -39,7 +40,7 @@ namespace Taurit.Toolkit.FileProcessors.Tests
             var uniqueRules = new HashSet<ChangeLocationRule>(rules, sut);
 
             // Assert
-            Assert.Single(uniqueRules);
+            Assert.AreEqual(1, uniqueRules.Count);
         }
     }
 }

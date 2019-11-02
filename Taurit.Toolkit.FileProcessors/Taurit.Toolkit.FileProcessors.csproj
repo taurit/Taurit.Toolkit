@@ -1,91 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A5C88488-5F85-443B-AF34-BF392351913D}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Taurit.Toolkit.FileProcessors</RootNamespace>
-    <AssemblyName>Taurit.Toolkit.FileProcessors</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ConsoleLoggingStrategy.cs" />
-    <Compile Include="ConversionProcessors\ChangeExtensionStrategy.cs" />
-    <Compile Include="ConversionProcessors\ConvertToJpegProcessor.cs" />
-    <Compile Include="ConversionProcessors\ConvertToPngProcessor.cs" />
-    <Compile Include="ConversionProcessors\ConvertToWebpProcessor.cs" />
-    <Compile Include="ConversionProcessors\EmptyConversionStrategy.cs" />
-    <Compile Include="ConversionProcessors\IConversionStrategy.cs" />
-    <Compile Include="ConversionProcessors\IConvertedFileNamingStrategy.cs" />
-    <Compile Include="ConversionProcessors\ImageMagickWrapper.cs" />
-    <Compile Include="ConversionProcessors\JpegFileQuality.cs" />
-    <Compile Include="ConversionProcessors\PngFileQuality.cs" />
-    <Compile Include="ConversionProcessors\ReplaceEndStrategy.cs" />
-    <Compile Include="ConversionProcessors\ResizeStrategy.cs" />
-    <Compile Include="ConversionProcessors\WebpFileQuality.cs" />
-    <Compile Include="ConversionSourceFactory.cs" />
-    <Compile Include="Exceptions\InvalidConfigurationException.cs" />
-    <Compile Include="FileProcessorBase.cs" />
-    <Compile Include="IConversionSource.cs" />
-    <Compile Include="ILoggingStrategy.cs" />
-    <Compile Include="LocationProcessors\ChangeLocationProcessor.cs" />
-    <Compile Include="LocationProcessors\ChangeLocationRule.cs" />
-    <Compile Include="LocationProcessors\ChangeLocationRuleTargetComparer.cs" />
-    <Compile Include="LocationProcessors\IMergeInboxProcessor.cs" />
-    <Compile Include="LocationProcessors\MergeInboxProcessor.cs" />
-    <Compile Include="NameProcessors\ChangeOfficeLensNameProcessor.cs" />
-    <Compile Include="NameProcessors\NameFormatProviders\INameFormatProvider.cs" />
-    <Compile Include="NameProcessors\NameFormatProviders\IsoDateNameFormatProvider.cs" />
-    <Compile Include="Folder.cs" />
-    <Compile Include="IFileProcessor.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SingleFile.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations">
-      <Version>2019.1.3</Version>
-    </PackageReference>
-    <PackageReference Include="morelinq">
-      <Version>3.2.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.ValueTuple">
-      <Version>4.5.0</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

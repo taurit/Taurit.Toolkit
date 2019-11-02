@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Taurit.Toolkit.FileProcessors.LocationProcessors
 {
-    internal class ChangeLocationRuleTargetComparer : IEqualityComparer<ChangeLocationRule>
+    public class ChangeLocationRuleTargetComparer : IEqualityComparer<ChangeLocationRule>
     {
         /// <inheritdoc />
         public Boolean Equals(ChangeLocationRule x, ChangeLocationRule y)
