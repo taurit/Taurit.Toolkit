@@ -6,8 +6,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
 {
     public class KindleMateStatsReader
     {
-        private const Int32 EstimatedTimeToProcessSingleHighlightMinutes = 4;
-        private const Int32 EstimatedTimeToProcessSingleWordMinutes = 6;
+        private const Int32 EstimatedTimeToProcessSingleHighlightMinutes = 1;
+        private const Int32 EstimatedTimeToProcessSingleWordMinutes = 4;
         private readonly SortedDictionary<DateTime, Int32> _highlights = new SortedDictionary<DateTime, Int32>();
         private readonly SortedDictionary<DateTime, Int32> _vocabularyWords = new SortedDictionary<DateTime, Int32>();
 
