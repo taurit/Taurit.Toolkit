@@ -5,7 +5,7 @@ using Taurit.Toolkit.FileProcessors.NameProcessors;
 using Taurit.Toolkit.FileProcessors.NameProcessors.NameFormatProviders;
 using Match = System.Text.RegularExpressions.Match;
 
-namespace Taurit.Toolkit.FixDateFormatInFilenames.Tests
+namespace Taurit.Toolkit.FileProcessors.Tests
 {
     [TestClass]
     public class OfficeLensFileNameParserTests

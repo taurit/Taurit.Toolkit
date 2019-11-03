@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Taurit.Toolkit.FileProcessors.NameProcessors.NameFormatProviders;
 
-namespace Taurit.Toolkit.FixDateFormatInFilenames.Tests
+namespace Taurit.Toolkit.FileProcessors.Tests
 {
     [TestClass]
     public class IsoDateFileNameProviderTests

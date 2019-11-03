@@ -6,7 +6,7 @@ using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 #pragma warning disable 618 // I'm not using constructor for ClassificationRuleIf to make tests brief
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
+namespace Taurit.Toolkit.WeightMonitor.Common.Tests
 {
     [TestClass]
     public class ClassificationRuleIfTests

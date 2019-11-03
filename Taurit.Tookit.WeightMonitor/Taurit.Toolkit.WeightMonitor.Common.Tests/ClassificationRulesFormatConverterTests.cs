@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleModels;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Services;
 
-namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
+namespace Taurit.Toolkit.WeightMonitor.Common.Tests
 {
     [TestClass]
     public class ClassificationRulesFormatConverterTests

@@ -27,12 +27,11 @@ namespace Taurit.Toolkit.WeightMonitor.GUI.Services
                     "user", CancellationToken.None);
             }
 
-            var service = new FitnessService(new BaseClientService.Initializer
+            using var service = new FitnessService(new BaseClientService.Initializer
             {
                 ApplicationName = Assembly.GetExecutingAssembly().GetName().Name,
                 HttpClientInitializer = credential
             });
-
             Instant now = SystemClock.Instance.GetCurrentInstant();
             Int64 from = now.Minus(Duration.FromDays(numDays)).ToUnixTimeMilliseconds() * 1_000_000;
             Int64 to = now.ToUnixTimeMilliseconds() * 1_000_000;
@@ -41,7 +40,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI.Services
                 .Users
                 .DataSources
                 .Datasets
-                .Get("me", "derived:com.google.weight:com.google.android.gms:merge_weight", $"{from}-{to}")
+                .Get("me", "derived:com.google.weight:com.google.android.gms:merge_weight", $"{@from}-{to}")
                 .Execute();
 
             return weightPoints.Point.SelectMany(x =>
