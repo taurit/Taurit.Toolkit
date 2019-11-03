@@ -55,7 +55,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Taurit.Toolkit.OptimizeRssF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Taurit.Toolkit.RSSTools", "Taurit.Toolkit.RSSTools", "{FC608F81-B714-4DE6-829B-5F8964EF6AD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ConvertBlogpostImages", "Taurit.Toolkit.ConvertBlogpostImages\Taurit.Toolkit.ConvertBlogpostImages.csproj", "{BDE6EB59-BA88-4078-B6FF-44600D0D06D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Taurit.Toolkit.ConvertBlogpostImages", "Taurit.Toolkit.ConvertBlogpostImages\Taurit.Toolkit.ConvertBlogpostImages.csproj", "{BDE6EB59-BA88-4078-B6FF-44600D0D06D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.KindleMateBacklogMonitor", "Taurit.Toolkit.KindleMateBacklogMonitor\Taurit.Toolkit.KindleMateBacklogMonitor.csproj", "{19081FCE-CF05-4535-B74E-D386F2E9395E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -389,6 +391,22 @@ Global
 		{BDE6EB59-BA88-4078-B6FF-44600D0D06D2}.Release|x64.Build.0 = Release|Any CPU
 		{BDE6EB59-BA88-4078-B6FF-44600D0D06D2}.Release|x86.ActiveCfg = Release|Any CPU
 		{BDE6EB59-BA88-4078-B6FF-44600D0D06D2}.Release|x86.Build.0 = Release|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Debug|ARM.Build.0 = Debug|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Debug|x64.Build.0 = Debug|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Debug|x86.Build.0 = Debug|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Release|ARM.ActiveCfg = Release|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Release|ARM.Build.0 = Release|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Release|x64.ActiveCfg = Release|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Release|x64.Build.0 = Release|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Release|x86.ActiveCfg = Release|Any CPU
+		{19081FCE-CF05-4535-B74E-D386F2E9395E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
