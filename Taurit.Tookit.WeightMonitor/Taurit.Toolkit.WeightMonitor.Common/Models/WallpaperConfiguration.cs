@@ -9,5 +9,6 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Models
         public Int32 OffsetX { get; set; }
 
         public Int32 OffsetY { get; set; }
+        public Boolean GenerateWallpaperWithChart { get; set; }
     }
 }

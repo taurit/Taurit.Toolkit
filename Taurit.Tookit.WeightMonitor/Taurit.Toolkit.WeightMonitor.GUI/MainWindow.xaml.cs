@@ -27,6 +27,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
     public partial class MainWindow
     {
         private readonly WeightMonitorSettings _settings;
+        private readonly WallpaperGenerator _wallpaperGenerator;
 
         public MainWindow()
         {
@@ -34,12 +35,12 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             var settingsFilePath = "d:\\ProgramData\\ApplicationData\\TauritToolkit\\WeightMonitor.json";
             String settingsAsJson = File.ReadAllText(settingsFilePath);
             _settings = JsonConvert.DeserializeObject<WeightMonitorSettings>(settingsAsJson);
+
+            // poor man's injection
+            _wallpaperGenerator = new WallpaperGenerator();
         }
 
-        public Func<Double, String> XFormatter { get; } = value =>
-        {
-            return new DateTime((Int64) value).ToString("yyyy-MM-dd");
-        };
+        public Func<Double, String> XFormatter { get; } = value => new DateTime((Int64) value).ToString("yyyy-MM-dd");
 
         [NotNull]
         public ChartValues<DateTimePoint> WeightData { get; } = new ChartValues<DateTimePoint>();
@@ -55,6 +56,11 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
 
             var googleFitDataAccessor = new GoogleFitDataAccessor();
             WeightInTime[] weights = await googleFitDataAccessor.GetWeightDataPoints(_settings.NumPastDaysToShow);
+
+            if (weights.Length == 0)
+            {
+                MessageBox.Show($"No weight data found in Google for the last {_settings.NumPastDaysToShow}");
+            }
 
             var allWeights = new List<DateTimePoint>(weights.Length);
             Double lastWeight = 0;
@@ -100,70 +106,19 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             });
         }
 
-
-        private void GenerateAugmentedWallpaper(WallpaperConfiguration wallpaperSettings)
-        {
-            var originalWallpaper = new Bitmap(wallpaperSettings.BaseImagePath);
-            BitmapFrame chart = VisualToBitmapConverter.Convert(ChartWrapper);
-
-            // create overlay
-            var finalImage = new Bitmap(1680, 1050);
-            using (Graphics g = Graphics.FromImage(finalImage))
-            {
-                g.DrawImage(originalWallpaper, new Rectangle(0, 0, 1680, 1050));
-                Bitmap chartBitmap = BitmapFromSource(chart);
-                g.DrawImage(chartBitmap,
-                    new Rectangle(wallpaperSettings.OffsetX, wallpaperSettings.OffsetY, chartBitmap.Width,
-                        chartBitmap.Height));
-            }
-
-            // save resulting file
-            ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
-            Encoder qualityEncoder = Encoder.Quality;
-            var myEncoderParameters = new EncoderParameters(1);
-            var myEncoderParameter = new EncoderParameter(qualityEncoder, 100L);
-            myEncoderParameters.Param[0] = myEncoderParameter;
-
-            finalImage.Save(wallpaperSettings.FinalImagePath, jgpEncoder, myEncoderParameters);
-        }
-
-        private ImageCodecInfo GetEncoder(ImageFormat format)
-        {
-            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
-            foreach (ImageCodecInfo codec in codecs)
-            {
-                if (codec.FormatID == format.Guid)
-                    return codec;
-            }
-
-            return null;
-        }
-
-        private Bitmap BitmapFromSource(BitmapSource bitmapsource)
-        {
-            Bitmap bitmap;
-            using (var outStream = new MemoryStream())
-            {
-                BitmapEncoder enc = new BmpBitmapEncoder();
-
-                enc.Frames.Add(BitmapFrame.Create(bitmapsource));
-                enc.Save(outStream);
-                bitmap = new Bitmap(outStream);
-            }
-
-            return bitmap;
-        }
-
-
         private async void MainWindow_OnContentRendered(Object sender, EventArgs e)
         {
             await LoadChartData();
 
-            await Task.Delay(2000); // workaround for chart not yet rendered - I'm not sure why
-            GenerateAugmentedWallpaper(_settings.WallpaperToSet);
+            if (_settings.WallpaperToSet.GenerateWallpaperWithChart)
+            {
+                await Task.Delay(2000); // workaround for chart not yet rendered - I'm not sure why
+                _wallpaperGenerator.GenerateAugmentedWallpaper(_settings.WallpaperToSet, ChartWrapper);
 
-            WallpaperSetter.Set(_settings.WallpaperToSet.FinalImagePath);
-            Application.Current.Shutdown();
+                WallpaperSetter.Set(_settings.WallpaperToSet.FinalImagePath);
+                Application.Current.Shutdown();
+            }
+            
         }
     }
 }

@@ -58,7 +58,7 @@ namespace Taurit.Toolkit.CompressVideo
             Contract.Assert(outputFile != null);
             Contract.Assert(!Directory.Exists(inputFile));
 
-            var ffmpegProcess = new Process();
+            using var ffmpegProcess = new Process();
             ffmpegProcess.StartInfo.FileName = "d:\\ProgramData\\Tools\\ffmpeg\\bin\\ffmpeg.exe";
             ffmpegProcess.StartInfo.Arguments =
                 $"-hide_banner -vcodec {vcodec} -acodec {acodec} -crf {crf} \"{outputFile}\" -i \"{inputFile}\"";
