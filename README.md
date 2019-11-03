@@ -1,5 +1,7 @@
 # Taurit.Toolkit
 
+[![Build Status](https://taurit.visualstudio.com/Taurit.Toolkit/_apis/build/status/taurit.Taurit.Toolkit?branchName=master)](https://taurit.visualstudio.com/Taurit.Toolkit/_build/latest?definitionId=6&branchName=master)
+
 ## About the project
 
 This solution contains a set of small tools that help me simplify my everyday workflow.
