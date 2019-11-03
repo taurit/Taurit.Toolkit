@@ -42,6 +42,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         private readonly TaskDateParser _taskDateParser;
         private readonly ITimeConverter _timeConverter;
         private readonly DateTime _tomorrowDateUtc;
+        private readonly KindleMateStatsReader _kindleMateStatsReader;
 
         public MainWindow([JetBrains.Annotations.NotNull] String settingsFilePath)
         {
@@ -53,6 +54,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             _taskDateParser = new TaskDateParser();
             _tomorrowDateUtc = DateTime.UtcNow.Date.AddDays(1);
             _timeConverter = new TimeConverter();
+
+            String kindleMateStatsPath = Path.Combine(_settings.KindleMateDirectory, "backlog-stats.csv");
+            IEnumerable<String> kindleMateStatsCsvContent = File.ReadLines(kindleMateStatsPath);
+            _kindleMateStatsReader = new KindleMateStatsReader(kindleMateStatsCsvContent);
         }
 
         public Func<Double, String> XFormatter { get; } = value => new DateTime((Int64) value).ToString("yyyy-MM-dd");
@@ -74,6 +79,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             var etLowPriorityTasks = new List<DateTimePoint>();
             var etMediumPriorityTasks = new List<DateTimePoint>();
             var etHighPriorityTasks = new List<DateTimePoint>();
+            var etKindleMate = new List<DateTimePoint>();
             var etFutureTasks = new List<DateTimePoint>();
 
             var cacheFileName = "stats-cache.tmp.json";
@@ -124,6 +130,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 etMediumPriorityTasks.Add(new DateTimePoint(snapshot.Time, stats.EstTimeMediumPriorityTasks));
                 etHighPriorityTasks.Add(new DateTimePoint(snapshot.Time, stats.EstTimeHighPriorityTasks));
                 if (showFutureTasks) etFutureTasks.Add(new DateTimePoint(snapshot.Time, stats.EstTimeFutureTasks));
+
+                TimeSpan kindleMateHighlightsEstimate = _kindleMateStatsReader.GetEstimatedTimeNeededToProcessHighlight(snapshot.Time);
+                TimeSpan kindleMateWordsEstimate = _kindleMateStatsReader.GetEstimatedTimeNeededToProcessVocabularyWords(snapshot.Time);
+                Double kindleMateTotalEstimateMinutes = (kindleMateHighlightsEstimate + kindleMateWordsEstimate).TotalMinutes;
+                etKindleMate.Add(new DateTimePoint(snapshot.Time, kindleMateTotalEstimateMinutes));
             }
 
             StackedAreaSeries[] estimatedTimeOfTasksSeries = GetStackedSeries(
@@ -131,6 +142,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 etMediumPriorityTasks,
                 etLowPriorityTasks,
                 etUndefinedPriorityTasks,
+                etKindleMate,
                 etFutureTasks);
             EstimatedTimeOfTasks.AddRange(estimatedTimeOfTasksSeries);
 
@@ -151,7 +163,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             // what would be the ideal trend from the day work started to inbox zero at the end of the quarter?
             Double totalMinutesAtDateWhenWorkStarted = CountTotalMinutesAtDate(
                 snapshotTimeClosestToWhenThePlanningIsDone, etLowPriorityTasks, etMediumPriorityTasks,
-                etHighPriorityTasks);
+                etHighPriorityTasks, etKindleMate);
             DateTime lastDayOfQuarter =
                 SnapshotOnTimeline.GetLastDayOfQuarter(snapshotTimeClosestToWhenThePlanningIsDone);
             Int32 howManyDaysFromWorkStartToEndOfQuarter =
@@ -166,7 +178,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             // at what speed do I need to work NOW to achieve inbox zero at the end of quarter?
             Int32 howManyDaysToEndOfQuarter = lastDayOfQuarter.Subtract(lastKnownDate).Days;
             Double totalMinutesNow = CountTotalMinutesAtDate(lastKnownDate, etLowPriorityTasks, etMediumPriorityTasks,
-                etHighPriorityTasks);
+                etHighPriorityTasks, etKindleMate);
 
             if (howManyDaysToEndOfQuarter == 0)
             {
@@ -227,12 +239,18 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 _timeConverter.ConvertToUnitsOfWork(dailyWorkNeededToCleanBacklogThisQuarter).ToString();
         }
 
-        private static Double CountTotalMinutesAtDate(DateTime date, List<DateTimePoint> etLowPriorityTasks,
-            List<DateTimePoint> etMediumPriorityTasks, List<DateTimePoint> etHighPriorityTasks)
+        private static Double CountTotalMinutesAtDate(
+            DateTime date,
+            List<DateTimePoint> etLowPriorityTasks,
+            List<DateTimePoint> etMediumPriorityTasks,
+            List<DateTimePoint> etHighPriorityTasks,
+            List<DateTimePoint> etKindleMateItems
+            )
         {
             return etLowPriorityTasks.Single(x => x.DateTime == date).Value +
                    etMediumPriorityTasks.Single(x => x.DateTime == date).Value +
-                   etHighPriorityTasks.Single(x => x.DateTime == date).Value;
+                   etHighPriorityTasks.Single(x => x.DateTime == date).Value +
+                   etKindleMateItems.Single(x => x.DateTime == date).Value;
         }
 
         private List<TodoTask> FilterOutTaskThatShouldNotBeCounted(IReadOnlyList<TodoTask> allTasks,
@@ -321,6 +339,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             List<DateTimePoint> mediumPriorityTasks,
             List<DateTimePoint> lowPriorityTasks,
             List<DateTimePoint> undefinedPriorityTasks,
+            List<DateTimePoint> kindleMateItems,
             List<DateTimePoint> futureTasks)
         {
             var series = new[]
@@ -331,6 +350,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                     Values = new ChartValues<DateTimePoint>(lowPriorityTasks),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FF4073D6"))
+                },
+                new StackedAreaSeries
+                {
+                    Title = "Kindle Mate",
+                    Values = new ChartValues<DateTimePoint>(kindleMateItems),
+                    LineSmoothness = 0,
+                    Fill = new SolidColorBrush(Color.FromRgb(127, 195, 50))
                 },
                 new StackedAreaSeries
                 {

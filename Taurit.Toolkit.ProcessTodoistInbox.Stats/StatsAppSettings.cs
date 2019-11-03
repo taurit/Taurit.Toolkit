@@ -21,6 +21,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             if (settingsFileModel == null) throw new ArgumentException("Settings file was not in a valid format");
             if (!Directory.Exists(settingsFileModel.SnapshotsRootFolderPath))
                 throw new ArgumentException("Settings file contains invalid root folder path");
+            if (!Directory.Exists(settingsFileModel.KindleMateDirectory))
+                throw new ArgumentException("Settings file contains invalid KindleMate directory path");
             if (settingsFileModel.ProjectsToIgnoreInStats == null)
                 throw new ArgumentException("Settings file contains invalid list of ignored projects");
             if (settingsFileModel.ReductionRatio <= 0)
@@ -28,6 +30,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
             ProjectsToIgnoreInStats = new HashSet<String>(settingsFileModel.ProjectsToIgnoreInStats);
             SnapshotsRootFolderPath = settingsFileModel.SnapshotsRootFolderPath;
+            KindleMateDirectory = settingsFileModel.KindleMateDirectory;
             ReductionRatio = settingsFileModel.ReductionRatio;
         }
 
@@ -40,6 +43,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
         [NotNull]
         public String SnapshotsRootFolderPath { get; }
+
+        [NotNull]
+        public String KindleMateDirectory { get; }
 
         /// <summary>
         ///     Only every N-th snapshot will be read, this property's value being N
@@ -54,6 +60,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
             [DataMember]
             public String SnapshotsRootFolderPath { get; set; }
+
+            [DataMember]
+            public String KindleMateDirectory { get; set; }
 
             [DataMember]
             public Int32 ReductionRatio { get; set; }
