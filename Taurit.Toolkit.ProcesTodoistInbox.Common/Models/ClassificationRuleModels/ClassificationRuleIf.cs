@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Serialization;
 using JetBrains.Annotations;
 using NaturalLanguageTimespanParser;
-using Newtonsoft.Json;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 // ReSharper disable InconsistentNaming
@@ -19,6 +19,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleMod
     /// Represents part of the classification rule that defines the condition
     /// </summary>
     [SuppressMessage("Microsoft.Design", "IDE1006", Justification = "Names are aligned with JSON property names")]
+    [DataContract]
     public class ClassificationRuleIf
     {
         [NotNull] private static readonly MultiCultureTimespanParser mctp = new MultiCultureTimespanParser(new[]
@@ -27,7 +28,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleMod
             new CultureInfo("en")
         });
 
-        [JsonConstructor]
         [Obsolete("Use only if you are JSON deserializer")]
         public ClassificationRuleIf()
         {
@@ -53,35 +53,35 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleMod
         }
 
         [CanBeNull]
-        [JsonProperty]
+        [DataMember]
         public String[] contains { get; set; }
 
         [CanBeNull]
-        [JsonProperty]
+        [DataMember]
         public String[] containsWord { get; set; }
 
         [CanBeNull]
-        [JsonProperty]
+        [DataMember]
         public String[] startsWith { get; set; }
 
         [CanBeNull]
-        [JsonProperty]
+        [DataMember]
         public Int32? priority { get; set; }
 
         [CanBeNull]
-        [JsonProperty]
+        [DataMember]
         public String project { get; set; }
 
         [CanBeNull]
-        [JsonProperty]
+        [DataMember]
         public Int32? numLabels { get; set; }
 
         [CanBeNull]
-        [JsonProperty]
+        [DataMember]
         public String[] hasLabel { get; set; }
 
         [CanBeNull]
-        [JsonProperty]
+        [DataMember]
         public String duration { get; set; }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleMod
             return false;
         }
 
-        internal String[] SplitIntoWords(String phrase)
+        private String[] SplitIntoWords(String phrase)
         {
             phrase = phrase ?? string.Empty;
             Char[] punctuation = phrase.Where(char.IsPunctuation).Distinct().ToArray();

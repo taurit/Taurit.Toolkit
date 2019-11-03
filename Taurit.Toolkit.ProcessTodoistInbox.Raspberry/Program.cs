@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Taurit.Toolkit.ProcessTodoistInbox.Common.Models;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
@@ -41,7 +41,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
         private static async Task<SettingsFileModel> LoadSettings(String fileName)
         {
             String settingsFileContents = await File.ReadAllTextAsync(fileName);
-            var settingsDeserialized = JsonConvert.DeserializeObject<SettingsFileModel>(settingsFileContents);
+            var settingsDeserialized = JsonSerializer.Deserialize<SettingsFileModel>(settingsFileContents);
             return settingsDeserialized;
         }
     }

@@ -1,16 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
+#pragma warning disable IDE1006 // Naming Styles
 namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
 {
+    [DataContract]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class TodoistGetCompletedItemsResponse
     {
-        [JsonProperty]
+        [DataMember]
+
         public List<TodoTask> items { get; set; }
 
-        [JsonProperty]
+
+        [DataMember]
         public List<Project> projects { get; set; }
     }
 }
+#pragma warning restore IDE1006 // Naming Styles

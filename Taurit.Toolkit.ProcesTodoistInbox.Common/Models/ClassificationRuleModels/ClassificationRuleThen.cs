@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 // ReSharper disable InconsistentNaming
 
@@ -10,9 +10,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleMod
     /// Represents part of the classification rule that defines the action
     /// </summary>
     [SuppressMessage("Microsoft.Design", "IDE1006", Justification = "Names are aligned with JSON property names")]
+    [DataContract]
     public class ClassificationRuleThen
     {
-        [JsonConstructor]
         [Obsolete("Use only if you are JSON deserializer")]
         public ClassificationRuleThen()
         {
@@ -26,16 +26,16 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleMod
             this.moveToProject = moveToProject;
         }
 
-        [JsonProperty]
+        [DataMember]
         public Int32? setPriority { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public String setLabel { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public String moveToProject { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public String setDuration { get; set; }
     }
 }

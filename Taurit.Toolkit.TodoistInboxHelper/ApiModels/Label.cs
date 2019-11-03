@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
-using Newtonsoft.Json;
-// ReSharper disable InconsistentNaming
+using System.Runtime.Serialization;
 
+// ReSharper disable InconsistentNaming
+#pragma warning disable IDE1006 // Naming Styles
 namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
 {
     /// <summary>
     ///     This class is returned to client-side code. Be cautious with name changes.
     /// </summary>
     [DebuggerDisplay("Label `{name}`")]
+    [DataContract]
     public class Label
     {
         [Obsolete("Should only be used for deserialization")]
@@ -23,22 +25,22 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
             this.name = name;
         }
 
-        [JsonProperty]
+        [DataMember]
         public Int64 id { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Int32 is_deleted { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Int32 is_favorite { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public String name { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Int32 item_order { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Int32 color { get; set; }
 
         public override String ToString()
@@ -47,3 +49,4 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         }
     }
 }
+#pragma warning restore IDE1006 // Naming Styles

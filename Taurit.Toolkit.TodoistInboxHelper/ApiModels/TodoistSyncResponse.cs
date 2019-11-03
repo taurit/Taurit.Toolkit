@@ -1,34 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-// ReSharper disable InconsistentNaming
+using System.Runtime.Serialization;
 
+// ReSharper disable InconsistentNaming
+#pragma warning disable IDE1006 // Naming Styles
 namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
 {
+    [DataContract]
     internal class TodoistSyncResponseTasks
     {
-        [JsonProperty]
+        [DataMember]
         public List<TodoTask> items { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Int64 seq_no_global { get; set; }
     }
 
+    [DataContract]
     internal class TodoistSyncResponseLabels
     {
-        [JsonProperty]
+        [DataMember]
         public List<Label> labels { get; set; }
 
-        [JsonProperty]
+        [DataMember]
+
         public Int64 seq_no_global { get; set; }
     }
 
+    [DataContract]
     internal class TodoistSyncResponseProjects
     {
-        [JsonProperty]
+        [DataMember]
         public List<Project> projects { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Int64 seq_no_global { get; set; }
     }
 }
+#pragma warning restore IDE1006 // Naming Styles

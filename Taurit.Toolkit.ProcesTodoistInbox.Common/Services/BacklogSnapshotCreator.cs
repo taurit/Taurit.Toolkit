@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
+using System.Text.Json;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
@@ -20,9 +20,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
             String subfolderPath = Path.Combine(snapshotsFolderPath, subfolderName);
             Directory.CreateDirectory(subfolderPath);
 
-            String allTasksAsJson = JsonConvert.SerializeObject(allTasks);
-            String allProjectsAsJson = JsonConvert.SerializeObject(allProjects);
-            String allLabelsAsJson = JsonConvert.SerializeObject(allLabels);
+            String allTasksAsJson = JsonSerializer.Serialize(allTasks);
+            String allProjectsAsJson = JsonSerializer.Serialize(allProjects);
+            String allLabelsAsJson = JsonSerializer.Serialize(allLabels);
 
             String fileNameBase = $"snapshot-{snapshotTime:HH-mm-ss}";
             String fileNameTasks = $"{fileNameBase}.tasks";

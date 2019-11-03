@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using JetBrains.Annotations;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
-using Utf8Json;
 
 namespace Taurit.Toolkit.TodoistInboxHelper
 {

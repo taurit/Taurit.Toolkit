@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using JetBrains.Annotations;
-using Newtonsoft.Json;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleModels
 {
+    [DataContract]
     public class ClassificationRule
     {
-        [JsonConstructor]
         [Obsolete("Should only be used by deserializer")]
         public ClassificationRule()
         {
@@ -18,10 +18,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleMod
             Then = thenPart;
         }
 
-        [JsonProperty]
+        [DataMember]
         public ClassificationRuleIf If { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public ClassificationRuleThen Then { get; set; }
     }
 }

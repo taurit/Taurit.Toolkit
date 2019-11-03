@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using Newtonsoft.Json;
+using System.Runtime.Serialization;
+
 // ReSharper disable InconsistentNaming
 
 namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
@@ -18,6 +19,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
     //    "is_archived": 0,
     //    "is_favorite": 0
     //}
+    [DataContract]
     [DebuggerDisplay("Project `{" + nameof(name) + "}`")]
     [SuppressMessage("Microsoft.Design", "IDE1006", Justification = "Names are aligned with JSON property names")]
     public class Project
@@ -27,40 +29,40 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         {
         }
 
-        [JsonProperty]
+        [DataMember]
         public Int64 id { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Int32 is_deleted { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Int32 is_archived { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Int32 is_favorite { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public String name { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Int32 item_order { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Int32 color { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Int32 indent { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Int32 collapsed { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Int32 shared { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Boolean inbox_project { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public Boolean team_inbox { get; set; }
 
         public override String ToString()

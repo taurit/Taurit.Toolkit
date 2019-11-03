@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using JetBrains.Annotations;
 using MoreLinq.Extensions;
-using Newtonsoft.Json;
 using RestSharp;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
@@ -119,7 +119,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
                     content = newName
                 }
             };
-            String commandStringAsJson = JsonConvert.SerializeObject(commandStringAsObject);
+            String commandStringAsJson = JsonSerializer.Serialize(commandStringAsObject);
 
             _commandsStrings.Add(commandStringAsJson);
         }
@@ -155,7 +155,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
                     id = idOfTask
                 }
             };
-            String commandStringAsJson = JsonConvert.SerializeObject(commandStringAsObject);
+            String commandStringAsJson = JsonSerializer.Serialize(commandStringAsObject);
             return commandStringAsJson;
         }
 
@@ -173,7 +173,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
                     id = idOfTaskToRemove
                 }
             };
-            String commandStringAsJson = JsonConvert.SerializeObject(commandStringAsObject);
+            String commandStringAsJson = JsonSerializer.Serialize(commandStringAsObject);
             return commandStringAsJson;
         }
     }

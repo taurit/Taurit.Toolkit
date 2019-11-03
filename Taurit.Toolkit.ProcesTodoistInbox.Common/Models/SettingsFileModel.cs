@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models
 {
+    [DataContract]
     public class SettingsFileModel
     {
-        [JsonProperty]
+        [DataMember]
         public String TodoistApiKey { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public String SnapshotsFolder { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public List<String> AlternativeInboxes { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public List<String> ClassificationRulesConcise { get; set; }
 
-        [JsonProperty]
+        [DataMember]
         public String ApplicationInsightsKey { get; set; }
     }
 }
