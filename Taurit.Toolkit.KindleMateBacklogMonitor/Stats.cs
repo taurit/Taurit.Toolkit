@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Taurit.Toolkit.KindleMateBacklogMonitor
+﻿namespace Taurit.Toolkit.KindleMateBacklogMonitor
 {
-    class Stats
+    internal class Stats
     {
     }
 }

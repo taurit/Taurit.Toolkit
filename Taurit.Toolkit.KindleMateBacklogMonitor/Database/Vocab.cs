@@ -1,16 +1,18 @@
-﻿namespace Taurit.Toolkit.KindleMateBacklogMonitor.Database
+﻿using System;
+
+namespace Taurit.Toolkit.KindleMateBacklogMonitor.Database
 {
-    public partial class Vocab
+    public class Vocab
     {
-        public string Id { get; set; }
-        public string WordKey { get; set; }
-        public string Word { get; set; }
-        public string Stem { get; set; }
-        public long? Category { get; set; }
-        public string Translation { get; set; }
-        public string Timestamp { get; set; }
-        public long? Frequency { get; set; }
-        public long? Sync { get; set; }
-        public long? ColorRgb { get; set; }
+        public String Id { get; set; }
+        public String WordKey { get; set; }
+        public String Word { get; set; }
+        public String Stem { get; set; }
+        public Int64? Category { get; set; }
+        public String Translation { get; set; }
+        public String Timestamp { get; set; }
+        public Int64? Frequency { get; set; }
+        public Int64? Sync { get; set; }
+        public Int64? ColorRgb { get; set; }
     }
 }

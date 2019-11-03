@@ -1,8 +1,10 @@
-﻿namespace Taurit.Toolkit.KindleMateBacklogMonitor.Database
+﻿using System;
+
+namespace Taurit.Toolkit.KindleMateBacklogMonitor.Database
 {
-    public partial class Settings
+    public class Settings
     {
-        public string Name { get; set; }
-        public string Value { get; set; }
+        public String Name { get; set; }
+        public String Value { get; set; }
     }
 }

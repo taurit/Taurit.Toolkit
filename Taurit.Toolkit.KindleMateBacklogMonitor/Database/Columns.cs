@@ -1,13 +1,15 @@
-﻿namespace Taurit.Toolkit.KindleMateBacklogMonitor.Database
+﻿using System;
+
+namespace Taurit.Toolkit.KindleMateBacklogMonitor.Database
 {
-    public partial class Columns
+    public class Columns
     {
-        public long? Order { get; set; }
-        public string Type { get; set; }
-        public string ColumnFieldName { get; set; }
-        public string ColumnTextshow { get; set; }
-        public long? ColumnWidth { get; set; }
-        public string Lang { get; set; }
-        public long? Visible { get; set; }
+        public Int64? Order { get; set; }
+        public String Type { get; set; }
+        public String ColumnFieldName { get; set; }
+        public String ColumnTextshow { get; set; }
+        public Int64? ColumnWidth { get; set; }
+        public String Lang { get; set; }
+        public Int64? Visible { get; set; }
     }
 }

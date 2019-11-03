@@ -1,11 +1,13 @@
-﻿namespace Taurit.Toolkit.KindleMateBacklogMonitor.Database
+﻿using System;
+
+namespace Taurit.Toolkit.KindleMateBacklogMonitor.Database
 {
-    public partial class FoldersNew
+    public class FoldersNew
     {
-        public string FolderId { get; set; }
-        public string Foldername { get; set; }
-        public string Type { get; set; }
-        public string ItemsInFolder { get; set; }
-        public string Status { get; set; }
+        public String FolderId { get; set; }
+        public String Foldername { get; set; }
+        public String Type { get; set; }
+        public String ItemsInFolder { get; set; }
+        public String Status { get; set; }
     }
 }

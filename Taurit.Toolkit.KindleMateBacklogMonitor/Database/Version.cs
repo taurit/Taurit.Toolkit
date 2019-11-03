@@ -1,7 +1,9 @@
-﻿namespace Taurit.Toolkit.KindleMateBacklogMonitor.Database
+﻿using System;
+
+namespace Taurit.Toolkit.KindleMateBacklogMonitor.Database
 {
-    public partial class Version
+    public class Version
     {
-        public string Dbversion { get; set; }
+        public String Dbversion { get; set; }
     }
 }
