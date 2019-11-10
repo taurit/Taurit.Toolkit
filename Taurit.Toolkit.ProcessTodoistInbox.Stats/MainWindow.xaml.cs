@@ -314,7 +314,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 new StackedAreaSeries
                 {
                     Title = "Kindle Mate Highlights",
-                    Values = new ChartValues<DateTimePoint>(kindleMateWords),
+                    Values = new ChartValues<DateTimePoint>(kindleMateHighlights),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush(Color.FromRgb(242, 184, 24))
                 },
