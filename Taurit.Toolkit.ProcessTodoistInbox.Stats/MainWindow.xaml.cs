@@ -149,35 +149,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             EstimatedTimeOfTasks.AddRange(estimatedTimeOfTasksSeries);
 
             DateTime lastKnownDate = etLowPriorityTasks.Max(x => x.DateTime);
-            DateTime firstDayOfQuarter = SnapshotOnTimeline.GetLastDayOfQuarter(lastKnownDate).AddDays(1).AddMonths(-3);
-            DateTime
-                dayWhenThePlanningIsDone =
-                    firstDayOfQuarter
-                        .AddDays(7); // at this day planning should be done and we can assume that time estimates for tasks are ready
-
-            DateTime snapshotTimeClosestToWhenThePlanningIsDone =
-                etLowPriorityTasks
-                    .OrderByDescending(x => x.DateTime)
-                    .First(x => x.DateTime < dayWhenThePlanningIsDone).DateTime;
-
-            Int32 daysSinceWorkStarted = (lastKnownDate - snapshotTimeClosestToWhenThePlanningIsDone).Days;
-
-            // what would be the ideal trend from the day work started to inbox zero at the end of the quarter?
-            Double totalMinutesAtDateWhenWorkStarted = CountTotalMinutesAtDate(
-                snapshotTimeClosestToWhenThePlanningIsDone, etLowPriorityTasks, etMediumPriorityTasks,
-                etHighPriorityTasks, etKindleMateWords, etKindleMateHighlights);
-            DateTime lastDayOfQuarter =
-                SnapshotOnTimeline.GetLastDayOfQuarter(snapshotTimeClosestToWhenThePlanningIsDone);
-            Int32 howManyDaysFromWorkStartToEndOfQuarter =
-                lastDayOfQuarter.Subtract(snapshotTimeClosestToWhenThePlanningIsDone).Days + 1;
-            Double ideallyHowMinutesWouldNeedToBeDoneInADayForCleanBacklog =
-                totalMinutesAtDateWhenWorkStarted / howManyDaysFromWorkStartToEndOfQuarter;
-            DrawTheOptimumTrendLine(totalMinutesAtDateWhenWorkStarted,
-                ideallyHowMinutesWouldNeedToBeDoneInADayForCleanBacklog,
-                snapshotTimeClosestToWhenThePlanningIsDone,
-                daysSinceWorkStarted);
 
             // at what speed do I need to work NOW to achieve inbox zero at the end of quarter?
+            DateTime firstDayOfQuarter = SnapshotOnTimeline.GetLastDayOfQuarter(lastKnownDate).AddDays(1).AddMonths(-3);
+            DateTime lastDayOfQuarter = SnapshotOnTimeline.GetLastDayOfQuarter(firstDayOfQuarter);
+            
             Int32 howManyDaysToEndOfQuarter = lastDayOfQuarter.Subtract(lastKnownDate).Days;
             Double totalMinutesNow = CountTotalMinutesAtDate(lastKnownDate, etLowPriorityTasks, etMediumPriorityTasks,
                 etHighPriorityTasks, etKindleMateWords, etKindleMateHighlights);
@@ -194,35 +170,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
             // update the cache
             File.WriteAllText(cacheFileName, JsonConvert.SerializeObject(cache));
-        }
-
-        private void DrawTheOptimumTrendLine(
-            Double totalMinutesAtDateWhenWorkStarted,
-            Double ideallyHowMinutesWouldNeedToBeDoneInADayForCleanBacklog,
-            DateTime snapshotTimeClosestToWhenThePlanningIsDone,
-            Int32 daysSinceWorkStarted
-        )
-        {
-            var optimumTrendPoints = new ChartValues<DateTimePoint>();
-            for (Int32 day = daysSinceWorkStarted - 4; day <= daysSinceWorkStarted + 4; day++)
-            {
-                Double estimatedMinutes = totalMinutesAtDateWhenWorkStarted -
-                                          day * ideallyHowMinutesWouldNeedToBeDoneInADayForCleanBacklog;
-                optimumTrendPoints.Add(new DateTimePoint(snapshotTimeClosestToWhenThePlanningIsDone.AddDays(day),
-                    estimatedMinutes));
-            }
-
-            var lineSeries = new LineSeries
-            {
-                Values = optimumTrendPoints,
-                Fill = Brushes.Transparent,
-                Stroke = Brushes.Black,
-                StrokeDashArray = new DoubleCollection {2},
-                PointGeometry = DefaultGeometries.Cross,
-                StrokeThickness = 1
-            };
-            Panel.SetZIndex(lineSeries, 100); // draw the trend line in front of other charts
-            EstimatedTimeOfTasks.Add(lineSeries);
         }
 
         private void UpdateLabelsValues(
