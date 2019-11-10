@@ -165,7 +165,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             // what would be the ideal trend from the day work started to inbox zero at the end of the quarter?
             Double totalMinutesAtDateWhenWorkStarted = CountTotalMinutesAtDate(
                 snapshotTimeClosestToWhenThePlanningIsDone, etLowPriorityTasks, etMediumPriorityTasks,
-                etHighPriorityTasks);
+                etHighPriorityTasks, etKindleMateWords, etKindleMateHighlights);
             DateTime lastDayOfQuarter =
                 SnapshotOnTimeline.GetLastDayOfQuarter(snapshotTimeClosestToWhenThePlanningIsDone);
             Int32 howManyDaysFromWorkStartToEndOfQuarter =
@@ -180,7 +180,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             // at what speed do I need to work NOW to achieve inbox zero at the end of quarter?
             Int32 howManyDaysToEndOfQuarter = lastDayOfQuarter.Subtract(lastKnownDate).Days;
             Double totalMinutesNow = CountTotalMinutesAtDate(lastKnownDate, etLowPriorityTasks, etMediumPriorityTasks,
-                etHighPriorityTasks);
+                etHighPriorityTasks, etKindleMateWords, etKindleMateHighlights);
 
             if (howManyDaysToEndOfQuarter == 0)
             {
@@ -245,12 +245,17 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             DateTime date,
             List<DateTimePoint> etLowPriorityTasks,
             List<DateTimePoint> etMediumPriorityTasks,
-            List<DateTimePoint> etHighPriorityTasks
+            List<DateTimePoint> etHighPriorityTasks,
+            List<DateTimePoint> etKindleMateWords,
+            List<DateTimePoint> etKindleMateHighlights
             )
         {
             return etLowPriorityTasks.Single(x => x.DateTime == date).Value +
                    etMediumPriorityTasks.Single(x => x.DateTime == date).Value +
-                   etHighPriorityTasks.Single(x => x.DateTime == date).Value;
+                   etHighPriorityTasks.Single(x => x.DateTime == date).Value +
+                   etKindleMateWords.Single(x => x.DateTime == date).Value +
+                   etKindleMateHighlights.Single(x => x.DateTime == date).Value;
+
         }
 
         private List<TodoTask> FilterOutTaskThatShouldNotBeCounted(IReadOnlyList<TodoTask> allTasks,
