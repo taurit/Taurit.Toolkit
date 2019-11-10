@@ -182,7 +182,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             TimeSpan dailyWorkNeededToCleanBacklogThisQuarter =
                 TimeSpan.FromMinutes(howManyMinutesNeedsToBeDoneInADayForCleanBacklog);
 
-            TotalWorkLeft.Text = _timeConverter.ConvertToUnitsOfWork(totalWorkLeft) + " ZG";
+            var unitOfWorkDurationInMinutes = 45;
+            TotalWorkLeft.Text = $"{_timeConverter.ConvertToUnitsOfWork(totalWorkLeft, unitOfWorkDurationInMinutes)} ZG (1 ZG = {unitOfWorkDurationInMinutes} min)";
             MostRecentSnapshotTime.Text = lastKnownDate.ToString("yyyy-MM-dd HH:mm");
             BurndownSpeed.Text =
                 _timeConverter.ConvertToUnitsOfWork(dailyWorkNeededToCleanBacklogThisQuarter).ToString();
@@ -197,12 +198,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             List<DateTimePoint> etKindleMateHighlights
             )
         {
-            return etLowPriorityTasks.Single(x => x.DateTime == date).Value +
-                   etMediumPriorityTasks.Single(x => x.DateTime == date).Value +
-                   etHighPriorityTasks.Single(x => x.DateTime == date).Value +
-                   etKindleMateWords.Single(x => x.DateTime == date).Value +
-                   etKindleMateHighlights.Single(x => x.DateTime == date).Value;
-
+            Double lowTime = etLowPriorityTasks.Single(x => x.DateTime == date).Value;
+            Double mediumTime = etMediumPriorityTasks.Single(x => x.DateTime == date).Value;
+            Double highTime = etHighPriorityTasks.Single(x => x.DateTime == date).Value;
+            Double wordsTime = etKindleMateWords.Single(x => x.DateTime == date).Value;
+            Double highlightsTime = etKindleMateHighlights.Single(x => x.DateTime == date).Value;
+            
+            return lowTime + mediumTime + highTime + wordsTime + highlightsTime;
         }
 
         private List<TodoTask> FilterOutTaskThatShouldNotBeCounted(IReadOnlyList<TodoTask> allTasks,
