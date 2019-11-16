@@ -6,12 +6,10 @@
     <UseWPF>true</UseWPF>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <NoWarn>NU1701</NoWarn>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
 <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations">
-      <Version>2019.1.3</Version>
-    </PackageReference>
     <PackageReference Include="LiveCharts.Wpf">
       <NoWarn>NU1701</NoWarn>
       <Version>0.9.7</Version>

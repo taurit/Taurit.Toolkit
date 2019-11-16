@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
-using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 {
     internal class StatsAppSettings
     {
-        public StatsAppSettings([NotNull] String settingsFilePath)
+        public StatsAppSettings(String settingsFilePath)
         {
             if (settingsFilePath == null) throw new ArgumentNullException(nameof(settingsFilePath));
             if (!File.Exists(settingsFilePath))
@@ -19,9 +18,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             var settingsFileModel = JsonConvert.DeserializeObject<SettingsFileModel>(settingsFileContent);
 
             if (settingsFileModel == null) throw new ArgumentException("Settings file was not in a valid format");
-            if (!Directory.Exists(settingsFileModel.SnapshotsRootFolderPath))
+
+            if (settingsFileModel.SnapshotsRootFolderPath is null || !Directory.Exists(settingsFileModel.SnapshotsRootFolderPath))
                 throw new ArgumentException("Settings file contains invalid root folder path");
-            if (!Directory.Exists(settingsFileModel.KindleMateDirectory))
+            if (settingsFileModel.KindleMateDirectory is null || !Directory.Exists(settingsFileModel.KindleMateDirectory))
                 throw new ArgumentException("Settings file contains invalid KindleMate directory path");
             if (settingsFileModel.ProjectsToIgnoreInStats == null)
                 throw new ArgumentException("Settings file contains invalid list of ignored projects");
@@ -38,13 +38,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         ///     Projects that should not be included when counting total estimated backlog time/size (eg. because items in those
         ///     projects are not refined, not estimated accurately enough or are on hold).
         /// </summary>
-        [NotNull]
         public HashSet<String> ProjectsToIgnoreInStats { get; }
 
-        [NotNull]
         public String SnapshotsRootFolderPath { get; }
 
-        [NotNull]
         public String KindleMateDirectory { get; }
 
         /// <summary>
@@ -56,13 +53,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         private class SettingsFileModel
         {
             [DataMember]
-            public List<String> ProjectsToIgnoreInStats { get; set; }
+            public List<String>? ProjectsToIgnoreInStats { get; set; }
 
             [DataMember]
-            public String SnapshotsRootFolderPath { get; set; }
+            public String? SnapshotsRootFolderPath { get; set; }
 
             [DataMember]
-            public String KindleMateDirectory { get; set; }
+            public String? KindleMateDirectory { get; set; }
 
             [DataMember]
             public Int32 ReductionRatio { get; set; }

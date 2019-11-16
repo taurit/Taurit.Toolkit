@@ -10,7 +10,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
-using JetBrains.Annotations;
 using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
@@ -30,7 +29,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
     /// </summary>
     public partial class MainWindow
     {
-        [JetBrains.Annotations.NotNull] private readonly MultiCultureTimespanParser _mctp =
+        private readonly MultiCultureTimespanParser _mctp =
             new MultiCultureTimespanParser(new[]
             {
                 new CultureInfo("pl"),
@@ -68,7 +67,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         public DateTime WindowOpenedTime { get; set; }
         public DateTime RenderFinishedTime { get; set; }
 
-        private void RadioButtonSetupChanged([CanBeNull] Object sender, [CanBeNull] RoutedEventArgs e)
+        private void RadioButtonSetupChanged([AllowNull] Object sender, [AllowNull] RoutedEventArgs e)
         {
             if (!IsInitialized) return;
             Boolean showFutureTasks = ShowFutureTasks.IsChecked ?? false;

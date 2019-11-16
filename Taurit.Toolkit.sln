@@ -5,6 +5,7 @@ VisualStudioVersion = 16.0.28721.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E168A963-3FF6-4FE9-82B4-7647D4AD8D97}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		README.md = README.md
 		Taurit.Toolkit.sln.vsspell = Taurit.Toolkit.sln.vsspell
 	EndProjectSection
@@ -57,7 +58,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Taurit.Toolkit.RSSTools", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Taurit.Toolkit.ConvertBlogpostImages", "Taurit.Toolkit.ConvertBlogpostImages\Taurit.Toolkit.ConvertBlogpostImages.csproj", "{BDE6EB59-BA88-4078-B6FF-44600D0D06D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taurit.Toolkit.ProcessTodoistInbox.Stats.Tests", "Taurit.Toolkit.ProcessTodoistInbox.Stats.Tests\Taurit.Toolkit.ProcessTodoistInbox.Stats.Tests.csproj", "{AD2D4B04-512A-4C6C-87A8-A66E1C7C52B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Taurit.Toolkit.ProcessTodoistInbox.Stats.Tests", "Taurit.Toolkit.ProcessTodoistInbox.Stats.Tests\Taurit.Toolkit.ProcessTodoistInbox.Stats.Tests.csproj", "{AD2D4B04-512A-4C6C-87A8-A66E1C7C52B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
