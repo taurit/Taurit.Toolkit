@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
+using Polly;
+using Polly.Retry;
 using RestSharp;
 using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 
@@ -32,6 +35,10 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             return response.Data.labels.Where(x => x.is_deleted == 0).ToList();
         }
 
+        /// <remarks>
+        ///     This query failed few times a day on: "Status code=0 The operation has timed out."
+        ///     Therefore a simple retry policy is now defined for the request.
+        /// </remarks>
         public IReadOnlyList<Project> GetAllProjects()
         {
             var client = new RestClient(ApiUrl);
@@ -41,8 +48,15 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             request.AddParameter("seq_no", "0");
             request.AddParameter("resource_types", "[\"projects\"]");
 
+            RetryPolicy<IRestResponse<TodoistSyncResponseProjects>> retryPolicy = Policy
+                .HandleResult<IRestResponse<TodoistSyncResponseProjects>>(r => r.StatusCode == 0)
+                .Or<WebException>()
+                .WaitAndRetry(3, attempt => TimeSpan.FromMilliseconds(10000)
+                );
+
             IRestResponse<TodoistSyncResponseProjects>
-                response = client.Execute<TodoistSyncResponseProjects>(request);
+                response = retryPolicy.Execute(() => client.Execute<TodoistSyncResponseProjects>(request));
+
             AssertHttpRequestSucceeded(response, "list of projects");
 
             return response.Data.projects;
@@ -51,7 +65,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
         public IReadOnlyList<TodoTask> GetAllTasks(
             ILookup<Int64, Project> allProjectsIndexedById,
             ILookup<Int64, Label> allLabelsIndexedById
-            )
+        )
         {
             var client = new RestClient(ApiUrl);
 
@@ -89,18 +103,21 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             return response.Data.items.ToList();
         }
 
-        private void AssertHttpRequestSucceeded<T>(IRestResponse<T> response, String typeOfResourceDisplayString, [CallerMemberName] String caller = null)
+        private void AssertHttpRequestSucceeded<T>(IRestResponse<T> response, String typeOfResourceDisplayString,
+            [CallerMemberName] String caller = null)
         {
             if (!response.IsSuccessful)
             {
                 throw new TodoistApiWebException(
-                    $"{caller} Failed to retrieve {typeOfResourceDisplayString} from the Todoist API. Status code={response.StatusCode}", response.ErrorException);
+                    $"{caller} Failed to retrieve {typeOfResourceDisplayString} from the Todoist API. Status code={response.StatusCode}",
+                    response.ErrorException);
             }
 
             if (response.Data == null)
             {
                 throw new TodoistApiWebException(
-                    $"{caller} Failed to retrieve {typeOfResourceDisplayString} from the Todoist API. Data is null. Status code={response.StatusCode}", response.ErrorException);
+                    $"{caller} Failed to retrieve {typeOfResourceDisplayString} from the Todoist API. Data is null. Status code={response.StatusCode}",
+                    response.ErrorException);
             }
         }
     }
