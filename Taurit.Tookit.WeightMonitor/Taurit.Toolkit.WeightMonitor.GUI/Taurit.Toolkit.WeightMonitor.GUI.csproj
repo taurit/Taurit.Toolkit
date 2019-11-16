@@ -5,11 +5,14 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>scale.ico</ApplicationIcon>
+    <NoWarn>NU1701</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
-    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
     <PackageReference Include="NodaTime" Version="2.4.7" />
         <PackageReference Include="Google.Apis.Auth">
       <Version>1.42.0</Version>
