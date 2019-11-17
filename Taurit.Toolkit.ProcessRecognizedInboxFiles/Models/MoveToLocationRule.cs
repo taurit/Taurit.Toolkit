@@ -8,9 +8,9 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles.Models
     internal class MoveToLocationRule
     {
         [DataMember]
-        public String TargetLocation { get; private set; }
+        public String? TargetLocation { get; private set; }
 
         [DataMember]
-        public List<String> Patterns { get; private set; }
+        public List<String>? Patterns { get; private set; }
     }
 }

@@ -4,13 +4,13 @@ using System.Runtime.Serialization;
 namespace Taurit.Toolkit.ProcessRecognizedInboxFiles.Models
 {
     [DataContract]
-    internal class ConvertToWebpRule
+    internal class ConvertToWebPRule
     {
         [DataMember]
-        public String Directory { get; private set; }
+        public String? Directory { get; private set; }
 
         [DataMember]
-        public String Pattern { get; private set; }
+        public String? Pattern { get; private set; }
 
         [DataMember]
         public Int32 Quality { get; private set; }

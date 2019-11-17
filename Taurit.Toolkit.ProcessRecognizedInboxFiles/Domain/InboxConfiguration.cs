@@ -18,10 +18,16 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles.Domain
         {
             if (configJsonPath == null) throw new ArgumentNullException(nameof(configJsonPath));
             if (!File.Exists(configJsonPath)) throw new ArgumentException("Config file does not exist");
-
+            
             _pathPlaceholderResolver = pathPlaceholderResolver ?? throw new ArgumentNullException(nameof(pathPlaceholderResolver));
 
             var config = JsonConvert.DeserializeObject<InboxConfigFile>(File.ReadAllText(configJsonPath));
+            if (config.AlternativeInboxes is null) throw new ArgumentException("Config file requires 'AlternativeInboxes' to be properly defined");
+            if (config.InboxFolder is null) throw new ArgumentException("Config file requires 'InboxFolder' to be properly defined");
+            if (config.FilesToNeverMove is null) throw new ArgumentException("Config file requires 'FilesToNeverMove' to be properly defined");
+            if (config.MoveToLocationRules is null) throw new ArgumentException("Config file requires 'MoveToLocationRules' to be properly defined");
+            if (config.ConvertToWebpRules is null) throw new ArgumentException("Config file requires 'ConvertToWebPRules' to be properly defined");
+
             if (!Directory.Exists(config.InboxFolder))
                 throw new ArgumentException($"Inbox folder {config.InboxFolder} doesn't exist");
             foreach (String alternativeInbox in config.AlternativeInboxes)
@@ -55,13 +61,13 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles.Domain
             }
             
             ChangeLocationRules = rules.AsReadOnly();
-            ConvertToWebpRules = config.ConvertToWebpRules;
+            ConvertToWebPRules = config.ConvertToWebpRules;
         }
 
         public IReadOnlyList<ChangeLocationRule> ChangeLocationRules { get; }
         public String InboxPath { get; }
         public List<String> AlternativeInboxes { get; }
-        public IEnumerable<ConvertToWebpRule> ConvertToWebpRules { get; }
+        public IEnumerable<ConvertToWebPRule> ConvertToWebPRules { get; }
         public ISet<String> FilesToNeverMove { get; }
     }
 }

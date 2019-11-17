@@ -38,7 +38,7 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
 
         private void CompressFiles(InboxConfiguration workflowConfiguration)
         {
-            foreach (ConvertToWebpRule rule in workflowConfiguration.ConvertToWebpRules)
+            foreach (ConvertToWebPRule rule in workflowConfiguration.ConvertToWebPRules)
             {
                 IConversionSource inboxFolder = ConversionSourceFactory.GetConversionSource(rule.Directory,
                     new IFileProcessor[]

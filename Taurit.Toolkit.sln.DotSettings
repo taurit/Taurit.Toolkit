@@ -89,4 +89,5 @@
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Smartphone/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Taurit/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Todoist/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/UserDictionary/Words/=Uncomplete/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Uncomplete/@EntryIndexedValue">True</s:Boolean>
+	</wpf:ResourceDictionary>
