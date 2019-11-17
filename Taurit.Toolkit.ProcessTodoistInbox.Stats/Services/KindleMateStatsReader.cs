@@ -6,20 +6,28 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
 {
     public class KindleMateStatsReader
     {
+        /// <remarks>
+        ///     I measured that in 46 minutes I reduced the number of highlights in the backlog by 92.
+        ///     This means that processing a single highlight takes 0.5 minute on average.
+        ///     However, some of them were already processed before (due to syncing problems), so to have a margin I'll assume 1
+        ///     minute on average, as before.
+        /// </remarks>
         private const Int32 EstimatedTimeToProcessSingleHighlightMinutes = 1;
 
         /// <remarks>
-        /// I measured that I was able to process 20 vocabulary items in Kindle Mate in 46 minutes, in a focused work mode.
-        /// This gives average of 2.3 word / minute for Kindle Mate inbox.
-        /// This time might be larger for other inboxes - here I already have great example sentences from some text I know, and thw workflow is straightforward.
+        ///     I measured that I was able to process 20 vocabulary items in Kindle Mate in 46 minutes, in a focused work mode.
+        ///     This gives average of 2.3 word / minute for Kindle Mate inbox.
+        ///     This time might be larger for other inboxes - here I already have great example sentences from some text I know,
+        ///     and thw workflow is straightforward.
         /// </remarks>
         private const Double EstimatedTimeToProcessSingleWordMinutes = 2.3;
+
         private readonly SortedDictionary<DateTime, Int32> _highlights = new SortedDictionary<DateTime, Int32>();
         private readonly SortedDictionary<DateTime, Int32> _vocabularyWords = new SortedDictionary<DateTime, Int32>();
 
         public KindleMateStatsReader(IEnumerable<String> lines)
         {
-            IEnumerable<String> linesWithoutHeader = lines.Skip(1).Where(x => !String.IsNullOrWhiteSpace(x));
+            IEnumerable<String> linesWithoutHeader = lines.Skip(1).Where(x => !string.IsNullOrWhiteSpace(x));
             foreach (String line in linesWithoutHeader)
             {
                 // build some simple internal structure to avoid storing all data in memory (it might be a lot)
