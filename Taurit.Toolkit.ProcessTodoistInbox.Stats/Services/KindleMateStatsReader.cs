@@ -7,7 +7,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
     public class KindleMateStatsReader
     {
         private const Int32 EstimatedTimeToProcessSingleHighlightMinutes = 1;
-        private const Int32 EstimatedTimeToProcessSingleWordMinutes = 4;
+
+        /// <remarks>
+        /// I measured that I was able to process 20 vocabulary items in Kindle Mate in 46 minutes, in a focused work mode.
+        /// This gives average of 2.3 word / minute for Kindle Mate inbox.
+        /// This time might be larger for other inboxes - here I already have great example sentences from some text I know, and thw workflow is straightforward.
+        /// </remarks>
+        private const Double EstimatedTimeToProcessSingleWordMinutes = 2.3;
         private readonly SortedDictionary<DateTime, Int32> _highlights = new SortedDictionary<DateTime, Int32>();
         private readonly SortedDictionary<DateTime, Int32> _vocabularyWords = new SortedDictionary<DateTime, Int32>();
 
@@ -39,7 +45,6 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
             Int32 numItems = GetNumberOfItems(_highlights, date);
             return TimeSpan.FromMinutes(numItems * EstimatedTimeToProcessSingleHighlightMinutes);
         }
-
 
         public TimeSpan GetEstimatedTimeNeededToProcessVocabularyWords(DateTime date)
         {
