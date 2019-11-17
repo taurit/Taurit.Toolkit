@@ -1,5 +1,5 @@
 ﻿using System;
-using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Taurit.Toolkit.FileProcessors;
 using Taurit.Toolkit.FileProcessors.ConversionProcessors;
 using Taurit.Toolkit.FileProcessors.LocationProcessors;
@@ -12,15 +12,15 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
 {
     public class InboxWorkflow
     {
-        [NotNull] private readonly IMergeInboxProcessor _mergeInboxProcessor;
-        [NotNull] private readonly InboxConfiguration _workflowConfiguration;
+        private readonly IMergeInboxProcessor _mergeInboxProcessor;
+        private readonly ILogger<IMergeInboxProcessor> _logger;
+        private readonly InboxConfiguration _workflowConfiguration;
 
-        public InboxWorkflow([NotNull] InboxConfiguration workflowConfiguration,
-            [NotNull] IMergeInboxProcessor mergeInboxProcessor)
+        public InboxWorkflow(InboxConfiguration workflowConfiguration, IMergeInboxProcessor mergeInboxProcessor, ILogger<IMergeInboxProcessor> logger)
         {
-            _workflowConfiguration =
-                workflowConfiguration ?? throw new ArgumentNullException(nameof(workflowConfiguration));
+            _workflowConfiguration = workflowConfiguration ?? throw new ArgumentNullException(nameof(workflowConfiguration));
             _mergeInboxProcessor = mergeInboxProcessor ?? throw new ArgumentNullException(nameof(mergeInboxProcessor));
+            _logger = logger;
         }
 
         internal void Start()
@@ -32,8 +32,12 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
 
         private void MergeInbox()
         {
-            _mergeInboxProcessor.MergeInbox(_workflowConfiguration.InboxPath,
-                _workflowConfiguration.AlternativeInboxes, _workflowConfiguration.FilesToNeverMove);
+            _mergeInboxProcessor.MergeInbox(
+                _logger,
+                _workflowConfiguration.InboxPath,
+                _workflowConfiguration.AlternativeInboxes,
+                _workflowConfiguration.FilesToNeverMove
+            );
         }
 
         private void CompressFiles(InboxConfiguration workflowConfiguration)

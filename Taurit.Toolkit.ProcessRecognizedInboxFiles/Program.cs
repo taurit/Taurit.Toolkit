@@ -1,7 +1,8 @@
 ﻿using System;
 using CommandLine;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Core;
 using Taurit.Toolkit.FileProcessors.Exceptions;
 using Taurit.Toolkit.FileProcessors.LocationProcessors;
 using Taurit.Toolkit.ProcessRecognizedInboxFiles.Domain;
@@ -36,9 +37,13 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
 
         private ServiceProvider ConfigureDependencyProvider(Options options)
         {
+            Logger serilogLogger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .CreateLogger();
+
             var services = new ServiceCollection();
 
-            services.AddLogging(configure => configure.AddConsole());
+            services.AddLogging(configure => configure.AddSerilog(serilogLogger));
             services.AddSingleton(options);
             services.AddSingleton<IPathPlaceholderResolver, PathPlaceholderResolver>();
             services.AddSingleton<IMergeInboxProcessor, MergeInboxProcessor>();

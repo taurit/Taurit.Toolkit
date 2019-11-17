@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 
 namespace Taurit.Toolkit.FileProcessors.LocationProcessors
 {
     public interface IMergeInboxProcessor
     {
-        void MergeInbox([NotNull] String targetInboxPath, 
-            [NotNull] IEnumerable<String> alternativeInboxPaths,
-            [NotNull] ISet<String> filesToNeverMove);
+        void MergeInbox(
+            ILogger<IMergeInboxProcessor> logger,
+            String targetInboxPath,
+            IEnumerable<String> alternativeInboxPaths,
+            ISet<String> filesToNeverMove
+        );
     }
 }

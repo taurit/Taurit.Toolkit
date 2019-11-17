@@ -1,5 +1,4 @@
 ﻿using System;
-using JetBrains.Annotations;
 
 namespace Taurit.Toolkit.ProcessRecognizedInboxFiles.Services
 {
@@ -12,6 +11,6 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles.Services
     /// </example>
     public interface IPathPlaceholderResolver
     {
-        String Resolve([NotNull] String templatePath);
+        String Resolve(String templatePath);
     }
 }
