@@ -7,7 +7,7 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
 {
 #pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
     [UsedImplicitly]
-    internal class Args
+    public class Options
     {
         [Option('c', "config", Required = true,
             HelpText = "Path to the JSON configuration file (defining what to move and where).")]

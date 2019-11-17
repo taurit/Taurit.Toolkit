@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Taurit.Toolkit.ProcessRecognizedInboxFiles.Models
 {
     [DataContract]
-    internal class ConvertToWebPRule
+    public class ConvertToWebPRule
     {
         [DataMember]
         public String? Directory { get; private set; }

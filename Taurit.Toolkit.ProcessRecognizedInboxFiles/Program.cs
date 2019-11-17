@@ -1,5 +1,7 @@
 ﻿using System;
 using CommandLine;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Taurit.Toolkit.FileProcessors.Exceptions;
 using Taurit.Toolkit.FileProcessors.LocationProcessors;
 using Taurit.Toolkit.ProcessRecognizedInboxFiles.Domain;
@@ -20,21 +22,39 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
         /// <param name="args">[0]: config file path (defaults to "config.json")</param>
         private static void Main(String[] args)
         {
-            Parser.Default.ParseArguments<Args>(args).WithParsed(o => { new Program().Start(o); });
+            // parse args
+            Parser.Default.ParseArguments<Options>(args)
+                .WithParsed(options =>
+                {
+                    var program = new Program();
+                    program.Start(options);
+                });
 
             Console.WriteLine("Done.");
             Console.ReadLine();
         }
 
-        private void Start(Args args)
+        private ServiceProvider ConfigureDependencyProvider(Options options)
         {
+            var services = new ServiceCollection();
+
+            services.AddLogging(configure => configure.AddConsole());
+            services.AddSingleton(options);
+            services.AddSingleton<IPathPlaceholderResolver, PathPlaceholderResolver>();
+            services.AddSingleton<IMergeInboxProcessor, MergeInboxProcessor>();
+            services.AddSingleton<InboxConfiguration>();
+            services.AddSingleton<InboxWorkflow>();
+
+            ServiceProvider serviceProvider = services.BuildServiceProvider();
+            return serviceProvider;
+        }
+
+        private void Start(Options options)
+        {
+            ServiceProvider dependencyProvider = ConfigureDependencyProvider(options);
             try
             {
-                var pathPlaceholderResolver = new PathPlaceholderResolver();
-                var workflowConfiguration = new InboxConfiguration(pathPlaceholderResolver, args.ConfigurationFilePath);
-                var mergeInboxProcessor = new MergeInboxProcessor();
-
-                var inboxWorkflow = new InboxWorkflow(workflowConfiguration, mergeInboxProcessor);
+                var inboxWorkflow = dependencyProvider.GetService<InboxWorkflow>();
                 inboxWorkflow.Start();
             }
             catch (InvalidConfigurationException e)

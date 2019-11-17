@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Taurit.Toolkit.FileProcessors.Exceptions;
 using Taurit.Toolkit.FileProcessors.LocationProcessors;
@@ -10,18 +9,18 @@ using Taurit.Toolkit.ProcessRecognizedInboxFiles.Services;
 
 namespace Taurit.Toolkit.ProcessRecognizedInboxFiles.Domain
 {
-    internal class InboxConfiguration
+    public class InboxConfiguration
     {
         private readonly IPathPlaceholderResolver _pathPlaceholderResolver;
 
-        public InboxConfiguration([NotNull] IPathPlaceholderResolver pathPlaceholderResolver, [NotNull] String configJsonPath)
+        public InboxConfiguration(IPathPlaceholderResolver pathPlaceholderResolver, Options options)
         {
-            if (configJsonPath == null) throw new ArgumentNullException(nameof(configJsonPath));
-            if (!File.Exists(configJsonPath)) throw new ArgumentException("Config file does not exist");
+            if (options.ConfigurationFilePath == null) throw new ArgumentNullException(nameof(options.ConfigurationFilePath));
+            if (!File.Exists(options.ConfigurationFilePath)) throw new ArgumentException("Config file does not exist");
             
             _pathPlaceholderResolver = pathPlaceholderResolver ?? throw new ArgumentNullException(nameof(pathPlaceholderResolver));
 
-            var config = JsonConvert.DeserializeObject<InboxConfigFile>(File.ReadAllText(configJsonPath));
+            var config = JsonConvert.DeserializeObject<InboxConfigFile>(File.ReadAllText(options.ConfigurationFilePath));
             if (config.AlternativeInboxes is null) throw new ArgumentException("Config file requires 'AlternativeInboxes' to be properly defined");
             if (config.InboxFolder is null) throw new ArgumentException("Config file requires 'InboxFolder' to be properly defined");
             if (config.FilesToNeverMove is null) throw new ArgumentException("Config file requires 'FilesToNeverMove' to be properly defined");
