@@ -27,6 +27,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
 
         public KindleMateStatsReader(IEnumerable<String> lines)
         {
+            var detailedPeriodStartDate = DateTime.UtcNow.AddDays(-7);
+
             IEnumerable<String> linesWithoutHeader = lines.Skip(1).Where(x => !string.IsNullOrWhiteSpace(x));
             foreach (String line in linesWithoutHeader)
             {
@@ -37,8 +39,15 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
                 Int16 numHighlights = Convert.ToInt16(splitLine[1]);
                 Int32 numVocabularyWords = Convert.ToInt32(splitLine[2]);
 
+                // for performance, let's just see details for the recent 7 days. For the older dates, approximation is enough.
+                
                 // trim the time part - for now I assume that an estimate once a day is enough for me
-                DateTime date = DateTime.Parse(dateString).Date;
+                DateTime dateTime = DateTime.Parse(dateString);
+                DateTime date = dateTime; // by default, keep all entries for a given day
+                if (dateTime < detailedPeriodStartDate)
+                {
+                    date = date.Date; // for older dates keep just one entry for each day
+                }
 
                 if (!_highlights.ContainsKey(date))
                 {
