@@ -66,7 +66,7 @@
                     Background="White"
                     DataTooltip="{x:Null}"
                     Hoverable="False"
-                    LegendLocation="None"
+                    LegendLocation="Bottom"
                     Series="{Binding EstimatedTimeOfTasks}">
                     <wpf:CartesianChart.AxisY>
                         <wpf:Axis
