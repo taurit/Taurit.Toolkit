@@ -326,7 +326,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             {
                 new StackedAreaSeries
                 {
-                    Title = "Kindle Mate",
+                    Title = "Kindle Vocabulary",
                     Values = new ChartValues<DateTimePoint>(kindleMateWords),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush(Color.FromRgb(48, 92, 211))
@@ -347,35 +347,35 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 },
                 new StackedAreaSeries
                 {
-                    Title = "Low priority",
+                    Title = "Todoist: Low priority",
                     Values = new ChartValues<DateTimePoint>(lowPriorityTasks),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#557ED1"))
                 },
                 new StackedAreaSeries
                 {
-                    Title = "Kindle Mate Highlights",
+                    Title = "Kindle Highlights",
                     Values = new ChartValues<DateTimePoint>(kindleMateHighlights),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush(Color.FromRgb(242, 184, 24))
                 },
                 new StackedAreaSeries
                 {
-                    Title = "Medium priority",
+                    Title = "Todoist: Medium priority",
                     Values = new ChartValues<DateTimePoint>(mediumPriorityTasks),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FFF49C18"))
                 },
                 new StackedAreaSeries
                 {
-                    Title = "High priority",
+                    Title = "Todoist: High priority",
                     Values = new ChartValues<DateTimePoint>(highPriorityTasks),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FFDE4C4A"))
                 },
                 new StackedAreaSeries
                 {
-                    Title = "Future",
+                    Title = "Future tasks",
                     Values = new ChartValues<DateTimePoint>(futureTasks),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush(Color.FromRgb(255, 204, 255))
