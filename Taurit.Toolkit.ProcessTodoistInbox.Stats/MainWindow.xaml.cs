@@ -177,8 +177,14 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             DateTime lastDayOfQuarter = SnapshotOnTimeline.GetLastDayOfQuarter(firstDayOfQuarter);
 
             Int32 howManyDaysToEndOfQuarter = lastDayOfQuarter.Subtract(lastKnownDate).Days;
-            Double totalMinutesNow = CountTotalMinutesAtDate(lastKnownDate, etLowPriorityTasks, etMediumPriorityTasks,
-                etHighPriorityTasks, etKindleMateWords, etKindleMateHighlights);
+            Double totalMinutesNow = CountTotalMinutesAtDate(lastKnownDate,
+                etLowPriorityTasks,
+                etMediumPriorityTasks,
+                etHighPriorityTasks,
+                etKindleMateWords,
+                etKindleMateHighlights,
+                etAnkiFileInbox,
+                etWhitepapersFileInbox);
 
             if (howManyDaysToEndOfQuarter == 0)
             {
@@ -203,13 +209,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             TimeSpan totalWorkLeft = TimeSpan.FromMinutes(mostRecentTotalBacklogTimeEstimateInMinutes);
             TimeSpan dailyWorkNeededToCleanBacklogThisQuarter =
                 TimeSpan.FromMinutes(howManyMinutesNeedsToBeDoneInADayForCleanBacklog);
+            
+            const String unitOfWorkSymbol = "h";
+            const Int32 unitOfWorkDurationInMinutes = 60; 
 
-            var unitOfWorkDurationInMinutes = 45;
-            TotalWorkLeft.Text =
-                $"{_timeConverter.ConvertToUnitsOfWork(totalWorkLeft, unitOfWorkDurationInMinutes)} ZG (1 ZG = {unitOfWorkDurationInMinutes} min)";
+            TotalWorkLeft.Text = $"{_timeConverter.ConvertToUnitsOfWorkAndCeil(totalWorkLeft, unitOfWorkDurationInMinutes)} {unitOfWorkSymbol}";
             MostRecentSnapshotTime.Text = lastKnownDate.ToString("yyyy-MM-dd HH:mm");
-            BurndownSpeed.Text =
-                _timeConverter.ConvertToUnitsOfWork(dailyWorkNeededToCleanBacklogThisQuarter).ToString();
+            BurndownSpeed.Text = _timeConverter.ConvertToUnitsOfWork(dailyWorkNeededToCleanBacklogThisQuarter).ToString("0.00");
         }
 
         private static Double CountTotalMinutesAtDate(
@@ -218,7 +224,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             List<DateTimePoint> etMediumPriorityTasks,
             List<DateTimePoint> etHighPriorityTasks,
             List<DateTimePoint> etKindleMateWords,
-            List<DateTimePoint> etKindleMateHighlights
+            List<DateTimePoint> etKindleMateHighlights,
+            List<DateTimePoint> etAnkiFileInbox,
+            List<DateTimePoint> etWhitepapersFileInbox
         )
         {
             Double lowTime = etLowPriorityTasks.Single(x => x.DateTime == date).Value;
@@ -226,8 +234,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             Double highTime = etHighPriorityTasks.Single(x => x.DateTime == date).Value;
             Double wordsTime = etKindleMateWords.Single(x => x.DateTime == date).Value;
             Double highlightsTime = etKindleMateHighlights.Single(x => x.DateTime == date).Value;
+            Double ankiTime = etAnkiFileInbox.Single(x => x.DateTime == date).Value;
+            Double whitepapersTime = etWhitepapersFileInbox.Single(x => x.DateTime == date).Value;
 
-            return lowTime + mediumTime + highTime + wordsTime + highlightsTime;
+            return lowTime + mediumTime + highTime + wordsTime + highlightsTime + ankiTime + whitepapersTime;
         }
 
         private List<TodoTask> FilterOutTaskThatShouldNotBeCounted(IReadOnlyList<TodoTask> allTasks,

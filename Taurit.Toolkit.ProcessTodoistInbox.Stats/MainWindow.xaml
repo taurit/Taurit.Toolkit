@@ -46,7 +46,12 @@
                 Content="Include future tasks planned for the quarter"
                 IsChecked="False"
                 Unchecked="ToggleButton_OnChecked" />
-            <TextBlock FontWeight="Bold">"It is much more important to work on <Run Foreground="Orange">the right thing</Run> than it is to work many hours. Most people waste most of their time on <Run Foreground="DodgerBlue">stuff that doesn’t matter</Run>" <Run FontWeight="Normal">(but it's good to remove it from the backlog ;))</Run></TextBlock>
+            <TextBlock FontWeight="Bold">
+                "It is much more important to work on
+                <Run Foreground="Orange">the right thing</Run> than it is to work many hours. Most people waste most of their time on
+                <Run Foreground="DodgerBlue">stuff that doesn’t matter</Run>"
+                <Run FontWeight="Normal">(but it's good to remove it from the backlog ;))</Run>
+            </TextBlock>
         </WrapPanel>
         <Grid x:Name="ChartWrapper" Background="White">
             <Grid.ColumnDefinitions>
@@ -62,22 +67,45 @@
                 Columns="1"
                 Rows="1">
 
-                <wpf:CartesianChart
-                    Background="White"
-                    DataTooltip="{x:Null}"
-                    Hoverable="False"
-                    LegendLocation="Bottom"
-                    Series="{Binding EstimatedTimeOfTasks}">
-                    <wpf:CartesianChart.AxisY>
-                        <wpf:Axis
-                            Title="Estimated time of tasks (h)"
-                            LabelFormatter="{Binding YFormatter}"
-                            MinValue="0" />
-                    </wpf:CartesianChart.AxisY>
-                    <wpf:CartesianChart.AxisX>
-                        <wpf:Axis Title="Date" LabelFormatter="{Binding XFormatter}" />
-                    </wpf:CartesianChart.AxisX>
-                </wpf:CartesianChart>
+                <Grid>
+                    <wpf:CartesianChart
+                        Background="White"
+                        DataTooltip="{x:Null}"
+                        Hoverable="False"
+                        LegendLocation="Bottom"
+                        Series="{Binding EstimatedTimeOfTasks}">
+                        <wpf:CartesianChart.AxisY>
+                            <wpf:Axis
+                                Position="RightTop"
+                                Title="Estimated time of tasks (h)"
+                                LabelFormatter="{Binding YFormatter}"
+                                MinValue="0" />
+                        </wpf:CartesianChart.AxisY>
+                        <wpf:CartesianChart.AxisX>
+                            <wpf:Axis Title="Date" LabelFormatter="{Binding XFormatter}" />
+                        </wpf:CartesianChart.AxisX>
+                    </wpf:CartesianChart>
+                    <TextBlock
+                        TextAlignment="Center"
+                        VerticalAlignment="Center"
+                        Foreground="Lime"
+                    >
+                        <Run Name="TotalWorkLeft"
+                             Text="... h" FontWeight="Bold" FontSize="60"/>
+                        <LineBreak />
+                        <Run>to inbox zero</Run>
+                        <TextBlock.Effect>
+                            <DropShadowEffect
+                                ShadowDepth="0"
+                                Direction="300"
+                                Color="DarkBlue"
+                                Opacity="1"
+                                BlurRadius="5"/>
+                        </TextBlock.Effect>
+                        
+                    </TextBlock>
+
+                </Grid>
             </UniformGrid>
             <StatusBar Grid.Row="1">
                 <WrapPanel DockPanel.Dock="Left">
@@ -85,21 +113,17 @@
                         Margin="10,0,0,0"
                         xml:space="preserve"
                         ToolTip="Avg daily work needed for inbox zero at the end of the quarter">As of <Run
-                            Name="MostRecentSnapshotTime"
-                            FontWeight="Bold"
-                            Foreground="MediumSeaGreen"
-                            Text="..." /> you need to work <Run
-                            Name="BurndownSpeed"
-                            FontWeight="Bold"
-                            Foreground="Red"
-                            Text="..." /> <Run
-                            FontWeight="Bold"
-                            Foreground="Red"
-                            Text="ZG/day" /> to succeed with the quarterly plan. Total work left: <Run
-                            Name="TotalWorkLeft"
-                            FontWeight="Bold"
-                            Foreground="DodgerBlue"
-                            Text="..." /></TextBlock>
+                                                                                                           Name="MostRecentSnapshotTime"
+                                                                                                           FontWeight="Bold"
+                                                                                                           Foreground="MediumSeaGreen"
+                                                                                                           Text="..." /> you need to work <Run
+                                                                                                                                              Name="BurndownSpeed"
+                                                                                                                                              FontWeight="Bold"
+                                                                                                                                              Foreground="Red"
+                                                                                                                                              Text="..." /> <Run
+                                                                                                                                                                FontWeight="Bold"
+                                                                                                                                                                Foreground="Red"
+                                                                                                                                                                Text="ZG/day" /> to succeed with the quarterly plan</TextBlock>
                 </WrapPanel>
             </StatusBar>
         </Grid>
