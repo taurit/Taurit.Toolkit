@@ -20,7 +20,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             var sut = new TimeConverter();
 
             // Act
-            Int32 output = sut.ConvertToUnitsOfWork(input);
+            Int32 output = sut.ConvertToUnitsOfWorkAndCeil(input);
 
             // Assert
             Assert.AreEqual(expectedOutput, output);
