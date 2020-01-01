@@ -26,7 +26,7 @@ namespace Taurit.Toolkit.CompressVideo
             ReadOnlyCollection<String> filesToConvert = GetFilesInDirectory(inputFileOrDirectory).AsReadOnly();
             foreach (String file in filesToConvert)
             {
-                String outputFileName = file + ".mp4";
+                String outputFileName = file + ".min.mp4";
                 ConvertSingleFile(file, outputFileName);
             }
         }
