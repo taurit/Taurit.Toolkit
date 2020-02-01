@@ -6,8 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     Title="MainWindow"
-    Width="598"
-    Height="393"
+    Width="798"
+    Height="522"
     ContentRendered="MainWindow_OnContentRendered"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
     mc:Ignorable="d">
@@ -19,8 +19,11 @@
             DataTooltip="{x:Null}"
             Hoverable="False">
             <wpf:CartesianChart.AxisX>
-                <wpf:Axis LabelFormatter="{Binding XFormatter}" />
+                <wpf:Axis LabelFormatter="{Binding XFormatter}" Title="Time"/>
             </wpf:CartesianChart.AxisX>
+            <wpf:CartesianChart.AxisY>
+                <wpf:Axis ShowLabels="False" />
+            </wpf:CartesianChart.AxisY>
             <wpf:CartesianChart.Series>
                 <wpf:LineSeries Values="{Binding WeightData}" />
             </wpf:CartesianChart.Series>

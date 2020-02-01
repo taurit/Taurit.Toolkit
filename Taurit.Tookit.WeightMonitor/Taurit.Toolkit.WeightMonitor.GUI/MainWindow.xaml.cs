@@ -46,10 +46,10 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
         private async Task LoadChartData()
         {
             foreach (BulkingPeriod bulkingPeriod in _settings.BulkingPeriods)
-                AddReferenceLine(WeightChart, bulkingPeriod, Colors.LightSeaGreen, _settings.NumFutureDaysToShow);
+                AddReferenceLine(WeightChart, bulkingPeriod, Colors.LightGreen, _settings.NumFutureDaysToShow);
 
             foreach (CuttingPeriod cuttingPeriod in _settings.CuttingPeriods)
-                AddReferenceLine(WeightChart, cuttingPeriod, Colors.MediumVioletRed, _settings.NumFutureDaysToShow);
+                AddReferenceLine(WeightChart, cuttingPeriod, Colors.PaleVioletRed, _settings.NumFutureDaysToShow);
 
             var googleFitDataAccessor = new GoogleFitDataAccessor();
             WeightInTime[] weights = await googleFitDataAccessor.GetWeightDataPoints(_settings.NumPastDaysToShow);
@@ -99,7 +99,8 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
                     new DateTimePoint(trainingPeriod.Start, trainingPeriod.StartWeight),
                     new DateTimePoint(endDateToDraw, trainingPeriod.ExpectedEndWeight)
                 },
-                Stroke = new SolidColorBrush(lineColor)
+                Stroke = new SolidColorBrush(lineColor),
+                Fill = new SolidColorBrush(Colors.Aquamarine) { Opacity = 0.5}
             });
         }
 
