@@ -13,7 +13,6 @@ using Newtonsoft.Json;
 using NodaTime;
 using Taurit.Toolkit.WeightMonitor.Common.Models;
 using Taurit.Toolkit.WeightMonitor.GUI.Services;
-using Color = System.Windows.Media.Color;
 using Duration = NodaTime.Duration;
 
 namespace Taurit.Toolkit.WeightMonitor.GUI
@@ -29,7 +28,15 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
         public MainWindow()
         {
             InitializeComponent();
-            var settingsFilePath = "d:\\ProgramData\\ApplicationData\\TauritToolkit\\WeightMonitor.json";
+
+            var settingsFilesToProbe = new[]
+            {
+                "WeightMonitor.json",
+                "d:\\ProgramData\\ApplicationData\\TauritToolkit\\WeightMonitor.json"
+            };
+
+            String settingsFilePath = settingsFilesToProbe.First(File.Exists);
+
             String settingsAsJson = File.ReadAllText(settingsFilePath);
             _settings = JsonConvert.DeserializeObject<WeightMonitorSettings>(settingsAsJson);
 
@@ -55,9 +62,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             WeightInTime[] weights = await googleFitDataAccessor.GetWeightDataPoints(_settings.NumPastDaysToShow);
 
             if (weights.Length == 0)
-            {
                 MessageBox.Show($"No weight data found in Google for the last {_settings.NumPastDaysToShow}");
-            }
 
             var allWeights = new List<DateTimePoint>(weights.Length);
             Double lastWeight = 0;
@@ -100,7 +105,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
                     new DateTimePoint(endDateToDraw, trainingPeriod.ExpectedEndWeight)
                 },
                 Stroke = new SolidColorBrush(lineColor),
-                Fill = new SolidColorBrush(Colors.Aquamarine) { Opacity = 0.5}
+                Fill = new SolidColorBrush(Colors.Aquamarine) {Opacity = 0.5}
             });
         }
 
@@ -116,7 +121,6 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
                 WallpaperSetter.Set(_settings.WallpaperToSet.FinalImagePath);
                 Application.Current.Shutdown();
             }
-            
         }
     }
 }
