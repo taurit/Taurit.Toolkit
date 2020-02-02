@@ -6,8 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     Title="MainWindow"
-    Width="798"
-    Height="522"
+    Width="645"
+    Height="439"
     ContentRendered="MainWindow_OnContentRendered"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
     mc:Ignorable="d">
