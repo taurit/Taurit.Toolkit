@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Controls;
@@ -18,14 +20,29 @@ namespace Taurit.Toolkit.WeightMonitor.GUI.Services
             BitmapFrame chart = VisualToBitmapConverter.Convert(chartWrapper);
 
             // create overlay
-            var finalImage = new Bitmap(1680, 1050);
+            var wallpaperSize = new Size(1680, 1050);
+
+            var finalImage = new Bitmap(wallpaperSize.Width, wallpaperSize.Height);
             using (Graphics g = Graphics.FromImage(finalImage))
             {
                 g.DrawImage(originalWallpaper, new Rectangle(0, 0, 1680, 1050));
                 Bitmap chartBitmap = BitmapFromSource(chart);
-                g.DrawImage(chartBitmap,
-                    new Rectangle(wallpaperSettings.OffsetX, wallpaperSettings.OffsetY, chartBitmap.Width,
-                        chartBitmap.Height));
+
+                // center image be default 
+                Int32 offsetX = (wallpaperSize.Width - chartBitmap.Width) / 2;
+                Int32 offsetY = (wallpaperSize.Height - chartBitmap.Height) / 2;
+                
+
+                if (wallpaperSettings.OffsetIsProvided)
+                {
+                    Debug.Assert(wallpaperSettings.OffsetX != null, "wallpaperSettings.OffsetX != null");
+                    Debug.Assert(wallpaperSettings.OffsetY != null, "wallpaperSettings.OffsetY != null");
+
+                    offsetX = wallpaperSettings.OffsetX.Value;
+                    offsetY = wallpaperSettings.OffsetY.Value;
+                }
+
+                g.DrawImage(chartBitmap, new Rectangle(offsetX, offsetY, chartBitmap.Width, chartBitmap.Height));
             }
 
             // save resulting file
