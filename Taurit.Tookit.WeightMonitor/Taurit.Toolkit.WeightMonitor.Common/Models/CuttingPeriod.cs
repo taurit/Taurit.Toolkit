@@ -9,6 +9,8 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Models
         ///     per month.". Assuming avg of 6 pounds per month.
         ///     Source: https://www.muscleforlife.com/how-to-lose-weight-fast/
         /// </summary>
+        protected override Double MinimumDailyWeightIncreaseKg => -0.0596832066;
         protected override Double OptimumDailyWeightIncreaseKg => -0.090718474;
+        protected override Double MaximumDailyWeightIncreaseKg => -0.119366413;
     }
 }

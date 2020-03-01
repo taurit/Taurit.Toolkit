@@ -32,7 +32,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             var settingsFilesToProbe = new[]
             {
                 "WeightMonitor.json",
-                "d:\\ProgramData\\ApplicationData\\TauritToolkit\\WeightMonitor.json"
+                "d:\\ProgramData\\ApplicationData\\TauritToolkit\\WeightMonitor.jsonc"
             };
 
             String settingsFilePath = settingsFilesToProbe.First(File.Exists);
@@ -52,11 +52,24 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
 
         private async Task LoadChartData()
         {
-            foreach (BulkingPeriod bulkingPeriod in _settings.BulkingPeriods)
-                AddReferenceLine(WeightChart, bulkingPeriod, Colors.LightGreen, _settings.NumFutureDaysToShow);
+            BulkingPeriod[] bulkingPeriods = _settings.ShowPastPeriods
+                ? _settings.BulkingPeriods
+                : _settings.BulkingPeriods.Where(x => x.End > DateTime.Today).ToArray();
+            
+            MaintenancePeriod[] maintenancePeriods = _settings.ShowPastPeriods
+                ? _settings.MaintenancePeriods
+                : _settings.MaintenancePeriods.Where(x => x.End > DateTime.Today).ToArray();
 
-            foreach (CuttingPeriod cuttingPeriod in _settings.CuttingPeriods)
+            CuttingPeriod[] cuttingPeriods = _settings.ShowPastPeriods
+                ? _settings.CuttingPeriods
+                : _settings.CuttingPeriods.Where(x => x.End > DateTime.Today).ToArray();
+
+            foreach (CuttingPeriod cuttingPeriod in cuttingPeriods)
                 AddReferenceLine(WeightChart, cuttingPeriod, Colors.PaleVioletRed, _settings.NumFutureDaysToShow);
+            foreach (MaintenancePeriod maintenancePeriod in maintenancePeriods)
+                AddReferenceLine(WeightChart, maintenancePeriod, Colors.Orange, _settings.NumFutureDaysToShow);
+            foreach (BulkingPeriod bulkingPeriod in bulkingPeriods)
+                AddReferenceLine(WeightChart, bulkingPeriod, Colors.LightGreen, _settings.NumFutureDaysToShow);
 
             var googleFitDataAccessor = new GoogleFitDataAccessor();
             WeightInTime[] weights = await googleFitDataAccessor.GetWeightDataPoints(_settings.NumPastDaysToShow);
@@ -96,16 +109,43 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             if (trainingPeriod.Start >= maxDate) return;
 
             DateTime endDateToDraw = trainingPeriod.End >= maxDate ? maxDate : trainingPeriod.End;
+            trainingPeriod.Trim(endDateToDraw);
+
+            // try with min and max lines instead of optimum line
+            if (false)
+            {
+                chart.Series.Add(new LineSeries
+                {
+                    Values = new ChartValues<DateTimePoint>
+                    {
+                        new DateTimePoint(trainingPeriod.Start, trainingPeriod.StartWeight),
+                        new DateTimePoint(trainingPeriod.End, trainingPeriod.ExpectedOptimumEndWeight)
+                    },
+                    Stroke = new SolidColorBrush(lineColor),
+                    Fill = new SolidColorBrush(Colors.Aquamarine) {Opacity = 0.5}
+                });
+            }
 
             chart.Series.Add(new LineSeries
             {
                 Values = new ChartValues<DateTimePoint>
                 {
                     new DateTimePoint(trainingPeriod.Start, trainingPeriod.StartWeight),
-                    new DateTimePoint(endDateToDraw, trainingPeriod.ExpectedEndWeight)
+                    new DateTimePoint(trainingPeriod.End, trainingPeriod.ExpectedMinimumEndWeight)
                 },
                 Stroke = new SolidColorBrush(lineColor),
-                Fill = new SolidColorBrush(Colors.Aquamarine) {Opacity = 0.5}
+                Fill = Brushes.Transparent
+            });
+
+            chart.Series.Add(new LineSeries
+            {
+                Values = new ChartValues<DateTimePoint>
+                {
+                    new DateTimePoint(trainingPeriod.Start, trainingPeriod.StartWeight),
+                    new DateTimePoint(trainingPeriod.End, trainingPeriod.ExpectedMaximumEndWeight)
+                },
+                Stroke = new SolidColorBrush(lineColor),
+                Fill = Brushes.Transparent
             });
         }
 
