@@ -9,5 +9,9 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Models
         protected override Double MinimumDailyWeightIncreaseKg => 0;
         protected override Double OptimumDailyWeightIncreaseKg => 0;
         protected override Double MaximumDailyWeightIncreaseKg => 0;
+
+        public MaintenancePeriod(DateTime start, DateTime end, Double startWeight) : base(start, end, startWeight)
+        {
+        }
     }
 }

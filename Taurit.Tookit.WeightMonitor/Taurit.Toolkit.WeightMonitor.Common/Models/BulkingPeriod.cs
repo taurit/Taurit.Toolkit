@@ -12,5 +12,9 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Models
         protected override Double OptimumDailyWeightIncreaseKg => 0.04859918257;
         protected override Double MinimumDailyWeightIncreaseKg => 0.032399455;
 
+
+        public BulkingPeriod(DateTime start, DateTime end, Double startWeight) : base(start, end, startWeight)
+        {
+        }
     }
 }

@@ -113,6 +113,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
 
             // try with min and max lines instead of optimum line
             if (false)
+#pragma warning disable 162
             {
                 chart.Series.Add(new LineSeries
                 {
@@ -125,6 +126,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
                     Fill = new SolidColorBrush(Colors.Aquamarine) {Opacity = 0.5}
                 });
             }
+#pragma warning restore 162
 
             chart.Series.Add(new LineSeries
             {

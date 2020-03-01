@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Taurit.Toolkit.ProcesTodoistInbox.Common\Taurit.Toolkit.ProcessTodoistInbox.Common.csproj" />
     <ProjectReference Include="..\..\Taurit.Toolkit.TodoistInboxHelper\Taurit.Toolkit.TodoistInboxHelper.csproj" />
+    <ProjectReference Include="..\Taurit.Toolkit.WeightMonitor.Common\Taurit.Toolkit.WeightMonitor.Common.csproj" />
   </ItemGroup>
 
 </Project>

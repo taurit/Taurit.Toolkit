@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Taurit.Toolkit.ConvertBlogpostImages": {
+      "commandName": "Project",
+      "commandLineArgs": "d:\\Projekty\\Taurit.Websites.JakPrzytyc\\input\\assets\\posts"
+    }
+  }
+}

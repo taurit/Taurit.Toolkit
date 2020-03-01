@@ -22,5 +22,14 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Models
         {
             this.End = newEndDate;
         }
+
+        protected TrainingPeriod(DateTime start, DateTime end, Double startWeight)
+        {
+            if (end <= start) throw new ArgumentOutOfRangeException(nameof(end), "End date must be greater than a start date");
+
+            Start = start;
+            End = end;
+            StartWeight = startWeight;
+        }
     }
 }
