@@ -13,8 +13,8 @@ namespace Taurit.Toolkit.FileProcessors.NameProcessors.NameFormatProviders
             // workaround to also support "yy" format (and not "yyyy" which is found in most regex patterns)
             if (yearParsed < 100) yearParsed = 2000 + yearParsed;
 
-
-            String newFileName = $"{yearParsed}-{monthParsed:00}-{dayParsed:00} {description}";
+            var optionalDescription = String.IsNullOrWhiteSpace(description) ? String.Empty : $" {description}";
+            String newFileName = $"{yearParsed}-{monthParsed:00}-{dayParsed:00}{optionalDescription}";
             return newFileName;
         }
     }

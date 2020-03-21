@@ -28,6 +28,15 @@ namespace Taurit.Toolkit.FileProcessors.NameProcessors
             new Regex(@"\d{6}-(?<day>\d\d)(?<month>\d\d)(?<year>\d\d) (?<description>.*)",
                 RegexOptions.Compiled);
 
+        
+        /// OnePlus camera filename format can also be improved
+        /// Example filenames:
+        /// * d:\Inbox\IMG_20200129_210243.jpg
+        /// * d:\Inbox\IMG_20200129_210243__01.jpg // for edits
+        [NotNull] private static readonly Regex FileWithInvalidDateFormat4 =
+            new Regex(@"IMG_(?<year>\d\d\d\d)(?<month>\d\d)(?<day>\d\d)_\d{6}_*(?<description>.*)",
+                RegexOptions.Compiled);
+
         [NotNull] private readonly IFileNameFormatProvider _fileNameFormatProvider;
 
         public ChangeOfficeLensNameProcessor([NotNull] IFileNameFormatProvider fileNameFormatProvider)
@@ -67,6 +76,8 @@ namespace Taurit.Toolkit.FileProcessors.NameProcessors
             Match match = FileWithInvalidDateFormat.Match(fileName);
             if (!match.Success) match = FileWithInvalidDateFormat2.Match(fileName);
             if (!match.Success) match = FileWithInvalidDateFormat3.Match(fileName);
+            if (!match.Success) match = FileWithInvalidDateFormat4.Match(fileName);
+
 
             return match;
         }

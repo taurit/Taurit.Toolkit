@@ -44,10 +44,45 @@ namespace Taurit.Toolkit.FileProcessors.Tests
             var sut = new IsoDateFileNameFormatProvider();
 
             // Act
-            String isoName1 = sut.FormatFileName("19", "01", "11", "Test");
+            String isoName = sut.FormatFileName("19", "01", "11", "Test");
 
             // Assert
-            Assert.AreEqual("2019-01-11 Test", isoName1);
+            Assert.AreEqual("2019-01-11 Test", isoName);
+        }
+
+        [TestMethod]
+        public void WhenDescriptionIsEmpty_DontRenderSpaceAtTheEndOfFileName()
+        {
+            // Arrange
+            var sut = new IsoDateFileNameFormatProvider();
+
+            // Act
+            String isoName = sut.FormatFileName("19", "01", "11", "");
+
+            // Assert
+            Assert.AreEqual("2019-01-11", isoName);
+            Assert.AreNotEqual("2019-01-11 ", isoName);
+        }
+        
+        [DataTestMethod]
+        [DataRow(" ")]
+        [DataRow("  ")]
+        [DataRow("   ")]
+        [DataRow("\t")]
+        [DataRow("\t\t")]
+        [DataRow("\r")]
+        [DataRow("\n")]
+        [DataRow("\r\n")]
+        public void WhenDescriptionIsWhitespace_DontRenderSpaceAtTheEndOfFileNameNorDescrpition(string whitespaceString)
+        {
+            // Arrange
+            var sut = new IsoDateFileNameFormatProvider();
+
+            // Act
+            String isoName = sut.FormatFileName("19", "01", "11", whitespaceString);
+
+            // Assert
+            Assert.AreEqual("2019-01-11", isoName);
         }
     }
 }

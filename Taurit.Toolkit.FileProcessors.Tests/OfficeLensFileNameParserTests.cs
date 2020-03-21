@@ -69,5 +69,25 @@ namespace Taurit.Toolkit.FileProcessors.Tests
             Assert.AreEqual("08", match.Groups["day"].Value);
             Assert.AreEqual("BUW nauka Content Security Policy v2 features notatki 1.jpg", match.Groups["description"].Value);
         }
+
+        [TestMethod]
+        public void OnePlus6CameraFilenameFormatIsRecognized()
+        {
+            // Arrange
+            IFileNameFormatProvider formatProviderMock = new Mock<IFileNameFormatProvider>().Object;
+            Debug.Assert(formatProviderMock != null);
+            var sut = new ChangeOfficeLensNameProcessor(formatProviderMock);
+
+            // Act
+            Match match = sut.GetMatch("IMG_20200227_095822__01.jpg");
+
+            // Assert
+            Assert.IsNotNull(match);
+            Assert.IsTrue(match.Success);
+            Assert.AreEqual("2020", match.Groups["year"].Value);
+            Assert.AreEqual("02", match.Groups["month"].Value);
+            Assert.AreEqual("27", match.Groups["day"].Value);
+            Assert.AreEqual("01.jpg", match.Groups["description"].Value);
+        }
     }
 }
