@@ -26,15 +26,15 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Correlation
         private static void Main()
         {
             var program = new Program();
-            List<SnapshotOnTimeline> snapshots = program.LoadSnapshots();
-            List<TaskWithSnapshotDate> allTasks = program.StoreSnapshotDateWithTasks(snapshots);
-            ILookup<Int64, TaskWithSnapshotDate> allTasksGroupedById = program.GroupTasksById(allTasks);
+            List<SnapshotOnTimeline> snapshots = Program.LoadSnapshots();
+            List<TaskWithSnapshotDate> allTasks = Program.StoreSnapshotDateWithTasks(snapshots);
+            ILookup<Int64, TaskWithSnapshotDate> allTasksGroupedById = Program.GroupTasksById(allTasks);
             List<TaskStats> stats = program.ComputeStatsForTasks(allTasksGroupedById);
-            program.ExportToCsv("d:/taskstats.csv", stats);
+            Program.ExportToCsv("d:/taskstats.csv", stats);
         }
 
 
-        private void ExportToCsv(String fileName, List<TaskStats> stats)
+        private static void ExportToCsv(String fileName, List<TaskStats> stats)
         {
             using var writer = new StreamWriter(fileName);
             using var csv = new CsvWriter(writer);
@@ -73,19 +73,19 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Correlation
             return stats;
         }
 
-        private ILookup<Int64, TaskWithSnapshotDate> GroupTasksById(List<TaskWithSnapshotDate> allTasks)
+        private static ILookup<Int64, TaskWithSnapshotDate> GroupTasksById(List<TaskWithSnapshotDate> allTasks)
         {
             ILookup<Int64, TaskWithSnapshotDate> allTasksGroupedById = allTasks.ToLookup(x => x.Task.id);
             return allTasksGroupedById;
         }
 
-        private List<TaskWithSnapshotDate> StoreSnapshotDateWithTasks(List<SnapshotOnTimeline> snapshots)
+        private static List<TaskWithSnapshotDate> StoreSnapshotDateWithTasks(List<SnapshotOnTimeline> snapshots)
         {
             DateTime lastSnapshotDate = snapshots.Max(x => x.Time);
             HashSet<Int64> tasksStillNotCompletedInMostRecentSnapshot = snapshots
                 .Single(x => x.Time == lastSnapshotDate).AllTasks.Select(x => x.id).ToHashSet();
 
-            var allTasks = new List<TaskWithSnapshotDate>(100000); // todo tune 
+            var allTasks = new List<TaskWithSnapshotDate>(100000); // todo tune
             foreach (SnapshotOnTimeline snapshot in snapshots)
             {
                 IEnumerable<TaskWithSnapshotDate> taskWithSnapshotDates = snapshot.AllTasks
@@ -102,7 +102,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Correlation
             return allTasks;
         }
 
-        private List<SnapshotOnTimeline> LoadSnapshots()
+        private static List<SnapshotOnTimeline> LoadSnapshots()
         {
             var snapshotReader = new SimpleSnapshotReader();
             List<SnapshotOnTimeline> snapshots =

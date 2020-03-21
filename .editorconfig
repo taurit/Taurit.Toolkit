@@ -2,3 +2,6 @@
 
 # CS8625: Cannot convert null literal to non-nullable reference type.
 dotnet_diagnostic.CS8625.severity = warning
+
+# IDE0049: Simplify Names
+dotnet_style_predefined_type_for_locals_parameters_members = false:silent

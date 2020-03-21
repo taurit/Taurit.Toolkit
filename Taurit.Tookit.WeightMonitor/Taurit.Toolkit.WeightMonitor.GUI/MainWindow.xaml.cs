@@ -20,10 +20,9 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    internal partial class MainWindow
     {
         private readonly WeightMonitorSettings _settings;
-        private readonly WallpaperGenerator _wallpaperGenerator;
 
         public MainWindow()
         {
@@ -43,7 +42,6 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
                 _settings = JsonConvert.DeserializeObject<WeightMonitorSettings>(settingsAsJson);
 
                 // poor man's injection
-                _wallpaperGenerator = new WallpaperGenerator();
             }
             catch (Exception e)
             {
@@ -103,7 +101,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             ) WeightData.Add(new DateTimePoint(weightsGroupedByDate.Key, weightsGroupedByDate.Average(y => y.Value)));
         }
 
-        private void AddReferenceLine(
+        private static void AddReferenceLine(
             [NotNull] CartesianChart chart,
             [NotNull] TrainingPeriod trainingPeriod,
             Color lineColor,
@@ -150,7 +148,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
                 if (_settings.WallpaperToSet.GenerateWallpaperWithChart)
                 {
                     await Task.Delay(2000); // workaround for chart not yet rendered - I'm not sure why
-                    _wallpaperGenerator.GenerateAugmentedWallpaper(_settings.WallpaperToSet, ChartWrapper);
+                    WallpaperGenerator.GenerateAugmentedWallpaper(_settings.WallpaperToSet, ChartWrapper);
 
                     WallpaperSetter.Set(_settings.WallpaperToSet.FinalImagePath);
                     Application.Current.Shutdown();

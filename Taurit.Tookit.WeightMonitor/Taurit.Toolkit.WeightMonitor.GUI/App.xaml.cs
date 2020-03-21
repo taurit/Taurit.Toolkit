@@ -8,7 +8,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
     /// <summary>
     ///     Interaction logic for App.xaml
     /// </summary>
-    public partial class App
+    internal partial class App
     {
         public App()
         {
@@ -16,7 +16,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             Dispatcher.UnhandledException += OnDispatcherUnhandledException;
         }
 
-        private void OnDispatcherUnhandledException(Object sender, DispatcherUnhandledExceptionEventArgs e)
+        private static void OnDispatcherUnhandledException(Object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             String errorMessage = $"An unhandled exception occurred: {e.Exception.Message}";
             MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);

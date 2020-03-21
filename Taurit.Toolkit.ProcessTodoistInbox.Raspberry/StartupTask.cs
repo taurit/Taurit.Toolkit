@@ -150,24 +150,24 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
             foreach (String log in logs) WriteToConsole(log);
         }
 
-        private void WriteToConsole(String message)
+        private static void WriteToConsole(String message)
         {
             Console.WriteLine($"{DateTime.Now} {message}");
         }
 
-        private void TrackAndWriteToConsole(TelemetryClient telemetryClient, String message)
+        private static void TrackAndWriteToConsole(TelemetryClient telemetryClient, String message)
         {
             telemetryClient.TrackTrace(message);
             Console.WriteLine($"{DateTime.Now} {message}");
         }
 
-        private void TrackAndWriteToConsole(TelemetryClient telemetryClient, String key, Int64 metric)
+        private static void TrackAndWriteToConsole(TelemetryClient telemetryClient, String key, Int64 metric)
         {
             telemetryClient.TrackMetric(key, metric);
             Console.WriteLine($"{DateTime.Now} {key}={metric}");
         }
 
-        private void TrackAndWriteToConsole(TelemetryClient telemetryClient, Exception e)
+        private static void TrackAndWriteToConsole(TelemetryClient telemetryClient, Exception e)
         {
             telemetryClient.TrackException(e);
             Console.WriteLine($"{DateTime.Now} {e}");

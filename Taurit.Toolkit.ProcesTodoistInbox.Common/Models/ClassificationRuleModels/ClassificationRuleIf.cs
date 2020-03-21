@@ -212,7 +212,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleMod
             return false;
         }
 
-        private String[] SplitIntoWords(String phrase)
+        private static String[] SplitIntoWords(String phrase)
         {
             phrase = phrase ?? string.Empty;
             Char[] punctuation = phrase.Where(char.IsPunctuation).Distinct().ToArray();

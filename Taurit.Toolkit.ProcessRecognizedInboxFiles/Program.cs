@@ -25,17 +25,13 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
         {
             // parse args
             Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(options =>
-                {
-                    var program = new Program();
-                    program.Start(options);
-                });
+                .WithParsed(Program.Start);
 
             Console.WriteLine("Done.");
             Console.ReadLine();
         }
 
-        private ServiceProvider ConfigureDependencyProvider(Options options)
+        private static ServiceProvider ConfigureDependencyProvider(Options options)
         {
             Logger serilogLogger = new LoggerConfiguration()
                 .WriteTo.Console()
@@ -54,9 +50,9 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
             return serviceProvider;
         }
 
-        private void Start(Options options)
+        private static void Start(Options options)
         {
-            ServiceProvider dependencyProvider = ConfigureDependencyProvider(options);
+            ServiceProvider dependencyProvider = Program.ConfigureDependencyProvider(options);
             try
             {
                 var inboxWorkflow = dependencyProvider.GetService<InboxWorkflow>();

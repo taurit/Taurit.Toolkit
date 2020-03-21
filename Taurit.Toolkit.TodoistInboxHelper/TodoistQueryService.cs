@@ -19,7 +19,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
         public IReadOnlyList<Label> GetAllLabels()
         {
-            var client = new RestClient(ApiUrl);
+            var client = new RestClient(TodoistApiService.ApiUrl);
 
             var request = new RestRequest("sync", Method.POST);
             request.AddParameter("token", AuthToken);
@@ -27,7 +27,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             request.AddParameter("resource_types", "[\"labels\"]");
 
             IRestResponse<TodoistSyncResponseLabels> response = client.Execute<TodoistSyncResponseLabels>(request);
-            AssertHttpRequestSucceeded(response, "list of labels");
+            TodoistQueryService.AssertHttpRequestSucceeded(response, "list of labels");
 
             Contract.Assume(response != null);
             Contract.Assume(response.Data != null);
@@ -41,7 +41,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
         /// </remarks>
         public IReadOnlyList<Project> GetAllProjects()
         {
-            var client = new RestClient(ApiUrl);
+            var client = new RestClient(TodoistApiService.ApiUrl);
 
             var request = new RestRequest("sync", Method.POST);
             request.AddParameter("token", AuthToken);
@@ -57,7 +57,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             IRestResponse<TodoistSyncResponseProjects>
                 response = retryPolicy.Execute(() => client.Execute<TodoistSyncResponseProjects>(request));
 
-            AssertHttpRequestSucceeded(response, "list of projects");
+            TodoistQueryService.AssertHttpRequestSucceeded(response, "list of projects");
 
             return response.Data.projects;
         }
@@ -67,18 +67,18 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             ILookup<Int64, Label> allLabelsIndexedById
         )
         {
-            var client = new RestClient(ApiUrl);
+            var client = new RestClient(TodoistApiService.ApiUrl);
 
             var request = new RestRequest("sync", Method.POST);
             request.AddParameter("token", AuthToken);
 
-            // Sequence number, used to allow client to perform incremental sync. Pass 0 to retrieve all active resource data. 
+            // Sequence number, used to allow client to perform incremental sync. Pass 0 to retrieve all active resource data.
             request.AddParameter("seq_no", "0");
             request.AddParameter("resource_types", "[\"items\"]");
 
             IRestResponse<TodoistSyncResponseTasks> response =
                 client.Execute<TodoistSyncResponseTasks>(request);
-            AssertHttpRequestSucceeded(response, "list of tasks");
+            TodoistQueryService.AssertHttpRequestSucceeded(response, "list of tasks");
 
             foreach (TodoTask task in response.Data.items)
             {
@@ -92,18 +92,18 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
         public IReadOnlyList<TodoTask> GetAllCompletedTasks()
         {
-            var client = new RestClient(ApiUrl);
+            var client = new RestClient(TodoistApiService.ApiUrl);
             var request = new RestRequest("completed/get_all", Method.GET);
             request.AddParameter("token", AuthToken);
 
             IRestResponse<TodoistGetCompletedItemsResponse> response =
                 client.Execute<TodoistGetCompletedItemsResponse>(request);
-            AssertHttpRequestSucceeded(response, "list of tasks");
+            TodoistQueryService.AssertHttpRequestSucceeded(response, "list of tasks");
 
             return response.Data.items.ToList();
         }
 
-        private void AssertHttpRequestSucceeded<T>(IRestResponse<T> response, String typeOfResourceDisplayString,
+        private static void AssertHttpRequestSucceeded<T>(IRestResponse<T> response, String typeOfResourceDisplayString,
             [CallerMemberName] String caller = null)
         {
             if (!response.IsSuccessful)

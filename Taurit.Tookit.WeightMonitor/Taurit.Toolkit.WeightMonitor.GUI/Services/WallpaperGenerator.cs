@@ -14,7 +14,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI.Services
     /// </summary>
     internal class WallpaperGenerator
     {
-        public void GenerateAugmentedWallpaper(WallpaperConfiguration wallpaperSettings, Grid chartWrapper)
+        public static void GenerateAugmentedWallpaper(WallpaperConfiguration wallpaperSettings, Grid chartWrapper)
         {
             BitmapFrame chart = VisualToBitmapConverter.Convert(chartWrapper);
 
@@ -27,10 +27,10 @@ namespace Taurit.Toolkit.WeightMonitor.GUI.Services
             g.FillRectangle(brush, 0, 0, wallpaperSize.Width, wallpaperSize.Height);
             Bitmap chartBitmap = BitmapFromSource(chart);
 
-            // center image be default 
+            // center image be default
             Int32 offsetX = (wallpaperSize.Width - chartBitmap.Width) / 2;
             Int32 offsetY = (wallpaperSize.Height - chartBitmap.Height) / 2;
-                
+
             if (wallpaperSettings.OffsetIsProvided)
             {
                 Debug.Assert(wallpaperSettings.OffsetX != null, "wallpaperSettings.OffsetX != null");
@@ -52,7 +52,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI.Services
             finalImage.Save(wallpaperSettings.FinalImagePath, jgpEncoder, myEncoderParameters);
         }
 
-        private Bitmap BitmapFromSource(BitmapSource bitmapSource)
+        private static Bitmap BitmapFromSource(BitmapSource bitmapSource)
         {
             Bitmap bitmap;
             using (var outStream = new MemoryStream())
@@ -67,7 +67,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI.Services
             return bitmap;
         }
 
-        private ImageCodecInfo GetEncoder(ImageFormat format)
+        private static ImageCodecInfo GetEncoder(ImageFormat format)
         {
             ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
             foreach (ImageCodecInfo codec in codecs)

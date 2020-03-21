@@ -93,7 +93,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
             return snapshots;
         }
 
-        private IEnumerable<T> GetNth<T>(List<T> list, Int32 n)
+        private static IEnumerable<T> GetNth<T>(List<T> list, Int32 n)
         {
             for (Int32 i = n - 1; i < list.Count; i += n)
                 yield return list[i];

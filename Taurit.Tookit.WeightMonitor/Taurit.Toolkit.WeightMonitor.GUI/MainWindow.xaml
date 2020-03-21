@@ -10,7 +10,7 @@
     Height="439"
     ContentRendered="MainWindow_OnContentRendered"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
-    mc:Ignorable="d">
+    mc:Ignorable="d" x:ClassModifier="internal">
     <Grid x:Name="ChartWrapper" Background="White">
         <wpf:CartesianChart
             Name="WeightChart"

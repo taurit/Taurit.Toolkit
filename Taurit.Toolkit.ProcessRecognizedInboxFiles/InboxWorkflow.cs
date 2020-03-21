@@ -40,7 +40,7 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
             );
         }
 
-        private void CompressFiles(InboxConfiguration workflowConfiguration)
+        private static void CompressFiles(InboxConfiguration workflowConfiguration)
         {
             foreach (ConvertToWebPRule rule in workflowConfiguration.ConvertToWebPRules)
             {
@@ -59,7 +59,7 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
             }
         }
 
-        private void MoveFilesToSubfolders(InboxConfiguration workflowConfiguration)
+        private static void MoveFilesToSubfolders(InboxConfiguration workflowConfiguration)
         {
             var fileProcessors = new IFileProcessor[]
             {
