@@ -75,6 +75,8 @@ namespace Taurit.Toolkit.FileProcessors.Tests
         [DataRow("\r\n")]
         public void WhenDescriptionIsWhitespace_DontRenderSpaceAtTheEndOfFileNameNorDescrpition(string whitespaceString)
         {
+            Assert.Fail("Test CI build & notification system. Will I get the warning?");
+
             // Arrange
             var sut = new IsoDateFileNameFormatProvider();
 
