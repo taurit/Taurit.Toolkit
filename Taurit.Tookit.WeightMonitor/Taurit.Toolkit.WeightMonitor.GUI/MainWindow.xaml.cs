@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -27,21 +28,28 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
 
         public MainWindow()
         {
-            InitializeComponent();
-
-            var settingsFilesToProbe = new[]
+            try
             {
-                "WeightMonitor.json",
-                "d:\\ProgramData\\ApplicationData\\TauritToolkit\\WeightMonitor.jsonc"
-            };
+                InitializeComponent();
 
-            String settingsFilePath = settingsFilesToProbe.First(File.Exists);
+                var settingsFilesToProbe = new[]
+                {
+                    "WeightMonitor.json",
+                    "d:\\ProgramData\\ApplicationData\\TauritToolkit\\WeightMonitor.jsonc"
+                };
 
-            String settingsAsJson = File.ReadAllText(settingsFilePath);
-            _settings = JsonConvert.DeserializeObject<WeightMonitorSettings>(settingsAsJson);
+                String settingsFilePath = settingsFilesToProbe.First(File.Exists);
 
-            // poor man's injection
-            _wallpaperGenerator = new WallpaperGenerator();
+                String settingsAsJson = File.ReadAllText(settingsFilePath);
+                _settings = JsonConvert.DeserializeObject<WeightMonitorSettings>(settingsAsJson);
+
+                // poor man's injection
+                _wallpaperGenerator = new WallpaperGenerator();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         public Func<Double, String> XFormatter { get; } = value => new DateTime((Int64) value).ToString("yyyy-MM-dd");
@@ -55,7 +63,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             BulkingPeriod[] bulkingPeriods = _settings.ShowPastPeriods
                 ? _settings.BulkingPeriods
                 : _settings.BulkingPeriods.Where(x => x.End > DateTime.Today).ToArray();
-            
+
             MaintenancePeriod[] maintenancePeriods = _settings.ShowPastPeriods
                 ? _settings.MaintenancePeriods
                 : _settings.MaintenancePeriods.Where(x => x.End > DateTime.Today).ToArray();
@@ -153,15 +161,22 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
 
         private async void MainWindow_OnContentRendered(Object sender, EventArgs e)
         {
-            await LoadChartData();
-
-            if (_settings.WallpaperToSet.GenerateWallpaperWithChart)
+            try
             {
-                await Task.Delay(2000); // workaround for chart not yet rendered - I'm not sure why
-                _wallpaperGenerator.GenerateAugmentedWallpaper(_settings.WallpaperToSet, ChartWrapper);
+                await LoadChartData();
 
-                WallpaperSetter.Set(_settings.WallpaperToSet.FinalImagePath);
-                Application.Current.Shutdown();
+                if (_settings.WallpaperToSet.GenerateWallpaperWithChart)
+                {
+                    await Task.Delay(2000); // workaround for chart not yet rendered - I'm not sure why
+                    _wallpaperGenerator.GenerateAugmentedWallpaper(_settings.WallpaperToSet, ChartWrapper);
+
+                    WallpaperSetter.Set(_settings.WallpaperToSet.FinalImagePath);
+                    Application.Current.Shutdown();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }
