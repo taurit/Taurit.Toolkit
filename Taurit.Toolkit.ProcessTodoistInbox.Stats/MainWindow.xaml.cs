@@ -209,13 +209,15 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             TimeSpan totalWorkLeft = TimeSpan.FromMinutes(mostRecentTotalBacklogTimeEstimateInMinutes);
             TimeSpan dailyWorkNeededToCleanBacklogThisQuarter =
                 TimeSpan.FromMinutes(howManyMinutesNeedsToBeDoneInADayForCleanBacklog);
-            
-            const String unitOfWorkSymbol = "h";
-            const Int32 unitOfWorkDurationInMinutes = 60; 
 
-            TotalWorkLeft.Text = $"{_timeConverter.ConvertToUnitsOfWorkAndCeil(totalWorkLeft, unitOfWorkDurationInMinutes)} {unitOfWorkSymbol}";
+            const String unitOfWorkSymbol = "h";
+            const Int32 unitOfWorkDurationInMinutes = 60;
+
+            TotalWorkLeft.Text =
+                $"{_timeConverter.ConvertToUnitsOfWorkAndCeil(totalWorkLeft, unitOfWorkDurationInMinutes)} {unitOfWorkSymbol}";
             MostRecentSnapshotTime.Text = lastKnownDate.ToString("yyyy-MM-dd HH:mm");
-            BurndownSpeed.Text = _timeConverter.ConvertToUnitsOfWork(dailyWorkNeededToCleanBacklogThisQuarter).ToString("0.00");
+            BurndownSpeed.Text = _timeConverter.ConvertToUnitsOfWork(dailyWorkNeededToCleanBacklogThisQuarter)
+                .ToString("0.00");
         }
 
         private static Double CountTotalMinutesAtDate(
@@ -411,7 +413,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 TimeLastWeek
             };
             RadioButton selectedTimeCheckbox = timePeriodCheckboxes.Single(x => x.IsChecked == true);
-            Int32 timeInDays = Convert.ToInt32((String) selectedTimeCheckbox.Tag);
+            var timeInDays = Convert.ToInt32((String) selectedTimeCheckbox.Tag);
             return TimeSpan.FromDays(timeInDays);
         }
 

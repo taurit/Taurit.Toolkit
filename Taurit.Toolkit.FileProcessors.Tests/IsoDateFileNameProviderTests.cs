@@ -63,7 +63,7 @@ namespace Taurit.Toolkit.FileProcessors.Tests
             Assert.AreEqual("2019-01-11", isoName);
             Assert.AreNotEqual("2019-01-11 ", isoName);
         }
-        
+
         [DataTestMethod]
         [DataRow(" ")]
         [DataRow("  ")]
@@ -73,7 +73,7 @@ namespace Taurit.Toolkit.FileProcessors.Tests
         [DataRow("\r")]
         [DataRow("\n")]
         [DataRow("\r\n")]
-        public void WhenDescriptionIsWhitespace_DontRenderSpaceAtTheEndOfFileNameNorDescrpition(string whitespaceString)
+        public void WhenDescriptionIsWhitespace_DontRenderSpaceAtTheEndOfFileNameNorDescrpition(String whitespaceString)
         {
             // Arrange
             var sut = new IsoDateFileNameFormatProvider();

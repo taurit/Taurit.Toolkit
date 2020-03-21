@@ -18,7 +18,6 @@ namespace Taurit.Toolkit.TodoistInboxHelper
         {
         }
 
-
         public String ExecuteCommands()
         {
             var resultMessages = new List<String>(1); // typically we fit in one batch
@@ -71,7 +70,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             if (!newProjectId.HasValue) return;
 
             // move task to another project
-            Guid moveCommandId = Guid.NewGuid();
+            var moveCommandId = Guid.NewGuid();
             String moveCommandString =
                 $"{{\"type\": \"item_move\", \"uuid\": \"{moveCommandId}\", \"args\": {{\"id\": {taskId}, \"project_id\": {newProjectId.Value} }}}}";
             _commandsStrings.Add(moveCommandString);
@@ -82,7 +81,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
         {
             if (!newLabelId.HasValue) return;
 
-            Guid commandId = Guid.NewGuid();
+            var commandId = Guid.NewGuid();
             var labels = new List<Int64> {newLabelId.Value};
             String labelsArrayString = "[" + string.Join(",", labels) + "]";
             String commandString =
@@ -96,7 +95,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
         {
             if (!newPriority.HasValue) return;
 
-            Guid commandId = Guid.NewGuid();
+            var commandId = Guid.NewGuid();
             String commandString =
                 $"{{\"type\": \"item_update\", \"uuid\": \"{commandId}\", \"args\": {{\"id\": {taskId}, \"priority\": {newPriority.Value}}}}}";
 
@@ -107,7 +106,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
         {
             if (newName is null) return;
 
-            Guid commandId = Guid.NewGuid();
+            var commandId = Guid.NewGuid();
 
             var commandStringAsObject = new
             {
@@ -143,7 +142,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
         private static String CreateCommandForUncompleteItem(Int64 idOfTask)
         {
-            Guid commandId = Guid.NewGuid();
+            var commandId = Guid.NewGuid();
 
             var commandStringAsObject = new
             {
@@ -161,7 +160,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
 
         private static String CreateCommandForDeleteItem(Int64 idOfTaskToRemove)
         {
-            Guid commandId = Guid.NewGuid();
+            var commandId = Guid.NewGuid();
 
             var commandStringAsObject = new
             {

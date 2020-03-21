@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -118,23 +117,6 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
 
             DateTime endDateToDraw = trainingPeriod.End >= maxDate ? maxDate : trainingPeriod.End;
             trainingPeriod.Trim(endDateToDraw);
-
-            // try with min and max lines instead of optimum line
-            if (false)
-#pragma warning disable 162
-            {
-                chart.Series.Add(new LineSeries
-                {
-                    Values = new ChartValues<DateTimePoint>
-                    {
-                        new DateTimePoint(trainingPeriod.Start, trainingPeriod.StartWeight),
-                        new DateTimePoint(trainingPeriod.End, trainingPeriod.ExpectedOptimumEndWeight)
-                    },
-                    Stroke = new SolidColorBrush(lineColor),
-                    Fill = new SolidColorBrush(Colors.Aquamarine) {Opacity = 0.5}
-                });
-            }
-#pragma warning restore 162
 
             chart.Series.Add(new LineSeries
             {

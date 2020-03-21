@@ -7,7 +7,7 @@ using Taurit.Toolkit.FileProcessors.ConversionProcessors;
 
 namespace Taurit.Toolkit.ConvertToWebP
 {
-    internal class Program
+    internal static class Program
     {
         private static void Main([NotNull] String[] args)
         {
@@ -20,7 +20,7 @@ namespace Taurit.Toolkit.ConvertToWebP
                 return;
             }
 
-            Int32 quality = Convert.ToInt32(args[0]);
+            var quality = Convert.ToInt32(args[0]);
             String directoryOrFilePath = args[1];
             Boolean isDirectory = Directory.Exists(directoryOrFilePath);
             Boolean isFile = File.Exists(directoryOrFilePath);

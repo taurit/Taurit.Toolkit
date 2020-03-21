@@ -6,13 +6,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
 {
     internal class FileInboxesStatsReader
     {
-        private readonly Dictionary<String, SortedDictionary<DateTime, Int32>> folderPathToDateAndNumberOfFiles =
+        private readonly Dictionary<String, SortedDictionary<DateTime, Int32>> _folderPathToDateAndNumberOfFiles =
             new Dictionary<String, SortedDictionary<DateTime, Int32>>();
 
         public FileInboxesStatsReader(IEnumerable<String> lines)
         {
-            DateTime detailedPeriodStartDate = DateTime.UtcNow.AddDays(-7);
-
             IEnumerable<String> linesWithoutHeader = lines.Skip(1).Where(x => !string.IsNullOrWhiteSpace(x));
             foreach (String line in linesWithoutHeader)
             {
@@ -23,16 +21,16 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
 
                 String dateString = splitLine[0];
                 String folderPath = splitLine[1].Trim('\"');
-                Int16 numFiles = Convert.ToInt16(splitLine[2]);
+                var numFiles = Convert.ToInt16(splitLine[2]);
 
                 // trim the time part - for now I assume that an estimate once a day is enough for me
                 DateTime dateTime = DateTime.Parse(dateString);
                 DateTime date = dateTime; // by default, keep all entries for a given day
 
-                if (!folderPathToDateAndNumberOfFiles.ContainsKey(folderPath))
-                    folderPathToDateAndNumberOfFiles.Add(folderPath, new SortedDictionary<DateTime, Int32>());
+                if (!_folderPathToDateAndNumberOfFiles.ContainsKey(folderPath))
+                    _folderPathToDateAndNumberOfFiles.Add(folderPath, new SortedDictionary<DateTime, Int32>());
 
-                SortedDictionary<DateTime, Int32> folderStats = folderPathToDateAndNumberOfFiles[folderPath];
+                SortedDictionary<DateTime, Int32> folderStats = _folderPathToDateAndNumberOfFiles[folderPath];
                 if (!folderStats.ContainsKey(date)) folderStats.Add(date, numFiles);
             }
         }
@@ -40,7 +38,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
         public TimeSpan GetEstimatedTimeNeededToProcessFolder(String folderPath, DateTime date,
             Double estimatedTimeToProcessSingleFile)
         {
-            SortedDictionary<DateTime, Int32> folderStats = folderPathToDateAndNumberOfFiles[folderPath];
+            SortedDictionary<DateTime, Int32> folderStats = _folderPathToDateAndNumberOfFiles[folderPath];
             Int32 numItems = GetNumberOfItems(folderStats, date);
             return TimeSpan.FromMinutes(numItems * estimatedTimeToProcessSingleFile);
         }

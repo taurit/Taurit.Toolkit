@@ -19,13 +19,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
     public sealed class StartupTask
     {
         private static readonly DateTime StartDateTime = DateTime.UtcNow;
+        [NotNull] private readonly String _applicationInsightsKey;
         [NotNull] private readonly BacklogSnapshotCreator _backlogSnapshotCreator;
         [NotNull] private readonly ChangeExecutor _changeExecutor;
         [NotNull] private readonly FilteredTaskAccessor _filteredTaskAccessor;
         [NotNull] private readonly SettingsFileModel _settings;
 
         [NotNull] private readonly TodoistQueryService _todoistQueryService;
-        [NotNull] private readonly String _applicationInsightsKey;
 
         public StartupTask(SettingsFileModel settings)
         {
@@ -47,7 +47,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
             String telemetrySessionId = $"{StartDateTime:yyyy-MM-dd-HH-mm-ss.fffffffzzz}";
 
             var telemetryClient = new TelemetryClient(new TelemetryConfiguration(_applicationInsightsKey));
-            
+
             telemetryClient.Context.User.AuthenticatedUserId = "buli";
             telemetryClient.Context.User.UserAgent = "Taurit.Toolkit.ProcessTodoistInbox.Raspberry";
             telemetryClient.Context.Session.Id = telemetrySessionId;
@@ -64,7 +64,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
                     if (!IsCurrentHourSleepHour()) // no need to query API too much, eg. at night
                     {
                         TrackAndWriteToConsole(telemetryClient, "Starting the classification");
-                        Stopwatch stopwatch = Stopwatch.StartNew();
+                        var stopwatch = Stopwatch.StartNew();
 
                         TryClassifyAllTasks(_settings, telemetryClient, outputDirectory);
 
@@ -104,7 +104,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
                 throw new ArgumentNullException(nameof(outputDirectory));
             var plannedActions = new List<TaskActionModel>();
 
-            Stopwatch dataRetrievalStopwatch = Stopwatch.StartNew();
+            var dataRetrievalStopwatch = Stopwatch.StartNew();
             IReadOnlyList<Project> allProjects = _todoistQueryService.GetAllProjects();
             IReadOnlyList<Label> allLabels = _todoistQueryService.GetAllLabels();
             IReadOnlyList<TodoTask> allTasks = _todoistQueryService.GetAllTasks(
@@ -120,7 +120,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
             // analysis: save for the future use
 
             String snapshotsFolder = Path.Combine(outputDirectory, _settings.SnapshotsFolder);
-            Stopwatch snapshotCreatorStopwatch = Stopwatch.StartNew();
+            var snapshotCreatorStopwatch = Stopwatch.StartNew();
             String snapshotOutputFolder = _backlogSnapshotCreator.CreateSnapshot(snapshotsFolder, DateTime.UtcNow,
                 allTasks, allProjects, allLabels);
             snapshotCreatorStopwatch.Stop();
