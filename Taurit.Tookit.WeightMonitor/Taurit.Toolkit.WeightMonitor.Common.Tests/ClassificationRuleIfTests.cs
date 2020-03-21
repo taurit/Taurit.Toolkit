@@ -114,7 +114,11 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Tests
         {
             // Arrange
             var sut = new ClassificationRuleIf {containsWord = new[] {"ang"}};
-            var task = new TodoTask {content = "That means the machine can handle demanding, multi-threaded applications, like editing a 360-degree video or rendering 3D effects, as well as lightly threaded applications, like everyday office apps with equal dexterity. Ang (7 min)"};
+            var task = new TodoTask
+            {
+                content =
+                    "That means the machine can handle demanding, multi-threaded applications, like editing a 360-degree video or rendering 3D effects, as well as lightly threaded applications, like everyday office apps with equal dexterity. Ang (7 min)"
+            };
 
             // Act
             Boolean match = sut.Matches(task);
@@ -234,7 +238,7 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Tests
             // Assert
             Assert.IsTrue(match);
         }
-        
+
         [TestMethod]
         public void IfLabelNameMatchesNonFirstLabelInRuleThereIsAMatch()
         {
@@ -248,7 +252,7 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Tests
             // Assert
             Assert.IsTrue(match);
         }
-        
+
         [TestMethod]
         public void IfNonFirstLabelNameInRuleMatchesNonFirstLabelNameInTaskThereIsAMatch()
         {
@@ -262,13 +266,13 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Tests
             // Assert
             Assert.IsTrue(match);
         }
-         
+
         [TestMethod]
         public void IfLabelNameDoesNotMatchAndProjectDoesNoMatchThereIsNoMatch()
         {
             // Arrange
             var sut = new ClassificationRuleIf {hasLabel = new[] {"work"}, project = "Inbox"};
-            var task = new TodoTask {project_name = "Inbox", labelsNames = new String[]{} };
+            var task = new TodoTask {project_name = "Inbox", labelsNames = new String[] { }};
 
             // Act
             Boolean match = sut.Matches(task);
@@ -334,7 +338,7 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Tests
             Assert.IsFalse(match);
         }
 
-        
+
         [TestMethod]
         public void RuleOfUndefinedDurationDoesMatchWithTaskWithUndefinedDuration()
         {
@@ -349,7 +353,7 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Tests
             Assert.IsTrue(match);
         }
 
-        
+
         [TestMethod]
         public void RuleOfDefinedDurationDoesMatchWithTaskWithDefinedSameDuration()
         {
@@ -364,7 +368,7 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Tests
             Assert.IsTrue(match);
         }
 
-        
+
         [TestMethod]
         public void RuleOfDefinedDurationDoesNotMatchWithTaskWithDefinedDifferentDuration()
         {

@@ -11,7 +11,7 @@ namespace Taurit.Toolkit.OptimizeRssForFeedly.Services
 
         private const String WebFeedsNamespaceKey = "webfeeds";
 
-        private readonly XNamespace _webFeedsNamespace = WebFeedsNamespaceValue;
+        private readonly XNamespace _webFeedsNamespace = FeedEditorBase.WebFeedsNamespaceValue;
 
         protected FeedEditorBase([NotNull] XDocument feedDocument)
         {
@@ -27,7 +27,8 @@ namespace Taurit.Toolkit.OptimizeRssForFeedly.Services
         {
             Debug.Assert(Feed.Root != null);
 
-            Feed.Root.Add(new XAttribute(XNamespace.Xmlns + WebFeedsNamespaceKey, WebFeedsNamespaceValue));
+            Feed.Root.Add(new XAttribute(XNamespace.Xmlns + FeedEditorBase.WebFeedsNamespaceKey,
+                FeedEditorBase.WebFeedsNamespaceValue));
         }
 
         public void AddCoverImage(String imageUrl)

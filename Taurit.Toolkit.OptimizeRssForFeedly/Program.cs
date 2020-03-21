@@ -37,7 +37,7 @@ namespace Taurit.Toolkit.OptimizeRssForFeedly
                 return;
             }
 
-            AddMetadataToFeed(feedEditor, metadata);
+            Program.AddMetadataToFeed(feedEditor, metadata);
 
             // Update RSS feed file
             feedEditor.Feed.Save(inputRssFileName);

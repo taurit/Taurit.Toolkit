@@ -10,7 +10,7 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Tests
     {
         // Arrange
         [DataTestMethod]
-        [DynamicData(nameof(GetData), DynamicDataSourceType.Method)]
+        [DynamicData(nameof(TimeConverterTest.GetData), DynamicDataSourceType.Method)]
         public void When_VariousTimeSpansAreConvertedToUnitOfWork_Expect_CorrectResult(
             TimeSpan input,
             Int32 expectedOutput
@@ -29,18 +29,17 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Tests
 
         private static IEnumerable<Object[]> GetData()
         {
-            yield return new Object[] { TimeSpan.FromMinutes(0), 0 };
+            yield return new Object[] {TimeSpan.FromMinutes(0), 0};
 
-            yield return new Object[] { TimeSpan.FromMinutes(45), 1 };
-            yield return new Object[] { TimeSpan.FromMinutes(44), 1 };
-            yield return new Object[] { TimeSpan.FromMinutes(1), 1 };
+            yield return new Object[] {TimeSpan.FromMinutes(45), 1};
+            yield return new Object[] {TimeSpan.FromMinutes(44), 1};
+            yield return new Object[] {TimeSpan.FromMinutes(1), 1};
 
-            yield return new Object[] { new TimeSpan(0, 0, 45, 1), 2 };
-            yield return new Object[] { new TimeSpan(0, 0, 46, 0), 2 };
-            yield return new Object[] { new TimeSpan(0, 0, 90, 0), 2 };
+            yield return new Object[] {new TimeSpan(0, 0, 45, 1), 2};
+            yield return new Object[] {new TimeSpan(0, 0, 46, 0), 2};
+            yield return new Object[] {new TimeSpan(0, 0, 90, 0), 2};
 
-            yield return new Object[] { new TimeSpan(0, 0, 90, 1), 3 };
-            
+            yield return new Object[] {new TimeSpan(0, 0, 90, 1), 3};
         }
     }
 }
