@@ -70,11 +70,11 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
                 : _settings.CuttingPeriods.Where(x => x.End > DateTime.Today).ToArray();
 
             foreach (CuttingPeriod cuttingPeriod in cuttingPeriods)
-                AddReferenceLine(WeightChart, cuttingPeriod, Colors.PaleVioletRed, _settings.NumFutureDaysToShow);
+                MainWindow.AddReferenceLine(WeightChart, cuttingPeriod, Colors.PaleVioletRed, _settings.NumFutureDaysToShow);
             foreach (MaintenancePeriod maintenancePeriod in maintenancePeriods)
-                AddReferenceLine(WeightChart, maintenancePeriod, Colors.Orange, _settings.NumFutureDaysToShow);
+                MainWindow.AddReferenceLine(WeightChart, maintenancePeriod, Colors.Orange, _settings.NumFutureDaysToShow);
             foreach (BulkingPeriod bulkingPeriod in bulkingPeriods)
-                AddReferenceLine(WeightChart, bulkingPeriod, Colors.LightGreen, _settings.NumFutureDaysToShow);
+                MainWindow.AddReferenceLine(WeightChart, bulkingPeriod, Colors.LightGreen, _settings.NumFutureDaysToShow);
 
             var googleFitDataAccessor = new GoogleFitDataAccessor();
             WeightInTime[] weights = await googleFitDataAccessor.GetWeightDataPoints(_settings.NumPastDaysToShow);
@@ -82,23 +82,35 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
             if (weights.Length == 0)
                 MessageBox.Show($"No weight data found in Google for the last {_settings.NumPastDaysToShow}");
 
-            var allWeights = new List<DateTimePoint>(weights.Length);
-            Double lastWeight = 0;
-            foreach (WeightInTime weight in weights)
-            {
-                // there seem to be a problem somewhere in Mi Weight or Mi Fit or Google Fit that
-                // makes the weight stored multiple times with usual intervals of 8h (failing retry mechanism?)
-                // this condition is to remove such wrong from the graph
-                // ReSharper disable once CompareOfFloatsByEqualityOperator
-                if (weight.Weight != lastWeight)
-                    allWeights.Add(new DateTimePoint(weight.Time.ToDateTimeUtc(), weight.Weight));
-                lastWeight = weight.Weight;
-            }
-
+            List<DateTimePoint> allWeights = MainWindow.GetPointsForChart(weights, false);
 
             // in case there are many data point in a day, compute daily average
             foreach (IGrouping<DateTime, DateTimePoint> weightsGroupedByDate in allWeights.GroupBy(x => x.DateTime.Date)
             ) WeightData.Add(new DateTimePoint(weightsGroupedByDate.Key, weightsGroupedByDate.Average(y => y.Value)));
+        }
+
+        private static List<DateTimePoint> GetPointsForChart(WeightInTime[] weights, bool skipConsecutiveMeasurementsWithTheSameValue)
+        {
+            var allWeights = new List<DateTimePoint>(weights.Length);
+
+            Double lastWeight = 0;
+            foreach (WeightInTime weight in weights)
+            {
+                // There used to be a problem somewhere in Mi Weight or Mi Fit or Google Fit that
+                // makes the weight stored multiple times with usual intervals of 8h (failing retry mechanism?)
+                // this condition is to remove such wrong from the graph.
+                //
+                // As of 2020-04-01 I no longer observe it in the recent data.
+                //
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
+                if (!skipConsecutiveMeasurementsWithTheSameValue || weight.Weight != lastWeight)
+                {
+                    lastWeight = weight.Weight;
+                    allWeights.Add(new DateTimePoint(weight.Time.ToDateTimeUtc(), weight.Weight));
+                }
+            }
+
+            return allWeights;
         }
 
         private static void AddReferenceLine(

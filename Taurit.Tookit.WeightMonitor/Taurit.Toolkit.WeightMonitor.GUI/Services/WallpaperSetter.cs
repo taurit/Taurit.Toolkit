@@ -19,10 +19,10 @@ namespace Taurit.Toolkit.WeightMonitor.GUI.Services
         {
             String pathToImage = Path.Combine(Path.GetTempPath(), fileName);
 
-            SystemParametersInfo(SPI_SETDESKWALLPAPER,
+            WallpaperSetter.SystemParametersInfo(WallpaperSetter.SPI_SETDESKWALLPAPER,
                 0,
                 pathToImage,
-                SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE);
+                WallpaperSetter.SPIF_UPDATEINIFILE | WallpaperSetter.SPIF_SENDWININICHANGE);
         }
     }
 }

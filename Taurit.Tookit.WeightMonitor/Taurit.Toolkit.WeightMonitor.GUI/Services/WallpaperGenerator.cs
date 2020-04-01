@@ -12,7 +12,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI.Services
     /// <summary>
     ///     Allows to add an overlay to a wallpaper with a weight chart and to save back such modified wallpaper to a disk
     /// </summary>
-    internal class WallpaperGenerator
+    internal static class WallpaperGenerator
     {
         public static void GenerateAugmentedWallpaper(WallpaperConfiguration wallpaperSettings, Grid chartWrapper)
         {
@@ -25,7 +25,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI.Services
             using Graphics g = Graphics.FromImage(finalImage);
             using var brush = new SolidBrush(ColorTranslator.FromHtml(wallpaperSettings.BackgroundColor));
             g.FillRectangle(brush, 0, 0, wallpaperSize.Width, wallpaperSize.Height);
-            Bitmap chartBitmap = BitmapFromSource(chart);
+            Bitmap chartBitmap = WallpaperGenerator.BitmapFromSource(chart);
 
             // center image be default
             Int32 offsetX = (wallpaperSize.Width - chartBitmap.Width) / 2;
@@ -43,7 +43,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI.Services
             g.DrawImage(chartBitmap, new Rectangle(offsetX, offsetY, chartBitmap.Width, chartBitmap.Height));
 
             // save resulting file
-            ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
+            ImageCodecInfo jgpEncoder = WallpaperGenerator.GetEncoder(ImageFormat.Jpeg);
             Encoder qualityEncoder = Encoder.Quality;
             var myEncoderParameters = new EncoderParameters(1);
             var myEncoderParameter = new EncoderParameter(qualityEncoder, 100L);
