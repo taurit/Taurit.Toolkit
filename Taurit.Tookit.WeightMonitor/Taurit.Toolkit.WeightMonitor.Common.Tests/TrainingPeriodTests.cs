@@ -90,6 +90,5 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Tests
             Assert.IsTrue(maximumExpectedWeight > optimumExpectedWeight);
             Assert.IsTrue(optimumExpectedWeight > minimumExpectedWeight);
         }
-
     }
 }

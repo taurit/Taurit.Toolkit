@@ -26,10 +26,8 @@ namespace Taurit.Toolkit.TodoistInboxHelper
                         "ddd d MMM yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                     return date;
                 }
-                else
-                {
-                    return DateTime.Parse(dateString);
-                }
+
+                return DateTime.Parse(dateString);
             }
             catch (FormatException)
             {

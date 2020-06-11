@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+
 // ReSharper disable InconsistentNaming
 
 namespace Taurit.Toolkit.WeightMonitor.GUI.Services

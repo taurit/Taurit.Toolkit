@@ -32,7 +32,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
                 return;
             }
 
-            SettingsFileModel settings = await LoadSettings(configurationFileName);
+            SettingsFileModel settings = await Program.LoadSettings(configurationFileName);
             var startupTask = new StartupTask(settings);
             startupTask.Run(programDataDirectory);
         }

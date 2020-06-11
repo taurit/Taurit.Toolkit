@@ -13,7 +13,7 @@ namespace Taurit.Toolkit.ConvertToWebP
         {
             if (args.Length != 2)
             {
-                DisplayHelp();
+                Program.DisplayHelp();
 
                 Console.WriteLine("Invalid number of arguments. Exiting.");
                 Console.ReadKey();

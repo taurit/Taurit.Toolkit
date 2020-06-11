@@ -21,14 +21,15 @@ namespace Taurit.Toolkit.FileProcessors.NameProcessors
                 RegexOptions.Compiled);
 
         /// <summary>
-        ///     HP scanner's file format (would deserve another class, but to mae the change quick i place it here as a workaround).
-        /// Example filename: 514316-080118 BUW nauka ASP NET Web Api notatki 1.jpg
+        ///     HP scanner's file format (would deserve another class, but to mae the change quick i place it here as a
+        ///     workaround).
+        ///     Example filename: 514316-080118 BUW nauka ASP NET Web Api notatki 1.jpg
         /// </summary>
         [NotNull] private static readonly Regex FileWithInvalidDateFormat3 =
             new Regex(@"\d{6}-(?<day>\d\d)(?<month>\d\d)(?<year>\d\d) (?<description>.*)",
                 RegexOptions.Compiled);
 
-        
+
         /// OnePlus camera filename format can also be improved
         /// Example filenames:
         /// * d:\Inbox\IMG_20200129_210243.jpg
@@ -73,10 +74,10 @@ namespace Taurit.Toolkit.FileProcessors.NameProcessors
         [NotNull]
         public Match GetMatch([NotNull] String fileName)
         {
-            Match match = FileWithInvalidDateFormat.Match(fileName);
-            if (!match.Success) match = FileWithInvalidDateFormat2.Match(fileName);
-            if (!match.Success) match = FileWithInvalidDateFormat3.Match(fileName);
-            if (!match.Success) match = FileWithInvalidDateFormat4.Match(fileName);
+            Match match = ChangeOfficeLensNameProcessor.FileWithInvalidDateFormat.Match(fileName);
+            if (!match.Success) match = ChangeOfficeLensNameProcessor.FileWithInvalidDateFormat2.Match(fileName);
+            if (!match.Success) match = ChangeOfficeLensNameProcessor.FileWithInvalidDateFormat3.Match(fileName);
+            if (!match.Success) match = ChangeOfficeLensNameProcessor.FileWithInvalidDateFormat4.Match(fileName);
 
 
             return match;

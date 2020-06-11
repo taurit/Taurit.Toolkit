@@ -39,8 +39,10 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
 
                 String targetFilePath = Path.Combine(ruleToApply.TargetLocation, fileName);
                 if (File.Exists(targetFilePath))
+                {
                     Console.WriteLine(
                         $"Manual action required: target file `{targetFilePath}` already exists. Skipping.");
+                }
                 else
                 {
                     Console.WriteLine($"Moving {fileName} to {targetFilePath}");

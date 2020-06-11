@@ -35,7 +35,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
             if (alternativeInboxes == null) throw new ArgumentNullException(nameof(alternativeInboxes));
 
             IClassificationRulesFormatConverter formatConverter = new ClassificationRulesFormatConverter();
-            
+
             _classificationRules =
                 classificationRulesInConciseFormat.Select(x => formatConverter.Convert(x)).ToList();
 

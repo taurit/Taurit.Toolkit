@@ -40,7 +40,7 @@ namespace Taurit.Toolkit.WeightMonitor.GUI.Services
                 .Users
                 .DataSources
                 .Datasets
-                .Get("me", "derived:com.google.weight:com.google.android.gms:merge_weight", $"{@from}-{to}")
+                .Get("me", "derived:com.google.weight:com.google.android.gms:merge_weight", $"{from}-{to}")
                 .Execute();
 
             return weightPoints.Point.SelectMany(x =>

@@ -16,7 +16,7 @@ using Taurit.Toolkit.TodoistInboxHelper.ApiModels;
 namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleModels
 {
     /// <summary>
-    /// Represents part of the classification rule that defines the condition
+    ///     Represents part of the classification rule that defines the condition
     /// </summary>
     [SuppressMessage("Microsoft.Design", "IDE1006", Justification = "Names are aligned with JSON property names")]
     [DataContract]
@@ -121,8 +121,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleMod
         {
             if (duration is null) return true;
 
-            TimespanParseResult parseResultContent = mctp.Parse(task.content);
-            TimespanParseResult parseResultRule = mctp.Parse(duration);
+            TimespanParseResult parseResultContent = ClassificationRuleIf.mctp.Parse(task.content);
+            TimespanParseResult parseResultRule = ClassificationRuleIf.mctp.Parse(duration);
 
             if (parseResultRule.Success == false && parseResultContent.Success == false) return true;
             if (parseResultRule.Success && parseResultContent.Success == false) return false;
@@ -164,9 +164,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleMod
         private Boolean DoesTaskStartsWithWordMatch(TodoTask task)
         {
             if (startsWith == null) return true;
-            String[] contentWords = SplitIntoWords(task.content);
+            String[] contentWords = ClassificationRuleIf.SplitIntoWords(task.content);
 
-            Debug.Assert(startsWith != null, nameof(startsWith) + " != null");
+            Debug.Assert(startsWith != null, nameof(ClassificationRuleIf.startsWith) + " != null");
             foreach (String keyword in startsWith)
             {
                 String keywordWithoutDiacritics = keyword.RemoveDiacritics();
@@ -181,9 +181,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleMod
         private Boolean DoesTaskContainsWordMatch(TodoTask task)
         {
             if (containsWord == null) return true;
-            String[] contentWords = SplitIntoWords(task.content);
+            String[] contentWords = ClassificationRuleIf.SplitIntoWords(task.content);
 
-            Debug.Assert(containsWord != null, nameof(containsWord) + " != null");
+            Debug.Assert(containsWord != null, nameof(ClassificationRuleIf.containsWord) + " != null");
             foreach (String keyword in containsWord)
             {
                 String keywordWithoutDiacritics = keyword.RemoveDiacritics();

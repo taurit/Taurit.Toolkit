@@ -18,7 +18,7 @@ namespace Taurit.Toolkit.OptimizeRssForFeedly.Models
         [DataMember]
         public String AccentColor { get; set; }
 
-        public Boolean IsValid => !String.IsNullOrWhiteSpace(CoverImageUrl) && !String.IsNullOrWhiteSpace(IconUrl) &&
-                                  !String.IsNullOrWhiteSpace(LogoUrl) && !String.IsNullOrWhiteSpace(AccentColor);
+        public Boolean IsValid => !string.IsNullOrWhiteSpace(CoverImageUrl) && !string.IsNullOrWhiteSpace(IconUrl) &&
+                                  !string.IsNullOrWhiteSpace(LogoUrl) && !string.IsNullOrWhiteSpace(AccentColor);
     }
 }

@@ -12,8 +12,8 @@ namespace Taurit.Toolkit.WeightMonitor.GUI
     {
         public App()
         {
-            Debug.Assert(Dispatcher != null, nameof(Dispatcher) + " != null");
-            Dispatcher.UnhandledException += OnDispatcherUnhandledException;
+            Debug.Assert(Dispatcher != null, nameof(DispatcherObject.Dispatcher) + " != null");
+            Dispatcher.UnhandledException += App.OnDispatcherUnhandledException;
         }
 
         private static void OnDispatcherUnhandledException(Object sender, DispatcherUnhandledExceptionEventArgs e)

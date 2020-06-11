@@ -21,7 +21,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
         public String ExecuteCommands()
         {
             var resultMessages = new List<String>(1); // typically we fit in one batch
-            var client = new RestClient(ApiUrl);
+            var client = new RestClient(TodoistApiService.ApiUrl);
 
             // There is a limit of 100 commands when syncing. When exceeded, the whole request fails.
             // I keep the limit lower for a safe margin in case of future changes.
@@ -131,11 +131,11 @@ namespace Taurit.Toolkit.TodoistInboxHelper
             foreach (Int64 idOfTaskToRemove in idsOfTasksToRemove)
             {
                 // first we need to uncomplete the item (at least in API v8). Otherwise delete returns ok but does not work
-                String uncompleteCommand = CreateCommandForUncompleteItem(idOfTaskToRemove);
+                String uncompleteCommand = TodoistCommandService.CreateCommandForUncompleteItem(idOfTaskToRemove);
                 _commandsStrings.Add(uncompleteCommand);
 
                 // then we can delete
-                String deleteCommand = CreateCommandForDeleteItem(idOfTaskToRemove);
+                String deleteCommand = TodoistCommandService.CreateCommandForDeleteItem(idOfTaskToRemove);
                 _commandsStrings.Add(deleteCommand);
             }
         }

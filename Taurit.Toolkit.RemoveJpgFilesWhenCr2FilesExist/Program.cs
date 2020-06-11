@@ -14,7 +14,7 @@ namespace Taurit.Toolkit.RemoveJpgFilesWhenCr2FilesExist
             String directoryPath = args[0];
             IReadOnlyList<String> filesInDirectory = DirectoryHelper.GetFilesInDirectory(directoryPath);
 
-            RemoveRedundantFiles(filesInDirectory);
+            Program.RemoveRedundantFiles(filesInDirectory);
             Console.WriteLine("Finished.");
         }
 

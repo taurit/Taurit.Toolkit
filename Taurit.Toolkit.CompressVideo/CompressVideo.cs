@@ -18,16 +18,16 @@ namespace Taurit.Toolkit.CompressVideo
             if (args.Length < 1) throw new ArgumentException("inputFileOrDirectory should be passed as an argument");
             String inputFileOrDirectory = args[0];
 
-            CompressVideos(inputFileOrDirectory);
+            CompressVideo.CompressVideos(inputFileOrDirectory);
         }
 
         private static void CompressVideos(String inputFileOrDirectory)
         {
-            ReadOnlyCollection<String> filesToConvert = GetFilesInDirectory(inputFileOrDirectory).AsReadOnly();
+            ReadOnlyCollection<String> filesToConvert = CompressVideo.GetFilesInDirectory(inputFileOrDirectory).AsReadOnly();
             foreach (String file in filesToConvert)
             {
                 String outputFileName = file + ".min.mp4";
-                ConvertSingleFile(file, outputFileName);
+                CompressVideo.ConvertSingleFile(file, outputFileName);
             }
         }
 

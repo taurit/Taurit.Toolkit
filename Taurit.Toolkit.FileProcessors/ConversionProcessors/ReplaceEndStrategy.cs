@@ -22,7 +22,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
             if (!originalPath.EndsWith(_from))
                 throw new ArgumentException("Path doesn't end with provided string", nameof(originalPath));
 
-            return ReplaceLastOccurrence(originalPath, _from, _to);
+            return ReplaceEndStrategy.ReplaceLastOccurrence(originalPath, _from, _to);
         }
 
         private static String ReplaceLastOccurrence(String source, String find, String replace)

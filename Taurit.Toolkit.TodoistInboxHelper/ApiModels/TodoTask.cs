@@ -117,7 +117,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
         public String date_added { get; set; }
 
 #pragma warning disable 618
-        public Boolean HasDate => !string.IsNullOrWhiteSpace(date_string) || (due?.@string != null);
+        public Boolean HasDate => !string.IsNullOrWhiteSpace(date_string) || due?.@string != null;
 #pragma warning restore 618
 
         #region Those properties are not a part of data returned by the query! Must be filled by app logic if we want non-null.

@@ -53,7 +53,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
 
                 IEnumerable<String> selectedSnapshots =
                     selectedDate < detailedSnapshotsPeriodStart
-                        ? GetNth(snapshotsInSubfolder, _settings.ReductionRatio)
+                        ? SnapshotReader.GetNth(snapshotsInSubfolder, _settings.ReductionRatio)
                         : snapshotsInSubfolder; // show with maximum granularity of 1h for the last days, because this is data I'm most interested in
 
                 foreach (String snapshot in selectedSnapshots)

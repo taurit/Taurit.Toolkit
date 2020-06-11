@@ -158,7 +158,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 etWhitepapersFileInbox.Add(new DateTimePoint(snapshot.Time, whitepaperFileInboxEstimate.TotalMinutes));
             }
 
-            StackedAreaSeries[] estimatedTimeOfTasksSeries = GetStackedSeries(
+            StackedAreaSeries[] estimatedTimeOfTasksSeries = MainWindow.GetStackedSeries(
                 etHighPriorityTasks,
                 etMediumPriorityTasks,
                 etLowPriorityTasks,
@@ -177,7 +177,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             DateTime lastDayOfQuarter = SnapshotOnTimeline.GetLastDayOfQuarter(firstDayOfQuarter);
 
             Int32 howManyDaysToEndOfQuarter = lastDayOfQuarter.Subtract(lastKnownDate).Days;
-            Double totalMinutesNow = CountTotalMinutesAtDate(lastKnownDate,
+            Double totalMinutesNow = MainWindow.CountTotalMinutesAtDate(lastKnownDate,
                 etLowPriorityTasks,
                 etMediumPriorityTasks,
                 etHighPriorityTasks,
@@ -440,7 +440,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
         private void Window_Loaded(Object sender, RoutedEventArgs e)
         {
-            Debug.Assert(Dispatcher != null, nameof(Dispatcher) + " != null");
+            Debug.Assert(Dispatcher != null, nameof(DispatcherObject.Dispatcher) + " != null");
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 DateTime renderFinishedTime = DateTime.UtcNow;

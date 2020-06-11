@@ -13,7 +13,7 @@ namespace Taurit.Toolkit.WeightMonitor.Common.Models
         public Boolean OffsetIsProvided => OffsetX != null && OffsetX >= 0 && OffsetY != null && OffsetY >= 0;
 
         public Boolean GenerateWallpaperWithChart { get; set; }
-        
+
         public String FinalImagePath { get; set; }
     }
 }

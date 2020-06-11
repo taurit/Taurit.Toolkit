@@ -57,14 +57,14 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
 
         public TimeSpan GetEstimatedTimeNeededToProcessHighlight(DateTime date)
         {
-            Int32 numItems = GetNumberOfItems(_highlights, date);
-            return TimeSpan.FromMinutes(numItems * EstimatedTimeToProcessSingleHighlightMinutes);
+            Int32 numItems = KindleMateStatsReader.GetNumberOfItems(_highlights, date);
+            return TimeSpan.FromMinutes(numItems * KindleMateStatsReader.EstimatedTimeToProcessSingleHighlightMinutes);
         }
 
         public TimeSpan GetEstimatedTimeNeededToProcessVocabularyWords(DateTime date)
         {
-            Int32 numItems = GetNumberOfItems(_vocabularyWords, date);
-            return TimeSpan.FromMinutes(numItems * EstimatedTimeToProcessSingleWordMinutes);
+            Int32 numItems = KindleMateStatsReader.GetNumberOfItems(_vocabularyWords, date);
+            return TimeSpan.FromMinutes(numItems * KindleMateStatsReader.EstimatedTimeToProcessSingleWordMinutes);
         }
 
 

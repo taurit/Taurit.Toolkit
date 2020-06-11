@@ -88,10 +88,9 @@
                     <TextBlock
                         TextAlignment="Center"
                         VerticalAlignment="Center"
-                        Foreground="Lime"
-                    >
+                        Foreground="Lime">
                         <Run Name="TotalWorkLeft"
-                             Text="... h" FontWeight="Bold" FontSize="60"/>
+                             Text="... h" FontWeight="Bold" FontSize="60" />
                         <LineBreak />
                         <Run>to inbox zero</Run>
                         <TextBlock.Effect>
@@ -100,9 +99,9 @@
                                 Direction="300"
                                 Color="DarkBlue"
                                 Opacity="1"
-                                BlurRadius="5"/>
+                                BlurRadius="5" />
                         </TextBlock.Effect>
-                        
+
                     </TextBlock>
 
                 </Grid>

@@ -44,7 +44,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
 
         public void Run(String outputDirectory)
         {
-            String telemetrySessionId = $"{StartDateTime:yyyy-MM-dd-HH-mm-ss.fffffffzzz}";
+            String telemetrySessionId = $"{StartupTask.StartDateTime:yyyy-MM-dd-HH-mm-ss.fffffffzzz}";
 
             var telemetryClient = new TelemetryClient(new TelemetryConfiguration(_applicationInsightsKey));
 
@@ -52,29 +52,29 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
             telemetryClient.Context.User.UserAgent = "Taurit.Toolkit.ProcessTodoistInbox.Raspberry";
             telemetryClient.Context.Session.Id = telemetrySessionId;
 
-            TrackAndWriteToConsole(telemetryClient, $"Starting the application. Session id = {telemetrySessionId}");
-            WriteToConsole($"There are {_settings.ClassificationRulesConcise.Count} rules defined in settings");
-            WriteToConsole(
+            StartupTask.TrackAndWriteToConsole(telemetryClient, $"Starting the application. Session id = {telemetrySessionId}");
+            StartupTask.WriteToConsole($"There are {_settings.ClassificationRulesConcise.Count} rules defined in settings");
+            StartupTask.WriteToConsole(
                 $"Projects treated as inboxes: {string.Join(", ", _settings.AlternativeInboxes.Select(x => $"'{x}'"))}");
-            WriteToConsole($"API url used: {TodoistApiService.ApiUrl}");
+            StartupTask.WriteToConsole($"API url used: {TodoistApiService.ApiUrl}");
 
             while (true)
                 try
                 {
-                    if (!IsCurrentHourSleepHour()) // no need to query API too much, eg. at night
+                    if (!StartupTask.IsCurrentHourSleepHour()) // no need to query API too much, eg. at night
                     {
-                        TrackAndWriteToConsole(telemetryClient, "Starting the classification");
+                        StartupTask.TrackAndWriteToConsole(telemetryClient, "Starting the classification");
                         var stopwatch = Stopwatch.StartNew();
 
                         TryClassifyAllTasks(_settings, telemetryClient, outputDirectory);
 
                         stopwatch.Stop();
-                        TrackAndWriteToConsole(telemetryClient, "TotalClassificationTimeMs",
+                        StartupTask.TrackAndWriteToConsole(telemetryClient, "TotalClassificationTimeMs",
                             stopwatch.ElapsedMilliseconds);
                     }
                     else
                     {
-                        TrackAndWriteToConsole(telemetryClient,
+                        StartupTask.TrackAndWriteToConsole(telemetryClient,
                             $"Skipping the classification due to night hours (it is {DateTime.Now})");
                     }
 
@@ -82,7 +82,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
                 }
                 catch (Exception e)
                 {
-                    TrackAndWriteToConsole(telemetryClient, e);
+                    StartupTask.TrackAndWriteToConsole(telemetryClient, e);
                     Thread.Sleep(TimeSpan.FromHours(1));
                 }
 
@@ -112,9 +112,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
                 allLabels.ToLookup(x => x.id)
             );
             dataRetrievalStopwatch.Stop();
-            WriteToConsole(
+            StartupTask.WriteToConsole(
                 $"Retrieved {allProjects.Count} projects, {allLabels.Count} labels and {allTasks.Count} tasks");
-            TrackAndWriteToConsole(telemetryClient, "TotalDataRetrievalTimeMs",
+            StartupTask.TrackAndWriteToConsole(telemetryClient, "TotalDataRetrievalTimeMs",
                 dataRetrievalStopwatch.ElapsedMilliseconds);
 
             // analysis: save for the future use
@@ -124,15 +124,15 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
             String snapshotOutputFolder = _backlogSnapshotCreator.CreateSnapshot(snapshotsFolder, DateTime.UtcNow,
                 allTasks, allProjects, allLabels);
             snapshotCreatorStopwatch.Stop();
-            WriteToConsole($"Snapshot created in the folder '{snapshotOutputFolder}'");
-            TrackAndWriteToConsole(telemetryClient, "TotalSnapshotCreationTimeMs",
+            StartupTask.WriteToConsole($"Snapshot created in the folder '{snapshotOutputFolder}'");
+            StartupTask.TrackAndWriteToConsole(telemetryClient, "TotalSnapshotCreationTimeMs",
                 snapshotCreatorStopwatch.ElapsedMilliseconds);
 
             IReadOnlyList<TodoTask> tasksThatNeedReview =
                 _filteredTaskAccessor.GetNotReviewedTasks(allTasks);
 
-            WriteToConsole($"There are {tasksThatNeedReview.Count} tasks that need review");
-            WriteToConsole("Performing the classification...");
+            StartupTask.WriteToConsole($"There are {tasksThatNeedReview.Count} tasks that need review");
+            StartupTask.WriteToConsole("Performing the classification...");
             var taskClassifier = new TaskClassifier(
                 settings.ClassificationRulesConcise,
                 allLabels,
@@ -147,7 +147,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Raspberry
 
             // Apply actions
             List<String> logs = _changeExecutor.ApplyPlan(plannedActions);
-            foreach (String log in logs) WriteToConsole(log);
+            foreach (String log in logs) StartupTask.WriteToConsole(log);
         }
 
         private static void WriteToConsole(String message)

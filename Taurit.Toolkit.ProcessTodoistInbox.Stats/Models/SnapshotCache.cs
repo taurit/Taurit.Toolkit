@@ -9,7 +9,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Models
             in Double estTimeUndefinedPriorityTasks,
             in Double estTimeLowPriorityTasks,
             in Double estTimeMediumPriorityTasks,
-            in Double estTimeHighPriorityTasks, 
+            in Double estTimeHighPriorityTasks,
             in Double estTimeFutureTasks)
         {
             EstTimeUndefinedPriorityTasks = estTimeUndefinedPriorityTasks;
@@ -21,12 +21,16 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Models
 
         [DataMember]
         public Double EstTimeUndefinedPriorityTasks { get; }
+
         [DataMember]
         public Double EstTimeLowPriorityTasks { get; }
+
         [DataMember]
         public Double EstTimeMediumPriorityTasks { get; }
+
         [DataMember]
         public Double EstTimeHighPriorityTasks { get; }
+
         [DataMember]
         public Double EstTimeFutureTasks { get; }
     }

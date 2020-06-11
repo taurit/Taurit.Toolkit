@@ -9,7 +9,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper.Tests
         [TestMethod]
         public void When_ExampleDateStringFromTodoistDocumentationIsUsed_Expect_ItToBeCorrectlyParsed()
         {
-            // Arrange 
+            // Arrange
             var sut = new TaskDateParser();
             var dateString = "Mon 07 Aug 2006 12:34:56 +0000";
 
@@ -30,7 +30,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper.Tests
         [TestMethod]
         public void When_InvalidDateStringIsUsed_Expect_NoValueInResponse()
         {
-            // Arrange 
+            // Arrange
             var sut = new TaskDateParser();
             var dateString = "This is NOT a valid date string";
 
@@ -44,7 +44,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper.Tests
         [TestMethod]
         public void When_DateStringFromRealAPIIsUsed_Expect_ItToBeCorrectlyParsed()
         {
-            // Arrange 
+            // Arrange
             var sut = new TaskDateParser();
             var dateString = "Sun 16 Dec 2018 22:59:59 +0000";
 

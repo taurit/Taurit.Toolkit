@@ -23,20 +23,20 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models
         public IReadOnlyList<Project> AllProjects { get; }
         public IReadOnlyList<Label> AllLabels { get; }
 
-        public DateTime EndOfQuarter => GetLastDayOfQuarter(Time).AddDays(1);
+        public DateTime EndOfQuarter => SnapshotOnTimeline.GetLastDayOfQuarter(Time).AddDays(1);
 
         /// <summary>
-        /// https://dotnetcodr.com/2015/10/28/various-quarter-related-datetime-functions-in-c/
+        ///     https://dotnetcodr.com/2015/10/28/various-quarter-related-datetime-functions-in-c/
         /// </summary>
         /// <param name="originalDate"></param>
         /// <returns></returns>
         public static DateTime GetLastDayOfQuarter(DateTime originalDate) // todo: move to a separate class!
         {
-            return AddQuarters(new DateTime(originalDate.Year, 1, 1), GetQuarter(originalDate)).AddDays(-1);
+            return SnapshotOnTimeline.AddQuarters(new DateTime(originalDate.Year, 1, 1), SnapshotOnTimeline.GetQuarter(originalDate)).AddDays(-1);
         }
 
         /// <summary>
-        /// https://dotnetcodr.com/2015/10/28/various-quarter-related-datetime-functions-in-c/
+        ///     https://dotnetcodr.com/2015/10/28/various-quarter-related-datetime-functions-in-c/
         /// </summary>
         /// <param name="fromDate"></param>
         /// <returns></returns>
@@ -48,7 +48,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models
         }
 
         /// <summary>
-        /// https://dotnetcodr.com/2015/10/28/various-quarter-related-datetime-functions-in-c/
+        ///     https://dotnetcodr.com/2015/10/28/various-quarter-related-datetime-functions-in-c/
         /// </summary>
         /// <param name="originalDate"></param>
         /// <param name="quarters"></param>

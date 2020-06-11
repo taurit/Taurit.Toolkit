@@ -8,8 +8,7 @@ namespace Taurit.Toolkit.ConvertBlogpostImages
 {
     internal class BlogpostImageFolder
     {
-        [NotNull]
-        private readonly String _rootPath;
+        [NotNull] private readonly String _rootPath;
 
         public BlogpostImageFolder([NotNull] String rootPath)
         {
@@ -50,7 +49,7 @@ namespace Taurit.Toolkit.ConvertBlogpostImages
                     // generate downsized representation of a square image converted to WebP
                     new ConvertToWebpProcessor(@"\.600x600\.hq\.jpg$",
                         new WebpFileQuality(80),
-                        Int32.MaxValue,
+                        int.MaxValue,
                         new ReplaceEndStrategy(".600x600.hq.jpg", ".150x150.webp"),
                         new ResizeStrategy(150, 150),
                         new ConsoleLoggingStrategy(ConsoleLoggingStrategy.LogLevel.Actions)
@@ -59,7 +58,7 @@ namespace Taurit.Toolkit.ConvertBlogpostImages
                     // in case thumbnail is png, and not jpg
                     new ConvertToWebpProcessor(@"\.600x600\.hq\.png$",
                         new WebpFileQuality(80),
-                        Int32.MaxValue,
+                        int.MaxValue,
                         new ReplaceEndStrategy(".600x600.hq.png", ".150x150.webp"),
                         new ResizeStrategy(150, 150),
                         new ConsoleLoggingStrategy(ConsoleLoggingStrategy.LogLevel.Actions)

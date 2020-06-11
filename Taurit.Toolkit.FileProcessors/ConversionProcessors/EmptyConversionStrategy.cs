@@ -7,7 +7,7 @@ namespace Taurit.Toolkit.FileProcessors.ConversionProcessors
         /// <inheritdoc />
         public String GetAdditionalImageMagickArguments()
         {
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

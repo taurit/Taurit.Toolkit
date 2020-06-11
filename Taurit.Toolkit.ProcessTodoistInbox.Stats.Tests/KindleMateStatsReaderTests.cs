@@ -16,7 +16,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Tests
 
         public KindleMateStatsReaderTests()
         {
-            _sut = new KindleMateStatsReader(ExampleValidStatsFileContents.Split(Environment.NewLine));
+            _sut = new KindleMateStatsReader(KindleMateStatsReaderTests.ExampleValidStatsFileContents.Split(Environment.NewLine));
         }
 
         [TestMethod]

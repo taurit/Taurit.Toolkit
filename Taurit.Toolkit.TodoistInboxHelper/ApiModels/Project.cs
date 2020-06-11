@@ -20,7 +20,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper.ApiModels
     //    "is_favorite": 0
     //}
     [DataContract]
-    [DebuggerDisplay("Project `{" + nameof(name) + "}`")]
+    [DebuggerDisplay("Project `{" + nameof(Project.name) + "}`")]
     [SuppressMessage("Microsoft.Design", "IDE1006", Justification = "Names are aligned with JSON property names")]
     public class Project
     {

@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Models.ClassificationRuleModels
 {
     /// <summary>
-    /// Represents part of the classification rule that defines the action
+    ///     Represents part of the classification rule that defines the action
     /// </summary>
     [SuppressMessage("Microsoft.Design", "IDE1006", Justification = "Names are aligned with JSON property names")]
     [DataContract]

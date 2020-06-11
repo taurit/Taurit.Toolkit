@@ -39,7 +39,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
             Double estimatedTimeToProcessSingleFile)
         {
             SortedDictionary<DateTime, Int32> folderStats = _folderPathToDateAndNumberOfFiles[folderPath];
-            Int32 numItems = GetNumberOfItems(folderStats, date);
+            Int32 numItems = FileInboxesStatsReader.GetNumberOfItems(folderStats, date);
             return TimeSpan.FromMinutes(numItems * estimatedTimeToProcessSingleFile);
         }
 

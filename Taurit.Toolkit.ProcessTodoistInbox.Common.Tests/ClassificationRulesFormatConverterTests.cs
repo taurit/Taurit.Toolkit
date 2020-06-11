@@ -260,7 +260,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Tests
             ClassificationRule resultMediumLowercase = sut.Convert("if priorityIs(medium) then setLabel(nauka)");
             ClassificationRule resultHighLowercase = sut.Convert("if priorityIs(high) then setLabel(nauka)");
 
-            // Assert          
+            // Assert
             Assert.IsTrue(resultUndefined.If.priority.HasValue);
             Assert.AreEqual(1, resultUndefined.If.priority.Value);
 

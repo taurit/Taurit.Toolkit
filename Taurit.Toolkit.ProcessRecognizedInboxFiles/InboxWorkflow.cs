@@ -12,8 +12,8 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
 {
     public class InboxWorkflow
     {
-        private readonly IMergeInboxProcessor _mergeInboxProcessor;
         private readonly ILogger<IMergeInboxProcessor> _logger;
+        private readonly IMergeInboxProcessor _mergeInboxProcessor;
         private readonly InboxConfiguration _workflowConfiguration;
 
         public InboxWorkflow(InboxConfiguration workflowConfiguration, IMergeInboxProcessor mergeInboxProcessor, ILogger<IMergeInboxProcessor> logger)
@@ -26,8 +26,8 @@ namespace Taurit.Toolkit.ProcessRecognizedInboxFiles
         internal void Start()
         {
             MergeInbox();
-            MoveFilesToSubfolders(_workflowConfiguration);
-            CompressFiles(_workflowConfiguration);
+            InboxWorkflow.MoveFilesToSubfolders(_workflowConfiguration);
+            InboxWorkflow.CompressFiles(_workflowConfiguration);
         }
 
         private void MergeInbox()

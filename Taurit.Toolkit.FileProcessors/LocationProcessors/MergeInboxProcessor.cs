@@ -33,9 +33,8 @@ namespace Taurit.Toolkit.FileProcessors.LocationProcessors
                         Boolean fileExistsInTargetInbox = File.Exists(targetFilePath);
 
                         if (fileExistsInTargetInbox)
-                        {
-                            logger.LogWarning($"Inbox merge: cannot move file {filePath} to {targetFilePath} because a file with the same name already exists in a target directory.");
-                        }
+                            logger.LogWarning(
+                                $"Inbox merge: cannot move file {filePath} to {targetFilePath} because a file with the same name already exists in a target directory.");
                         else
                             File.Move(filePath, targetFilePath);
                     }

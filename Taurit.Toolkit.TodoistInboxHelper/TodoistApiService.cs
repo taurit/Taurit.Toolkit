@@ -12,8 +12,7 @@ namespace Taurit.Toolkit.TodoistInboxHelper
         protected TodoistApiService(String authToken)
         {
             AuthToken = authToken;
-            RestClient = new RestClient(ApiUrl);
+            RestClient = new RestClient(TodoistApiService.ApiUrl);
         }
-
     }
 }

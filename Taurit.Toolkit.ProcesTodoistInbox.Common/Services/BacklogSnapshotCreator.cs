@@ -45,9 +45,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Common.Services
 
             // remove file extension
             String newestFileWithoutExtension = newestFile
-                    .Replace(".labels", "")
-                    .Replace(".projects", "")
-                    .Replace(".tasks", ""); // quick & dirty
+                .Replace(".labels", "")
+                .Replace(".projects", "")
+                .Replace(".tasks", ""); // quick & dirty
 
             return newestFileWithoutExtension;
         }
