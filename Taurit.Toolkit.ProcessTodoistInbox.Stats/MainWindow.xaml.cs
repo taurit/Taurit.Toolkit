@@ -318,7 +318,17 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
 
         private Double GetTimeInMinutes(String content)
         {
-            TimespanParseResult parseResult = _mctp.Parse(content);
+            // workaround: I sometimes use phrases like "Consider the 24h timeout", where 24h means a full day. I never estimate tasks so high, so I don't want such strings to be interpreted as estimates.
+
+            var contentNormalied = content
+                .Replace("24h", "")
+                .Replace("24 h", "")
+                .Replace("48h", "")
+                .Replace("48 h", "")
+                .Replace("72h", "")
+                .Replace("72 h", "");
+
+            TimespanParseResult parseResult = _mctp.Parse(contentNormalied);
             return parseResult.Success ? parseResult.Duration.TotalMinutes : 0d;
         }
 
@@ -359,7 +369,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 },
                 new StackedAreaSeries
                 {
-                    Title = "Todoist: Low priority",
+                    Title = "Todoist: Least urgent",
                     Values = new ChartValues<DateTimePoint>(lowPriorityTasks),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#557ED1"))
@@ -373,14 +383,14 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 },
                 new StackedAreaSeries
                 {
-                    Title = "Todoist: Medium priority",
+                    Title = "Todoist: Relatively urgent",
                     Values = new ChartValues<DateTimePoint>(mediumPriorityTasks),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FFF49C18"))
                 },
                 new StackedAreaSeries
                 {
-                    Title = "Todoist: High priority",
+                    Title = "Todoist: Urgent",
                     Values = new ChartValues<DateTimePoint>(highPriorityTasks),
                     LineSmoothness = 0,
                     Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FFDE4C4A"))
