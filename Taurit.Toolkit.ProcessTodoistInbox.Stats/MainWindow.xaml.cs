@@ -329,7 +329,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 .Replace("72 h", "");
 
             TimespanParseResult parseResult = _mctp.Parse(contentNormalied);
-            return parseResult.Success ? parseResult.Duration.TotalMinutes : 0d;
+            var averageLengthOfATask = 10; // if I ddn't review tasks for a long time, let's at least see a generic estimate of a growing "debt"
+            return parseResult.Success ? parseResult.Duration.TotalMinutes : averageLengthOfATask;
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
