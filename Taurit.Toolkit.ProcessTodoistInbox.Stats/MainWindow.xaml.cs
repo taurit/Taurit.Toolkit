@@ -320,7 +320,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         {
             // workaround: I sometimes use phrases like "Consider the 24h timeout", where 24h means a full day. I never estimate tasks so high, so I don't want such strings to be interpreted as estimates.
 
-            var contentNormalied = content
+            var contentNormalized = content
                 .Replace("24h", "")
                 .Replace("24 h", "")
                 .Replace("48h", "")
@@ -328,7 +328,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 .Replace("72h", "")
                 .Replace("72 h", "");
 
-            TimespanParseResult parseResult = _mctp.Parse(contentNormalied);
+            TimespanParseResult parseResult = _mctp.Parse(contentNormalized);
             var averageLengthOfATask = 10; // if I ddn't review tasks for a long time, let's at least see a generic estimate of a growing "debt"
             return parseResult.Success ? parseResult.Duration.TotalMinutes : averageLengthOfATask;
         }
