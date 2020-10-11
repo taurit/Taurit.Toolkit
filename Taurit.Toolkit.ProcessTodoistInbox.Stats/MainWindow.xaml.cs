@@ -44,6 +44,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         private readonly TaskDateParser _taskDateParser;
         private readonly ITimeConverter _timeConverter;
         private readonly DateTime _tomorrowDateUtc;
+        private readonly AnkiStatsReader _ankiStatsReader;
 
         public MainWindow([JetBrains.Annotations.NotNull] String settingsFilePath)
         {
@@ -60,10 +61,11 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             IEnumerable<String> kindleMateStatsCsvContent = File.ReadLines(kindleMateStatsPath);
             _kindleMateStatsReader = new KindleMateStatsReader(kindleMateStatsCsvContent);
 
-            // todo un-hardcode path
-            IEnumerable<String> fileInboxesStatsCsvContent =
-                File.ReadLines("d:\\ProgramData\\ApplicationData\\TauritToolkit\\inboxFolderStats.csv");
+            IEnumerable<String> fileInboxesStatsCsvContent = File.ReadLines("d:\\ProgramData\\ApplicationData\\TauritToolkit\\inboxFolderStats.csv");
             _fileInboxesStatsReader = new FileInboxesStatsReader(fileInboxesStatsCsvContent);
+
+            IEnumerable<String> ankiStatsCsvContent = File.ReadLines("c:\\Users\\windo\\AppData\\Roaming\\Anki2\\Usuario 1\\taurit.stats.txt");
+            _ankiStatsReader = new AnkiStatsReader(ankiStatsCsvContent);
         }
 
         public Func<Double, String> XFormatter { get; } = value => new DateTime((Int64) value).ToString("yyyy-MM-dd");
@@ -88,6 +90,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             var etKindleMateWords = new List<DateTimePoint>();
             var etKindleMateHighlights = new List<DateTimePoint>();
             var etAnkiFileInbox = new List<DateTimePoint>();
+            var etAnkiStats = new List<DateTimePoint>();
             var etWhitepapersFileInbox = new List<DateTimePoint>();
             var etFutureTasks = new List<DateTimePoint>();
 
@@ -154,8 +157,12 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 TimeSpan whitepaperFileInboxEstimate =
                     _fileInboxesStatsReader.GetEstimatedTimeNeededToProcessFolder("d:\\Inbox\\Do_przeczytania\\",
                         snapshot.Time, 30);
+
+                TimeSpan ankiStatsEstimate = _ankiStatsReader.GetEstimatedTimeNeededToProcessCards(snapshot.Time, 1.5);
+
                 etAnkiFileInbox.Add(new DateTimePoint(snapshot.Time, ankiFileInboxEstimate.TotalMinutes));
                 etWhitepapersFileInbox.Add(new DateTimePoint(snapshot.Time, whitepaperFileInboxEstimate.TotalMinutes));
+                etAnkiStats.Add(new DateTimePoint(snapshot.Time, ankiStatsEstimate.TotalMinutes));
             }
 
             StackedAreaSeries[] estimatedTimeOfTasksSeries = MainWindow.GetStackedSeries(
@@ -167,7 +174,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 etKindleMateHighlights,
                 etAnkiFileInbox,
                 etWhitepapersFileInbox,
-                etFutureTasks);
+                etFutureTasks,
+                etAnkiStats);
             EstimatedTimeOfTasks.AddRange(estimatedTimeOfTasksSeries);
 
             DateTime lastKnownDate = etLowPriorityTasks.Max(x => x.DateTime);
@@ -184,7 +192,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 etKindleMateWords,
                 etKindleMateHighlights,
                 etAnkiFileInbox,
-                etWhitepapersFileInbox);
+                etWhitepapersFileInbox,
+                etAnkiStats,
+                etUndefinedPriorityTasks);
 
             if (howManyDaysToEndOfQuarter == 0)
             {
@@ -228,7 +238,9 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             List<DateTimePoint> etKindleMateWords,
             List<DateTimePoint> etKindleMateHighlights,
             List<DateTimePoint> etAnkiFileInbox,
-            List<DateTimePoint> etWhitepapersFileInbox
+            List<DateTimePoint> etWhitepapersFileInbox,
+            List<DateTimePoint> etAnkiStats,
+            List<DateTimePoint> etUndefinedStats
         )
         {
             Double lowTime = etLowPriorityTasks.Single(x => x.DateTime == date).Value;
@@ -238,8 +250,10 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             Double highlightsTime = etKindleMateHighlights.Single(x => x.DateTime == date).Value;
             Double ankiTime = etAnkiFileInbox.Single(x => x.DateTime == date).Value;
             Double whitepapersTime = etWhitepapersFileInbox.Single(x => x.DateTime == date).Value;
+            Double ankiStatsTime = etAnkiStats.Single(x => x.DateTime == date).Value;
+            Double undefinedTasksTime = etUndefinedStats.Single(x => x.DateTime == date).Value;
 
-            return lowTime + mediumTime + highTime + wordsTime + highlightsTime + ankiTime + whitepapersTime;
+            return lowTime + mediumTime + highTime + wordsTime + highlightsTime + ankiTime + whitepapersTime + ankiStatsTime + undefinedTasksTime;
         }
 
         private List<TodoTask> FilterOutTaskThatShouldNotBeCounted(IReadOnlyList<TodoTask> allTasks,
@@ -343,7 +357,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
             List<DateTimePoint> kindleMateHighlights,
             List<DateTimePoint> anki,
             List<DateTimePoint> whitepapers,
-            List<DateTimePoint> futureTasks)
+            List<DateTimePoint> futureTasks,
+            List<DateTimePoint> ankiStats)
         {
             var series = new[]
             {
@@ -359,42 +374,49 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                     Title = "Q&A input to put to Anki",
                     Values = new ChartValues<DateTimePoint>(anki),
                     LineSmoothness = 0,
-                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FF3D67D3"))
+                    Fill = new SolidColorBrush(Color.FromRgb(61, 103, 211))
                 },
                 new StackedAreaSeries
                 {
                     Title = "Whitepaper files to read",
                     Values = new ChartValues<DateTimePoint>(whitepapers),
                     LineSmoothness = 0,
-                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FF4073D6"))
+                    Fill = new SolidColorBrush(Color.FromRgb(64, 115, 214))
                 },
                 new StackedAreaSeries
                 {
                     Title = "Todoist: Least urgent",
                     Values = new ChartValues<DateTimePoint>(lowPriorityTasks),
                     LineSmoothness = 0,
-                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#557ED1"))
+                    Fill = new SolidColorBrush(Color.FromRgb(85, 125, 225))
                 },
                 new StackedAreaSeries
                 {
                     Title = "Kindle Highlights",
                     Values = new ChartValues<DateTimePoint>(kindleMateHighlights),
                     LineSmoothness = 0,
-                    Fill = new SolidColorBrush(Color.FromRgb(242, 184, 24))
+                    Fill = new SolidColorBrush(Color.FromRgb(0, 146, 142))
+                },
+                new StackedAreaSeries
+                {
+                    Title = "Anki: pending reps",
+                    Values = new ChartValues<DateTimePoint>(ankiStats),
+                    LineSmoothness = 0,
+                    Fill = new SolidColorBrush(Color.FromRgb(0, 211, 185))
                 },
                 new StackedAreaSeries
                 {
                     Title = "Todoist: Relatively urgent",
                     Values = new ChartValues<DateTimePoint>(mediumPriorityTasks),
                     LineSmoothness = 0,
-                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FFF49C18"))
+                    Fill = new SolidColorBrush(Color.FromRgb(244, 156, 24))
                 },
                 new StackedAreaSeries
                 {
                     Title = "Todoist: Urgent",
                     Values = new ChartValues<DateTimePoint>(highPriorityTasks),
                     LineSmoothness = 0,
-                    Fill = new SolidColorBrush((Color) ColorConverter.ConvertFromString("#FFDE4C4A"))
+                    Fill = new SolidColorBrush(Color.FromRgb(222, 76, 74))
                 },
                 new StackedAreaSeries
                 {
