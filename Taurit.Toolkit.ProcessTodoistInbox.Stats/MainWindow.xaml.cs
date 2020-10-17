@@ -76,6 +76,13 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         public DateTime WindowOpenedTime { get; set; }
         public DateTime RenderFinishedTime { get; set; }
 
+        /// <summary>
+        /// Anki stats:
+        /// avg: 13.1 seconds per card = 4.58 card per minute
+        /// avg: 79.6% correct - other are displayed multiple times, let's assume 3 times on avg
+        /// </summary>
+        private readonly TimeSpan _estimatedNumMinutesToReviewAnkiCardInSeconds = TimeSpan.FromSeconds(13.1*0.796 + 4*13.1*(1-0.796));
+
         private void RadioButtonSetupChanged([AllowNull] Object sender, [AllowNull] RoutedEventArgs e)
         {
             if (!IsInitialized) return;
@@ -158,7 +165,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                     _fileInboxesStatsReader.GetEstimatedTimeNeededToProcessFolder("d:\\Inbox\\Do_przeczytania\\",
                         snapshot.Time, 30);
 
-                TimeSpan ankiStatsEstimate = _ankiStatsReader.GetEstimatedTimeNeededToProcessCards(snapshot.Time, 1.5);
+                TimeSpan ankiStatsEstimate = _ankiStatsReader.GetEstimatedTimeNeededToProcessCards(snapshot.Time, _estimatedNumMinutesToReviewAnkiCardInSeconds.TotalMinutes);
 
                 etAnkiFileInbox.Add(new DateTimePoint(snapshot.Time, ankiFileInboxEstimate.TotalMinutes));
                 etWhitepapersFileInbox.Add(new DateTimePoint(snapshot.Time, whitepaperFileInboxEstimate.TotalMinutes));

@@ -22,9 +22,8 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats.Services
 
                 var numCards = Convert.ToInt32(numCardsString);
 
-                // trim the time part - for now I assume that an estimate once a day is enough for me
                 DateTime dateTime = DateTime.Parse(dateString);
-                DateTime date = dateTime.Date; // by default, keep all entries for a given day
+                DateTime date = dateTime; //add ".Date" to reduce memory, and smooth out the chart
 
                 if (!statsInTime.ContainsKey(date))
                     statsInTime.Add(date, numCards);
