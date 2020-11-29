@@ -79,7 +79,12 @@
                                 Position="RightTop"
                                 Title="Estimated time of tasks (h)"
                                 LabelFormatter="{Binding YFormatter}"
-                                MinValue="0" />
+                                MinValue="0" 
+                            >
+                                <wpf:Axis.Separator>
+                                    <wpf:Separator IsEnabled="True" Step="60"></wpf:Separator>
+                                </wpf:Axis.Separator>
+                            </wpf:Axis>
                         </wpf:CartesianChart.AxisY>
                         <wpf:CartesianChart.AxisX>
                             <wpf:Axis Title="Date" LabelFormatter="{Binding XFormatter}" />

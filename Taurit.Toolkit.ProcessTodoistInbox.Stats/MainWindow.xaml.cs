@@ -80,8 +80,12 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
         /// Anki stats:
         /// avg: 13.1 seconds per card = 4.58 card per minute
         /// avg: 79.6% correct - other are displayed multiple times, let's assume 3 times on avg
+        ///
+        /// Other kind of stats, more direct from Anki mobile app:
+        /// 31.5 s is the average time needed to answer.
         /// </summary>
-        private readonly TimeSpan _estimatedNumMinutesToReviewAnkiCardInSeconds = TimeSpan.FromSeconds(13.1*0.796 + 4*13.1*(1-0.796));
+        private readonly TimeSpan _estimatedNumMinutesToReviewAnkiCardInSeconds = TimeSpan.FromSeconds(31.5);
+            //TimeSpan.FromSeconds(13.1*0.796 + 4*13.1*(1-0.796)); // 21s
 
         private void RadioButtonSetupChanged([AllowNull] Object sender, [AllowNull] RoutedEventArgs e)
         {
@@ -184,6 +188,7 @@ namespace Taurit.Toolkit.ProcessTodoistInbox.Stats
                 etFutureTasks,
                 etAnkiStats);
             EstimatedTimeOfTasks.AddRange(estimatedTimeOfTasksSeries);
+            EstimatedTimeOfTasks.Chart.View.AnimationsSpeed = TimeSpan.FromMilliseconds(500);
 
             DateTime lastKnownDate = etLowPriorityTasks.Max(x => x.DateTime);
 
